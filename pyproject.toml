@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eeg-library"
+version = "0.1.0"
+description = "Librería para el procesamiento de señales EEG del casco Emotiv Epoc X"
+requires-python = ">=3.10"
+dependencies = [
+    "mne",
+    "numpy",
+    "scipy",
+    "pandas",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

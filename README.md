@@ -60,28 +60,7 @@ pip install -e ".[dev]"
 
 ---
 
-## Uso básico
 
-```python
-from eeg_library import cargar_eeg
-
-# Cargar un archivo EDF
-raw = cargar_eeg("data/samples/sujeto_01.edf")
-
-# raw es un objeto Raw de MNE con el que se puede seguir trabajando
-print(raw.info)
-```
-
-Salida de ejemplo:
-
-```
-Archivo       : sujeto_01.edf
-Frec. muestreo: 256.0 Hz
-Duración      : 300.00 s
-Canales (14)  : ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4']
-```
-
----
 
 ## Cómo ejecutar el proyecto
 
@@ -110,6 +89,29 @@ Sabrás que está activado porque aparece `(.venv)` al inicio de la línea de la
 
 ```
 python probar.py
+```
+
+---
+
+## Uso básico
+
+```python
+from eeg_library import cargar_eeg
+
+# Cargar un archivo EDF
+raw = cargar_eeg("data/samples/sujeto_01.edf")
+
+# raw es un objeto Raw de MNE con el que se puede seguir trabajando
+print(raw.info)
+```
+
+Salida de ejemplo:
+
+```
+Archivo       : sujeto_01.edf
+Frec. muestreo: 256.0 Hz
+Duración      : 300.00 s
+Canales (14)  : ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4']
 ```
 
 ---

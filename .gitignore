@@ -194,6 +194,9 @@ data/
 *.pickle
 *.mat
 
+# Documentación interna (no subir al repo)
+ESTADO.md
+
 # Salidas del proyecto
 figures/
 plots/

@@ -41,7 +41,18 @@ def cargar_eeg(ruta: str) -> mne.io.BaseRaw:
             "Comprueba que la ruta sea correcta."
         )
 
+    # preload = True -> Carga los datos en la memoria RAM para permitir el filtrado y procesamiento posterior.
+    # verbose = False -> Desactiva los mensajes automáticos en la terminal para una ejecución más limpia.
     raw = mne.io.read_raw_edf(ruta, preload=True, verbose=False)
+
+    # MNE interpreta los canales CQ como voltajes y les aplica el factor de
+    # escala estándar (1e-6). Revertimos esa escala multiplicando por 10e6
+    # para recuperar los valores originales en el rango [0, 4].
+    import numpy as np
+    canales_cq = [ch for ch in raw.ch_names if ch.startswith("CQ_")]
+    if canales_cq:
+        indices_cq = [raw.ch_names.index(ch) for ch in canales_cq]
+        raw._data[indices_cq] *= 1e6
 
     frecuencia_muestreo = raw.info["sfreq"]
     if frecuencia_muestreo < 256:

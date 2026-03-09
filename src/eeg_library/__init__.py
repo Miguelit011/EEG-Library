@@ -7,5 +7,7 @@ de fatiga mental.
 """
 
 from eeg_library.reader import cargar_eeg
+from eeg_library.quality import evaluar_calidad
+from eeg_library.referencing import aplicar_car
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

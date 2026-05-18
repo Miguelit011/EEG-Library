@@ -9,5 +9,6 @@ de fatiga mental.
 from eeg_library.reader import cargar_eeg
 from eeg_library.quality import evaluar_calidad
 from eeg_library.referencing import aplicar_car
+from eeg_library.filtering import recortar_registro, aplicar_filtros
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

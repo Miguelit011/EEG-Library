@@ -128,16 +128,100 @@ def test_umbral_flat_configurable():
 
 
 # ---------------------------------------------------------------------------
-# Criterio 4 — saturación (varianza > umbral_spike)
+# Criterio 4 — amplitud excesiva (z-score robusto inter-canal, FASTER)
 # ---------------------------------------------------------------------------
 
-def test_excluye_señal_saturada():
-    rng = np.random.default_rng(2)
-    señal_saturada = rng.normal(0, 0.01, N_MUESTRAS)  # std ≈ 10 mV, var ≈ 1e-4
-    raw = _raw_sintetico({"T7": señal_saturada})
-    good, excluidos, _ = evaluar_calidad(raw, umbral_spike=1e-6)
-    assert "T7" not in good
-    assert "saturaci" in excluidos["T7"].lower()
+def _señales_normales_distintas(canales, semilla=42):
+    """
+    Construye señales EEG sintéticas con varianzas ligeramente distintas
+    entre canales (para que el MAD inter-canal sea > 0).
+    """
+    rng = np.random.default_rng(semilla)
+    señales = {}
+    for i, ch in enumerate(canales):
+        std = 5e-6 * (1 + 0.05 * i)  # std entre 5 y ~8 µV
+        señales[ch] = rng.normal(0, std, N_MUESTRAS)
+    return señales
+
+
+def test_excluye_amplitud_excesiva_por_z_score():
+    # 13 canales con amplitud normal y uno con varianza ~10000x mayor
+    canales = CANALES_EPOC[:13]
+    señales = _señales_normales_distintas(canales)
+    rng = np.random.default_rng(99)
+    canal_outlier = CANALES_EPOC[13]
+    señales[canal_outlier] = rng.normal(0, 5e-4, N_MUESTRAS)  # var ≈ 2.5e-7
+
+    raw = _raw_sintetico(señales)
+    good, excluidos, metricas = evaluar_calidad(raw)
+
+    assert canal_outlier not in good
+    assert "Amplitud excesiva" in excluidos[canal_outlier]
+    assert metricas[canal_outlier]["z_robusto"] > 3.0
+
+
+def test_no_excluye_amplitud_normal():
+    # Varianzas ligeramente distintas pero todas en rango fisiológico
+    canales = CANALES_EPOC[:14]
+    señales = _señales_normales_distintas(canales)
+    raw = _raw_sintetico(señales)
+    good, excluidos, _ = evaluar_calidad(raw)
+    # Ningún canal debe ser excluido por amplitud excesiva
+    assert all("Amplitud excesiva" not in motivo for motivo in excluidos.values())
+    assert set(good) == set(canales)
+
+
+def test_umbral_z_configurable():
+    # Un canal con varianza moderadamente más alta que el resto
+    canales = CANALES_EPOC[:13]
+    señales = _señales_normales_distintas(canales)
+    rng = np.random.default_rng(11)
+    canal_alto = CANALES_EPOC[13]
+    señales[canal_alto] = rng.normal(0, 2e-5, N_MUESTRAS)  # ~4x la mediana
+
+    raw = _raw_sintetico(señales)
+
+    # Con umbral z muy alto, no se excluye
+    good_relajado, _, _ = evaluar_calidad(raw, umbral_z=100.0)
+    assert canal_alto in good_relajado
+
+    # Con umbral z muy bajo, sí se excluye
+    good_estricto, excluidos_estricto, _ = evaluar_calidad(raw, umbral_z=1.0)
+    assert canal_alto not in good_estricto
+    assert "Amplitud excesiva" in excluidos_estricto[canal_alto]
+
+
+def test_caso_degenerado_mad_cero(capsys):
+    # Todos los canales con exactamente la misma señal → MAD = 0
+    señal_comun = _señal_normal()
+    señales = {ch: señal_comun.copy() for ch in CANALES_EPOC}
+    raw = _raw_sintetico(señales)
+
+    good, excluidos, metricas = evaluar_calidad(raw)
+
+    # Ningún canal excluido por amplitud excesiva
+    assert all("Amplitud excesiva" not in motivo for motivo in excluidos.values())
+    # z_robusto debe ser None para todos los canales (criterio no aplicable)
+    for ch in CANALES_EPOC:
+        assert metricas[ch]["z_robusto"] is None
+    # Se debe avisar de la dispersión nula
+    salida = capsys.readouterr().out
+    assert "MAD = 0" in salida
+
+
+def test_distingue_motivo_plana_de_amplitud_excesiva():
+    # Un canal plano y otro saturado en el mismo registro
+    canales = CANALES_EPOC[:12]
+    señales = _señales_normales_distintas(canales)
+    señales[CANALES_EPOC[12]] = np.zeros(N_MUESTRAS)  # plano
+    rng = np.random.default_rng(3)
+    señales[CANALES_EPOC[13]] = rng.normal(0, 5e-4, N_MUESTRAS)  # saturado
+
+    raw = _raw_sintetico(señales)
+    _, excluidos, _ = evaluar_calidad(raw)
+
+    assert "plana" in excluidos[CANALES_EPOC[12]].lower()
+    assert "Amplitud excesiva" in excluidos[CANALES_EPOC[13]]
 
 
 # ---------------------------------------------------------------------------
@@ -180,6 +264,7 @@ def test_metricas_contienen_campos_esperados():
     assert "cq_medio" in metricas["AF3"]
     assert "pct_muestras_malas" in metricas["AF3"]
     assert "varianza" in metricas["AF3"]
+    assert "z_robusto" in metricas["AF3"]
 
 
 # ---------------------------------------------------------------------------

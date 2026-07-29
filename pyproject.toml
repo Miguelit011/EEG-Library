@@ -12,6 +12,8 @@ dependencies = [
     "numpy",
     "scipy",
     "pandas",
+    "mne-icalabel",
+    "onnxruntime",
 ]
 
 [project.optional-dependencies]

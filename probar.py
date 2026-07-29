@@ -1,6 +1,6 @@
 """
 Script manual de validación del criterio de amplitud excesiva
-basado en z-score robusto (FASTER) — Fase 2.
+basado en z-score robusto (FASTER) — Fase 4.
 
 Ejecuta tres escenarios sobre un EDF real de data/samples/:
   1. Sanity check: pipeline normal, comprobar columna z y métricas.

@@ -1,8 +1,8 @@
 """
-Módulo de re-referenciación EEG (Fase 3).
+Módulo de re-referenciación EEG (Fase 5).
 
 Implementa Common Average Reference (CAR) aplicado únicamente sobre
-los canales marcados como buenos por la evaluación de calidad (Fase 2).
+los canales marcados como buenos por la evaluación de calidad (Fase 4).
 """
 
 import datetime
@@ -21,7 +21,7 @@ def aplicar_car(raw, good_channels):
 
         señal_car[canal] = señal[canal] - mean(señal[good_channels])
 
-    Los canales excluidos por la Fase 2 no participan en el cálculo ni
+    Los canales excluidos por la Fase 4 no participan en el cálculo ni
     son modificados.
 
     Lógica según el número de canales buenos:

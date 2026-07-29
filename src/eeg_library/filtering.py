@@ -1,5 +1,5 @@
 """
-Módulo de filtrado EEG (Fase 4).
+Módulo de filtrado EEG (Fases 2 y 3).
 
 Expone dos funciones de preprocesamiento que se aplican en este orden:
   1. recortar_registro — elimina los márgenes inicial y final del registro.

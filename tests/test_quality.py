@@ -1,5 +1,5 @@
 """
-Tests para el módulo de evaluación de calidad (Fase 2).
+Tests para el módulo de evaluación de calidad (Fase 4).
 """
 
 import numpy as np

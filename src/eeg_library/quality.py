@@ -1,5 +1,5 @@
 """
-Módulo de evaluación de calidad de señales EEG (Fase 2).
+Módulo de evaluación de calidad de señales EEG (Fase 4).
 
 Evalúa la calidad de contacto de cada canal del Emotiv Epoc X y determina
 cuáles son aptos para el análisis basándose en señales CQ y métricas de varianza.

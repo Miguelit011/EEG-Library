@@ -54,6 +54,13 @@ def cargar_eeg(ruta: str) -> mne.io.BaseRaw:
         indices_cq = [raw.ch_names.index(ch) for ch in canales_cq]
         raw._data[indices_cq] *= 1e6
 
+    # Asigna las posiciones de electrodo del sistema 10-20 estándar. Los 14
+    # canales EEG del Epoc X usan nombres 10-20 y quedan georreferenciados;
+    # los canales CQ_* no tienen posición estándar y se omiten con
+    # on_missing="warn" (aviso, no error). Necesario para la Fase 6 (ICLabel
+    # calcula topografías de scalp a partir de estas posiciones).
+    raw.set_montage("standard_1020", on_missing="warn", verbose=False)
+
     frecuencia_muestreo = raw.info["sfreq"]
     if frecuencia_muestreo < 256:
         raise ValueError(

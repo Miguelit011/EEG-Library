@@ -1,5 +1,5 @@
 """
-Tests para el módulo de filtrado (Fase 4).
+Tests para el módulo de filtrado (Fases 2 y 3).
 """
 
 import numpy as np

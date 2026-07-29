@@ -45,6 +45,23 @@ def cargar_eeg(ruta: str) -> mne.io.BaseRaw:
     # verbose = False -> Desactiva los mensajes automáticos en la terminal para una ejecución más limpia.
     raw = mne.io.read_raw_edf(ruta, preload=True, verbose=False)
 
+    # MNE tipa todos los canales del EDF como 'eeg' por defecto, incluidos los
+    # que no son señal cerebral (calidad de contacto, telemetría, marcadores).
+    # Sin corregir esto, aplicar_filtros (picks="eeg") los filtraría también:
+    # p. ej. CQ_* es una señal casi constante y un bandpass 1-30 Hz la
+    # colapsaría a ~0, invalidando los criterios de calidad de evaluar_calidad.
+    canales_no_eeg = [
+        ch for ch in raw.ch_names
+        if ch.startswith(("CQ_", "EQ_", "TIME_STAMP", "OR_TIME_STAMP"))
+        or ch in (
+            "COUNTER", "INTERPOLATED", "RAW_CQ", "BATTERY",
+            "BATTERY_PERCENT", "MarkerIndex", "MarkerType",
+            "MarkerValueInt", "MARKER_HARDWARE",
+        )
+    ]
+    if canales_no_eeg:
+        raw.set_channel_types({ch: "misc" for ch in canales_no_eeg}, verbose=False)
+
     # MNE interpreta los canales CQ como voltajes y les aplica el factor de
     # escala estándar (1e-6). Revertimos esa escala multiplicando por 10e6
     # para recuperar los valores originales en el rango [0, 4].
@@ -56,7 +73,7 @@ def cargar_eeg(ruta: str) -> mne.io.BaseRaw:
 
     # Asigna las posiciones de electrodo del sistema 10-20 estándar. Los 14
     # canales EEG del Epoc X usan nombres 10-20 y quedan georreferenciados;
-    # los canales CQ_* no tienen posición estándar y se omiten con
+    # los canales no-EEG no tienen posición estándar y se omiten con
     # on_missing="warn" (aviso, no error). Necesario para la Fase 6 (ICLabel
     # calcula topografías de scalp a partir de estas posiciones).
     raw.set_montage("standard_1020", on_missing="warn", verbose=False)

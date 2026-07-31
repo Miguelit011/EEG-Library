@@ -23,12 +23,29 @@ def _separador(titulo):
     print("=" * 70)
 
 
+def _mostrar_valores_cq(raw, n_muestras=8):
+    """Imprime una muestra de los valores de los canales CQ_ presentes."""
+    print(f"\nValores CQ_ (primeros {n_muestras} puntos):")
+    encontrados = False
+    for ch in CANALES_EPOC:
+        nombre_cq = f"CQ_{ch}"
+        if nombre_cq in raw.ch_names:
+            encontrados = True
+            idx = raw.ch_names.index(nombre_cq)
+            valores = raw._data[idx]
+            muestra = [f"{v:.3f}" for v in valores[:n_muestras]]
+            print(f"  {nombre_cq:<8}: {', '.join(muestra)}")
+    if not encontrados:
+        print("  No se encontraron canales CQ_ en este archivo.")
+
+
 # ---------------------------------------------------------------------------
 # Escenario 1 — Sanity check sobre datos reales
 # ---------------------------------------------------------------------------
 _separador("Escenario 1 — Sanity check (datos reales sin tocar)")
 
 raw = cargar_eeg(RUTA_EDF)
+_mostrar_valores_cq(raw)
 good, excluidos, metricas = evaluar_calidad(raw)
 
 print(f"\nCanales aptos: {len(good)} / 14")
@@ -48,6 +65,7 @@ for ch in CANALES_EPOC:
 _separador("Escenario 2 — Outlier sintético (T7 x1000)")
 
 raw2 = cargar_eeg(RUTA_EDF)
+_mostrar_valores_cq(raw2)
 canal_outlier = "T7"
 idx = raw2.ch_names.index(canal_outlier)
 raw2._data[idx] *= 1000
@@ -65,6 +83,7 @@ print(f"z_robusto({canal_outlier}): {metricas2[canal_outlier]['z_robusto']:+.2f}
 _separador("Escenario 3 — Caso degenerado (todos los canales = AF3)")
 
 raw3 = cargar_eeg(RUTA_EDF)
+_mostrar_valores_cq(raw3)
 señal_referencia = raw3._data[raw3.ch_names.index("AF3")].copy()
 for ch in CANALES_EPOC:
     if ch in raw3.ch_names:

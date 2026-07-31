@@ -15,5 +15,6 @@ from eeg_library.artifacts import (
     identificar_componentes_oculares,
     eliminar_artefactos_oculares,
 )
+from eeg_library.epoching import crear_epocas
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

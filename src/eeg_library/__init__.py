@@ -16,5 +16,6 @@ from eeg_library.artifacts import (
     eliminar_artefactos_oculares,
 )
 from eeg_library.epoching import crear_epocas
+from eeg_library.spectral import calcular_psd
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"

@@ -99,10 +99,14 @@ python probar.py
 from eeg_library import cargar_eeg
 
 # Cargar un archivo EDF
-raw = cargar_eeg("data/samples/sujeto_01.edf")
+raw, metadata = cargar_eeg("data/samples/sujeto_01.edf")
 
 # raw es un objeto Raw de MNE con el que se puede seguir trabajando
 print(raw.info)
+
+# metadata incluye trazabilidad del resampleo a 256 Hz si el archivo
+# original se grabó a otra frecuencia (metadata["resampled"], metadata["original_sfreq"])
+print(metadata)
 ```
 
 Salida de ejemplo:

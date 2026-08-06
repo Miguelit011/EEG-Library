@@ -45,7 +45,7 @@ os.makedirs(CARPETA_FIGURAS, exist_ok=True)
 # ---------------------------------------------------------------------------
 _separador("Fases 1-5")
 
-raw = cargar_eeg(RUTA_EDF)
+raw, _ = cargar_eeg(RUTA_EDF)
 raw_rec, _ = recortar_registro(raw)
 raw_filt, _ = aplicar_filtros(raw_rec)
 good_channels, excluidos, _ = evaluar_calidad(raw_filt)

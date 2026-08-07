@@ -22,6 +22,15 @@ resampleo es puramente para que todas las señales compartan el mismo número
 de muestras por segundo antes del epoching (Fase 7) y del Welch (Fase 8),
 no para "recuperar" contenido de alta frecuencia que nunca existió."""
 
+MIN_SFREQ = 128
+"""Frecuencia de muestreo mínima (Hz) aceptada para un registro de origen.
+Por debajo de este umbral se rechaza el archivo en vez de resamplearlo:
+"subir" de, p. ej., 100 Hz a TARGET_SFREQ no añade información real y
+generaría una falsa sensación de calidad uniforme en todo el dataset — el
+resampleo ascendente solo está justificado para el caso conocido y
+documentado de 128 Hz (Nyquist a 64 Hz, muy por encima de la banda 1-30 Hz
+de interés), no como norma general para cualquier frecuencia inferior."""
+
 
 def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     """
@@ -57,7 +66,9 @@ def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     FileNotFoundError
         Si el archivo indicado en ``ruta`` no existe.
     ValueError
-        Si la frecuencia de muestreo final es inferior a TARGET_SFREQ.
+        Si la frecuencia de muestreo original del archivo es inferior a
+        MIN_SFREQ (128 Hz): resamplear al alza desde una calidad tan baja
+        no recupera información real y se rechaza en vez de armonizarse.
     """
 
     if not os.path.isfile(ruta):
@@ -78,13 +89,27 @@ def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     # el punto de entrada, cualquier archivo grabado a una frecuencia
     # distinta de TARGET_SFREQ puede romper esas fases silenciosamente.
     #
+    # Por debajo de MIN_SFREQ se rechaza el archivo en vez de resamplearlo
+    # al alza: a diferencia del caso de 128 Hz (documentado en MIN_SFREQ),
+    # una frecuencia inferior no garantiza el margen de Nyquist necesario
+    # para la banda 1-30 Hz de interés, y "estirar" esos datos a
+    # TARGET_SFREQ generaría una falsa sensación de calidad uniforme sin
+    # aportar información real.
+    original_sfreq = float(raw.info["sfreq"])
+    if original_sfreq < MIN_SFREQ:
+        raise ValueError(
+            f"Frecuencia de muestreo original insuficiente: "
+            f"{original_sfreq:g} Hz. Se requieren al menos {MIN_SFREQ:g} Hz "
+            "para garantizar una calidad mínima; no se resamplea al alza "
+            "por debajo de ese umbral."
+        )
+
     # Solo se resamplea si hace falta, para no reprocesar innecesariamente
     # el ~96 % de archivos que ya están a TARGET_SFREQ. raw.resample()
     # aplica anti-aliasing por FFT internamente (no es una interpolación
     # lineal ingenua); npad="auto" elige el relleno que minimiza artefactos
     # de borde. La transformación es solo en memoria: no se escribe ni
     # modifica ningún .edf en disco.
-    original_sfreq = float(raw.info["sfreq"])
     resampled = original_sfreq != TARGET_SFREQ
     if resampled:
         raw.resample(TARGET_SFREQ, npad="auto", verbose=False)
@@ -122,11 +147,16 @@ def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     # calcula topografías de scalp a partir de estas posiciones).
     raw.set_montage("standard_1020", on_missing="warn", verbose=False)
 
+    # Red de seguridad: tras la armonización anterior, frecuencia_muestreo
+    # debería ser siempre exactamente TARGET_SFREQ. Si no lo es, algo falló
+    # en raw.resample() (o en la comprobación de MIN_SFREQ de más arriba) y
+    # es preferible abortar aquí a propagar un sfreq inconsistente a las
+    # fases posteriores.
     frecuencia_muestreo = raw.info["sfreq"]
     if frecuencia_muestreo < TARGET_SFREQ:
         raise ValueError(
-            f"Frecuencia de muestreo insuficiente: {frecuencia_muestreo} Hz. "
-            f"Se requieren al menos {TARGET_SFREQ} Hz para el análisis de fatiga mental."
+            f"Frecuencia de muestreo final insuficiente tras la armonización: "
+            f"{frecuencia_muestreo} Hz. Se esperaban {TARGET_SFREQ} Hz."
         )
 
     nombre_archivo = os.path.basename(ruta)

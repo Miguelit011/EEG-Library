@@ -14,7 +14,7 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.reader import cargar_eeg, TARGET_SFREQ
+from eeg_library.reader import cargar_eeg, TARGET_SFREQ, MIN_SFREQ
 from eeg_library.quality import CANALES_EPOC
 
 
@@ -88,6 +88,26 @@ def test_archivo_a_128hz_se_resamplea_a_target_sfreq(monkeypatch, archivo_edf):
     assert metadata["resampled"] is True
     assert metadata["original_sfreq"] == sfreq_original
     assert metadata["sfreq"] == TARGET_SFREQ
+
+
+# ---------------------------------------------------------------------------
+# Archivo por debajo de MIN_SFREQ — se rechaza, no se resamplea al alza
+# ---------------------------------------------------------------------------
+
+def test_archivo_por_debajo_de_min_sfreq_lanza_valueerror(monkeypatch, archivo_edf):
+    raw_original = _raw_sintetico(sfreq=MIN_SFREQ - 1, duracion_s=10.0)
+    _mockear_read_raw_edf(monkeypatch, raw_original)
+
+    with pytest.raises(ValueError):
+        cargar_eeg(str(archivo_edf))
+
+
+def test_archivo_muy_por_debajo_de_min_sfreq_lanza_valueerror(monkeypatch, archivo_edf):
+    raw_original = _raw_sintetico(sfreq=100.0, duracion_s=10.0)
+    _mockear_read_raw_edf(monkeypatch, raw_original)
+
+    with pytest.raises(ValueError):
+        cargar_eeg(str(archivo_edf))
 
 
 def test_resampleo_no_escribe_ni_modifica_el_archivo_en_disco(monkeypatch, archivo_edf):

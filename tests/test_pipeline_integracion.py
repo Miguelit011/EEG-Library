@@ -246,7 +246,11 @@ def test_features_solo_contienen_los_14_canales_eeg(monkeypatch, tmp_path):
     assert meta_psd["n_canales"] == len(CANALES_EPOC)
     assert set(spectrum.ch_names) == set(CANALES_EPOC)
 
-    features, meta_bandas = extraer_bandas(spectrum)
+    # canales_validos se pasa siempre que se dispone de él: restringe los
+    # promedios de clúster del índice de fatiga a los canales buenos, sin
+    # alterar las columnas de potencia por canal.
+    features, meta_bandas = extraer_bandas(spectrum, canales_validos=good_channels)
+    assert meta_bandas["cluster_frontal_descartados"] == []
 
     n_esperado = len(CANALES_EPOC) * len(BANDAS_DEFECTO) * 2  # 14 x 4 x 2 = 112
     columnas_potencia = [

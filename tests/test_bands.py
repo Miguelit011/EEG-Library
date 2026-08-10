@@ -180,6 +180,109 @@ def test_bandas_sin_theta_o_alfa_lanza_error():
 
 
 # ---------------------------------------------------------------------------
+# canales_validos: los canales excluidos por evaluar_calidad (Fase 4) no
+# deben entrar en los promedios de clúster del índice de fatiga.
+#
+# Un canal excluido no pasó por CAR (Fase 5) ni por ICA (Fase 6) —ambas operan
+# solo sobre los canales buenos— y suele haberse excluido por amplitud
+# excesiva, así que su potencia de banda domina la media del clúster. Medido
+# sobre 147 archivos reales: el 64 % tiene algún canal de clúster excluido y
+# en ellos el índice se infla por un factor mediano de 1.75 (máximo 47.6).
+# ---------------------------------------------------------------------------
+
+def test_canales_validos_none_mantiene_el_comportamiento_anterior():
+    spectrum = _spectrum_sintetico()
+    features_sin, meta_sin = extraer_bandas(spectrum)
+    features_con, meta_con = extraer_bandas(spectrum, canales_validos=CANALES_14)
+
+    np.testing.assert_allclose(
+        features_sin["indice_fatiga_theta_alfa"].values,
+        features_con["indice_fatiga_theta_alfa"].values,
+        rtol=1e-12,
+    )
+    assert meta_sin["cluster_frontal"] == meta_con["cluster_frontal"]
+    assert meta_sin["cluster_frontal_descartados"] == []
+    assert meta_sin["cluster_posterior_descartados"] == []
+
+
+def test_canales_validos_excluye_del_cluster_los_canales_malos():
+    # AF3 lleva una senoidal de 6 Hz (banda theta) de gran amplitud, como un
+    # canal de mal contacto excluido por amplitud excesiva.
+    spectrum = _spectrum_sintetico(frecuencias=(6.0,), canal_senal="AF3", amplitud=1e-3)
+    buenos = [c for c in CANALES_14 if c != "AF3"]
+
+    features_todos, _ = extraer_bandas(spectrum)
+    features_buenos, metadata = extraer_bandas(spectrum, canales_validos=buenos)
+
+    frontal_bueno = [c for c in CLUSTER_FRONTAL if c != "AF3"]
+    assert metadata["cluster_frontal"] == frontal_bueno
+    assert metadata["cluster_frontal_descartados"] == ["AF3"]
+    assert metadata["cluster_posterior"] == CLUSTER_POSTERIOR
+    assert metadata["cluster_posterior_descartados"] == []
+
+    esperado = sum(features_buenos[f"pot_abs_{c}_theta"] for c in frontal_bueno) / len(frontal_bueno)
+    np.testing.assert_allclose(
+        features_buenos["theta_frontal"].values, esperado.values, rtol=1e-10
+    )
+
+    # El canal contaminado inflaba la media del clúster y con ella el índice.
+    assert (features_todos["theta_frontal"] > features_buenos["theta_frontal"]).all()
+    assert (
+        features_todos["indice_fatiga_theta_alfa"]
+        > features_buenos["indice_fatiga_theta_alfa"]
+    ).all()
+
+
+def test_canales_validos_no_altera_las_columnas_de_potencia_por_canal():
+    """
+    La matriz de features debe conservar las mismas columnas y el mismo orden
+    aunque cambien los canales válidos: el procesamiento por lotes (Fase 11)
+    concatena los DataFrames de todos los archivos y cada uno tiene su propio
+    conjunto de canales excluidos.
+    """
+    spectrum = _spectrum_sintetico()
+    features_todos, meta_todos = extraer_bandas(spectrum)
+    features_buenos, meta_buenos = extraer_bandas(
+        spectrum, canales_validos=[c for c in CANALES_14 if c not in ("AF3", "P8")]
+    )
+
+    assert list(features_todos.columns) == list(features_buenos.columns)
+    assert meta_todos["n_features_banda"] == meta_buenos["n_features_banda"]
+    for canal in CANALES_14:
+        for banda in BANDAS_DEFECTO:
+            np.testing.assert_allclose(
+                features_todos[f"pot_abs_{canal}_{banda}"].values,
+                features_buenos[f"pot_abs_{canal}_{banda}"].values,
+                rtol=1e-12,
+            )
+
+
+def test_cluster_entero_excluido_por_calidad_lanza_error():
+    spectrum = _spectrum_sintetico()
+    buenos = [c for c in CANALES_14 if c not in CLUSTER_FRONTAL]
+
+    with pytest.raises(ValueError, match="excluidos por calidad"):
+        extraer_bandas(spectrum, canales_validos=buenos)
+
+
+def test_error_distingue_cluster_ausente_de_cluster_excluido():
+    """
+    Los dos motivos piden acciones distintas: un clúster ausente del espectro
+    apunta a un montaje o unos picks mal puestos, mientras que uno excluido
+    entero por calidad es un problema de esa grabación concreta.
+    """
+    spectrum_sin_posterior = _spectrum_sintetico(canales=["AF3", "AF4", "F3", "F4"])
+    with pytest.raises(ValueError, match="esta presente"):
+        extraer_bandas(spectrum_sin_posterior)
+
+    spectrum = _spectrum_sintetico()
+    with pytest.raises(ValueError, match="excluidos por calidad"):
+        extraer_bandas(
+            spectrum, canales_validos=[c for c in CANALES_14 if c not in CLUSTER_POSTERIOR]
+        )
+
+
+# ---------------------------------------------------------------------------
 # Metadata de origen (sujeto, condición, sesión) preservada desde la Fase 7-8
 # ---------------------------------------------------------------------------
 
@@ -215,6 +318,7 @@ def test_metadata_contiene_campos_esperados():
     _, metadata = extraer_bandas(spectrum)
     for clave in (
         "metodo", "bandas_hz", "cluster_frontal", "cluster_posterior",
+        "cluster_frontal_descartados", "cluster_posterior_descartados",
         "canales", "resolucion_hz", "n_epocas", "n_canales",
         "n_features_banda", "timestamp",
     ):

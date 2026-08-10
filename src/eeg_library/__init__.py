@@ -19,4 +19,4 @@ from eeg_library.epoching import crear_epocas
 from eeg_library.spectral import calcular_psd
 from eeg_library.bands import extraer_bandas
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"

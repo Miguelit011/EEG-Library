@@ -13,9 +13,43 @@ CANALES_EPOC = [
     "O2", "P8", "T8", "FC6", "F4", "F8", "AF4",
 ]
 
+# Prefijos con los que EmotivPro nombra el canal de calidad de contacto
+# asociado a cada electrodo. La versión del export decide cuál se usa:
+# "CQ_AF3" en el export de 60 canales, "CQ.AF3" en los de 67 y 71. Se
+# aceptan ambos para que la evaluación de calidad no dependa de con qué
+# versión de EmotivPro se grabó el archivo.
+PREFIJOS_CQ = ("CQ_", "CQ.")
+
 # Constante de consistencia para el MAD: bajo distribución normal,
 # 1.4826 * MAD coincide en esperanza con la desviación estándar.
 _MAD_CONSISTENCIA_NORMAL = 1.4826
+
+
+def buscar_canal_cq(canal, nombres):
+    """
+    Devuelve el nombre del canal CQ asociado a `canal`, o None si no existe.
+
+    Prueba los prefijos de `PREFIJOS_CQ` en orden y devuelve el primero
+    presente en `nombres`, de forma que un mismo electrodo se localice tanto
+    si el archivo lo llama "CQ_AF3" como "CQ.AF3".
+
+    Parámetros
+    ----------
+    canal : str
+        Nombre del electrodo EEG (p. ej. "AF3").
+    nombres : list[str]
+        Nombres de canal disponibles en el Raw.
+
+    Devuelve
+    --------
+    str o None
+        Nombre del canal CQ correspondiente, o None si el archivo no lo trae.
+    """
+    for prefijo in PREFIJOS_CQ:
+        nombre_cq = f"{prefijo}{canal}"
+        if nombre_cq in nombres:
+            return nombre_cq
+    return None
 
 
 def evaluar_calidad(raw, umbral_flat=1e-12, umbral_z=3.0):
@@ -42,9 +76,10 @@ def evaluar_calidad(raw, umbral_flat=1e-12, umbral_z=3.0):
       entre canales y se excluye el canal cuyo z-score robusto supera el
       umbral estándar de FASTER (|z| > 3).
 
-    Los criterios 1 y 2 solo se evalúan si existe el canal `CQ_<nombre>` en
-    el Raw. Si no existe, se omiten y solo se aplican los criterios de
-    varianza.
+    Los criterios 1 y 2 solo se evalúan si el Raw trae el canal CQ del
+    electrodo (`CQ_<nombre>` o `CQ.<nombre>`, según la versión del export de
+    EmotivPro — ver `buscar_canal_cq`). Si no existe, se omiten y solo se
+    aplican los criterios de varianza.
 
     Caso degenerado: si la dispersión inter-canal es nula (MAD = 0, p. ej.
     cuando todas las varianzas son idénticas o cuando más de la mitad de los
@@ -107,8 +142,8 @@ def evaluar_calidad(raw, umbral_flat=1e-12, umbral_z=3.0):
         señal = data[idx]
 
         # Métricas de calidad de contacto (CQ)
-        nombre_cq = f"CQ_{canal}"
-        if nombre_cq in nombres:
+        nombre_cq = buscar_canal_cq(canal, nombres)
+        if nombre_cq is not None:
             cq = data[nombres.index(nombre_cq)]
             cq_medio = float(np.mean(cq))
             # Calcula la proporción de tiempo con mala señal (True=1, False=0)

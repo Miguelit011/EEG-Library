@@ -172,3 +172,89 @@ def test_pipeline_completo_elimina_componente_ocular_marcada(monkeypatch):
     raw_limpio, meta_limpieza = eliminar_artefactos_oculares(raw_ref, ica, componentes)
     assert meta_limpieza["n_componentes_eliminadas"] == 1
     assert not np.allclose(raw_limpio.get_data(), raw_ref.get_data())
+
+
+# ---------------------------------------------------------------------------
+# Los canales no-EEG no deben llegar a la matriz de features (Fases 1 -> 9).
+#
+# Regresión del segundo error de integración detectado, hermano del error de
+# orden de arriba: los tests por módulo parten de RawArrays que ya contienen
+# solo los 14 electrodos, así que ninguno detectaba que `cargar_eeg` dejara
+# telemetría y CQ tipados como 'eeg'. Sobre archivos reales del dataset final
+# eso hacía que `extraer_bandas` devolviera 568 columnas de potencia en vez de
+# 112, con features de acelerómetro, batería y calidad de contacto entre las
+# que el Random Forest tendría que elegir.
+#
+# Se salta la Fase 6 (ICA): lo que se comprueba aquí es la propagación del
+# tipado de canales, que no depende de ella.
+# ---------------------------------------------------------------------------
+
+def _raw_export_con_canales_no_eeg(semilla=0):
+    """
+    Raw equivalente a lo que MNE devuelve al leer un EDF del dataset final:
+    los 14 electrodos más canales de calidad de contacto, telemetría y
+    movimiento, todos tipados como 'eeg' (es `cargar_eeg` quien debe
+    reclasificarlos).
+    """
+    rng = np.random.default_rng(semilla)
+    nombres, filas = [], []
+
+    for i, canal in enumerate(CANALES_EPOC):
+        nombres.append(canal)
+        filas.append(rng.normal(0, 5e-6 * (1 + 0.05 * i), N_MUESTRAS))
+
+    for canal in CANALES_EPOC:
+        nombres.append(f"CQ.{canal}")
+        filas.append(np.full(N_MUESTRAS, 4.0))
+
+    for canal in ("TimestampS", "Counter", "Battery", "MOT.AccX", "MOT.MagZ"):
+        nombres.append(canal)
+        filas.append(rng.normal(0, 1.0, N_MUESTRAS))
+
+    info = mne.create_info(nombres, SFREQ, ch_types="eeg")
+    return mne.io.RawArray(np.array(filas), info, verbose=False)
+
+
+def test_features_solo_contienen_los_14_canales_eeg(monkeypatch, tmp_path):
+    from eeg_library.reader import cargar_eeg
+    from eeg_library.epoching import crear_epocas
+    from eeg_library.spectral import calcular_psd
+    from eeg_library.bands import extraer_bandas, BANDAS_DEFECTO
+
+    ruta = tmp_path / "sub-C1F081_ses-M4_task-PASAT_eeg.edf"
+    ruta.write_bytes(b"")
+    raw_mock = _raw_export_con_canales_no_eeg()
+    monkeypatch.setattr(
+        mne.io, "read_raw_edf",
+        lambda ruta, preload=True, verbose=False: raw_mock,
+    )
+
+    raw, meta_carga = cargar_eeg(str(ruta))
+    assert meta_carga["n_canales_eeg"] == len(CANALES_EPOC)
+    assert meta_carga["n_canales"] > len(CANALES_EPOC)
+
+    raw_rec, _ = recortar_registro(raw, inicio=MARGEN_S, fin=MARGEN_S)
+    raw_filt, _ = aplicar_filtros(raw_rec)
+    good_channels, _, _ = evaluar_calidad(raw_filt)
+    raw_ref, _ = aplicar_car(raw_filt, good_channels)
+
+    epochs, _ = crear_epocas(
+        raw_ref, sujeto="C1_F081", condicion="PASAT", sesion="M4",
+        archivo_origen=ruta.name,
+    )
+    spectrum, meta_psd = calcular_psd(epochs)
+    assert meta_psd["n_canales"] == len(CANALES_EPOC)
+    assert set(spectrum.ch_names) == set(CANALES_EPOC)
+
+    features, meta_bandas = extraer_bandas(spectrum)
+
+    n_esperado = len(CANALES_EPOC) * len(BANDAS_DEFECTO) * 2  # 14 x 4 x 2 = 112
+    columnas_potencia = [
+        c for c in features.columns if c.startswith(("pot_abs_", "pot_rel_"))
+    ]
+    assert meta_bandas["n_features_banda"] == n_esperado
+    assert len(columnas_potencia) == n_esperado
+
+    # Ninguna columna puede proceder de un canal que no sea un electrodo.
+    for prefijo in ("CQ.", "MOT.", "Timestamp", "Counter", "Battery"):
+        assert not any(prefijo in c for c in columnas_potencia)

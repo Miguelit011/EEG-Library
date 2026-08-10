@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eeg-library"
-version = "0.7.2"
+version = "0.9.0"
 description = "Librería para el procesamiento de señales EEG del casco Emotiv Epoc X"
 requires-python = ">=3.10"
 dependencies = [
@@ -14,11 +14,17 @@ dependencies = [
     "pandas",
     "mne-icalabel",
     "onnxruntime",
+    # Motor de parquet para las salidas del procesamiento por lotes (Fase 11).
+    "pyarrow",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest",
+    # Escritura de EDF, que usa test_batch.py para generar archivos reales en
+    # vez de mockear la lectura (los workers del lote corren en otros procesos,
+    # donde un monkeypatch del proceso padre no existiría).
+    "edfio",
 ]
 
 [tool.setuptools.packages.find]

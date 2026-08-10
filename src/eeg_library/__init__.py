@@ -18,5 +18,12 @@ from eeg_library.artifacts import (
 from eeg_library.epoching import crear_epocas
 from eeg_library.spectral import calcular_psd
 from eeg_library.bands import extraer_bandas
+from eeg_library.batch import (
+    cargar_tareas,
+    procesar_archivo,
+    procesar_lote,
+    consolidar_features,
+)
+from eeg_library.features import anotar_validez_de_canales, columnas_de_validez
 
-__version__ = "0.7.2"
+__version__ = "0.9.0"

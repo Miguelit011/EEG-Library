@@ -142,8 +142,8 @@ def test_cargar_tareas_deriva_orden_de_sesion_y_split(tmp_path):
 def test_cargar_tareas_deja_orden_nulo_si_no_hay_timestamp(tmp_path):
     """
     Una sesión sin marcas de tiempo tiene orden desconocido, y debe quedar
-    como <NA> en vez de inventarse una posición: es la variable que la Fase 10
-    usa como proxy de tiempo en tarea.
+    como <NA> en vez de inventarse una posición: es la variable que sirve de
+    proxy de tiempo acumulado en tarea.
     """
     manifest, splits = _escribir_metadata(tmp_path, con_timestamps=False)
 
@@ -196,8 +196,8 @@ def test_procesar_archivo_devuelve_features_y_registro(dir_edf):
 def test_procesar_archivo_ventanas_alineadas_con_features(dir_edf):
     """
     La fila i del parquet y la ventana i del .npy tienen que ser la misma
-    época: la CNN y el Random Forest comparten el epocado de la Fase 7 y las
-    etiquetas de la Fase 10 se calculan sobre las features.
+    época: la CNN y el Random Forest comparten el epocado de la Fase 7, y la
+    matriz de la Fase 13 se agrega sobre las features de estas mismas filas.
     """
     ruta = _escribir_edf(dir_edf, "sub-C1F001_ses-M4_task-PASAT_eeg.edf")
 

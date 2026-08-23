@@ -14,7 +14,7 @@ Decisiones de diseño (justificación completa en ESTADO.md, Fase 11):
   validados, más la frecuencia de muestreo y la duración leídas de la
   cabecera EDF real. Parsear el nombre de archivo sería reimplementar peor
   algo que ya está hecho, y dejaría fuera columnas (centro, timestamp) que
-  hacen falta para la Fase 10.
+  hacen falta para el enlace con la etiqueta (Fase 12).
 - **Un proceso por archivo, no hilos.** El coste está dominado por ICA
   (~60 % del tiempo), que es CPU pura y libera el GIL solo parcialmente.
   Los workers reciben rutas y devuelven registros de log; nunca objetos de
@@ -88,7 +88,9 @@ def cargar_tareas(ruta_manifest, dir_edf, ruta_splits=None):
       primera), derivada de `timestamp_iso`. El protocolo tiene orden fijo
       (OC → OA → STROOP → PASAT → PVTB → MSIT → PVSAT), así que esta posición
       es un proxy del tiempo acumulado en tarea **independiente de la señal
-      EEG**, y es la base de la etiqueta de protocolo de la Fase 10.
+      EEG**. La Fase 13 usa su equivalente `condicion_orden`, derivado del
+      nombre de la condición en vez de las marcas de tiempo, que es estable
+      aunque a la sesión le falte alguna grabación.
 
     Parámetros
     ----------
@@ -131,8 +133,8 @@ def cargar_tareas(ruta_manifest, dir_edf, ruta_splits=None):
     # sesión sin marca de tiempo en ninguna de sus 7 grabaciones, y ahí el
     # orden es genuinamente desconocido. Inventarlo (p. ej. ordenando por
     # nombre de condición) metería una posición falsa justo en la variable
-    # que la Fase 10 usa como proxy de tiempo en tarea; es preferible que
-    # esas filas queden como <NA> y se excluyan de la etiqueta de protocolo.
+    # que sirve de proxy de tiempo en tarea; es preferible que esas filas
+    # queden como <NA> y quien las use decida qué hacer con ellas.
     momento = pd.to_datetime(
         tareas["timestamp_iso"], format="ISO8601", utc=True, errors="coerce"
     )

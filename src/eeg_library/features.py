@@ -33,16 +33,16 @@ completo, 4543 grabaciones y 280 339 épocas):
 - Descartar las grabaciones afectadas no era viable: 21 de los 178 sujetos no
   tienen ninguna grabación sin exclusiones.
 
-Advertencia para la Fase 10: la calidad de contacto correlaciona con el
-índice de fatiga (Spearman 0.167; el índice mediano por archivo sube de 1.14
-con 0 canales excluidos a 1.88 con 5). Esa correlación **sobrevive** a la
-restricción de clústeres a canales buenos de la Fase 9, así que no es el
+Advertencia al interpretar el índice de fatiga: la calidad de contacto
+correlaciona con él (Spearman 0.167; el índice mediano por archivo sube de
+1.14 con 0 canales excluidos a 1.88 con 5). Esa correlación **sobrevive** a
+la restricción de clústeres a canales buenos de la Fase 9, así que no es el
 mismo problema: apunta a que en una grabación con mal contacto general
-también los canales que sobreviven son más ruidosos. Es un confundido a tener
-en cuenta al construir la etiqueta, no algo que resuelva esta máscara. En
-cambio **no** hay relación con la posición en el protocolo (Spearman 0.048,
-plana de la posición 1 a la 7), así que la etiqueta de protocolo de la Fase
-10 no queda contaminada por este efecto.
+también los canales que sobreviven son más ruidosos. Es un confundido a
+tener en cuenta al leer cualquier resultado sobre el índice, no algo que
+resuelva esta máscara. En cambio **no** hay relación con la posición en el
+protocolo (Spearman 0.048, plana de la posición 1 a la 7), así que
+`condicion_orden` (Fase 13) no queda contaminada por este efecto.
 """
 
 import pandas as pd

@@ -4,9 +4,17 @@ Módulo de extracción de potencia por banda EEG (Fase 9).
 Reduce el espectro por canal y por época generado en la Fase 8
 (`calcular_psd`) a potencia por banda de frecuencia — por canal individual,
 sin promediar por región — y calcula el índice de fatiga theta/alfa a
-partir de dos clústeres de canales fijos. No decide el etiquetado de
-fatiga (baja/media/alta) ni construye la matriz de features final del
-Random Forest — eso es responsabilidad de la Fase 10.
+partir de dos clústeres de canales fijos. No agrega por región ni construye
+la matriz de features del Random Forest — eso es la Fase 13 (`matrix.py`).
+
+Sobre el índice theta/alfa: se calcula porque es el biomarcador de fatiga
+mental de referencia en la literatura y el TFG tiene que reportarlo, **no
+porque sea la etiqueta**. La etiqueta es el VAS de fatiga percibida
+(Fase 12). Medido sobre las 653 sesiones etiquetadas, la correlación del
+índice con el VAS dentro de una misma persona es de +0.004 (p = 0.93): el
+índice no sigue a la fatiga autopercibida en esta cohorte. Ese resultado
+negativo es un hallazgo del trabajo, y solo se puede reportar si el índice
+se sigue calculando.
 
 Justificación científica (breve; referencias completas en ESTADO.md):
 - Bandas: delta (1-4 Hz), theta (4-8 Hz), alfa (8-13 Hz) y beta (13-30 Hz).

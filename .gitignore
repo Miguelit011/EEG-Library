@@ -140,6 +140,7 @@ cython_debug/
 
 # Visual Studio Code
 .vscode/
+*.code-workspace
 
 # Ruff stuff:
 .ruff_cache/

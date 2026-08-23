@@ -25,5 +25,18 @@ from eeg_library.batch import (
     consolidar_features,
 )
 from eeg_library.features import anotar_validez_de_canales, columnas_de_validez
+from eeg_library.labels import (
+    construir_etiquetas,
+    corregir_manifest,
+    expandir_a_grabaciones,
+    normalizar_vas,
+    unir_etiquetas,
+)
+from eeg_library.matrix import (
+    agregar_por_region,
+    columnas_de_features,
+    construir_matriz_rf,
+    REGIONES,
+)
 
-__version__ = "0.9.0"
+__version__ = "0.11.0"

@@ -197,6 +197,9 @@ data/
 
 # Documentación interna (no subir al repo)
 ESTADO.md
+MODELADO.md
+MEMORIA_modelado_RF.md
+BITACORA_modelado_RF.md
 
 # Salidas del proyecto
 figures/

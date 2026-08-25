@@ -38,5 +38,19 @@ from eeg_library.matrix import (
     construir_matriz_rf,
     REGIONES,
 )
+from eeg_library.modeling import (
+    a_clases,
+    agregar_a_sesion,
+    centrar_por_persona_loo,
+    columnas_de_features_sesion,
+    cortes_terciles,
+    lineas_base,
+    medias_loo_por_grupo,
+    metricas,
+    metricas_clasificacion,
+    metricas_clasificacion_por_pliegue,
+    predecir_clases_cv_agrupada,
+    predecir_cv_agrupada,
+)
 
-__version__ = "0.11.0"
+__version__ = "0.13.0"

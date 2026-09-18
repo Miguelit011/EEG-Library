@@ -80,6 +80,41 @@ Tarea A, Tarea B y el subconjunto de variables `_rel_sd`.
 - **Salida:** `<EEG_DATA>/processed/fase14b_clases.json`
 - **Duración:** ~6 min
 
+### `analisis_regresion_lineal.py` — VAS ~ índice theta/alfa
+
+```bash
+python analisis/analisis_regresion_lineal.py
+```
+
+Regresión lineal simple entre el VAS y el biomarcador de referencia de la
+literatura, con su gráfica. No entrena ningún modelo: es el análisis descriptivo
+de la Fase 9 que la memoria tiene que reportar. Siete secciones: datos, líneas
+base, regresión, comprobaciones de forma (log₁₀ y recorte de colas), regresión
+intrapersona, figuras y veredicto frente al óptimo declarado *antes* de ejecutar.
+
+- **Salida:** `<EEG_DATA>/processed/regresion_lineal.json`,
+  `figures/regresion_vas_theta_alfa*.png`
+- **Duración:** ~20 s
+- **Documentado en:** `REGRESION_LINEAL.md`
+
+### `analisis_pca_clustering.py` — PCA + clustering de los grupos extremos
+
+```bash
+python analisis/analisis_pca_clustering.py
+```
+
+Exploratorio **no supervisado**: ¿se separan solas las grabaciones de sesiones
+con mucha fatiga (VAS ≥ 80) de las de poca (VAS ≤ 20) en el espacio de features?
+Trabaja **por grabación**, centrando cada feature por su condición para que la
+tarea no domine el clustering. Siete secciones: datos, confusión entre identidad
+y grupo, análisis principal, referencia sin ajustar, robustez en reposo, figuras
+y resumen.
+
+- **Salida:** `<EEG_DATA>/processed/pca_clustering.json`,
+  `figures/pca_clustering_vas_extremos*.png`
+- **Duración:** ~40 s
+- **Documentado en:** `MODELADO.md`, Fase 16
+
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
 ---

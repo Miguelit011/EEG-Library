@@ -20,7 +20,7 @@ import pandas as pd
 import pytest
 import mne
 
-from eeg_library.batch import (
+from eeg_library.procesado.batch import (
     ErrorDeFase,
     cargar_tareas,
     procesar_archivo,
@@ -29,7 +29,7 @@ from eeg_library.batch import (
     NOMBRE_LOG,
     NOMBRE_RESUMEN,
 )
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 SFREQ = 256
 

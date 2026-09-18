@@ -47,7 +47,7 @@ protocolo (Spearman 0.048, plana de la posición 1 a la 7), así que
 
 import pandas as pd
 
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 PREFIJO_VALIDEZ = "canal_valido_"
 COLUMNA_N_BUENOS = "n_canales_buenos"

@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.referencing import aplicar_car
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.referencing import aplicar_car
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 SFREQ = 256
 N_MUESTRAS = SFREQ * 10

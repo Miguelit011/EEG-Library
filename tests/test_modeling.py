@@ -23,7 +23,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GroupKFold, KFold
 
-from eeg_library.modeling import (
+from eeg_library.modelado.modeling import (
     COLUMNA_ETIQUETA,
     COLUMNA_GRUPO,
     a_clases,

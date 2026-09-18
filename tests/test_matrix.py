@@ -14,8 +14,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from eeg_library.bands import BANDAS_DEFECTO
-from eeg_library.matrix import (
+from eeg_library.procesado.bands import BANDAS_DEFECTO
+from eeg_library.procesado.matrix import (
     COLUMNAS_IDENTIDAD,
     ORDEN_PROTOCOLO,
     REGIONES,
@@ -23,7 +23,7 @@ from eeg_library.matrix import (
     columnas_de_features,
     construir_matriz_rf,
 )
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 
 def _features(archivos_condiciones, n_epocas=4, validos=None, semilla=0):

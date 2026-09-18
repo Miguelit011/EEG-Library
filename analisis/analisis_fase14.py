@@ -33,7 +33,7 @@ from sklearn.model_selection import GroupKFold, StratifiedKFold, cross_val_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-from eeg_library.modeling import (
+from eeg_library.modelado.modeling import (
     COLUMNA_ETIQUETA,
     COLUMNA_GRUPO,
     agregar_a_sesion,

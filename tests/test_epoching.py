@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.epoching import crear_epocas
+from eeg_library.procesado.epoching import crear_epocas
 
 SFREQ = 256
 CANALES = ["AF3", "F7", "F3", "FC5"]

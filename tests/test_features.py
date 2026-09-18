@@ -6,13 +6,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from eeg_library.features import (
+from eeg_library.procesado.features import (
     anotar_validez_de_canales,
     columnas_de_validez,
     PREFIJO_VALIDEZ,
     COLUMNA_N_BUENOS,
 )
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 
 def _features(archivos_y_epocas):

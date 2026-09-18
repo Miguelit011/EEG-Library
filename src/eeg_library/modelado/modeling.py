@@ -50,7 +50,7 @@ from scipy import stats
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.model_selection import GroupKFold
 
-from eeg_library.matrix import COLUMNAS_IDENTIDAD, columnas_de_features
+from eeg_library.procesado.matrix import COLUMNAS_IDENTIDAD, columnas_de_features
 
 COLUMNA_GRUPO = "persona_uid"
 COLUMNA_SESION = "sesion_uid"

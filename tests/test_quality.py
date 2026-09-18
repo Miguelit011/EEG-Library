@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.quality import evaluar_calidad, CANALES_EPOC
+from eeg_library.preprocesado.quality import evaluar_calidad, CANALES_EPOC
 
 # Frecuencia de muestreo y duración usada en todos los tests
 SFREQ = 256

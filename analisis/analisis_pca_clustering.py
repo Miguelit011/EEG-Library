@@ -44,7 +44,7 @@ from sklearn.metrics import (
 )
 from sklearn.preprocessing import StandardScaler
 
-from eeg_library.matrix import COLUMNA_ETIQUETA, columnas_de_features
+from eeg_library.procesado.matrix import COLUMNA_ETIQUETA, columnas_de_features
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")

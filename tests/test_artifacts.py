@@ -15,8 +15,8 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library import artifacts
-from eeg_library.artifacts import (
+from eeg_library.preprocesado import artifacts
+from eeg_library.preprocesado.artifacts import (
     entrenar_ica,
     identificar_componentes_oculares,
     eliminar_artefactos_oculares,

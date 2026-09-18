@@ -14,8 +14,8 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.reader import cargar_eeg, TARGET_SFREQ, MIN_SFREQ
-from eeg_library.quality import CANALES_EPOC, evaluar_calidad
+from eeg_library.preprocesado.reader import cargar_eeg, TARGET_SFREQ, MIN_SFREQ
+from eeg_library.preprocesado.quality import CANALES_EPOC, evaluar_calidad
 
 # ---------------------------------------------------------------------------
 # Esquemas de nombres de canal de EmotivPro

@@ -6,8 +6,8 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.filtering import aplicar_filtros, recortar_registro
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.filtering import aplicar_filtros, recortar_registro
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 SFREQ = 256
 DURACION_S = 20                 # segundos — suficiente para un FIR a 1 Hz

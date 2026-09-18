@@ -7,8 +7,8 @@ import pytest
 import mne
 import pandas as pd
 
-from eeg_library.spectral import calcular_psd
-from eeg_library.bands import (
+from eeg_library.procesado.spectral import calcular_psd
+from eeg_library.procesado.bands import (
     extraer_bandas,
     BANDAS_DEFECTO,
     CLUSTER_FRONTAL,

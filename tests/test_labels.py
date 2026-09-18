@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from eeg_library.labels import (
+from eeg_library.procesado.labels import (
     CORRECCIONES_MANIFEST,
     CORRECCIONES_VAS,
     construir_etiquetas,

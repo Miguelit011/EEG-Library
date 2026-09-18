@@ -21,11 +21,11 @@ import numpy as np
 import pytest
 import mne
 
-from eeg_library.filtering import recortar_registro, aplicar_filtros
-from eeg_library.quality import evaluar_calidad, CANALES_EPOC
-from eeg_library.referencing import aplicar_car
-from eeg_library import artifacts
-from eeg_library.artifacts import (
+from eeg_library.preprocesado.filtering import recortar_registro, aplicar_filtros
+from eeg_library.preprocesado.quality import evaluar_calidad, CANALES_EPOC
+from eeg_library.preprocesado.referencing import aplicar_car
+from eeg_library.preprocesado import artifacts
+from eeg_library.preprocesado.artifacts import (
     entrenar_ica,
     identificar_componentes_oculares,
     eliminar_artefactos_oculares,
@@ -216,10 +216,10 @@ def _raw_export_con_canales_no_eeg(semilla=0):
 
 
 def test_features_solo_contienen_los_14_canales_eeg(monkeypatch, tmp_path):
-    from eeg_library.reader import cargar_eeg
-    from eeg_library.epoching import crear_epocas
-    from eeg_library.spectral import calcular_psd
-    from eeg_library.bands import extraer_bandas, BANDAS_DEFECTO
+    from eeg_library.preprocesado.reader import cargar_eeg
+    from eeg_library.procesado.epoching import crear_epocas
+    from eeg_library.procesado.spectral import calcular_psd
+    from eeg_library.procesado.bands import extraer_bandas, BANDAS_DEFECTO
 
     ruta = tmp_path / "sub-C1F081_ses-M4_task-PASAT_eeg.edf"
     ruta.write_bytes(b"")

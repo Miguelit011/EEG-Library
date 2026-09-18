@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from eeg_library.modeling import (
+from eeg_library.modelado.modeling import (
     COLUMNA_ETIQUETA,
     COLUMNA_GRUPO,
     agregar_a_sesion,

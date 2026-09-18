@@ -7,7 +7,7 @@ import pytest
 import mne
 import pandas as pd
 
-from eeg_library.spectral import calcular_psd
+from eeg_library.procesado.spectral import calcular_psd
 
 SFREQ = 256
 CANALES = ["AF3", "F7", "F3", "FC5"]

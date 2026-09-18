@@ -9,7 +9,7 @@ import datetime
 
 import numpy as np
 
-from eeg_library.quality import CANALES_EPOC
+from eeg_library.preprocesado.quality import CANALES_EPOC
 
 
 def aplicar_car(raw, good_channels):

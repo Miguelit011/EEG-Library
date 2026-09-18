@@ -10,7 +10,7 @@ script comprueba si es el caso — sobre `train` + `val` únicamente.
 Si la respuesta es que no aporta, la clasificación **no entra** en el paquete
 de test: cada análisis extra sobre el test sube el listón de todos los demás.
 
-Reglas metodológicas que hereda del arnés (`eeg_library.modeling`):
+Reglas metodológicas que hereda del arnés (`eeg_library.modelado.modeling`):
   - la unidad es la sesión, no la grabación ni la ventana;
   - la partición es por `persona_uid`, nunca por sesión;
   - los cortes de los tercios se estiman DENTRO de cada pliegue de
@@ -41,7 +41,7 @@ import pandas as pd
 from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
-from eeg_library.modeling import (
+from eeg_library.modelado.modeling import (
     COLUMNA_ETIQUETA,
     COLUMNA_GRUPO,
     NOMBRES_CLASES,

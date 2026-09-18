@@ -126,8 +126,10 @@ Canales (14)  : ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', '
 EEG-Library/
 ├── src/
 │   └── eeg_library/
-│       ├── __init__.py     # Punto de entrada del paquete
-│       └── reader.py       # Carga y validación de archivos EDF
+│       ├── __init__.py      # Punto de entrada del paquete (re-exporta todo)
+│       ├── preprocesado/    # Fases 1-6: EDF crudo -> señal limpia
+│       ├── procesado/       # Fases 7-13: señal limpia -> matriz de features
+│       └── modelado/        # Fase 14 en adelante: evaluación / modelos
 ├── tests/                  # Tests automatizados con pytest
 ├── data/
 │   └── samples/            # Archivos EDF de prueba (no se suben al repo)

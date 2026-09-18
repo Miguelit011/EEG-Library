@@ -196,16 +196,16 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         Si falla cualquier fase, envolviendo la excepción original y
         anotando en cuál ocurrió.
     """
-    from eeg_library.reader import cargar_eeg
-    from eeg_library.filtering import recortar_registro, aplicar_filtros
-    from eeg_library.quality import evaluar_calidad
-    from eeg_library.referencing import aplicar_car
-    from eeg_library.artifacts import (
+    from eeg_library.preprocesado.reader import cargar_eeg
+    from eeg_library.preprocesado.filtering import recortar_registro, aplicar_filtros
+    from eeg_library.preprocesado.quality import evaluar_calidad
+    from eeg_library.preprocesado.referencing import aplicar_car
+    from eeg_library.preprocesado.artifacts import (
         entrenar_ica, identificar_componentes_oculares, eliminar_artefactos_oculares,
     )
-    from eeg_library.epoching import crear_epocas
-    from eeg_library.spectral import calcular_psd
-    from eeg_library.bands import extraer_bandas
+    from eeg_library.procesado.epoching import crear_epocas
+    from eeg_library.procesado.spectral import calcular_psd
+    from eeg_library.procesado.bands import extraer_bandas
 
     extras = extras or {}
     archivo = os.path.basename(ruta)

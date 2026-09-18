@@ -46,8 +46,8 @@ Decisiones de diseño (justificación completa en ESTADO.md, Fase 13):
 import numpy as np
 import pandas as pd
 
-from eeg_library.bands import BANDAS_DEFECTO
-from eeg_library.features import COLUMNA_N_BUENOS, PREFIJO_VALIDEZ
+from eeg_library.procesado.bands import BANDAS_DEFECTO
+from eeg_library.procesado.features import COLUMNA_N_BUENOS, PREFIJO_VALIDEZ
 
 # Regiones sobre los 14 electrodos del Epoc X. Las dos primeras son los
 # clústeres que la Fase 9 ya usa para el índice theta/alfa; las otras dos

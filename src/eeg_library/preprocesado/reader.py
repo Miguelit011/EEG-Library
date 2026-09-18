@@ -11,7 +11,7 @@ import os
 import mne
 import numpy as np
 
-from eeg_library.quality import CANALES_EPOC, buscar_canal_cq
+from eeg_library.preprocesado.quality import CANALES_EPOC, buscar_canal_cq
 
 TARGET_SFREQ = 256
 """Frecuencia de muestreo objetivo (Hz) a la que se armoniza todo el

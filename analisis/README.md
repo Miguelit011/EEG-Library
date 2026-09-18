@@ -122,7 +122,7 @@ Son independientes entre sí y pueden ejecutarse en cualquier orden.
 ## Garantías metodológicas
 
 Ambos guiones respetan los invariantes definidos y verificados en
-`src/eeg_library/modeling.py` (40 pruebas en `tests/test_modeling.py`):
+`src/eeg_library/modelado/modeling.py` (40 pruebas en `tests/test_modeling.py`):
 
 - La unidad de evaluación es la **sesión**, no la grabación ni la ventana:
   hay 653 etiquetas independientes, no 274 718.

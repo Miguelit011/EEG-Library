@@ -98,8 +98,8 @@ python probar.py
 ```python
 from eeg_library import cargar_eeg
 
-# Cargar un archivo EDF
-raw, metadata = cargar_eeg("data/samples/sujeto_01.edf")
+# Cargar un archivo EDF (dataset fuera del repo, ver "Ubicación del dataset" en CLAUDE.md)
+raw, metadata = cargar_eeg(r"C:\EEG-Data\dataset_final\sub-C1F081_ses-M2_task-MSIT_eeg.edf")
 
 # raw es un objeto Raw de MNE con el que se puede seguir trabajando
 print(raw.info)
@@ -112,7 +112,7 @@ print(metadata)
 Salida de ejemplo:
 
 ```
-Archivo       : sujeto_01.edf
+Archivo       : sub-C1F081_ses-M2_task-MSIT_eeg.edf
 Frec. muestreo: 256.0 Hz
 Duración      : 300.00 s
 Canales (14)  : ['AF3', 'F7', 'F3', 'FC5', 'T7', 'P7', 'O1', 'O2', 'P8', 'T8', 'FC6', 'F4', 'F8', 'AF4']
@@ -131,8 +131,6 @@ EEG-Library/
 │       ├── procesado/       # Fases 7-13: señal limpia -> matriz de features
 │       └── modelado/        # Fase 14 en adelante: evaluación / modelos
 ├── tests/                  # Tests automatizados con pytest
-├── data/
-│   └── samples/            # Archivos EDF de prueba (no se suben al repo)
 ├── pyproject.toml          # Configuración del proyecto y dependencias
 └── README.md
 ```

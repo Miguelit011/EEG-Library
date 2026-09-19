@@ -344,6 +344,20 @@ def test_columnas_de_features_sesion_excluye_identidad_y_etiqueta():
     assert "frontal_alfa_rel_sd" in features
 
 
+def test_columnas_de_features_sesion_conserva_n_grabaciones():
+    """
+    `n_grabaciones` es la 77.ª feature de las Fases 14 y 14b. Si este test falla,
+    alguien la ha excluido: las cifras de MODELADO.md dejan de corresponder al
+    código, y hay que reejecutar los análisis y actualizar la documentación.
+    """
+    matriz = _matriz([
+        {"sesion_uid": "S1", "persona_uid": "P1", "vas": 40.0},
+        {"sesion_uid": "S2", "persona_uid": "P1", "vas": 60.0},
+    ])
+    ses = agregar_a_sesion(matriz)
+    assert "n_grabaciones" in columnas_de_features_sesion(ses)
+
+
 # --------------------------------------------------------------------------
 # lineas_base y metricas
 # --------------------------------------------------------------------------

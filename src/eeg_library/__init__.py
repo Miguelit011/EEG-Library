@@ -57,5 +57,11 @@ from eeg_library.modelado.modeling import (
     predecir_clases_cv_agrupada,
     predecir_cv_agrupada,
 )
+from eeg_library.modelado.reposo import (
+    columnas_de_features_reposo,
+    evaluar_reposo,
+    metricas_binarias,
+    preparar_reposo,
+)
 
 __version__ = "0.13.0"

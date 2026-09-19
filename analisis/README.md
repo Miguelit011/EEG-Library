@@ -115,6 +115,32 @@ y resumen.
 - **Duración:** ~40 s
 - **Documentado en:** `MODELADO.md`, Fase 16
 
+### `analisis_oa_oc.py` — Ojos abiertos frente a ojos cerrados
+
+```bash
+python analisis/analisis_oa_oc.py
+```
+
+Control positivo del pipeline: ¿conservan las features de la Fase 13 el efecto
+Berger? Clasificación binaria OA/OC por **grabación** (la condición es una
+propiedad de cada registro, no de la sesión) sobre las 1072 grabaciones de reposo
+de train + val, con validación cruzada agrupada por `persona_uid`. Compara
+regresión logística y Random Forest contra dos baselines triviales y una
+referencia de una sola variable, y comprueba si lo que pesa en el modelo es
+neurofisiológicamente coherente (alfa posterior). Diez secciones: datos,
+baselines, regresión logística, Random Forest, referencia de una variable,
+coherencia neurofisiológica, controles y sensibilidad, resolución por canal,
+figuras y resumen.
+
+- **Salida:** `<EEG_DATA>/processed/oa_oc.json`, `figures/oa_oc_*.png`
+- **Duración:** ~7.5 min
+- **Requiere además** (solo el suplemento por canal):
+  `<EEG_DATA>/processed/matriz_modelado.parquet` y
+  `<EEG_DATA>/metadata/labels_grabaciones.csv`
+- **Verificado en:** `tests/test_reposo.py` (78 pruebas sobre
+  `src/eeg_library/modelado/reposo.py`)
+- **Documentado en:** `ANALISIS_OA_OC.md` y `MODELADO.md`, Fase 17
+
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
 ---
@@ -122,7 +148,7 @@ Son independientes entre sí y pueden ejecutarse en cualquier orden.
 ## Garantías metodológicas
 
 Ambos guiones respetan los invariantes definidos y verificados en
-`src/eeg_library/modelado/modeling.py` (40 pruebas en `tests/test_modeling.py`):
+`src/eeg_library/modelado/modeling.py` (41 pruebas en `tests/test_modeling.py`):
 
 - La unidad de evaluación es la **sesión**, no la grabación ni la ventana:
   hay 653 etiquetas independientes, no 274 718.

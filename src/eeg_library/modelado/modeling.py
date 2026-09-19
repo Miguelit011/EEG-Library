@@ -75,8 +75,10 @@ def columnas_de_features_sesion(sesiones):
     """
     Definición de X a nivel de sesión, análoga a `columnas_de_features`.
 
-    Excluye la identidad, la etiqueta, las columnas no agregables y las
-    auxiliares que añade `agregar_a_sesion`.
+    Excluye la identidad, la etiqueta y las columnas no agregables. **Conserva
+    `n_grabaciones`** (nº de grabaciones de la sesión, 1-7): es la 77.ª feature
+    con la que se generaron las cifras de las Fases 14 y 14b, y excluirla las
+    cambiaría (ver MODELADO.md, Fase 14).
     """
     excluidas = (set(COLUMNAS_IDENTIDAD) | {COLUMNA_ETIQUETA, COLUMNA_SESION}
                  | set(COLUMNAS_NO_AGREGABLES))

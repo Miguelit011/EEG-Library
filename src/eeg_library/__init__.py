@@ -63,5 +63,11 @@ from eeg_library.modelado.reposo import (
     metricas_binarias,
     preparar_reposo,
 )
+from eeg_library.modelado.reposo_tarea import (
+    columnas_de_features_tarea,
+    desglose_por_condicion,
+    etiqueta_tarea,
+    preparar_reposo_tarea,
+)
 
 __version__ = "0.13.0"

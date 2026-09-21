@@ -141,6 +141,36 @@ figuras y resumen.
   `src/eeg_library/modelado/reposo.py`)
 - **Documentado en:** `ANALISIS_OA_OC.md` y `MODELADO.md`, Fase 17
 
+### `analisis_reposo_tarea.py` — Reposo frente a tarea ejecutiva
+
+```bash
+python analisis/analisis_reposo_tarea.py
+```
+
+Clasificación binaria de las grabaciones de reposo (OA y OC) frente a las de tarea
+ejecutiva (STROOP, PASAT, PVTB, MSIT, PVSAT): ¿conservan las features de la Fase 13
+una señal de carga cognitiva? Por **grabación** sobre las 3728 de train + val, con
+validación cruzada agrupada por `persona_uid` y las clases desbalanceadas (2.48 : 1)
+tratadas con `class_weight="balanced"` y la exactitud balanceada como métrica
+principal. Reutiliza el módulo y las exclusiones de X del análisis OA/OC. Compara
+regresión logística y Random Forest contra dos baselines triviales y una referencia
+de una sola variable (theta frontal), comprueba la coherencia neurofisiológica (theta
+frontal hacia tarea, alfa posterior hacia reposo), desglosa los errores por condición
+original y mide dos amenazas que el diseño no puede eliminar: OC dentro del reposo y
+el orden fijo del protocolo. Once secciones: datos, baselines, regresión logística,
+Random Forest, referencia de una variable, coherencia neurofisiológica, errores por
+condición, controles y sensibilidad, resolución por canal, figuras y resumen.
+
+- **Salida:** `<EEG_DATA>/processed/reposo_tarea.json`, `figures/reposo_tarea_*.png`
+- **Duración:** ~15 min. `--rapido` ejecuta el mismo código con parámetros mínimos
+  (~40 s) y escribe en un directorio temporal: **sus cifras no son resultados**
+- **Requiere además** (solo el suplemento por canal):
+  `<EEG_DATA>/processed/matriz_modelado.parquet` y
+  `<EEG_DATA>/metadata/labels_grabaciones.csv`
+- **Verificado en:** `tests/test_reposo_tarea.py` (73 pruebas sobre
+  `src/eeg_library/modelado/reposo_tarea.py`)
+- **Documentado en:** `ANALISIS_REPOSO_TAREA.md` y `MODELADO.md`, Fase 18
+
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
 ---

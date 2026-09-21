@@ -9,4 +9,9 @@ MODELADO.md.
 `reposo` es el control positivo del pipeline: clasificación binaria de ojos
 abiertos (OA) frente a ojos cerrados (OC), sin relación con el VAS. Detalle en
 ANALISIS_OA_OC.md.
+
+`reposo_tarea` es el contraste siguiente: reposo (OA u OC) frente a tarea
+ejecutiva, un efecto de carga cognitiva. Reutiliza la evaluación de `reposo` y
+añade el manejo del desbalance de clases y el desglose de errores por
+condición. Detalle en ANALISIS_REPOSO_TAREA.md.
 """

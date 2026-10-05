@@ -69,5 +69,11 @@ from eeg_library.modelado.reposo_tarea import (
     etiqueta_tarea,
     preparar_reposo_tarea,
 )
+from eeg_library.modelado.tareas_ejecutivas import (
+    columnas_de_features_ejecutivas,
+    confusion_por_pares,
+    etiqueta_multiclase,
+    preparar_tareas_ejecutivas,
+)
 
 __version__ = "0.13.0"

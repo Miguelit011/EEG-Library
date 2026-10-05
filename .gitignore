@@ -162,6 +162,7 @@ __marimo__/
 
 # Claude Code
 CLAUDE.md
+.claude/settings.local.json
 
 # Sistema operativo
 Thumbs.db

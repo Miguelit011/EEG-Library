@@ -171,13 +171,49 @@ condición, controles y sensibilidad, resolución por canal, figuras y resumen.
   `src/eeg_library/modelado/reposo_tarea.py`)
 - **Documentado en:** `ANALISIS_REPOSO_TAREA.md` y `MODELADO.md`, Fase 18
 
+### `analisis_tareas_ejecutivas.py` — Las cinco tareas ejecutivas entre sí
+
+```bash
+python analisis/analisis_tareas_ejecutivas.py
+```
+
+Clasificación multiclase (5 clases) de las tareas ejecutivas del protocolo
+(STROOP, PASAT, PVTB, MSIT, PVSAT; OA y OC quedan fuera): ¿distinguen las
+features de la Fase 13 entre tareas, y qué tareas se confunden entre sí? Por
+**grabación** sobre las 2656 de train + val, casi perfectamente equilibradas
+entre clases (azar = 0.200), con validación cruzada agrupada por
+`persona_uid`. Reutiliza el módulo y las exclusiones de X de OA/OC y
+reposo/tarea. Compara regresión logística multinomial y Random Forest contra
+tres baselines triviales, comprueba 5 criterios de coherencia neurofisiológica
+declarados antes de ejecutar (incluida la dirección del efecto por clase con
+coeficientes multinomiales), analiza qué pares de tareas se confunden y si es
+por parecido cognitivo, distancia en el protocolo o duración de la grabación
+(con un suplemento de 10 clasificadores binarios uno-contra-uno), y audita
+ese último confusor directamente: los 6 contadores de procesamiento, solos,
+igualan al modelo espectral completo. Once secciones: datos, baselines,
+regresión logística, Random Forest, métricas por clase y matriz de confusión,
+coherencia neurofisiológica, qué tareas se confunden, controles y
+sensibilidad, resolución por canal, figuras y resumen.
+
+- **Salida:** `<EEG_DATA>/processed/tareas_ejecutivas.json`,
+  `figures/tareas_ejecutivas_*.png`
+- **Duración:** ~26 min. `--rapido` ejecuta el mismo código con parámetros
+  mínimos (~1 min) y escribe en un directorio temporal: **sus cifras de
+  bootstrap/permutación no son resultados**
+- **Requiere además** (solo el suplemento por canal):
+  `<EEG_DATA>/processed/matriz_modelado.parquet` y
+  `<EEG_DATA>/metadata/labels_grabaciones.csv`
+- **Verificado en:** `tests/test_tareas_ejecutivas.py` (77 pruebas sobre
+  `src/eeg_library/modelado/tareas_ejecutivas.py`)
+- **Documentado en:** `ANALISIS_TAREAS_EJECUTIVAS.md` y `MODELADO.md`, Fase 19
+
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
 ---
 
 ## Garantías metodológicas
 
-Ambos guiones respetan los invariantes definidos y verificados en
+Estos guiones respetan los invariantes definidos y verificados en
 `src/eeg_library/modelado/modeling.py` (41 pruebas en `tests/test_modeling.py`):
 
 - La unidad de evaluación es la **sesión**, no la grabación ni la ventana:
@@ -193,7 +229,7 @@ Ambos guiones respetan los invariantes definidos y verificados en
 
 > ### El conjunto de test
 >
-> **Ninguno de estos guiones toca el conjunto de test.** Ambos lo apartan
+> **Ninguno de estos guiones toca el conjunto de test.** Todos lo apartan
 > explícitamente en su primer paso y operan solo sobre `train` + `val`.
 >
 > El test (106 sesiones, 28 participantes) se reserva para un único análisis

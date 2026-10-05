@@ -39,7 +39,7 @@ def _raw_sintetico(canales=None, semilla=0, sfreq=SFREQ, n_muestras=N_MUESTRAS):
     data = rng.normal(0, 3e-6, (len(canales), n_muestras))
     info = mne.create_info(canales, sfreq, ch_types="eeg")
     raw = mne.io.RawArray(data, info, verbose=False)
-    raw.set_montage("standard_1020", on_missing="warn", verbose=False)
+    raw.set_montage("colin27_1020", on_missing="warn", verbose=False)
     raw.filter(l_freq=1.0, h_freq=30.0, verbose=False)
     raw.set_eeg_reference("average", verbose=False)
     return raw

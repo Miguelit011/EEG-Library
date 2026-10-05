@@ -195,7 +195,10 @@ def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     # los canales no-EEG no tienen posición estándar y se omiten con
     # on_missing="warn" (aviso, no error). Necesario para la Fase 6 (ICLabel
     # calcula topografías de scalp a partir de estas posiciones).
-    raw.set_montage("standard_1020", on_missing="warn", verbose=False)
+    # "colin27_1020" es el nombre que MNE 1.13 da al antiguo "standard_1020"
+    # (que deja de existir en MNE 1.14); las posiciones son idénticas, así que
+    # los datos procesados con el nombre anterior no cambian.
+    raw.set_montage("colin27_1020", on_missing="warn", verbose=False)
 
     # Red de seguridad: tras la armonización anterior, frecuencia_muestreo
     # debería ser siempre exactamente TARGET_SFREQ. Si no lo es, algo falló

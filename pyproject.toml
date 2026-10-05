@@ -8,7 +8,9 @@ version = "0.13.0"
 description = "Librería para el procesamiento de señales EEG del casco Emotiv Epoc X"
 requires-python = ">=3.10"
 dependencies = [
-    "mne",
+    # >=1.13: reader.py usa el montaje "colin27_1020", que no existe en
+    # versiones anteriores (hasta la 1.12 se llamaba "standard_1020").
+    "mne>=1.13",
     "numpy",
     "scipy",
     "pandas",
@@ -16,6 +18,8 @@ dependencies = [
     "onnxruntime",
     # Motor de parquet para las salidas del procesamiento por lotes (Fase 11).
     "pyarrow",
+    # Modelos y validación cruzada del subpaquete modelado (Fase 14 en adelante).
+    "scikit-learn",
 ]
 
 [project.optional-dependencies]

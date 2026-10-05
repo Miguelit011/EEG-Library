@@ -73,7 +73,7 @@ def _raw_crudo_con_artefactos_de_orden(semilla=0):
 
     info = mne.create_info(list(data.keys()), SFREQ, ch_types="eeg")
     raw = mne.io.RawArray(np.array(list(data.values())), info, verbose=False)
-    raw.set_montage("standard_1020", on_missing="warn", verbose=False)
+    raw.set_montage("colin27_1020", on_missing="warn", verbose=False)
     return raw
 
 

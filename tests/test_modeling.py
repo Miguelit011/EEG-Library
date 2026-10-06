@@ -30,14 +30,17 @@ from eeg_library.modelado.modeling import (
     agregar_a_sesion,
     centrar_por_persona_loo,
     columnas_de_features_sesion,
+    compuesto_rel_sd,
     cortes_terciles,
     lineas_base,
     medias_loo_por_grupo,
     metricas,
     metricas_clasificacion,
     metricas_clasificacion_por_pliegue,
+    numero_de_visita,
     predecir_clases_cv_agrupada,
     predecir_cv_agrupada,
+    residualizar_por_visita,
 )
 
 
@@ -640,3 +643,93 @@ def test_pliegue_por_fila_cubre_todas_las_filas_una_sola_vez():
 def test_puntuar_por_pliegue_exige_longitudes_coherentes():
     with pytest.raises(ValueError, match="misma longitud"):
         metricas_clasificacion_por_pliegue([0, 1, 2], [0, 1], [1, 1, 1])
+
+
+# --------------------------------------------------------------------------
+# Control de la deriva por número de visita
+# --------------------------------------------------------------------------
+
+def test_numero_de_visita_lee_la_medicion():
+    np.testing.assert_array_equal(numero_de_visita(["M2", "M6", "M4"]),
+                                  [2.0, 6.0, 4.0])
+    assert np.isnan(numero_de_visita(["sin dato"])[0])
+
+
+def test_residualizar_por_visita_borra_una_deriva_lineal_por_persona():
+    """Si la columna es nivel propio + pendiente propia × visita, no queda nada."""
+    medicion = ["M2", "M3", "M4", "M5"] * 2
+    grupos = ["a"] * 4 + ["b"] * 4
+    visita = numero_de_visita(medicion)
+    valor = np.where(np.array(grupos) == "a", 10 + 3 * visita, -5 - 2 * visita)
+    datos = pd.DataFrame({"x": valor})
+    res = residualizar_por_visita(datos, ["x"], medicion, grupos)
+    np.testing.assert_allclose(res["x"], 0.0, atol=1e-12)
+    assert res.attrs["personas_residualizadas"] == 2
+
+
+def test_residualizar_por_visita_conserva_lo_que_no_es_tendencia():
+    """El residuo es la parte ortogonal a la visita: centrado y sin pendiente."""
+    medicion = ["M2", "M3", "M4", "M5", "M6"]
+    datos = pd.DataFrame({"x": [1.0, 5.0, 2.0, 8.0, 3.0]})
+    res = residualizar_por_visita(datos, ["x"], medicion, ["a"] * 5)["x"]
+    visita = numero_de_visita(medicion)
+    assert abs(res.mean()) < 1e-12
+    assert abs(np.dot(visita - visita.mean(), res)) < 1e-12
+    assert res.abs().sum() > 0
+
+
+def test_residualizar_por_visita_no_mezcla_personas():
+    """La recta de una persona no depende de las sesiones de otra."""
+    medicion = ["M2", "M3", "M4"] * 2
+    grupos = ["a"] * 3 + ["b"] * 3
+    datos = pd.DataFrame({"x": [1.0, 4.0, 2.0, 100.0, 50.0, 70.0]})
+    juntos = residualizar_por_visita(datos, ["x"], medicion, grupos)["x"]
+    solo_a = residualizar_por_visita(datos.iloc[:3], ["x"], medicion[:3],
+                                     grupos[:3])["x"]
+    np.testing.assert_allclose(juntos.iloc[:3], solo_a)
+
+
+def test_residualizar_por_visita_deja_intactas_las_personas_sin_recta():
+    """Menos de 3 sesiones válidas, o una sola visita distinta: sin tocar."""
+    medicion = ["M2", "M3", "M4", "M2", "M3", "M4", "M4", "M4", "M4"]
+    grupos = ["a"] * 3 + ["b"] * 3 + ["c"] * 3
+    x = [1.0, 2.0, 4.0, 7.0, np.nan, 9.0, 1.0, 2.0, 3.0]
+    res = residualizar_por_visita(pd.DataFrame({"x": x}), ["x"], medicion,
+                                  grupos)["x"]
+    # "b" tiene solo 2 valores válidos y "c" una única visita.
+    np.testing.assert_array_equal(res.iloc[3:], x[3:])
+    assert abs(res.iloc[:3].mean()) < 1e-12
+
+
+def test_residualizar_por_visita_exige_longitudes_coherentes():
+    with pytest.raises(ValueError, match="misma longitud"):
+        residualizar_por_visita(pd.DataFrame({"x": [1.0, 2.0]}), ["x"],
+                                ["M2"], ["a", "a"])
+
+
+def test_compuesto_rel_sd_tipifica_con_la_referencia_y_no_con_lo_evaluado():
+    """En test se aplica la regla de train+val, no se reajusta a test."""
+    referencia = pd.DataFrame({
+        "persona_uid": ["a", "b", "c"], "sesion_uid": ["s1", "s2", "s3"],
+        "vas": [1.0, 2.0, 3.0],
+        "frontal_alfa_rel_sd": [0.0, 1.0, 2.0],
+        "posterior_alfa_rel_sd": [10.0, 20.0, 30.0],
+        "frontal_alfa_rel_media": [5.0, 5.0, 5.0],
+    })
+    evaluadas = referencia.assign(frontal_alfa_rel_sd=[1.0, 1.0, 1.0],
+                                  posterior_alfa_rel_sd=[30.0, 30.0, 30.0])
+    comp = compuesto_rel_sd(evaluadas, referencia)
+    # z de 1.0 con media 1, sd 1 = 0; z de 30 con media 20, sd 10 = 1.
+    np.testing.assert_allclose(comp, 0.5)
+
+
+def test_compuesto_rel_sd_ignora_las_regiones_vacias():
+    referencia = pd.DataFrame({
+        "persona_uid": ["a", "b"], "sesion_uid": ["s1", "s2"], "vas": [1.0, 2.0],
+        "frontal_alfa_rel_sd": [0.0, 2.0], "temporal_alfa_rel_sd": [0.0, 2.0],
+    })
+    evaluadas = referencia.assign(frontal_alfa_rel_sd=[2.0, 2.0],
+                                  temporal_alfa_rel_sd=[np.nan, 0.0])
+    comp = compuesto_rel_sd(evaluadas, referencia)
+    z = 1 / np.sqrt(2)
+    np.testing.assert_allclose(comp, [z, 0.0])

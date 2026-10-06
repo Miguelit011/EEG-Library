@@ -82,6 +82,23 @@ Tarea A, Tarea B y el subconjunto de variables `_rel_sd`.
 - **Registro de ejecución:** `analisis/salidas/fase14b_clases.log`
 - **Duración:** ~6 min
 
+### `analisis_control_visita.py` — Control de la deriva por número de visita
+
+```bash
+python analisis/analisis_control_visita.py > analisis/salidas/control_visita.log 2>&1
+```
+
+Recalcula, con y sin una recta de visita (M2…M6) ajustada dentro de cada
+persona, las tres cifras intra-persona del VAS que entran en la familia
+confirmatoria del test: la prueba principal (Fase 14b, Tarea B), la pendiente
+intrapersona VAS ~ theta/alfa y el compuesto `_rel_sd`. Las cifras sin control
+reproducen las ya documentadas.
+
+- **Salida:** `<EEG_DATA>/processed/control_visita.json`
+- **Registro de ejecución:** `analisis/salidas/control_visita.log`
+- **Duración:** ~1 min
+- **Documentado en:** `MODELADO.md`, "Control de la deriva por número de visita"
+
 ### `analisis_regresion_lineal.py` — VAS ~ índice theta/alfa
 
 ```bash
@@ -216,7 +233,7 @@ Son independientes entre sí y pueden ejecutarse en cualquier orden.
 ## Garantías metodológicas
 
 Estos guiones respetan los invariantes definidos y verificados en
-`src/eeg_library/modelado/modeling.py` (41 pruebas en `tests/test_modeling.py`):
+`src/eeg_library/modelado/modeling.py` (49 pruebas en `tests/test_modeling.py`):
 
 - La unidad de evaluación es la **sesión**, no la grabación ni la ventana:
   hay 653 etiquetas independientes, no 274 718.

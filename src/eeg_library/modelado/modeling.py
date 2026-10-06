@@ -215,6 +215,112 @@ def centrar_por_persona_loo(sesiones, columnas, grupo=COLUMNA_GRUPO):
     return pd.concat([centradas, referencias.add_suffix("_loo")], axis=1)
 
 
+# --------------------------------------------------------------------------
+# Control de la deriva por número de visita
+#
+# Las 4-5 sesiones de una persona están ordenadas en el tiempo (M2 ... M6). Si a
+# lo largo del curso derivan a la vez el VAS y el EEG (impedancia, gel,
+# habituación al protocolo), aparece una correlación intra-persona entre ambos
+# sin que haya relación EEG-fatiga. Quitar de X y de y la recta sobre la visita
+# ajustada **dentro de cada persona** cierra esa vía. Es un control
+# conservador: si la fatiga real evolucionara de forma monótona a lo largo del
+# curso, se llevaría también señal legítima. Reincorporado el 2026-10-06 desde
+# la Fase 15 retirada (`fase15e_reposo.py`, no commiteado); ver MODELADO.md,
+# "Control de la deriva por visita".
+# --------------------------------------------------------------------------
+
+def numero_de_visita(medicion):
+    """
+    Convierte `medicion` ("M2" ... "M6") en el número de visita (2 ... 6).
+
+    Es el número del momento del estudio, no el orden de la visita dentro de la
+    persona: dos personas con M3 están en la misma visita aunque una se saltara
+    la M2. Lo que no se pueda leer queda a NaN.
+    """
+    texto = pd.Series(np.asarray(medicion)).astype(str).str.replace(
+        "M", "", regex=False)
+    return pd.to_numeric(texto, errors="coerce").to_numpy(dtype=float)
+
+
+def residualizar_por_visita(datos, columnas, medicion, grupos, min_sesiones=3):
+    """
+    Quita de cada columna la recta sobre el número de visita ajustada **dentro
+    de cada persona** (mínimos cuadrados, una pendiente por persona).
+
+    El residuo tiene media 0 dentro de la persona, así que la función también
+    centra. Las personas con menos de `min_sesiones` valores válidos, o con una
+    sola visita distinta, **se dejan como están**: con dos puntos la recta los
+    atraviesa y el residuo sería cero por construcción. Es el comportamiento de
+    la Fase 15 con el que se obtuvo 0.3795; quien llame debe haber centrado
+    antes por persona si necesita que esas filas también queden centradas.
+
+    Parámetros
+    ----------
+    datos : pandas.DataFrame
+    columnas : list[str]
+        Columnas a residualizar, cada una por separado; los NaN se ignoran.
+    medicion : array-like
+        `medicion` por fila ("M2" ... "M6").
+    grupos : array-like
+        `persona_uid` por fila.
+
+    Devuelve
+    --------
+    residuos : pandas.DataFrame
+        Copia de `datos` con `columnas` residualizadas. `attrs` lleva
+        `personas_residualizadas` (número de personas con al menos una columna
+        residualizada).
+    """
+    _validar_columnas(datos, columnas, "datos")
+    visita = numero_de_visita(medicion)
+    grupos = np.asarray(grupos)
+    if not (len(datos) == len(visita) == len(grupos)):
+        raise ValueError(
+            f"datos, medicion y grupos deben tener la misma longitud: "
+            f"{len(datos)}, {len(visita)}, {len(grupos)}."
+        )
+    salida = datos.copy()
+    indices = {g: np.flatnonzero(grupos == g) for g in pd.unique(grupos)}
+    residualizadas = set()
+    for columna in columnas:
+        v = datos[columna].to_numpy(dtype=float)
+        residuo = v.copy()
+        for persona, idx in indices.items():
+            ok = idx[np.isfinite(v[idx]) & np.isfinite(visita[idx])]
+            if len(ok) < min_sesiones or np.std(visita[ok]) == 0:
+                continue
+            vc = visita[ok] - visita[ok].mean()
+            pendiente = np.dot(vc, v[ok] - v[ok].mean()) / np.dot(vc, vc)
+            residuo[ok] = v[ok] - v[ok].mean() - pendiente * vc
+            residualizadas.add(persona)
+        salida[columna] = residuo
+    salida.attrs["personas_residualizadas"] = len(residualizadas)
+    return salida
+
+
+def compuesto_rel_sd(sesiones, referencia):
+    """
+    Índice compuesto de variabilidad espectral: media de las z de las features
+    `_rel_sd` (16 en la matriz de sesión).
+
+    La media y la desviación típica de cada columna salen de `referencia`, no de
+    `sesiones`: en test se tipifica con los parámetros de train+val, para que el
+    compuesto sea una regla fijada de antemano y no se reajuste a los datos que
+    evalúa. La media entre columnas ignora NaN (región sin canales válidos).
+
+    Es la pista de la Fase 13 (`ESTADO.md`): ρ intra-persona = +0.157 con el VAS.
+    """
+    columnas = sorted(c for c in columnas_de_features_sesion(referencia)
+                      if c.endswith("_rel_sd"))
+    if not columnas:
+        raise ValueError("La referencia no tiene columnas `_rel_sd`.")
+    _validar_columnas(sesiones, columnas, "sesiones")
+    media = referencia[columnas].mean()
+    sd = referencia[columnas].std()
+    z = (sesiones[columnas] - media) / sd
+    return z.mean(axis=1).rename("compuesto_rel_sd")
+
+
 def metricas(y_true, y_pred, nombre=None):
     """
     R², MAE, RMSE y correlación de Spearman entre observado y predicho.

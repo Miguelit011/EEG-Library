@@ -1,9 +1,11 @@
 # Pre-registro del análisis confirmatorio sobre el conjunto de test
 
-> **Estado: BORRADOR, 2026-10-06.** Queda fijado en el commit que lo incluya,
-> que debe ser **anterior** a cualquier lectura del split `test`. Desde ese
-> momento no se modifica: cualquier cambio posterior se anota en la sección 11
+> **Estado: FIJADO el 2026-10-06**, en el commit que incluye esta versión,
+> anterior a cualquier lectura del split `test`. Desde ese momento no se
+> modifica: cualquier cambio posterior se anota en la sección 11
 > («Desviaciones») con fecha y motivo, y se reporta junto a los resultados.
+> El guion que lo ejecuta es `analisis/analisis_test.py --confirmatorio`; su
+> ensayo general (train → val) se completó sin errores el 2026-10-06.
 >
 > **El conjunto de test no se ha abierto.** Todas las cifras de referencia de
 > este documento salen de `train` + `val`.
@@ -197,6 +199,7 @@ test).
 | Ridge y `max_features=0.3` (Fase 14) | Configuraciones de exploración, no candidatas |
 | Tablas de ablación por banda o región (Fases 17–19) | Eran mecanísticas; las sustituye la permutación por bloques en test |
 | Logísticas de un canal, 10 binarias uno-contra-uno | Redundantes con la matriz de confusión y la permutación |
+| d de Cohen por canal (topografía) | Descriptiva y no confirma ninguna afirmación; exigiría leer las épocas de test de `matriz_modelado.parquet`. Se retiró antes de fijar este documento en vez de dejarla como opcional, para no dejar una decisión a tomar después de ver los datos |
 | Reentrenar con etiquetas barajadas | Lo sustituye la permutación sobre test |
 | Robustez por semillas | Decisión explícita: la semilla 42 es la cifra oficial |
 | Métricas del VAS por grabación o por ventana | El n es la sesión |
@@ -244,9 +247,6 @@ Veredicto: **confirma** si el p ajustado por Holm < 0.05.
 - **Control de los contadores** (los 6 de procesamiento, solos, logística y RF)
   en los tres análisis. Referencias de validación: OA/OC 0.576 / 0.530;
   reposo/tarea 0.624 / **0.990**; tareas **0.465 / 0.471**.
-- **Opcional, si el tiempo de ejecución lo permite:** d de Cohen por canal con
-  IC por personas (OA/OC y reposo/tarea), a partir de las épocas de test de
-  `matriz_modelado.parquet`.
 
 ### 6.3 Criterios de coherencia
 

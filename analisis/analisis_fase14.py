@@ -15,7 +15,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_fase14.py
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\EEG-Data` por defecto (ver `analisis/README.md`).
+`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -54,7 +54,7 @@ SEMILLA = 42
 # El dataset vive fuera del repositorio y fuera de OneDrive (las ventanas
 # crudas de la CNN ocupan 16.2 GB y no deben sincronizarse). La ruta es
 # configurable para no atar el script a una máquina concreta.
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\EEG-Data"))
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "fase14_resultados.json"
 

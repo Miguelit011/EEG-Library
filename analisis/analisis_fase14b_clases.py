@@ -28,7 +28,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_fase14b_clases.py
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\EEG-Data` por defecto (ver `analisis/README.md`).
+`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -60,7 +60,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 SEMILLA = 42
 # Ver la nota de `analisis_fase14.py`: ruta configurable por entorno.
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\EEG-Data"))
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "fase14b_clases.json"
 

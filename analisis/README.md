@@ -31,7 +31,7 @@ guiones lo localizan mediante la variable de entorno `EEG_DATA`:
 
 | | |
 |---|---|
-| Valor por defecto | `C:\EEG-Data` |
+| Valor por defecto | `C:\Users\migue\Desktop\TFG\EEG-Data` |
 | Estructura esperada | `<EEG_DATA>/processed/matriz_rf.parquet` |
 | Salidas | `<EEG_DATA>/processed/*.json` |
 
@@ -56,7 +56,7 @@ Se ejecutan **desde la raíz del repositorio**.
 ### `analisis_fase14.py` — Regresión sobre el VAS
 
 ```bash
-python analisis/analisis_fase14.py
+python analisis/analisis_fase14.py > analisis/salidas/fase14.log 2>&1
 ```
 
 Entrena y evalúa el Random Forest como problema de regresión sobre la escala
@@ -65,12 +65,13 @@ Tarea A (participante nuevo), Tarea B (participante conocido), selección de
 variables anidada, importancias y bootstrap.
 
 - **Salida:** `<EEG_DATA>/processed/fase14_resultados.json`
+- **Registro de ejecución:** `analisis/salidas/fase14.log`
 - **Duración:** ~4 min
 
 ### `analisis_fase14b_clases.py` — Clasificación ordinal en tres niveles
 
 ```bash
-python analisis/analisis_fase14b_clases.py
+python analisis/analisis_fase14b_clases.py > analisis/salidas/fase14b_clases.log 2>&1
 ```
 
 Reformula el problema como clasificación en tres niveles (poca / media / mucha
@@ -78,6 +79,7 @@ fatiga) y determina si aporta sobre la regresión. Cuatro secciones: datos,
 Tarea A, Tarea B y el subconjunto de variables `_rel_sd`.
 
 - **Salida:** `<EEG_DATA>/processed/fase14b_clases.json`
+- **Registro de ejecución:** `analisis/salidas/fase14b_clases.log`
 - **Duración:** ~6 min
 
 ### `analisis_regresion_lineal.py` — VAS ~ índice theta/alfa
@@ -243,5 +245,16 @@ Estos guiones respetan los invariantes definidos y verificados en
 Semilla fija (`SEMILLA = 42`) en todos los procedimientos estocásticos. Dos
 ejecuciones sobre la misma matriz producen cifras idénticas.
 
-Versiones con las que se generaron los resultados documentados: Python 3.11,
-scikit-learn 1.7.2, numpy 2.2.6, pandas 2.3.3, scipy 1.15.3.
+Versiones con las que se generaron los resultados documentados: Python 3.10.11,
+scikit-learn 1.7.2, numpy 2.2.6, pandas 2.3.3, scipy 1.15.3, matplotlib 3.10.9 y
+mne 1.12.1. Es el entorno de `.venv` (fuera del repositorio); los resultados se
+ejecutan siempre con su intérprete, `.venv/Scripts/python.exe`.
+
+**Reproducción comprobada el 2026-10-06** en otra máquina, regenerando desde
+cero las etiquetas, `matriz_rf.parquet` y los siete guiones con estas
+versiones: `matriz_rf.parquet` es idéntica valor a valor a la original, los
+logs coinciden línea a línea salvo las rutas, las figuras son idénticas byte a
+byte y `fase14b_clases.json` no tiene ninguna diferencia. La única discrepancia
+es una cifra no citada de `fase14_resultados.json` (el ρ de Spearman del RF con
+hoja≥1 en la Tarea B: 0.107994 frente a 0.107980, con R² idéntico), atribuible
+al orden de los empates en otra CPU.

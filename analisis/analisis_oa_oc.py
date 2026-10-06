@@ -28,7 +28,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_oa_oc.py
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\EEG-Data` por defecto (ver `analisis/README.md`).
+`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -97,7 +97,7 @@ N_BOOTSTRAP_CANALES = 2000
 N_REPETICIONES_PERMUTACION = 5
 N_PERMUTACIONES_ETIQUETAS = 20
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\EEG-Data"))
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_MATRIZ_EPOCAS = RUTA_DATOS / "processed" / "matriz_modelado.parquet"
 RUTA_GRABACIONES = RUTA_DATOS / "metadata" / "labels_grabaciones.csv"

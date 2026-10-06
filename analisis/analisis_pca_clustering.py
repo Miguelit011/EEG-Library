@@ -21,7 +21,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_pca_clustering.py
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\EEG-Data` por defecto (ver `analisis/README.md`).
+`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -56,7 +56,7 @@ VAS_ALTO = 80
 VAS_BAJO = 20
 CONDICIONES_REPOSO = ("OA", "OC")
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\EEG-Data"))
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "pca_clustering.json"
 RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"

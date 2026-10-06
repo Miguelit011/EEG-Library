@@ -99,7 +99,7 @@ python probar.py
 from eeg_library import cargar_eeg
 
 # Cargar un archivo EDF (dataset fuera del repo, ver "Ubicación del dataset" en CLAUDE.md)
-raw, metadata = cargar_eeg(r"C:\EEG-Data\dataset_final\sub-C1F081_ses-M2_task-MSIT_eeg.edf")
+raw, metadata = cargar_eeg(r"C:\Users\migue\Desktop\TFG\EEG-Data\dataset_final\sub-C1F081_ses-M2_task-MSIT_eeg.edf")
 
 # raw es un objeto Raw de MNE con el que se puede seguir trabajando
 print(raw.info)

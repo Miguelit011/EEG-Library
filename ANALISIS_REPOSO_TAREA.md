@@ -766,9 +766,6 @@ carga cognitiva, un efecto de tamaño moderado a grande.
   etiquetas barajadas tiene una resolución de p ≥ 0.048.
 - **Los controles de la sección 8.2 no son pareados** con el principal (filas
   distintas, desbalance de 5 : 1).
-- **Una sola ejecución completa.** Hay semilla fija (42) en modelos, permutaciones y
-  bootstraps, pero no se ha ejecutado dos veces la versión completa para comprobar
-  el resultado byte a byte.
 - **Cohorte y montaje:** 146 personas de un estudio de la Facultad de Ciencias del
   Deporte (edad y demografía no confirmadas), Emotiv Epoc X, ventanas de 4 s agregadas
   por grabación. Los resultados pueden no trasladarse a otro montaje o población.
@@ -809,8 +806,13 @@ python analisis/analisis_reposo_tarea.py > analisis/salidas/reposo_tarea.log 2>&
 ```
 
 Duración: **15 min 11 s** en la ejecución que produjo estos resultados. Semilla fija
-(`SEMILLA = 42`) en los modelos, las permutaciones y todos los bootstraps. Como se
-dice en las limitaciones, no se ha repetido la ejecución completa.
+(`SEMILLA = 42`) en los modelos, las permutaciones y todos los bootstraps.
+
+**Reproducción comprobada el 2026-10-06.** Se repitió la ejecución completa en otra
+máquina, con las mismas versiones y regenerando desde cero las etiquetas y
+`matriz_rf.parquet` (15 min 43 s). El log coincide línea a línea con el original salvo
+las rutas de los archivos, y las tres figuras son idénticas byte a byte. El JSON no se
+pudo comparar: el original se perdió y este es el regenerado.
 
 `--rapido` ejecuta el mismo código con parámetros mínimos (40 réplicas de bootstrap,
 30 árboles, 2 barajados) y escribe en un directorio temporal, en unos 40 s. Sirve para

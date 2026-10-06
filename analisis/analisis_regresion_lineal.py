@@ -17,7 +17,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_regresion_lineal.py
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\EEG-Data` por defecto (ver `analisis/README.md`).
+`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -48,7 +48,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 SEMILLA = 42
 N_BOOTSTRAP = 10000
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\EEG-Data"))
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "regresion_lineal.json"
 RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"

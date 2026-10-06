@@ -789,10 +789,6 @@ en una parte no acotada, un reflejo de cuánto dura cada grabación.
   20 barajados por modelo: su p empírico no puede bajar de 1/21 = 0.048.
 - **Correlaciones de la sección 7.3 con n = 10** (los 10 pares de tareas): son
   descriptivas, sin potencia estadística para un contraste formal.
-- **Una sola ejecución completa.** Hay semilla fija (42) en modelos,
-  permutaciones y bootstraps, pero no se ha repetido la ejecución completa
-  para comprobar el resultado byte a byte (a diferencia de la Fase 17, que sí
-  lo comprobó).
 - **Cohorte y montaje:** 145 personas de un estudio de la Facultad de
   Ciencias del Deporte (edad y demografía no confirmadas), Emotiv Epoc X,
   ventanas de 4 s agregadas por grabación. Los resultados pueden no
@@ -847,8 +843,15 @@ python analisis/analisis_tareas_ejecutivas.py > analisis/salidas/tareas_ejecutiv
 
 Duración: **~26 min** en la ejecución que produjo estos resultados. Semilla
 fija (`SEMILLA = 42`) en los modelos, las permutaciones y todos los
-bootstraps. No se ha repetido la ejecución completa para comprobar el
-resultado byte a byte.
+bootstraps.
+
+**Reproducción comprobada el 2026-10-06.** Se repitió la ejecución completa
+en otra máquina, con las mismas versiones y regenerando desde cero las
+etiquetas y `matriz_rf.parquet` (24 min 25 s). El log coincide línea a línea
+con el original salvo las rutas de los archivos y un aviso de matplotlib
+(`tight_layout`) que esta vez no se emitió, y las tres figuras son idénticas
+byte a byte. El JSON no se pudo comparar: el original se perdió y este es el
+regenerado.
 
 `--rapido` ejecuta el mismo código con parámetros mínimos (40 réplicas de
 bootstrap, 30 árboles, 2 barajados de etiquetas) y escribe en un directorio

@@ -113,7 +113,7 @@ queda es la variación día a día del mismo individuo:
 | Spearman ρ | +0.004 (p = 0.929) |
 
 **La asociación desaparece por completo.** Coincide con la cifra que ya figuraba
-en `CLAUDE.md` (ρ = +0.004, p = 0.93) y en `figures/figuras_cifras.json`.
+en `CLAUDE.md` (ρ = +0.004, p = 0.93).
 
 ---
 

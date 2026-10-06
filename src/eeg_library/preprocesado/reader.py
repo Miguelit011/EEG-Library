@@ -36,6 +36,16 @@ resampleo ascendente solo está justificado para el caso conocido y
 documentado de 128 Hz (Nyquist a 64 Hz, muy por encima de la banda 1-30 Hz
 de interés), no como norma general para cualquier frecuencia inferior."""
 
+MONTAJE_1020 = ("colin27_1020"
+                if "colin27_1020" in mne.channels.get_builtin_montages()
+                else "standard_1020")
+"""Nombre del montaje 10-20 estándar en la versión de MNE instalada. MNE 1.13
+renombró "standard_1020" a "colin27_1020" y la 1.14 elimina el nombre
+antiguo, mientras que hasta la 1.12 solo existe el antiguo. Las posiciones son
+idénticas en los 14 canales del Epoc X (diferencia 0.0 m), así que elegir uno
+u otro según la versión no cambia los datos procesados. Se resuelve en un
+único sitio para que la librería y los tests no puedan desincronizarse."""
+
 _CQ_VALOR_MINIMO_SIN_ESCALAR = 1.0
 """Valor por debajo del cual se considera que los canales CQ llegaron
 escalados por MNE y hay que revertir la escala (ver `cargar_eeg`). La escala
@@ -195,10 +205,8 @@ def cargar_eeg(ruta: str) -> tuple[mne.io.BaseRaw, dict]:
     # los canales no-EEG no tienen posición estándar y se omiten con
     # on_missing="warn" (aviso, no error). Necesario para la Fase 6 (ICLabel
     # calcula topografías de scalp a partir de estas posiciones).
-    # "colin27_1020" es el nombre que MNE 1.13 da al antiguo "standard_1020"
-    # (que deja de existir en MNE 1.14); las posiciones son idénticas, así que
-    # los datos procesados con el nombre anterior no cambian.
-    raw.set_montage("colin27_1020", on_missing="warn", verbose=False)
+    # El nombre del montaje depende de la versión de MNE (ver MONTAJE_1020).
+    raw.set_montage(MONTAJE_1020, on_missing="warn", verbose=False)
 
     # Red de seguridad: tras la armonización anterior, frecuencia_muestreo
     # debería ser siempre exactamente TARGET_SFREQ. Si no lo es, algo falló

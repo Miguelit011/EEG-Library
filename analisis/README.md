@@ -99,6 +99,35 @@ reproducen las ya documentadas.
 - **Duración:** ~1 min
 - **Documentado en:** `MODELADO.md`, "Control de la deriva por número de visita"
 
+### `analisis_test.py` — Análisis confirmatorio sobre el test
+
+```bash
+python analisis/analisis_test.py --ensayo         # train -> val, ensayo general
+python analisis/analisis_test.py --confirmatorio  # train+val -> test, UNA sola vez
+```
+
+Ejecuta exactamente lo que fija `PREREGISTRO_TEST.md`: ajusta los modelos
+finales con el conjunto de entrenamiento, predice una sola vez el evaluado y
+calcula la familia VAS (prueba principal con control de visita, 5 secundarias
+con Holm y lo descriptivo) y la familia de condición (OA/OC, reposo/tarea y
+las cinco tareas, con Holm y los criterios de coherencia). Guarda los datos en
+bruto (predicciones, matrices evaluadas, modelos, parámetros, réplicas
+bootstrap y de permutación, importancias, inventario) y los metadatos (commit,
+hashes, entorno, CPU).
+
+- **`--ensayo`**: entrena con `train` y evalúa `val`. Sus cifras **no son
+  resultados** (`val` ya se usó en la validación cruzada); solo comprueba que
+  el guion corre y escribe todos los artefactos.
+- **`--confirmatorio`**: entrena con `train` + `val` y evalúa `test`. Se niega
+  si el árbol de git no está limpio o si ya existe `processed/test_*`.
+- **`--rapido`** (con `--ensayo`): réplicas mínimas y salida a un directorio
+  temporal, para depurar.
+- **Salida:** `<EEG_DATA>/processed/ensayo_val_<fecha>/` o
+  `<EEG_DATA>/processed/test_<fecha>/`, con su `ejecucion.log`
+- **Verificado en:** `tests/test_confirmatorio.py` (piezas de
+  `src/eeg_library/modelado/confirmatorio.py`)
+- **Documentado en:** `PREREGISTRO_TEST.md`
+
 ### `analisis_potencia_test.py` — Potencia de la prueba principal en test
 
 ```bash
@@ -264,7 +293,8 @@ Estos guiones respetan los invariantes definidos y verificados en
 
 > ### El conjunto de test
 >
-> **Ninguno de estos guiones toca el conjunto de test.** Todos lo apartan
+> **Ninguno de estos guiones toca el conjunto de test, salvo
+> `analisis_test.py --confirmatorio`.** Todos los demás lo apartan
 > explícitamente en su primer paso y operan solo sobre `train` + `val`.
 >
 > El test (106 sesiones, 28 participantes) se reserva para un único análisis

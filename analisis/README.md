@@ -99,6 +99,22 @@ reproducen las ya documentadas.
 - **Duración:** ~1 min
 - **Documentado en:** `MODELADO.md`, "Control de la deriva por número de visita"
 
+### `analisis_potencia_test.py` — Potencia de la prueba principal en test
+
+```bash
+python analisis/analisis_potencia_test.py > analisis/salidas/potencia_test.log 2>&1
+```
+
+Simula 5000 tests de 28 personas remuestreando las predicciones out-of-fold de
+la prueba principal (con y sin control de visita) y aplica la regla
+pre-registrada (p unilateral por permutación dentro de persona). Incluye un
+control de error de tipo I con predicciones barajadas.
+
+- **Salida:** `<EEG_DATA>/processed/potencia_test.json`
+- **Registro de ejecución:** `analisis/salidas/potencia_test.log`
+- **Duración:** ~1.5 min
+- **Documentado en:** `MODELADO.md`, "Potencia de la prueba principal en test"
+
 ### `analisis_regresion_lineal.py` — VAS ~ índice theta/alfa
 
 ```bash

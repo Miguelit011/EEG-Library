@@ -1,0 +1,100 @@
+
+==============================================================================
+1. Datos - sesiones de train + val
+==============================================================================
+Matriz por grabación : 4543 filas
+Sesiones etiquetadas : 653
+Apartado (test)      : 106 sesiones, 28 personas - no se vuelve a leer
+En análisis          : 547 sesiones, 146 personas
+Sesiones por persona : mediana 4.0
+
+VAS          : media 43.06  SD 21.69  rango [0, 100]
+Indice t/a   : media 2.141  SD 1.284  rango [0.151, 9.922]  asimetria 2.21
+
+==============================================================================
+2. El liston: que hay que batir
+==============================================================================
+                                      modelo   n     r2     mae    rmse
+                                media global 547 0.0000 18.0106 21.6674
+             media por medicion (en muestra) 547 0.0146 17.7215 21.5089
+               media por centro (en muestra) 547 0.0154 17.6930 21.5001
+media por persona_uid (en muestra, circular) 547 0.6099 10.4665 13.5324
+       media por persona_uid (leave-one-out) 547 0.2961 14.2309 18.1789
+
+Listón declarado antes de ejecutar: R2 = 0.260
+Recalculado sobre estas 547 sesiones: R2 = 0.2961
+
+==============================================================================
+3. Regresion lineal simple: VAS ~ indice theta/alfa
+==============================================================================
+
+MCO sobre las 547 sesiones
+  n = 547   gl = 545
+  pendiente   = -1.7096 (EE 0.7199)  IC95 [-3.1237, -0.2955]
+  intercepto  = +46.7160
+  R2          = 0.01024   r = -0.1012
+  t(545) = -2.375   p = 0.0179
+  Spearman rho = -0.0913  p = 0.0329
+
+  SD del VAS                 = 21.67 mm
+  SD residual tras el ajuste = 21.56 mm  (reduccion: 0.51 %)
+
+  IC remuestreando personas (no sesiones):
+    pendiente IC95 [-3.2777, -0.0129]
+    R2        IC95 [0.00013, 0.03787]  (10000 replicas)
+
+==============================================================================
+4. Es un problema de forma? Dos comprobaciones
+==============================================================================
+
+MCO con log10 del indice (corrige la asimetria)
+  n = 547   gl = 545
+  pendiente   = -8.0264 (EE 3.8503)  IC95 [-15.5895, -0.4632]
+  intercepto  = +45.1904
+  R2          = 0.00791   r = -0.0889
+  t(545) = -2.085   p = 0.0376
+  Spearman rho = -0.0913  p = 0.0329
+
+MCO recortando el 1 % de cada cola del indice
+  n = 535   gl = 533
+  pendiente   = -2.0822 (EE 0.8624)  IC95 [-3.7763, -0.3880]
+  intercepto  = +47.5438
+  R2          = 0.01082   r = -0.1040
+  t(533) = -2.414   p = 0.0161
+  Spearman rho = -0.0933  p = 0.0309
+
+==============================================================================
+5. La comprobacion decisiva: se sostiene dentro de cada persona?
+==============================================================================
+Se resta a cada sesion la media de su propia persona, en las dos
+variables. Lo que queda es la variacion dia a dia del mismo
+individuo, que es lo que un marcador de fatiga debe seguir.
+
+MCO intrapersona (efectos fijos por persona)
+  n = 547   gl = 399
+  pendiente   = -0.0734 (EE 0.7817)  IC95 [-1.6102, +1.4634]
+  intercepto  = -0.0000
+  R2          = 0.00002   r = -0.0047
+  t(399) = -0.094   p = 0.9252
+  Spearman rho = +0.0038  p = 0.9287
+
+==============================================================================
+6. Figuras
+==============================================================================
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\regresion_vas_theta_alfa.png
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\regresion_vas_theta_alfa_intrapersona.png
+
+==============================================================================
+7. Veredicto frente al optimo declarado
+==============================================================================
+  [NO] Pendiente positiva                                   -1.710
+  [NO] Nube estrecha (SD residual < SD del VAS)             21.56 vs 21.67 mm
+  [NO] R2 supera la linea base (0.260)                      0.0102
+  [NO] Pendiente con magnitud clinica (~ +10)               -1.710
+  [SI] IC95 excluye el 0                                    [-3.124, -0.295]
+  [SI] El resultado no lo dicta la forma (log10 y recorte coinciden) R2 0.010 / 0.008 / 0.011
+  [NO] Se sostiene dentro de la persona                     p = 0.925
+
+  Criterios cumplidos: 2 de 7
+
+Resultados -> C:\Users\migue\Desktop\TFG\EEG-Data\processed\regresion_lineal.json

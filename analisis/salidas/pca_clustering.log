@@ -1,0 +1,148 @@
+
+==============================================================================
+1. Datos - grabaciones extremas de train + val
+==============================================================================
+Matriz completa      : 4543 grabaciones, 77 features
+Apartado (test)      : 732 grabaciones, 28 personas - no se vuelve a leer
+train + val          : 3811 grabaciones
+Grupos extremos      : 1076 grabaciones (2735 descartadas por VAS intermedio)
+
+           grabaciones  sesiones  personas  vas_min  vas_max
+grupo_vas                                                   
+alto               257        38        28     80.0    100.0
+bajo               819       119        58      0.0     20.0
+
+Grabaciones por condicion y grupo:
+grupo_vas  alto  bajo
+condicion            
+MSIT         37   115
+OA           37   117
+OC           37   119
+PASAT        35   118
+PVSAT        37   115
+PVTB         37   117
+STROOP       37   118
+
+==============================================================================
+2. Confusión entre identidad y grupo de VAS
+==============================================================================
+Personas en los grupos extremos      : 82
+Personas presentes en AMBOS grupos   : 4 (4.9 %)
+Personas en un solo grupo            : 78 (95.1 %)
+Grabaciones aportadas por las de ambos: 76 (7.1 %)
+
+Son: C1_F100, C2_F103, C6_F035, C6_F038
+                       grabaciones  sesiones
+persona_uid grupo_vas                       
+C1_F100     alto                 7         1
+            bajo                 7         1
+C2_F103     alto                14         2
+            bajo                12         2
+C6_F035     alto                 8         2
+            bajo                14         2
+C6_F038     alto                 7         1
+            bajo                 7         1
+
+Lectura: con el 95.1 % de las personas en un solo grupo, 'grupo de
+VAS' y 'quién es el participante' son casi la misma partición. Un
+clustering que separase los grupos podría estar separando personas.
+
+==============================================================================
+3. Análisis principal - features centradas por condición
+==============================================================================
+Cada feature menos la media de su propia condición. Lo que queda es
+la desviación de la grabación respecto a lo esperable en su tarea.
+
+--- Ajustado por condición (7 condiciones) ---
+  n = 1076 grabaciones, 82 personas, 157 sesiones
+  features tras el ajuste: 76  (descartadas por varianza 0: ['condicion_orden'])
+  varianza explicada: PC1 25.6%, PC2 12.4%, 5 comp 64.1%, 15 comp 85.5%
+  tamaños de cluster: [723, 353]   silueta 0.194
+
+  Contingencia cluster x grupo VAS:
+    grupo VAS  alto  bajo
+    cluster              
+    0           198   525
+    1            59   294
+
+  ARI vs grupo VAS   : -0.0264
+  ARI vs condicion   : -0.0000   (k=2, poco informativo)
+  ARI vs condicion   : +0.0043   (k=7, diagnostico del ajuste)
+  ARI vs persona_uid : +0.0057
+  AMI vs grupo VAS   : +0.0114
+  AMI vs condicion   : -0.0001
+  AMI vs persona_uid : +0.0667
+  Acierto de la mejor asignacion : 54.3%  (clase mayoritaria: 76.1%)
+  Pureza por persona : 0.791  (azar 0.694, p95 0.706)
+
+==============================================================================
+4. Referencia - las mismas features SIN ajustar
+==============================================================================
+Sirve para comprobar que el ajuste del paso 3 hizo lo que debía:
+si aquí el ARI vs condición es alto y allí ~0, quedó neutralizada.
+
+--- Sin ajustar ---
+  n = 1076 grabaciones, 82 personas, 157 sesiones
+  features tras el ajuste: 77
+  varianza explicada: PC1 24.3%, PC2 14.4%, 5 comp 65.8%, 15 comp 86.1%
+  tamaños de cluster: [731, 345]   silueta 0.183
+
+  Contingencia cluster x grupo VAS:
+    grupo VAS  alto  bajo
+    cluster              
+    0           193   538
+    1            64   281
+
+  ARI vs grupo VAS   : -0.0223
+  ARI vs condicion   : +0.0046   (k=2, poco informativo)
+  ARI vs condicion   : +0.0733   (k=7, diagnostico del ajuste)
+  ARI vs persona_uid : +0.0053
+  AMI vs grupo VAS   : +0.0057
+  AMI vs condicion   : +0.0078
+  AMI vs persona_uid : +0.0575
+  Acierto de la mejor asignacion : 55.9%  (clase mayoritaria: 76.1%)
+  Pureza por persona : 0.787  (azar 0.699, p95 0.711)
+
+==============================================================================
+5. Robustez - solo reposo (OA + OC)
+==============================================================================
+Mismo PCA (15 componentes) y mismo clustering (2 clusters) sobre las
+grabaciones de reposo, donde no hay tarea que module la señal.
+
+--- Reposo, ajustado por condición (OA/OC) ---
+  n = 310 grabaciones, 82 personas, 157 sesiones
+  features tras el ajuste: 76  (descartadas por varianza 0: ['condicion_orden'])
+  varianza explicada: PC1 27.4%, PC2 14.2%, 5 comp 66.8%, 15 comp 87.5%
+  tamaños de cluster: [270, 40]   silueta 0.360
+
+  Contingencia cluster x grupo VAS:
+    grupo VAS  alto  bajo
+    cluster              
+    0            69   201
+    1             5    35
+
+  ARI vs grupo VAS   : -0.0508
+  ARI vs condicion   : -0.0014   (k=2, poco informativo)
+  ARI vs condicion   : -0.0014   (k=2, diagnostico del ajuste)
+  ARI vs persona_uid : +0.0023
+  AMI vs grupo VAS   : +0.0093
+  AMI vs condicion   : -0.0030
+  AMI vs persona_uid : +0.0426
+  Acierto de la mejor asignacion : 66.5%  (clase mayoritaria: 76.1%)
+  Pureza por persona : 0.924  (azar 0.881, p95 0.900)
+
+==============================================================================
+6. Figuras
+==============================================================================
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\pca_clustering_vas_extremos.png
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\pca_clustering_vas_extremos_reposo.png
+
+==============================================================================
+7. Resumen
+==============================================================================
+                           análisis    n var. 15 comp ARI vs VAS ARI condición acierto mayoritaria
+Principal (7 condiciones, ajustado) 1076        85.5%    -0.0264 +0.0043 (k=7)   54.3%       76.1%
+           Referencia (sin ajustar) 1076        86.1%    -0.0223 +0.0733 (k=7)   55.9%       76.1%
+   Robustez (solo reposo, ajustado)  310        87.5%    -0.0508 -0.0014 (k=2)   66.5%       76.1%
+
+Resultados -> C:\Users\migue\Desktop\TFG\EEG-Data\processed\pca_clustering.json

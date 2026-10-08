@@ -1,0 +1,128 @@
+C:\Users\migue\Desktop\TFG\EEG-Library\.venv\lib\site-packages\sklearn\metrics\_classification.py:98: UserWarning: The number of unique classes is greater than 50% of the number of samples. `y` could represent a regression problem, not a classification problem.
+  type_true = type_of_target(y_true, input_name="y_true")
+C:\Users\migue\Desktop\TFG\EEG-Library\.venv\lib\site-packages\sklearn\metrics\_classification.py:98: UserWarning: The number of unique classes is greater than 50% of the number of samples. `y` could represent a regression problem, not a classification problem.
+  type_true = type_of_target(y_true, input_name="y_true")
+C:\Users\migue\Desktop\TFG\EEG-Library\.venv\lib\site-packages\sklearn\metrics\_classification.py:98: UserWarning: The number of unique classes is greater than 50% of the number of samples. `y` could represent a regression problem, not a classification problem.
+  type_true = type_of_target(y_true, input_name="y_true")
+C:\Users\migue\Desktop\TFG\EEG-Library\.venv\lib\site-packages\sklearn\metrics\_classification.py:99: UserWarning: The number of unique classes is greater than 50% of the number of samples. `y` could represent a regression problem, not a classification problem.
+  type_pred = type_of_target(y_pred, input_name="y_pred")
+
+==============================================================================
+1. DATOS
+==============================================================================
+Matriz por grabación : (4543, 91)
+Sesiones etiquetadas : 653
+train+val            : 547 sesiones, 146 personas
+test (APARTADO)      : 106 sesiones, 28 personas  <- no se toca
+Features por sesión  : 77
+NaN en X             : 16 celdas (0.04 %)
+
+==============================================================================
+2. LÍNEAS BASE (train+val, nivel sesión)
+==============================================================================
+                                      modelo   n     r2     mae    rmse  spearman  p_spearman
+                                media global 547 0.0000 18.0106 21.6674       NaN         NaN
+             media por medicion (en muestra) 547 0.0146 17.7215 21.5089    0.1137      0.0078
+               media por centro (en muestra) 547 0.0154 17.6930 21.5001    0.1233      0.0039
+media por persona_uid (en muestra, circular) 547 0.6099 10.4665 13.5324    0.7748      0.0000
+       media por persona_uid (leave-one-out) 547 0.2961 14.2309 18.1789    0.5800      0.0000
+
+Sesiones sin referencia LOO (persona con 1 sola sesión): 10
+
+==============================================================================
+3. CONTROL: ¿identifican estas features a la persona?
+==============================================================================
+Personas con >=3 sesiones : 132 (529 sesiones)
+Acierto identificando     : 0.248  (azar = 0.0076) -> 33x el azar
+
+==============================================================================
+4. TAREA A — PERSONA NUEVA (GroupKFold por persona_uid)
+==============================================================================
+El modelo nunca ha visto a la persona que evalúa. Rival: media global.
+
+                           modelo   n      r2     mae    rmse  spearman  p_spearman
+               -- media global -- 547  0.0000 18.0106 21.6674       NaN         NaN
+          RF 500 árboles, hoja>=5 547 -0.0102 18.1687 21.7773    0.1173      0.0060
+          RF 500 árboles, hoja>=1 547 -0.0079 18.1188 21.7527    0.1265      0.0030
+         RF 500 árboles, hoja>=15 547  0.0021 18.0859 21.6442    0.1256      0.0033
+RF 500, hoja>=5, max_features=0.3 547 -0.0091 18.1344 21.7659    0.1086      0.0110
+      Ridge (imputado + escalado) 547 -0.0678 18.6062 22.3894    0.0082      0.8491
+
+Reparto de la validación cruzada:
+ pliegue  personas_train  personas_val  sesiones_train  sesiones_val
+       1             117            29             437           110
+       2             116            30             437           110
+       3             117            29             438           109
+       4             117            29             438           109
+       5             117            29             438           109
+
+==============================================================================
+5. TAREA B — PERSONA CONOCIDA (desviación respecto a su nivel)
+==============================================================================
+Se concede al modelo el nivel habitual de la persona, estimado con SUS
+OTRAS sesiones. La pregunta es si el EEG explica la desviación.
+
+Sesiones utilizables: 537 (descartadas 10 de personas con 1 sola sesión) | personas: 136
+
+Escala de la DESVIACIÓN (lo que el modelo predice):
+                           modelo   n      r2     mae    rmse  spearman  p_spearman
+      -- sin EEG: desviación 0 -- 537  0.0000 14.2517 18.2303       NaN         NaN
+          RF 500 árboles, hoja>=5 537 -0.0029 14.5196 18.2567    0.1006      0.0197
+          RF 500 árboles, hoja>=1 537 -0.0005 14.5415 18.2348    0.1080      0.0123
+         RF 500 árboles, hoja>=15 537  0.0025 14.4489 18.2072    0.1034      0.0165
+RF 500, hoja>=5, max_features=0.3 537  0.0019 14.4628 18.2127    0.1008      0.0195
+      Ridge (imputado + escalado) 537 -0.0315 14.4320 18.5148    0.1094      0.0112
+
+Reconstruido en la escala ORIGINAL del VAS:
+                           modelo   n     r2     mae    rmse  spearman  p_spearman
+ -- sin EEG: media persona LOO -- 537 0.2988 14.2517 18.2303    0.5832      0.0000
+          RF 500 árboles, hoja>=5 537 0.2967 14.5196 18.2567    0.5893      0.0000
+          RF 500 árboles, hoja>=1 537 0.2984 14.5415 18.2348    0.5880      0.0000
+         RF 500 árboles, hoja>=15 537 0.3005 14.4489 18.2072    0.5897      0.0000
+RF 500, hoja>=5, max_features=0.3 537 0.3001 14.4628 18.2127    0.5896      0.0000
+      Ridge (imputado + escalado) 537 0.2767 14.4320 18.5148    0.5831      0.0000
+
+==============================================================================
+6. SELECCIÓN DE FEATURES DENTRO DE LA VALIDACIÓN CRUZADA
+==============================================================================
+Reduce la dimensión sin la circularidad de elegir mirando todo.
+
+top- 3: R²(desv) = -0.0023 | ρ = +0.1126 (p = 0.0090) | R²(orig) = +0.2972
+        elegidas en los 5 pliegues (1): ['frontal_delta_rel_sd']
+top- 5: R²(desv) = +0.0055 | ρ = +0.1174 (p = 0.0065) | R²(orig) = +0.3026
+        elegidas en los 5 pliegues (1): ['frontal_delta_rel_sd']
+top-10: R²(desv) = -0.0132 | ρ = +0.1203 (p = 0.0052) | R²(orig) = +0.2895
+        elegidas en los 5 pliegues (3): ['frontal_alfa_rel_sd', 'frontal_delta_rel_sd', 'posterior_delta_rel_sd']
+top-16: R²(desv) = +0.0034 | ρ = +0.1441 (p = 0.0008) | R²(orig) = +0.3011
+        elegidas en los 5 pliegues (6): ['frontal_alfa_rel_sd', 'frontal_delta_rel_sd', 'frontocentral_alfa_rel_sd', 'posterior_alfa_rel_sd', 'posterior_delta_rel_sd', 'posterior_theta_rel_media']
+top-25: R²(desv) = +0.0001 | ρ = +0.1296 (p = 0.0026) | R²(orig) = +0.2988
+        elegidas en los 5 pliegues (13): ['frontal_alfa_rel_sd', 'frontal_beta_rel_sd', 'frontal_delta_rel_sd', 'frontocentral_alfa_rel_sd', 'frontocentral_beta_logabs_media', 'posterior_alfa_rel_sd', 'posterior_beta_rel_media', 'posterior_delta_logabs_media', 'posterior_delta_rel_media', 'posterior_delta_rel_sd', 'posterior_theta_rel_media', 'temporal_alfa_logabs_media', 'temporal_beta_logabs_media']
+
+==============================================================================
+7. ¿EN QUÉ SE FIJA EL BOSQUE? (tarea A, configuración principal)
+==============================================================================
+Top 10 (una feature neutra valdría 1/77 = 0.0130):
+frontocentral_delta_rel_sd     0.0367
+frontocentral_beta_rel_sd      0.0314
+posterior_theta_rel_media      0.0288
+frontal_beta_rel_sd            0.0281
+posterior_delta_rel_sd         0.0227
+temporal_theta_rel_sd          0.0212
+frontocentral_theta_rel_sd     0.0212
+frontal_delta_rel_sd           0.0209
+temporal_beta_rel_media        0.0208
+posterior_delta_logabs_media   0.0208
+
+Máxima 0.0367 — solo 2.83x lo uniforme.
+
+==============================================================================
+8. INTERVALOS DE CONFIANZA (bootstrap agrupado por persona)
+==============================================================================
+Tarea A (RF 500 árboles, hoja>=5):
+  R² = -0.0102  IC 95% [-0.0742, +0.0378]
+Tarea B (escala original):
+  con EEG = +0.2967  IC 95% [+0.1731, +0.3940]
+  sin EEG = +0.2988  IC 95% [+0.1660, +0.4045]
+
+
+Resultados guardados en C:\Users\migue\Desktop\TFG\EEG-Data\processed\fase14_resultados.json

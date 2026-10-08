@@ -1,0 +1,71 @@
+
+==============================================================================
+1. DATOS (train + val; test apartado antes de agregar)
+==============================================================================
+Grabaciones de test apartadas: 732 (no se agregan ni se leen)
+Sesiones train+val: 547 (146 personas)
+Sesiones por persona: 1: 10, 2: 4, 3: 23, 4: 85, 5: 24
+Personas con recta de visita (>= 3 sesiones): 132
+
+==============================================================================
+2. ¿DERIVA EL VAS CON LA VISITA DENTRO DE LA PERSONA?
+==============================================================================
+ρ intra-persona (VAS, visita) = +0.1192  p = 0.0057  IC95 personas [+0.0093, +0.2294]  n = 537
+
+==============================================================================
+3. PRUEBA PRINCIPAL — Fase 14b, Tarea B, tres niveles, RF hoja>=5
+==============================================================================
+Mismo cálculo que la Fase 14b. El control se aplica a X e y ya
+centrados por la media LOO de la persona; los cortes de los tercios
+siguen saliendo de cada pliegue de entrenamiento.
+
+537 sesiones, 136 personas
+
+--- sin control ---
+  Exactitud balanceada (media de pliegues): 0.3947 (SD 0.043)  IC95 [0.3484, 0.4376]   (azar 0.3333)
+  Por pliegue: 0.412  0.453  0.393  0.378  0.337
+  F1 macro 0.3905  adyacente 0.7950  tau +0.105
+  Cortes por pliegue: [-7.5, +6.7]  [-7.5, +6.7]  [-7.5, +6.7]  [-8.3, +6.7]  [-8.3, +6.7]
+  Matriz de confusión (amontonada; filas = real):
+           poca  media  mucha
+    poca     73     45     58
+    media    50     57     68
+    mucha    52     53     81
+
+--- con control de visita ---
+  Exactitud balanceada (media de pliegues): 0.3795 (SD 0.042)  IC95 [0.3302, 0.4290]   (azar 0.3333)
+  Por pliegue: 0.428  0.344  0.412  0.330  0.384
+  F1 macro 0.3771  adyacente 0.7990  tau +0.092
+  Cortes por pliegue: [-4.6, +5.0]  [-4.7, +5.3]  [-4.7, +5.3]  [-4.7, +5.3]  [-4.7, +5.1]
+  Matriz de confusión (amontonada; filas = real):
+           poca  media  mucha
+    poca     84     47     48
+    media    53     59     64
+    mucha    60     60     62
+
+Personas residualizadas: 132 de 136
+Varianza intra-persona media de la desviación del VAS: 453.9 -> 282.2 (queda el 62 %)
+
+==============================================================================
+4. VAS ~ ÍNDICE THETA/ALFA, INTRAPERSONA
+==============================================================================
+
+--- sin_control ---
+  β = -0.073 mm  IC95 t [-1.610, +1.463]  IC95 personas [-1.345, +1.187]
+  p = 0.925  R² = 0.00002  ρ = +0.0038 (p = 0.929)  gl = 399
+
+--- con_control ---
+  β = -0.455 mm  IC95 t [-2.145, +1.234]  IC95 personas [-1.730, +0.793]
+  p = 0.596  R² = 0.00105  ρ = -0.0591 (p = 0.167)  gl = 267
+
+==============================================================================
+5. COMPUESTO _rel_sd — ρ INTRA-PERSONA CON EL VAS
+==============================================================================
+z de cada una de las 16 `_rel_sd` con media y SD de estas sesiones,
+media de las 16, centrado por persona y Spearman. Personas con >= 2
+sesiones (con una sola, el centrado deja 0).
+  sin_control  ρ = +0.1559  p = 0.00029  IC95 personas [+0.0634, +0.2447]  n = 537
+  con_control  ρ = +0.1296  p = 0.00263  IC95 personas [+0.0070, +0.2473]  n = 537
+
+
+Resultados guardados en C:\Users\migue\Desktop\TFG\EEG-Data\processed\control_visita.json

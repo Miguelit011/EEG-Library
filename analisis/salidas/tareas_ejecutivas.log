@@ -1,0 +1,402 @@
+
+==============================================================================
+1. Datos - las cinco tareas ejecutivas de train + val
+==============================================================================
+Matriz completa      : 4543 grabaciones, 77 features (Fase 13)
+Apartado (test)      : 523 grabaciones, 28 personas - no se vuelve a leer
+Sin persona_uid      : 60 grabaciones descartadas
+En análisis          : 2656 grabaciones, 145 personas, 537 sesiones
+  por condición      : {'STROOP': 534, 'PASAT': 533, 'PVTB': 531, 'MSIT': 530, 'PVSAT': 528}
+  desbalance         : 1.011:1  (mayoritaria STROOP, minoritaria PVSAT)
+  por split          : {'train': 2219, 'val': 437}
+  grabaciones/persona: mediana 20, rango [5, 25]
+
+Features de la Fase 13 : 77
+Features en X          : 70   (excluidas 7)
+  condicion_orden            ES LA ETIQUETA: dentro de las 5 tareas toma un valor CONSTANTE distinto por cada una
+    STROOP  -> [3.0]
+    PASAT   -> [4.0]
+    PVTB    -> [5.0]
+    MSIT    -> [6.0]
+    PVSAT   -> [7.0]
+  n_ventanas                 contador de procesamiento, no señal cerebral
+  n_canales_buenos           contador de procesamiento, no señal cerebral
+  n_validos_frontal          contador de procesamiento, no señal cerebral
+  n_validos_frontocentral    contador de procesamiento, no señal cerebral
+  n_validos_temporal         contador de procesamiento, no señal cerebral
+  n_validos_posterior        contador de procesamiento, no señal cerebral
+
+Comprobado: `condicion_orden` no está en las 70 features de X.
+
+Columnas de X que son COPIAS EXACTAS de otra: 4 (66 columnas distintas de 70)
+    theta_frontal_log_media          = frontal_theta_logabs_media
+    theta_frontal_log_sd             = frontal_theta_logabs_sd
+    alfa_posterior_log_media         = posterior_alfa_logabs_media
+    alfa_posterior_log_sd            = posterior_alfa_logabs_sd
+
+Reparto de clases por pliegue de la CV agrupada por persona:
+col_0  MSIT  PASAT  PVSAT  PVTB  STROOP
+row_0                                  
+1       106    108    107   107     107
+2       107    105    105   107     106
+3       107    105    105   106     107
+4       106    107    106   105     106
+5       104    108    105   106     108
+
+==============================================================================
+2. Baselines triviales
+==============================================================================
+Un clasificador que no usa X. Con 5 clases casi equilibradas, la exactitud
+balanceada de azar es 1/5 = 0.200 exacto.
+
+--- Baseline: clase mayoritaria ---
+  Exactitud balanceada, media por pliegue : 0.2000  (SD 0.0000)
+  Exactitud balanceada, amontonada        : 0.1993
+    IC95 (bootstrap por persona)          : [0.1983, 0.2001]
+  Exactitud simple                        : 0.2003
+  F1 macro = 0.1037   Kappa de Cohen = -0.0008
+
+--- Baseline: azar estratificado ---
+  Exactitud balanceada, media por pliegue : 0.1927  (SD 0.0120)
+  Exactitud balanceada, amontonada        : 0.1927
+    IC95 (bootstrap por persona)          : [0.1799, 0.2059]
+  Exactitud simple                        : 0.1928
+  F1 macro = 0.1917   Kappa de Cohen = -0.0091
+
+--- Baseline: uniforme ---
+  Exactitud balanceada, media por pliegue : 0.2100  (SD 0.0130)
+  Exactitud balanceada, amontonada        : 0.2101
+    IC95 (bootstrap por persona)          : [0.1959, 0.2243]
+  Exactitud simple                        : 0.2101
+  F1 macro = 0.2092   Kappa de Cohen = 0.0126
+
+  [SI] Los tres baselines dan ~0.200 de exactitud balanceada
+
+==============================================================================
+3. Modelo A - regresión logística multinomial
+==============================================================================
+Imputación por mediana + tipificación + LogisticRegression(class_weight=
+'balanced'), softmax automático con 5 clases. Sus coeficientes (uno por
+clase) permiten comprobar la dirección del efecto de cada tarea.
+
+--- Regresión logística ---
+  Exactitud balanceada, media por pliegue : 0.4701  (SD 0.0224)
+  Exactitud balanceada, amontonada        : 0.4699
+    IC95 (bootstrap por persona)          : [0.4520, 0.4881]
+  Exactitud simple                        : 0.4699
+  F1 macro = 0.4660   Kappa de Cohen = 0.3374
+  Por clase:
+    tarea     precisión  exhaustividad      f1     n
+    STROOP        0.457          0.472   0.465   534
+    PASAT         0.405          0.336   0.367   533
+    PVTB          0.549          0.638   0.590   531
+    MSIT          0.484          0.492   0.488   530
+    PVSAT         0.429          0.411   0.420   528
+  BA por pliegue  : 0.464  0.503  0.454  0.448  0.482
+
+==============================================================================
+4. Modelo B - Random Forest
+==============================================================================
+RandomForestClassifier(500 árboles, hoja>=5, class_weight='balanced'): la misma
+configuración que las Fases 14, 14b, 17 y 18, para que la cifra sea comparable.
+
+--- Random Forest ---
+  Exactitud balanceada, media por pliegue : 0.4345  (SD 0.0119)
+  Exactitud balanceada, amontonada        : 0.4342
+    IC95 (bootstrap por persona)          : [0.4150, 0.4537]
+  Exactitud simple                        : 0.4341
+  F1 macro = 0.4288   Kappa de Cohen = 0.2927
+  Por clase:
+    tarea     precisión  exhaustividad      f1     n
+    STROOP        0.439          0.393   0.415   534
+    PASAT         0.347          0.313   0.329   533
+    PVTB          0.499          0.659   0.568   531
+    MSIT          0.477          0.408   0.439   530
+    PVSAT         0.387          0.398   0.392   528
+  BA por pliegue  : 0.441  0.418  0.438  0.427  0.448
+
+4.1 Comparación PAREADA entre los dos modelos (exactitud balanceada)
+    Regresión logística - Random Forest: +0.0357  IC95 [+0.0178, +0.0542]  (A > B en el 100.0% de las réplicas)
+    Regresión logística - Baseline: azar estratificado: +0.2772  IC95 [+0.2557, +0.2992]  (A > B en el 100.0% de las réplicas)
+    Random Forest - Baseline: azar estratificado: +0.2415  IC95 [+0.2179, +0.2653]  (A > B en el 100.0% de las réplicas)
+
+  [SI] (a) el límite inferior del IC95 de los dos modelos supera 0.200
+
+==============================================================================
+5. Métricas por clase y matriz de confusión
+==============================================================================
+
+--- Regresión logística: matriz de confusión (filas = real, % de esa fila) ---
+        STROOP  PASAT  PVTB  MSIT  PVSAT
+STROOP    47.2    7.9   9.9  25.7    9.4
+PASAT     13.7   33.6  18.0   9.0   25.7
+PVTB       7.5   14.5  63.8   4.7    9.4
+MSIT      25.7    7.0   8.3  49.2    9.8
+PVSAT      9.5   20.3  16.3  12.9   41.1
+
+--- Random Forest: matriz de confusión (filas = real, % de esa fila) ---
+        STROOP  PASAT  PVTB  MSIT  PVSAT
+STROOP    39.3   11.6  11.8  28.3    9.0
+PASAT     12.2   31.3  24.4   5.3   26.8
+PVTB       4.3   14.5  65.9   2.3   13.0
+MSIT      26.6    9.6   9.2  40.8   13.8
+PVSAT      7.4   23.5  20.6   8.7   39.8
+
+Clase con mayor exhaustividad, por modelo:
+    Regresión logística    PVTB  (0.638)
+    Random Forest          PVTB  (0.659)
+
+  [SI] (c) PVTB es la clase con mayor exhaustividad (regresión logística)
+
+==============================================================================
+6. Coherencia neurofisiológica - qué pesa en el modelo
+==============================================================================
+Criterios declarados antes de ejecutar (ver las constantes del guion):
+  (a) los dos modelos superan el azar (0.200) con el IC95
+  (b) los pares gemelos (PASAT-PVSAT, STROOP-MSIT) están entre los 3 más
+      confundidos de los 10 (sección 7)
+  (c) PVTB es la clase con mayor exhaustividad
+  (d) theta frontal es mayor en PASAT y PVSAT que en PVTB, en todos los pliegues
+  (e) la confusión sigue más el parecido cognitivo que la distancia en el
+      protocolo (sección 7)
+
+6.1 Importancia por permutación del Random Forest, OUT-OF-FOLD
+    (5 barajados x 5 pliegues)
+
+    feature                             caída BA  SD pliegues
+    frontal_beta_rel_sd                  +0.0103       0.0026
+    frontal_alfa_rel_sd                  +0.0055       0.0106
+    posterior_alfa_rel_sd                +0.0051       0.0128
+    frontal_theta_rel_sd                 +0.0040       0.0104
+    frontocentral_delta_rel_sd           +0.0032       0.0100
+    posterior_alfa_rel_media             +0.0031       0.0047
+    frontocentral_delta_logabs_media     +0.0031       0.0020
+    frontal_alfa_logabs_sd               +0.0030       0.0051
+    indice_fatiga_media                  +0.0030       0.0047
+    posterior_beta_rel_sd                +0.0030       0.0054
+    frontal_theta_rel_media              +0.0027       0.0060
+    frontocentral_delta_rel_media        +0.0027       0.0033
+    frontal_alfa_logabs_media            +0.0027       0.0059
+    frontal_delta_rel_media              +0.0024       0.0059
+    frontal_beta_logabs_sd               +0.0024       0.0096
+
+6.2 Importancia agregada por bloque (fracción del total)
+    por banda   : beta 30.8%  alfa 30.0%  delta 18.3%  theta 16.1%  sin_asignar 4.8%
+    por región  : frontal 41.2%  posterior 23.5%  frontocentral 19.9%  temporal 10.6%  sin_asignar 4.8%
+
+6.3 Permutación CONJUNTA de bloques enteros (Random Forest)
+
+    bloque                     caída BA  SD pliegues
+    region/frontal              +0.0958       0.0081
+    banda/theta                 +0.0459       0.0174
+    banda/alfa                  +0.0455       0.0188
+    banda/delta                 +0.0449       0.0162
+    region/posterior            +0.0379       0.0142
+    banda/beta                  +0.0271       0.0118
+    region/frontocentral        +0.0254       0.0139
+    region/temporal             +0.0085       0.0034
+
+6.4 Dirección del efecto (coeficientes de la logística multinomial)
+    Coeficiente neto de theta frontal, por clase (media entre pliegues):
+      STROOP   -3.101   (por pliegue: -3.085  -3.010  -2.948  -3.120  -3.340)
+      PASAT    +1.227   (por pliegue: +1.204  +1.215  +0.965  +1.273  +1.478)
+      PVTB     +0.852   (por pliegue: +1.095  +0.752  +0.790  +0.734  +0.891)
+      MSIT     -1.033   (por pliegue: -1.105  -1.021  -0.897  -1.043  -1.098)
+      PVSAT    +2.054   (por pliegue: +1.891  +2.064  +2.090  +2.156  +2.069)
+    (d) PASAT y PVSAT por encima de PVTB en todos los pliegues: SI
+
+6.5 d de Cohen una-contra-resto de theta frontal y alfa posterior
+    STROOP   theta frontal -0.149   alfa posterior -0.093
+    PASAT    theta frontal +0.069   alfa posterior -0.160
+    PVTB     theta frontal -0.370   alfa posterior +0.276
+    MSIT     theta frontal +0.172   alfa posterior -0.012
+    PVSAT    theta frontal +0.277   alfa posterior -0.006
+
+6.6 Veredicto PARCIAL frente a (a), (c) y (d) - (b) y (e) van en 8.4
+  [SI] (a) los dos modelos superan el azar con el IC95
+  [SI] (c) PVTB es la clase con mayor exhaustividad
+  [SI] (d) theta frontal mayor en PASAT/PVSAT que en PVTB, todos los pliegues
+
+==============================================================================
+7. Qué tareas se confunden
+==============================================================================
+7.1 Confusión por pares (regresión logística), de más a menos confundido:
+    par               confusión  asimetría  similitud dist. protoc.
+    STROOP-MSIT           0.257     +0.001          3             3
+    PASAT-PVSAT           0.230     +0.028          3             3
+    PASAT-PVTB            0.163     +0.018          1             1
+    PVTB-PVSAT            0.128     -0.034          1             2
+    MSIT-PVSAT            0.113     -0.015          2             1
+    STROOP-PASAT          0.108     -0.029          2             1
+    STROOP-PVSAT          0.094     +0.000          2             4
+    STROOP-PVTB           0.087     +0.012          1             2
+    PASAT-MSIT            0.080     +0.010          2             2
+    PVTB-MSIT             0.065     -0.018          1             1
+
+    Los 3 pares más confundidos: ['STROOP-MSIT', 'PASAT-PVSAT', 'PASAT-PVTB']
+  [SI] (b) los pares gemelos ('PASAT-PVSAT', 'STROOP-MSIT') están entre ellos
+
+7.2 Separabilidad uno-contra-uno (10 logísticas binarias)
+    par                  n  personas      BA               IC95
+    PASAT-PVSAT       1061       145   0.592   [0.567, 0.617]
+    STROOP-MSIT       1064       145   0.615   [0.589, 0.639]
+    PASAT-PVTB        1064       145   0.742   [0.719, 0.767]
+    MSIT-PVSAT        1058       145   0.751   [0.725, 0.776]
+    STROOP-PASAT      1067       145   0.759   [0.731, 0.786]
+    STROOP-PVSAT      1062       145   0.763   [0.736, 0.789]
+    PASAT-MSIT        1063       145   0.764   [0.740, 0.788]
+    PVTB-PVSAT        1059       145   0.781   [0.756, 0.807]
+    STROOP-PVTB       1065       145   0.816   [0.793, 0.839]
+    PVTB-MSIT         1061       145   0.844   [0.821, 0.867]
+
+7.3 Estructura de la confusión: qué la predice mejor
+    confusion_vs_similitud_cognitiva           rho = +0.467
+    confusion_vs_distancia_protocolo           rho = -0.267
+    similitud_vs_distancia_protocolo           rho = -0.517
+    confusion_vs_distancia_duracion            rho = +0.758
+    similitud_vs_distancia_duracion            rho = +0.027
+    distancia_protocolo_vs_distancia_duracion  rho = -0.331
+
+  [SI] (e) la confusión sigue más el parecido cognitivo que la distancia en el protocolo
+      Limitación de diseño: el orden del protocolo es fijo, así que la tarea
+      coincide con el momento de la grabación; esta comparación no puede separar
+      del todo similitud cognitiva de proximidad temporal (ver sección 12 del
+      documento).
+
+==============================================================================
+8. Controles y sensibilidad
+==============================================================================
+8.1 Control negativo: etiquetas barajadas DENTRO de cada persona
+    20 barajados por modelo. Tiene que dar ~0.200.
+    Regresión logística    nulo 0.1981 (SD 0.0092, rango [0.177, 0.215])  real 0.4701  nulos >= real: 0 de 20
+    Random Forest          nulo 0.1990 (SD 0.0077, rango [0.183, 0.217])  real 0.4345  nulos >= real: 0 de 20
+
+  [SI] El nulo está centrado en 0.200
+
+8.2 Control de duración: los 6 contadores de procesamiento, solos
+    STROOP y MSIT duran ~60 s; PASAT, PVTB y PVSAT ~150 s (ESTADO.md). Si estos
+    6 números, sin una sola feature espectral, ya distinguen las tareas, la
+    duración es un confusor que hay que tener en cuenta al leer las secciones 6 y 7.
+
+--- Regresión logística ---
+  Exactitud balanceada, media por pliegue : 0.4652  (SD 0.0167)
+  Exactitud balanceada, amontonada        : 0.4652
+    IC95 (bootstrap por persona)          : [0.4491, 0.4836]
+  Exactitud simple                        : 0.4654
+  F1 macro = 0.4599   Kappa de Cohen = 0.3317
+
+--- Random Forest ---
+  Exactitud balanceada, media por pliegue : 0.4711  (SD 0.0183)
+  Exactitud balanceada, amontonada        : 0.4712
+    IC95 (bootstrap por persona)          : [0.4540, 0.4882]
+  Exactitud simple                        : 0.4714
+  F1 macro = 0.4705   Kappa de Cohen = 0.3392
+
+8.3 Sensibilidad: qué features entran a X
+
+    subconjunto                                    n   modelo               BA/pliegue            IC95 BAΔ vs principal (pareado, IC95)    
+    Principal                                     70   Regresión logística      0.4701   [0.452, 0.488]   -
+    Principal                                     70   Random Forest            0.4345   [0.415, 0.454]   -
+    Principal sin las columnas duplicadas         66   Regresión logística      0.4671   [0.449, 0.484]   -0.0030 [-0.006, -0.000]
+    Principal sin las columnas duplicadas         66   Random Forest            0.4379   [0.417, 0.458]   +0.0034 [-0.006, +0.013]
+    Principal + 6 contadores de procesamiento     76   Regresión logística      0.5921   [0.573, 0.610]   +0.1220 [+0.106, +0.137]
+    Principal + 6 contadores de procesamiento     76   Random Forest            0.5700   [0.551, 0.588]   +0.1354 [+0.119, +0.152]
+    Solo las features _media                      35   Regresión logística      0.3916   [0.371, 0.411]   -0.0787 [-0.098, -0.058]
+    Solo las features _media                      35   Random Forest            0.3508   [0.333, 0.370]   -0.0835 [-0.104, -0.062]
+    Solo las features _sd                         35   Regresión logística      0.3905   [0.373, 0.409]   -0.0794 [-0.097, -0.061]
+    Solo las features _sd                         35   Random Forest            0.4037   [0.386, 0.421]   -0.0306 [-0.044, -0.017]
+    Solo banda delta                              16   Regresión logística      0.3769   [0.361, 0.394]   -0.0931 [-0.114, -0.073]
+    Solo banda delta                              16   Random Forest            0.3759   [0.358, 0.393]   -0.0584 [-0.077, -0.041]
+    Solo banda theta                              18   Regresión logística      0.3830   [0.365, 0.401]   -0.0869 [-0.106, -0.068]
+    Solo banda theta                              18   Random Forest            0.3760   [0.358, 0.393]   -0.0583 [-0.078, -0.039]
+    Solo banda alfa                               18   Regresión logística      0.3772   [0.361, 0.394]   -0.0928 [-0.111, -0.074]
+    Solo banda alfa                               18   Random Forest            0.3797   [0.362, 0.397]   -0.0547 [-0.075, -0.035]
+    Solo banda beta                               16   Regresión logística      0.3714   [0.354, 0.388]   -0.0987 [-0.121, -0.077]
+    Solo banda beta                               16   Random Forest            0.3871   [0.370, 0.404]   -0.0475 [-0.068, -0.027]
+    Solo región frontal                           18   Regresión logística      0.4180   [0.402, 0.434]   -0.0521 [-0.071, -0.035]
+    Solo región frontal                           18   Random Forest            0.4069   [0.385, 0.428]   -0.0275 [-0.048, -0.008]
+    Solo región frontocentral                     16   Regresión logística      0.3680   [0.351, 0.385]   -0.1020 [-0.121, -0.083]
+    Solo región frontocentral                     16   Random Forest            0.3640   [0.345, 0.383]   -0.0704 [-0.089, -0.051]
+    Solo región temporal                          16   Regresión logística      0.3333   [0.316, 0.351]   -0.1368 [-0.157, -0.117]
+    Solo región temporal                          16   Random Forest            0.3528   [0.338, 0.369]   -0.0814 [-0.104, -0.059]
+    Solo región posterior                         18   Regresión logística      0.3612   [0.343, 0.379]   -0.1089 [-0.131, -0.087]
+    Solo región posterior                         18   Random Forest            0.3718   [0.354, 0.390]   -0.0626 [-0.083, -0.042]
+
+8.4 Veredicto COMPLETO frente a los 5 criterios declarados
+  [SI] (a) los dos modelos superan el azar con el IC95
+  [SI] (b) los pares gemelos están entre los 3 más confundidos
+  [SI] (c) PVTB es la clase con mayor exhaustividad
+  [SI] (d) theta frontal mayor en PASAT/PVSAT que en PVTB, todos los pliegues
+  [SI] (e) la confusión sigue más el parecido cognitivo que la distancia en el protocolo
+
+  Criterios cumplidos: 5 de 5
+  Salvedad: (b) y (e) están parcialmente confundidos con la duración de la
+  grabación (sección 8.2), porque STROOP=MSIT y PASAT=PVSAT también comparten
+  duración.
+
+==============================================================================
+9. Resolución por canal (suplemento)
+==============================================================================
+matriz_rf.parquet agrega por región. Para ver qué canales llevan el efecto se
+reagrega matriz_modelado.parquet con `construir_matriz_rf` y una región por canal.
+Matriz RF: 2656 grabación(es) × 247 feature(s). 2656 con etiqueta VAS.
+
+  Banda theta (d de Cohen una-contra-resto por canal y clase):
+clase  STROOP  PASAT  PVTB  MSIT  PVSAT
+canal                                  
+AF3     -0.13   0.09 -0.24  0.04   0.28
+AF4     -0.13   0.09 -0.22 -0.03   0.36
+F3      -0.08   0.00 -0.34  0.21   0.21
+F4      -0.10  -0.01 -0.32  0.22   0.22
+F7      -0.13   0.09 -0.12 -0.08   0.25
+F8      -0.13   0.12 -0.21 -0.03   0.26
+FC5     -0.09   0.06 -0.20 -0.03   0.26
+FC6     -0.05   0.01 -0.17  0.01   0.21
+O1       0.09  -0.16 -0.41  0.45   0.03
+O2       0.15  -0.18 -0.44  0.49  -0.01
+P7       0.04  -0.10 -0.21  0.24   0.03
+P8      -0.04  -0.08 -0.19  0.26   0.05
+T7       0.03  -0.01 -0.26  0.12   0.11
+T8      -0.03  -0.01 -0.23  0.15   0.12
+
+  Banda alfa (d de Cohen una-contra-resto por canal y clase):
+clase  STROOP  PASAT  PVTB  MSIT  PVSAT
+canal                                  
+AF3     -0.07  -0.21  0.42 -0.07  -0.08
+AF4     -0.01  -0.24  0.36 -0.04  -0.11
+F3      -0.03  -0.22  0.45 -0.08  -0.10
+F4       0.06  -0.26  0.37 -0.05  -0.11
+F7      -0.10  -0.12  0.42 -0.16  -0.02
+F8      -0.05  -0.17  0.35 -0.08  -0.06
+FC5     -0.11  -0.11  0.32 -0.17   0.08
+FC6     -0.05  -0.15  0.28 -0.13   0.05
+O1      -0.12  -0.24  0.53 -0.02  -0.15
+O2      -0.09  -0.25  0.55 -0.06  -0.14
+P7      -0.12  -0.21  0.49  0.01  -0.16
+P8      -0.07  -0.22  0.46 -0.07  -0.10
+T7       0.02  -0.30  0.32 -0.01  -0.03
+T8      -0.05  -0.25  0.35 -0.07   0.03
+
+==============================================================================
+10. Figuras
+==============================================================================
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\tareas_ejecutivas_confusion.png
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\tareas_ejecutivas_pares.png
+  figura -> C:\Users\migue\Desktop\TFG\EEG-Library\figures\tareas_ejecutivas_canales.png
+
+==============================================================================
+11. Resumen
+==============================================================================
+                clasificador BA/pliegue           IC95 F1 macro   Kappa
+ Baseline: clase mayoritaria     0.2000 [0.198, 0.200]   0.1037 -0.0008
+Baseline: azar estratificado     0.1927 [0.180, 0.206]   0.1917 -0.0091
+          Baseline: uniforme     0.2100 [0.196, 0.224]   0.2092  0.0126
+         Regresión logística     0.4701 [0.452, 0.488]   0.4660  0.3374
+               Random Forest     0.4345 [0.415, 0.454]   0.4288  0.2927
+
+  (azar de la exactitud balanceada con 5 clases = 0.200)
+  Coherencia neurofisiológica: 5 de 5 criterios cumplidos
+  Control de etiquetas barajadas centrado en 0.200: sí
+  Par más confundido: STROOP-MSIT (0.257)
+
+Resultados -> C:\Users\migue\Desktop\TFG\EEG-Data\processed\tareas_ejecutivas.json

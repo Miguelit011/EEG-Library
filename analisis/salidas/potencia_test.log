@@ -1,0 +1,49 @@
+
+==============================================================================
+1. PREDICCIONES OUT-OF-FOLD DE LA PRUEBA PRINCIPAL (train + val)
+==============================================================================
+con_control  BA por pliegue 0.3795  amontonada 0.3817  | Dummy amontonado 0.3281 (debe ser ~0.3333)
+             cortes: [-4.6, +5.0]  [-4.7, +5.3]  [-4.7, +5.3]  [-4.7, +5.3]  [-4.7, +5.1]
+sin_control  BA por pliegue 0.3947  amontonada 0.3920  | Dummy amontonado 0.3333 (debe ser ~0.3333)
+             cortes: [-7.5, +6.7]  [-7.5, +6.7]  [-7.5, +6.7]  [-8.3, +6.7]  [-8.3, +6.7]
+
+537 sesiones, 136 personas elegibles (>= 2 sesiones)
+
+==============================================================================
+2. SIMULACIÓN: 5000 tests de 28 personas
+==============================================================================
+Regla de decisión: p unilateral < 0.05 por permutación de las clases
+reales dentro de cada persona, con las predicciones fijas.
+
+--- con_control (referencia 0.3795) ---
+  Sesiones por test simulado: mediana 111 [105, 116]
+  Exactitud balanceada simulada: mediana 0.3821, EE 0.0537, P5-P95 [0.2959, 0.4713]
+  POTENCIA  P(p unilateral < 0.05) = 0.329   (con mid-p: 0.331)
+  P(IC95 excluye el azar)               = 0.162
+  P(IC95 contiene el azar y la referencia) = 0.806
+  P(IC95 por debajo de la referencia)   = 0.032
+  Efecto mínimo detectable al 80 % (aprox. (1.645 + 0.842) × EE): +0.134 sobre el azar -> 0.4669
+
+--- sin_control (referencia 0.3947) ---
+  Sesiones por test simulado: mediana 111 [105, 116]
+  Exactitud balanceada simulada: mediana 0.3929, EE 0.0491, P5-P95 [0.3127, 0.4756]
+  POTENCIA  P(p unilateral < 0.05) = 0.492   (con mid-p: 0.496)
+  P(IC95 excluye el azar)               = 0.246
+  P(IC95 contiene el azar y la referencia) = 0.713
+  P(IC95 por debajo de la referencia)   = 0.041
+  Efecto mínimo detectable al 80 % (aprox. (1.645 + 0.842) × EE): +0.122 sobre el azar -> 0.4553
+
+==============================================================================
+3. CONTROL: con predicciones al azar la tasa de rechazo debe ser ~alfa
+==============================================================================
+20000 simulaciones, barajando las predicciones de nuevo
+en cada una.
+
+  p convencional  alfa = 0.05: tasa 0.0524 ± 0.0016
+  p convencional  alfa = 0.01: tasa 0.0109 ± 0.0007
+  mid-p           alfa = 0.05: tasa 0.0536 ± 0.0016
+  mid-p           alfa = 0.01: tasa 0.0112 ± 0.0007
+  Simulaciones en que los dos deciden distinto a 0.05: 0.0013
+
+
+Resultados guardados en C:\Users\migue\Desktop\TFG\EEG-Data\processed\potencia_test.json

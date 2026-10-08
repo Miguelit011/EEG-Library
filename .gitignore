@@ -56,7 +56,6 @@ cover/
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -161,7 +160,6 @@ marimo/_lsp/
 __marimo__/
 
 # Claude Code
-CLAUDE.md
 .claude/settings.local.json
 
 # Sistema operativo
@@ -196,14 +194,10 @@ data/
 *.pickle
 *.mat
 
-# Documentación interna (no subir al repo)
-ESTADO.md
-MODELADO.md
 MEMORIA_modelado_RF.md
 BITACORA_modelado_RF.md
 
 # Salidas del proyecto
-figures/
 plots/
 results/
 output/

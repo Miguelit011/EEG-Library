@@ -51,7 +51,7 @@ N_BOOTSTRAP = 10000
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "regresion_lineal.json"
-RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"
+RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "resultados" / "figuras"
 
 PREDICTOR = "indice_fatiga_media"
 

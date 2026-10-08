@@ -59,7 +59,7 @@ CONDICIONES_REPOSO = ("OA", "OC")
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "pca_clustering.json"
-RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"
+RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "resultados" / "figuras"
 
 # Rojo = mucho estrés, azul = poco. El par pasa las seis comprobaciones del
 # validador de paleta en modo claro (CVD ΔE 21.6, muy por encima del 8 exigido).

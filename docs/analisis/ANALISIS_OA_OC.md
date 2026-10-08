@@ -17,7 +17,7 @@
 >
 > **Guion reproducible:** `analisis/analisis_oa_oc.py`
 > **Código de apoyo:** `src/eeg_library/modelado/reposo.py`
-> (`tests/test_reposo.py`, 78 pruebas)
+> (`tests/modelado/test_reposo.py`, 78 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/oa_oc.json`
 > **Registro de ejecución:** `resultados/logs/oa_oc.log`
 > **Figuras:** `resultados/figuras/oa_oc_confusion.png`, `resultados/figuras/oa_oc_alfa_posterior.png`,

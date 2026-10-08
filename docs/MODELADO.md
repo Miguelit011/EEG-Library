@@ -57,7 +57,7 @@
 
 ## Fase 14 — Entrenamiento y evaluación del Random Forest
 
-**Archivos:** `src/eeg_library/modelado/modeling.py`, `tests/test_modeling.py` (23 tests),
+**Archivos:** `src/eeg_library/modelado/modeling.py`, `tests/modelado/test_modeling.py` (23 tests),
 `analisis/analisis_fase14.py` (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\fase14_resultados.json`
 **Alcance:** solo `train` + `val`. **El conjunto de test no se ha tocado.**
@@ -349,7 +349,7 @@ que sí asoma es un marcador distinto del que predice la literatura.
 ## Fase 14b — ¿Aporta tratar la fatiga como tres niveles?
 
 **Archivos:** `src/eeg_library/modelado/modeling.py` (funciones de clasificación ordinal),
-`tests/test_modeling.py` (40 tests), `analisis/analisis_fase14b_clases.py`
+`tests/modelado/test_modeling.py` (40 tests), `analisis/analisis_fase14b_clases.py`
 
 **Solo train+val.** El test sigue sin tocarse.
 
@@ -527,7 +527,7 @@ niveles como prueba principal.
 ## Control de la deriva por número de visita (2026-10-06)
 
 **Archivos:** `src/eeg_library/modelado/modeling.py` (`numero_de_visita`,
-`residualizar_por_visita`, `compuesto_rel_sd`), `tests/test_modeling.py`,
+`residualizar_por_visita`, `compuesto_rel_sd`), `tests/modelado/test_modeling.py`,
 `analisis/analisis_control_visita.py`
 **Salida:** `<EEG_DATA>/processed/control_visita.json`,
 `resultados/logs/control_visita.log`
@@ -867,7 +867,7 @@ estar condicionada por esto, por la misma razón que en la Fase 14.
 
 ## Fase 17 — Ojos abiertos frente a ojos cerrados: control positivo del pipeline
 
-**Archivos:** `src/eeg_library/modelado/reposo.py`, `tests/test_reposo.py`
+**Archivos:** `src/eeg_library/modelado/reposo.py`, `tests/modelado/test_reposo.py`
 (78 tests), `analisis/analisis_oa_oc.py` (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\oa_oc.json`, `resultados/logs/oa_oc.log`
 **Figuras:** `resultados/figuras/oa_oc_confusion.png`, `resultados/figuras/oa_oc_alfa_posterior.png`,
@@ -900,7 +900,7 @@ este análisis no consume el alfa del paquete de test pendiente.
 
 ## Fase 18 — Reposo frente a tarea ejecutiva: ¿distingue el pipeline la carga cognitiva?
 
-**Archivos:** `src/eeg_library/modelado/reposo_tarea.py`, `tests/test_reposo_tarea.py`
+**Archivos:** `src/eeg_library/modelado/reposo_tarea.py`, `tests/modelado/test_reposo_tarea.py`
 (73 tests), `analisis/analisis_reposo_tarea.py` (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\reposo_tarea.json`, `resultados/logs/reposo_tarea.log`
 **Figuras:** `resultados/figuras/reposo_tarea_confusion.png`,
@@ -938,7 +938,7 @@ no consume el alfa del paquete de test pendiente.
 ## Fase 19 — Clasificación multiclase de las cinco tareas ejecutivas
 
 **Archivos:** `src/eeg_library/modelado/tareas_ejecutivas.py`,
-`tests/test_tareas_ejecutivas.py` (77 tests), `analisis/analisis_tareas_ejecutivas.py`
+`tests/modelado/test_tareas_ejecutivas.py` (77 tests), `analisis/analisis_tareas_ejecutivas.py`
 (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\tareas_ejecutivas.json`,
 `resultados/logs/tareas_ejecutivas.log`

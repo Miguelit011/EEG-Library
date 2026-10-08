@@ -350,7 +350,7 @@ def test_columnas_de_features_sesion_excluye_identidad_y_etiqueta():
 def test_columnas_de_features_sesion_conserva_n_grabaciones():
     """
     `n_grabaciones` es la 77.ª feature de las Fases 14 y 14b. Si este test falla,
-    alguien la ha excluido: las cifras de MODELADO.md dejan de corresponder al
+    alguien la ha excluido: las cifras de docs/MODELADO.md dejan de corresponder al
     código, y hay que reejecutar los análisis y actualizar la documentación.
     """
     matriz = _matriz([

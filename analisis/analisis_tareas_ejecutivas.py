@@ -36,7 +36,7 @@ salvo el suplemento por canal, que reagrega `matriz_modelado.parquet`
 (Fase 11.5) con la propia `construir_matriz_rf` y regiones de un solo canal.
 
 Ejecutar (desde la raíz del repositorio), **una sola vez y nunca en paralelo**:
-    python analisis/analisis_tareas_ejecutivas.py > analisis/salidas/tareas_ejecutivas.log 2>&1
+    python analisis/analisis_tareas_ejecutivas.py > resultados/logs/tareas_ejecutivas.log 2>&1
 
 `--rapido` ejecuta el mismo código con parámetros mínimos y escribe en un
 directorio temporal, para comprobar que el guion corre de principio a fin y
@@ -137,7 +137,7 @@ if RAPIDO:
     RUTA_FIGURAS = _RUTA_RAPIDO / "figures"
 else:
     RUTA_RESULTADOS = RUTA_DATOS / "processed" / "tareas_ejecutivas.json"
-    RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"
+    RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "resultados" / "figuras"
 
 REGION_THETA, BANDA_THETA = "frontal", "theta"
 REGION_ALFA, BANDA_ALFA = "posterior", "alfa"

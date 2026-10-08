@@ -29,7 +29,7 @@
 >
 > **Guion reproducible:** `analisis/analisis_tareas_ejecutivas.py`
 > **Código de apoyo:** `src/eeg_library/modelado/tareas_ejecutivas.py`
-> (`tests/test_tareas_ejecutivas.py`, 77 pruebas)
+> (`tests/modelado/test_tareas_ejecutivas.py`, 77 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/tareas_ejecutivas.json`
 > **Registro de ejecución:** `resultados/logs/tareas_ejecutivas.log`
 > **Figuras:** `resultados/figuras/tareas_ejecutivas_confusion.png`,

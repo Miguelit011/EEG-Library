@@ -24,7 +24,7 @@ Supuestos que hay que leer junto a la cifra:
 **Solo usa `train` + `val`.** El test se aparta al leer la matriz.
 
 Ejecutar (desde la raíz del repositorio):
-    python analisis/analisis_potencia_test.py > analisis/salidas/potencia_test.log 2>&1
+    python analisis/analisis_potencia_test.py > resultados/logs/potencia_test.log 2>&1
 """
 
 import json

@@ -6,7 +6,7 @@ Objetivo: facilitar el análisis de fatiga mental a investigadores
 de la Facultad de Ciencias del Deporte.
 
 ## Stack técnico
-- Python 3.11+
+- Python 3.10+
 - MNE-Python (procesamiento EEG, lectura EDF)
 - MNE-ICALabel + ONNX Runtime (clasificación automática de componentes ICA, Fase 6)
 - NumPy / SciPy (análisis espectral)
@@ -37,7 +37,7 @@ de la Facultad de Ciencias del Deporte.
    Clasificación automática de componentes con **ICLabel** (MNE-ICALabel) en
    vez de `find_bads_eog` con un canal frontal como proxy de EOG, para evitar
    la circularidad de usar como referencia "esto es ojo" un canal que también
-   contiene señal cerebral de interés (justificación completa en ESTADO.md,
+   contiene señal cerebral de interés (justificación completa en docs/ESTADO.md,
    Fase 6).
 7. Epoching (segmentación en ventanas): ventanas fijas de 4 s (1024 muestras
    a 256 Hz) con solapamiento del 50 % (paso de 2 s) entre ventanas
@@ -60,7 +60,7 @@ de la Facultad de Ciencias del Deporte.
    (256 muestras a 256 Hz) con 50 % de solapamiento y ventana de Hann,
    resolución de 1 Hz; rango de cálculo limitado a 1–30 Hz, ya que el
    filtro de la Fase 3 eliminó el resto (justificación completa en
-   ESTADO.md, Fase 8).
+   docs/ESTADO.md, Fase 8).
 9. Extracción de potencia por bandas: delta, theta, alpha, beta + índice
    theta/alpha. El índice **no es la etiqueta**: se calcula porque es el
    biomarcador de referencia de la literatura y el TFG tiene que reportarlo.
@@ -70,7 +70,7 @@ de la Facultad de Ciencias del Deporte.
     theta/alpha se eliminó del pipeline el 2026-08-23, al disponer de una
     etiqueta externa real (el VAS, Fase 12). Nunca llegó a implementarse. El
     hueco en la numeración es deliberado: renumerar invalidaría las
-    referencias del código, los tests y el historial. Ver ESTADO.md,
+    referencias del código, los tests y el historial. Ver docs/ESTADO.md,
     "Fase 10 — retirada"
 11. Procesamiento por lotes (múltiples archivos simultáneamente)
 12. Dataset supervisado: enlace del VAS de fatiga percibida con las
@@ -79,7 +79,7 @@ de la Facultad de Ciencias del Deporte.
     El enlace se hace por `(sujeto_id, medicion)` y la agrupación para
     splits y bootstrap por `persona_uid` — nunca por `sujeto_id`, porque seis
     de ellos contienen dos personas distintas (pulsera Fitbit reutilizada).
-    Detalle completo, correcciones de metadata y recuentos en ESTADO.md,
+    Detalle completo, correcciones de metadata y recuentos en docs/ESTADO.md,
     Fase 12
 13. Matriz de features del Random Forest: agregación por grabación y **por
     región** (frontal / frontocentral / temporal / posterior), restringida a
@@ -89,23 +89,23 @@ de la Facultad de Ciencias del Deporte.
     lo que no devuelve, no entra al `fit` — en particular `medicion`
 
 > Para el estado de implementación por fase (qué está hecho, decisiones de
-> diseño detalladas, tests), ver ESTADO.md — cubre las Fases 1-13 (pipeline y
+> diseño detalladas, tests), ver docs/ESTADO.md — cubre las Fases 1-13 (pipeline y
 > matriz de features) y está congelado en ese punto. El entrenamiento del
 > modelo, su evaluación y la ruta CNN (Fase 14 en adelante) viven en
-> MODELADO.md.
+> docs/MODELADO.md.
 
 ## Convenciones de código
 - Comentarios y docstrings en español
 - Cada función debe tener su test correspondiente en /tests
 - Frecuencia de muestreo mínima: 256 Hz (validar al cargar)
-- Los datos reales están en data/samples/ (no subir al repo)
+- Los datos reales están fuera del repo (ver "Ubicación del dataset" más abajo)
 
 ## Contexto científico
 
 > Cifras medidas sobre el dataset ya organizado (2026-08-10). Sustituyen a la
 > estimación previa que figuraba aquí (160 sujetos, 960 archivos, 6 momentos,
 > 5 condiciones, 30–37 h), que era anterior a la organización. Desglose
-> completo en ESTADO.md, "El dataset final".
+> completo en docs/ESTADO.md, "El dataset final".
 
 - Ubicación del dataset (fuera del repo y fuera de OneDrive): `C:\Users\migue\Desktop\TFG\EEG-Data\` —
   `dataset_final/` con los EDF, `metadata/` con `manifest_canonical.csv`,

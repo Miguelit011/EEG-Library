@@ -21,7 +21,7 @@
 >
 > **Guion reproducible:** `analisis/analisis_reposo_tarea.py`
 > **Código de apoyo:** `src/eeg_library/modelado/reposo_tarea.py`
-> (`tests/test_reposo_tarea.py`, 73 pruebas)
+> (`tests/modelado/test_reposo_tarea.py`, 73 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/reposo_tarea.json`
 > **Registro de ejecución:** `resultados/logs/reposo_tarea.log`
 > **Figuras:** `resultados/figuras/reposo_tarea_confusion.png`,

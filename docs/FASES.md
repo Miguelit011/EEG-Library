@@ -19,7 +19,8 @@ historial.
 | 8 | PSD (Welch) | `procesado/spectral.py` |
 | 9 | Potencia por bandas e índice theta/alfa | `procesado/bands.py` |
 | 10 | **Retirada** (2026-08-23): auto-etiquetado por umbrales; nunca se implementó | — |
-| 11 / 11.5 | Procesamiento por lotes y máscara de validez de canal | `procesado/batch.py`, `procesado/features.py` |
+| 11 | Procesamiento por lotes | `procesado/batch.py` |
+| 11.5 | Máscara de validez de canal | `procesado/features.py` |
 | 12 | Etiqueta VAS por sesión | `procesado/labels.py` |
 | 13 | Matriz de features del Random Forest | `procesado/matrix.py` |
 

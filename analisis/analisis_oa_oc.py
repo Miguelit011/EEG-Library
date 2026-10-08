@@ -102,7 +102,7 @@ RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_MATRIZ_EPOCAS = RUTA_DATOS / "processed" / "matriz_modelado.parquet"
 RUTA_GRABACIONES = RUTA_DATOS / "metadata" / "labels_grabaciones.csv"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "oa_oc.json"
-RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "figures"
+RUTA_FIGURAS = Path(__file__).resolve().parents[1] / "resultados" / "figuras"
 
 # La feature de la referencia de una sola variable, elegida por la teoría (el
 # ritmo alfa de la región occipito-parietal) y no por los datos.

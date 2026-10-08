@@ -3,7 +3,7 @@ Test de integración del pipeline completo (Fases 1-6) en el orden corregido.
 
 Los tests de cada módulo (test_quality.py, test_filtering.py, etc.) prueban
 cada función de forma aislada con datos sintéticos y no habrían detectado el
-error de orden documentado en ESTADO.md ("Nota de corrección de orden"): que
+error de orden documentado en docs/ESTADO.md ("Nota de corrección de orden"): que
 `evaluar_calidad`/`aplicar_car` se ejecutaran antes de `recortar_registro`/
 `aplicar_filtros` contaminaba las métricas de calidad con artefactos de borde
 y deriva de baja frecuencia sin filtrar.
@@ -90,7 +90,7 @@ def _mockear_iclabel_sin_oculares(monkeypatch, n_componentes):
 
 # ---------------------------------------------------------------------------
 # El orden incorrecto (evaluar calidad antes de recortar/filtrar) genera
-# el falso positivo que documenta la Nota de corrección de ESTADO.md.
+# el falso positivo que documenta la Nota de corrección de docs/ESTADO.md.
 # ---------------------------------------------------------------------------
 
 def test_orden_incorrecto_genera_falso_positivo_en_evaluar_calidad():

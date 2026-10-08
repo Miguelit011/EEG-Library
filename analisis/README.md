@@ -5,12 +5,7 @@ proyecto y en la memoria del TFG**.
 
 No son parte de la librería: la librería (`src/eeg_library/`) contiene las
 reglas de evaluación y los modelos; estos guiones las orquestan sobre el
-dataset real y producen los resultados. La distinción importa:
-
-| | `probar.py`, `probar_ica.py` (raíz) | `analisis/*.py` |
-|---|---|---|
-| Qué son | Exploración manual | Registro reproducible de resultados |
-| Si cambian | No pasa nada | Cambian cifras ya citadas |
+dataset real y producen los resultados. La distinción importa: los guiones son el registro reproducible de los resultados, y si cambian, cambian cifras ya citadas.
 
 **Por eso estos guiones no deben modificarse a la ligera.** Si un resultado
 publicado se genera aquí, cualquier cambio invalida la correspondencia entre el
@@ -51,12 +46,12 @@ export EEG_DATA=/ruta/al/dataset
 
 ## Guiones
 
-Se ejecutan **desde la raíz del repositorio**.
+Se ejecutan **desde la raíz del repositorio**. Los logs van a `resultados/logs/` y las figuras a `resultados/figuras/`.
 
 ### `analisis_fase14.py` — Regresión sobre el VAS
 
 ```bash
-python analisis/analisis_fase14.py > analisis/salidas/fase14.log 2>&1
+python analisis/analisis_fase14.py > resultados/logs/fase14.log 2>&1
 ```
 
 Entrena y evalúa el Random Forest como problema de regresión sobre la escala
@@ -65,13 +60,13 @@ Tarea A (participante nuevo), Tarea B (participante conocido), selección de
 variables anidada, importancias y bootstrap.
 
 - **Salida:** `<EEG_DATA>/processed/fase14_resultados.json`
-- **Registro de ejecución:** `analisis/salidas/fase14.log`
+- **Registro de ejecución:** `resultados/logs/fase14.log`
 - **Duración:** ~4 min
 
 ### `analisis_fase14b_clases.py` — Clasificación ordinal en tres niveles
 
 ```bash
-python analisis/analisis_fase14b_clases.py > analisis/salidas/fase14b_clases.log 2>&1
+python analisis/analisis_fase14b_clases.py > resultados/logs/fase14b_clases.log 2>&1
 ```
 
 Reformula el problema como clasificación en tres niveles (poca / media / mucha
@@ -79,13 +74,13 @@ fatiga) y determina si aporta sobre la regresión. Cuatro secciones: datos,
 Tarea A, Tarea B y el subconjunto de variables `_rel_sd`.
 
 - **Salida:** `<EEG_DATA>/processed/fase14b_clases.json`
-- **Registro de ejecución:** `analisis/salidas/fase14b_clases.log`
+- **Registro de ejecución:** `resultados/logs/fase14b_clases.log`
 - **Duración:** ~6 min
 
 ### `analisis_control_visita.py` — Control de la deriva por número de visita
 
 ```bash
-python analisis/analisis_control_visita.py > analisis/salidas/control_visita.log 2>&1
+python analisis/analisis_control_visita.py > resultados/logs/control_visita.log 2>&1
 ```
 
 Recalcula, con y sin una recta de visita (M2…M6) ajustada dentro de cada
@@ -95,9 +90,9 @@ intrapersona VAS ~ theta/alfa y el compuesto `_rel_sd`. Las cifras sin control
 reproducen las ya documentadas.
 
 - **Salida:** `<EEG_DATA>/processed/control_visita.json`
-- **Registro de ejecución:** `analisis/salidas/control_visita.log`
+- **Registro de ejecución:** `resultados/logs/control_visita.log`
 - **Duración:** ~1 min
-- **Documentado en:** `MODELADO.md`, "Control de la deriva por número de visita"
+- **Documentado en:** `docs/MODELADO.md`, "Control de la deriva por número de visita"
 
 ### `analisis_test.py` — Análisis confirmatorio sobre el test
 
@@ -124,14 +119,14 @@ hashes, entorno, CPU).
   temporal, para depurar.
 - **Salida:** `<EEG_DATA>/processed/ensayo_val_<fecha>/` o
   `<EEG_DATA>/processed/test_<fecha>/`, con su `ejecucion.log`
-- **Verificado en:** `tests/test_confirmatorio.py` (piezas de
+- **Verificado en:** `tests/modelado/test_confirmatorio.py` (piezas de
   `src/eeg_library/modelado/confirmatorio.py`)
 - **Documentado en:** `PREREGISTRO_TEST.md`
 
 ### `analisis_potencia_test.py` — Potencia de la prueba principal en test
 
 ```bash
-python analisis/analisis_potencia_test.py > analisis/salidas/potencia_test.log 2>&1
+python analisis/analisis_potencia_test.py > resultados/logs/potencia_test.log 2>&1
 ```
 
 Simula 5000 tests de 28 personas remuestreando las predicciones out-of-fold de
@@ -140,9 +135,9 @@ pre-registrada (p unilateral por permutación dentro de persona). Incluye un
 control de error de tipo I con predicciones barajadas.
 
 - **Salida:** `<EEG_DATA>/processed/potencia_test.json`
-- **Registro de ejecución:** `analisis/salidas/potencia_test.log`
+- **Registro de ejecución:** `resultados/logs/potencia_test.log`
 - **Duración:** ~1.5 min
-- **Documentado en:** `MODELADO.md`, "Potencia de la prueba principal en test"
+- **Documentado en:** `docs/MODELADO.md`, "Potencia de la prueba principal en test"
 
 ### `analisis_regresion_lineal.py` — VAS ~ índice theta/alfa
 
@@ -157,9 +152,9 @@ base, regresión, comprobaciones de forma (log₁₀ y recorte de colas), regres
 intrapersona, figuras y veredicto frente al óptimo declarado *antes* de ejecutar.
 
 - **Salida:** `<EEG_DATA>/processed/regresion_lineal.json`,
-  `figures/regresion_vas_theta_alfa*.png`
+  `resultados/figuras/regresion_vas_theta_alfa*.png`
 - **Duración:** ~20 s
-- **Documentado en:** `REGRESION_LINEAL.md`
+- **Documentado en:** `docs/analisis/ANALISIS_REGRESION_LINEAL.md`
 
 ### `analisis_pca_clustering.py` — PCA + clustering de los grupos extremos
 
@@ -175,9 +170,9 @@ y grupo, análisis principal, referencia sin ajustar, robustez en reposo, figura
 y resumen.
 
 - **Salida:** `<EEG_DATA>/processed/pca_clustering.json`,
-  `figures/pca_clustering_vas_extremos*.png`
+  `resultados/figuras/pca_clustering_vas_extremos*.png`
 - **Duración:** ~40 s
-- **Documentado en:** `MODELADO.md`, Fase 16
+- **Documentado en:** `docs/MODELADO.md`, Fase 16
 
 ### `analisis_oa_oc.py` — Ojos abiertos frente a ojos cerrados
 
@@ -196,14 +191,14 @@ baselines, regresión logística, Random Forest, referencia de una variable,
 coherencia neurofisiológica, controles y sensibilidad, resolución por canal,
 figuras y resumen.
 
-- **Salida:** `<EEG_DATA>/processed/oa_oc.json`, `figures/oa_oc_*.png`
+- **Salida:** `<EEG_DATA>/processed/oa_oc.json`, `resultados/figuras/oa_oc_*.png`
 - **Duración:** ~7.5 min
 - **Requiere además** (solo el suplemento por canal):
   `<EEG_DATA>/processed/matriz_modelado.parquet` y
   `<EEG_DATA>/metadata/labels_grabaciones.csv`
-- **Verificado en:** `tests/test_reposo.py` (78 pruebas sobre
+- **Verificado en:** `tests/modelado/test_reposo.py` (78 pruebas sobre
   `src/eeg_library/modelado/reposo.py`)
-- **Documentado en:** `ANALISIS_OA_OC.md` y `MODELADO.md`, Fase 17
+- **Documentado en:** `docs/analisis/ANALISIS_OA_OC.md` y `docs/MODELADO.md`, Fase 17
 
 ### `analisis_reposo_tarea.py` — Reposo frente a tarea ejecutiva
 
@@ -225,15 +220,15 @@ el orden fijo del protocolo. Once secciones: datos, baselines, regresión logís
 Random Forest, referencia de una variable, coherencia neurofisiológica, errores por
 condición, controles y sensibilidad, resolución por canal, figuras y resumen.
 
-- **Salida:** `<EEG_DATA>/processed/reposo_tarea.json`, `figures/reposo_tarea_*.png`
+- **Salida:** `<EEG_DATA>/processed/reposo_tarea.json`, `resultados/figuras/reposo_tarea_*.png`
 - **Duración:** ~15 min. `--rapido` ejecuta el mismo código con parámetros mínimos
   (~40 s) y escribe en un directorio temporal: **sus cifras no son resultados**
 - **Requiere además** (solo el suplemento por canal):
   `<EEG_DATA>/processed/matriz_modelado.parquet` y
   `<EEG_DATA>/metadata/labels_grabaciones.csv`
-- **Verificado en:** `tests/test_reposo_tarea.py` (73 pruebas sobre
+- **Verificado en:** `tests/modelado/test_reposo_tarea.py` (73 pruebas sobre
   `src/eeg_library/modelado/reposo_tarea.py`)
-- **Documentado en:** `ANALISIS_REPOSO_TAREA.md` y `MODELADO.md`, Fase 18
+- **Documentado en:** `docs/analisis/ANALISIS_REPOSO_TAREA.md` y `docs/MODELADO.md`, Fase 18
 
 ### `analisis_tareas_ejecutivas.py` — Las cinco tareas ejecutivas entre sí
 
@@ -260,16 +255,16 @@ coherencia neurofisiológica, qué tareas se confunden, controles y
 sensibilidad, resolución por canal, figuras y resumen.
 
 - **Salida:** `<EEG_DATA>/processed/tareas_ejecutivas.json`,
-  `figures/tareas_ejecutivas_*.png`
+  `resultados/figuras/tareas_ejecutivas_*.png`
 - **Duración:** ~26 min. `--rapido` ejecuta el mismo código con parámetros
   mínimos (~1 min) y escribe en un directorio temporal: **sus cifras de
   bootstrap/permutación no son resultados**
 - **Requiere además** (solo el suplemento por canal):
   `<EEG_DATA>/processed/matriz_modelado.parquet` y
   `<EEG_DATA>/metadata/labels_grabaciones.csv`
-- **Verificado en:** `tests/test_tareas_ejecutivas.py` (77 pruebas sobre
+- **Verificado en:** `tests/modelado/test_tareas_ejecutivas.py` (77 pruebas sobre
   `src/eeg_library/modelado/tareas_ejecutivas.py`)
-- **Documentado en:** `ANALISIS_TAREAS_EJECUTIVAS.md` y `MODELADO.md`, Fase 19
+- **Documentado en:** `docs/analisis/ANALISIS_TAREAS_EJECUTIVAS.md` y `docs/MODELADO.md`, Fase 19
 
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
@@ -278,7 +273,7 @@ Son independientes entre sí y pueden ejecutarse en cualquier orden.
 ## Garantías metodológicas
 
 Estos guiones respetan los invariantes definidos y verificados en
-`src/eeg_library/modelado/modeling.py` (49 pruebas en `tests/test_modeling.py`):
+`src/eeg_library/modelado/modeling.py` (49 pruebas en `tests/modelado/test_modeling.py`):
 
 - La unidad de evaluación es la **sesión**, no la grabación ni la ventana:
   hay 653 etiquetas independientes, no 274 718.

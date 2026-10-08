@@ -21,7 +21,7 @@ deriva por visita"), donde la prueba principal ya daba 0.3795.
 agregar a sesión, y no vuelve a aparecer.
 
 Ejecutar (desde la raíz del repositorio):
-    python analisis/analisis_control_visita.py > analisis/salidas/control_visita.log 2>&1
+    python analisis/analisis_control_visita.py > resultados/logs/control_visita.log 2>&1
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
 `C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).

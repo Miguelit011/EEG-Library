@@ -181,7 +181,7 @@ def test_incluir_procesamiento_devuelve_exactamente_las_seis_columnas_mas():
 
 def test_con_el_esquema_de_la_fase_13_quedan_70_features():
     """
-    Guardián de la documentación: ANALISIS_OA_OC.md habla de 77 features de la
+    Guardián de la documentación: docs/analisis/ANALISIS_OA_OC.md habla de 77 features de la
     Fase 13, 7 excluidas y 70 en el modelo. Si este test falla, esas cifras ya no
     corresponden al código y hay que reejecutar el análisis y actualizar el
     documento.

@@ -23,10 +23,10 @@
 > **Código de apoyo:** `src/eeg_library/modelado/reposo_tarea.py`
 > (`tests/test_reposo_tarea.py`, 73 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/reposo_tarea.json`
-> **Registro de ejecución:** `analisis/salidas/reposo_tarea.log`
-> **Figuras:** `figures/reposo_tarea_confusion.png`,
-> `figures/reposo_tarea_por_condicion.png`, `figures/reposo_tarea_canales.png`
-> **Resumen en el cuaderno de modelado:** `MODELADO.md`, Fase 18
+> **Registro de ejecución:** `resultados/logs/reposo_tarea.log`
+> **Figuras:** `resultados/figuras/reposo_tarea_confusion.png`,
+> `resultados/figuras/reposo_tarea_por_condicion.png`, `resultados/figuras/reposo_tarea_canales.png`
+> **Resumen en el cuaderno de modelado:** `docs/MODELADO.md`, Fase 18
 >
 > Fecha de ejecución: 2026-09-21. **Solo `train` + `val`; el conjunto de test no
 > se ha abierto.**
@@ -35,7 +35,7 @@
 
 ## 1. La pregunta, y por qué es distinta de la Fase 17
 
-La Fase 17 (`ANALISIS_OA_OC.md`) mostró que el pipeline conserva el efecto Berger
+La Fase 17 (`docs/analisis/ANALISIS_OA_OC.md`) mostró que el pipeline conserva el efecto Berger
 (0.849 de exactitud balanceada entre OA y OC, con un d de Cohen ≈ 1.3 en el alfa
 posterior). Su propia sección de alcance dice lo que **no** establece: que el
 pipeline conserve efectos más sutiles. Un control positivo con el efecto más
@@ -61,7 +61,7 @@ eliminar y que por eso el análisis **mide** en vez de esquivar:
 2. **El orden del protocolo es fijo** (OC → OA → STROOP → PASAT → PVTB → MSIT →
    PVSAT): el reposo ocupa siempre las posiciones 1–2 y las tareas las 3–7, así que
    la condición y el tiempo acumulado en la sesión están confundidos
-   (`ESTADO.md`, «Orden del protocolo»). → Sección 8.3, y no se resuelve.
+   (`docs/ESTADO.md`, «Orden del protocolo»). → Sección 8.3, y no se resuelve.
 
 ## 2. Datos
 
@@ -128,7 +128,7 @@ es**, como muestra la sensibilidad de la sección 8.4:
 
 **Con solo seis números de procesamiento, sin una sola feature espectral, el Random
 Forest distingue reposo de tarea con 0.990.** La explicación más probable está en
-`ESTADO.md` («Duraciones»): la duración mediana de la grabación depende de la
+`docs/ESTADO.md` («Duraciones»): la duración mediana de la grabación depende de la
 condición —MSIT 69 s, STROOP 68 s, OA y OC ~122 s, PASAT, PVSAT y PVTB ~187 s—, de
 modo que `n_ventanas` (que es la duración) identifica casi por sí sola la
 condición. Y como el reposo queda en **medio** de las tareas cortas y las largas, la
@@ -664,7 +664,7 @@ canal superó el control de calidad.)
 
 ## 10. Las figuras
 
-### `figures/reposo_tarea_confusion.png`
+### `resultados/figuras/reposo_tarea_confusion.png`
 
 Las dos matrices de confusión, lado a lado y en la misma escala. El color es el
 **porcentaje de cada clase real** (cada fila suma 100 %), no el recuento: así el
@@ -672,14 +672,14 @@ desbalance de 2.5 : 1 no cambia el color de las celdas. La diagonal es oscura y 
 errores claros. El error más visible es «real reposo, predicha tarea» en el Random
 Forest (25.1 %).
 
-### `figures/reposo_tarea_por_condicion.png`
+### `resultados/figuras/reposo_tarea_por_condicion.png`
 
 La tasa de acierto de cada condición original, en el orden del protocolo (de arriba
 abajo, 1 = OC … 7 = PVSAT), con su IC95 remuestreando personas. Azul = reposo,
 naranja = tarea. Es la figura que muestra de un vistazo los dos huecos de la sección
 7: OA por debajo de OC y PVTB por debajo de las demás tareas.
 
-### `figures/reposo_tarea_canales.png`
+### `resultados/figuras/reposo_tarea_canales.png`
 
 El d de Cohen de theta y alfa por canal, en potencia relativa (fila de arriba) y
 absoluta (fila de abajo), con IC95 remuestreando personas. En naranja, los canales
@@ -736,7 +736,7 @@ carga cognitiva, un efecto de tamaño moderado a grande.
 
 - **El orden del protocolo es fijo: el reposo siempre precede a las tareas** (OC →
   OA → STROOP → PASAT → PVTB → MSIT → PVSAT). La condición y el tiempo acumulado en
-  la sesión están perfectamente confundidos (`ESTADO.md`), y este diseño **no puede
+  la sesión están perfectamente confundidos (`docs/ESTADO.md`), y este diseño **no puede
   separarlos**. Es la limitación más seria y no tiene solución con estos datos. La
   sección 8.3 la acota: no hay una tendencia limpia del acierto con la posición, y el
   par adyacente OA–STROOP se separa con 0.87. Ninguna de las dos la descarta.
@@ -802,7 +802,7 @@ carga cognitiva, un efecto de tamaño moderado a grande.
 
 ```bash
 # desde la raíz del repositorio; una sola vez y nunca en paralelo (la RAM es limitada)
-python analisis/analisis_reposo_tarea.py > analisis/salidas/reposo_tarea.log 2>&1
+python analisis/analisis_reposo_tarea.py > resultados/logs/reposo_tarea.log 2>&1
 ```
 
 Duración: **15 min 11 s** en la ejecución que produjo estos resultados. Semilla fija
@@ -825,7 +825,7 @@ paso, `preparar_reposo_tarea` se niega a incluirlo sin permiso explícito, y el
 suplemento por canal lee el parquet de épocas ya filtrado a las grabaciones de
 análisis.
 
-`*.log` y `figures/` están en el `.gitignore` del repositorio (igual que los de la
+`*.log` y `resultados/figuras/` están en el `.gitignore` del repositorio (igual que los de la
 Fase 17): el log y las figuras existen en disco pero no se versionan salvo que se
 fuerce.
 
@@ -836,12 +836,12 @@ Versiones con las que se generaron estos resultados: Python 3.10.11, scikit-lear
 
 | Documento | Qué cubre |
 |---|---|
-| `MODELADO.md`, Fase 18 | Este análisis, resumido en el cuaderno de modelado |
-| `ANALISIS_OA_OC.md` (Fase 17) | El control positivo anterior, con el efecto Berger; de aquí se reutilizan el módulo, las exclusiones de X y la estructura del guion |
-| `MODELADO.md`, Fases 14 y 14b | El arnés de validación reutilizado y el resultado sobre la fatiga que este control contextualiza |
-| `REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS: el mismo biomarcador, aquí sin etiqueta de fatiga |
-| `PCA_CLUSTER.md` | La vía no supervisada sobre los grupos extremos de VAS |
-| `ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
-| `ESTADO.md`, «Orden del protocolo» y «Duraciones» | El orden fijo que confunde condición y posición, y las duraciones por condición que explican el atajo de los contadores |
-| `ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
-| `ESTADO.md`, Fase 11.5 | La máscara de canales válidos |
+| `docs/MODELADO.md`, Fase 18 | Este análisis, resumido en el cuaderno de modelado |
+| `docs/analisis/ANALISIS_OA_OC.md` (Fase 17) | El control positivo anterior, con el efecto Berger; de aquí se reutilizan el módulo, las exclusiones de X y la estructura del guion |
+| `docs/MODELADO.md`, Fases 14 y 14b | El arnés de validación reutilizado y el resultado sobre la fatiga que este control contextualiza |
+| `docs/analisis/ANALISIS_REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS: el mismo biomarcador, aquí sin etiqueta de fatiga |
+| `docs/analisis/ANALISIS_PCA_CLUSTERING.md` | La vía no supervisada sobre los grupos extremos de VAS |
+| `docs/ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
+| `docs/ESTADO.md`, «Orden del protocolo» y «Duraciones» | El orden fijo que confunde condición y posición, y las duraciones por condición que explican el atajo de los contadores |
+| `docs/ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
+| `docs/ESTADO.md`, Fase 11.5 | La máscara de canales válidos |

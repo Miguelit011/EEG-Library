@@ -8,10 +8,10 @@
 >
 > **Guion reproducible:** `analisis/analisis_pca_clustering.py`
 > **Salida numérica:** `<EEG_DATA>/processed/pca_clustering.json`
-> **Registro de ejecución:** `analisis/salidas/pca_clustering.log`
-> **Figuras:** `figures/pca_clustering_vas_extremos.png`,
-> `figures/pca_clustering_vas_extremos_reposo.png`
-> **Resumen en el cuaderno de modelado:** `MODELADO.md`, Fase 16
+> **Registro de ejecución:** `resultados/logs/pca_clustering.log`
+> **Figuras:** `resultados/figuras/pca_clustering_vas_extremos.png`,
+> `resultados/figuras/pca_clustering_vas_extremos_reposo.png`
+> **Resumen en el cuaderno de modelado:** `docs/MODELADO.md`, Fase 16
 >
 > Fecha de ejecución: 2026-08-27.
 
@@ -79,7 +79,7 @@ feature se le resta la media de su propia condición:
 x_ajustada = x − media(x | condición de esa grabación)
 ```
 
-Es el mismo recurso que la regresión intrapersona de `REGRESION_LINEAL.md`, pero
+Es el mismo recurso que la regresión intrapersona de `docs/analisis/ANALISIS_REGRESION_LINEAL.md`, pero
 centrando por condición en vez de por `persona_uid`. Lo que queda es **la
 desviación de cada grabación respecto a lo esperable en su propia tarea**.
 
@@ -323,14 +323,14 @@ Ambas: PC1 vs PC2, un punto por grabación, **rojo = VAS ≥ 80**, **azul =
 VAS ≤ 20**. El par de colores pasa las seis comprobaciones del validador de
 paleta en modo claro (separación CVD ΔE 21.6, muy por encima del 8 exigido).
 
-### `figures/pca_clustering_vas_extremos.png`
+### `resultados/figuras/pca_clustering_vas_extremos.png`
 
 Todas las condiciones, features centradas por condición, n = 1076. Una sola nube
 con los dos colores **completamente entremezclados**. No hay dos lóbulos, ni un
 gradiente de rojo hacia un lado, ni siquiera un desplazamiento visible de
 centroides. Es la forma gráfica de un ARI negativo.
 
-### `figures/pca_clustering_vas_extremos_reposo.png`
+### `resultados/figuras/pca_clustering_vas_extremos_reposo.png`
 
 Solo OA + OC, n = 310. Lo mismo, con menos puntos. Los valores extremos de PC1
 que forman el cluster de 40 se ven a la derecha, y son de ambos colores.
@@ -367,7 +367,7 @@ las 77 features agregadas por región y por grabación **no contienen un eje de
 fatiga percibida separable**. Un método que no puede sobreajustar a la etiqueta
 porque no la ve tampoco lo encuentra.
 
-Encaja además con el resultado de `REGRESION_LINEAL.md`: el biomarcador de
+Encaja además con el resultado de `docs/analisis/ANALISIS_REGRESION_LINEAL.md`: el biomarcador de
 referencia de la literatura tampoco sigue al VAS (R² = 0.010; intrapersona
 p = 0.93). Dos rutas independientes —una supervisada y univariante, otra no
 supervisada y multivariante— llegan al mismo sitio.
@@ -431,8 +431,8 @@ scikit-learn 1.7.2, numpy 2.2.6, pandas 2.3.3, scipy 1.15.3, matplotlib 3.10.9.
 
 | Documento | Qué cubre |
 |---|---|
-| `MODELADO.md`, Fase 16 | El mismo análisis, resumido en el cuaderno de modelado |
-| `MODELADO.md`, Fases 14–15 | Los intentos **supervisados** que este análisis complementa |
-| `REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS — la vía univariante |
-| `ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
-| `ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
+| `docs/MODELADO.md`, Fase 16 | El mismo análisis, resumido en el cuaderno de modelado |
+| `docs/MODELADO.md`, Fases 14–15 | Los intentos **supervisados** que este análisis complementa |
+| `docs/analisis/ANALISIS_REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS — la vía univariante |
+| `docs/ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
+| `docs/ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |

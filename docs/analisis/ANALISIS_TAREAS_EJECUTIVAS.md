@@ -3,7 +3,7 @@
 > **Qué es este documento.** Clasificación multiclase (5 clases) de las
 > grabaciones de tarea ejecutiva —STROOP, PASAT, PVTB, MSIT, PVSAT— a partir de
 > las features de la Fase 13. OA y OC quedan fuera; ya están cubiertas en
-> `ANALISIS_OA_OC.md` y `ANALISIS_REPOSO_TAREA.md`. Es el escalón siguiente a
+> `docs/analisis/ANALISIS_OA_OC.md` y `docs/analisis/ANALISIS_REPOSO_TAREA.md`. Es el escalón siguiente a
 > ambas: la Fase 17 preguntaba si el pipeline conserva el efecto Berger
 > (sí/no) y la Fase 18 si conserva una señal de carga cognitiva en general
 > (sí/no); esta pregunta es más fina — si el pipeline distingue **entre**
@@ -31,10 +31,10 @@
 > **Código de apoyo:** `src/eeg_library/modelado/tareas_ejecutivas.py`
 > (`tests/test_tareas_ejecutivas.py`, 77 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/tareas_ejecutivas.json`
-> **Registro de ejecución:** `analisis/salidas/tareas_ejecutivas.log`
-> **Figuras:** `figures/tareas_ejecutivas_confusion.png`,
-> `figures/tareas_ejecutivas_pares.png`, `figures/tareas_ejecutivas_canales.png`
-> **Resumen en el cuaderno de modelado:** `MODELADO.md`, Fase 19
+> **Registro de ejecución:** `resultados/logs/tareas_ejecutivas.log`
+> **Figuras:** `resultados/figuras/tareas_ejecutivas_confusion.png`,
+> `resultados/figuras/tareas_ejecutivas_pares.png`, `resultados/figuras/tareas_ejecutivas_canales.png`
+> **Resumen en el cuaderno de modelado:** `docs/MODELADO.md`, Fase 19
 >
 > Fecha de ejecución: 2026-09-22. **Solo `train` + `val`; el conjunto de test
 > no se ha abierto.**
@@ -43,9 +43,9 @@
 
 ## 1. La pregunta, y por qué es distinta de las Fases 17 y 18
 
-La Fase 17 (`ANALISIS_OA_OC.md`) mostró que el pipeline conserva el efecto
+La Fase 17 (`docs/analisis/ANALISIS_OA_OC.md`) mostró que el pipeline conserva el efecto
 Berger (0.849 de exactitud balanceada entre OA y OC). La Fase 18
-(`ANALISIS_REPOSO_TAREA.md`) mostró que conserva una señal de carga cognitiva
+(`docs/analisis/ANALISIS_REPOSO_TAREA.md`) mostró que conserva una señal de carga cognitiva
 en general: reposo frente a cualquiera de las cinco tareas ejecutivas se
 separa con 0.857. Ninguna de las dos dice si esa señal distingue **entre**
 tareas, o si toda la carga cognitiva se ve igual sea cual sea la tarea.
@@ -60,12 +60,12 @@ Hay tres estructuras candidatas que predicen confusiones distintas:
    similares (dos tareas de interferencia, o la misma tarea en dos
    modalidades), la confusión es señal neurofisiológica genuina.
 2. **Distancia en el protocolo.** El orden es fijo dentro de cada sesión
-   (`ESTADO.md`, «Orden del protocolo»): STROOP → PASAT → PVTB → MSIT → PVSAT.
+   (`docs/ESTADO.md`, «Orden del protocolo»): STROOP → PASAT → PVTB → MSIT → PVSAT.
    Si el modelo confunde tareas que están cerca en el tiempo, puede ser una
    deriva de sesión (fatiga, acomodación, calidad de contacto) y no una
    propiedad de la tarea.
 3. **Duración de la grabación.** STROOP y MSIT duran ~60 s; PASAT, PVTB y
-   PVSAT ~150 s (`ESTADO.md`, «Duraciones»). Si el modelo confunde tareas de
+   PVSAT ~150 s (`docs/ESTADO.md`, «Duraciones»). Si el modelo confunde tareas de
    duración parecida, puede estar usando un artefacto de la grabación
    (`n_ventanas`, fuera de X, pero potencialmente correlacionado con features
    que sí entran).
@@ -169,7 +169,7 @@ las mismas razones, extendida a multiclase:
   anterior del proyecto y cubra las interacciones y no linealidades que la
   logística no puede.
 
-Se descartaron, por las mismas razones que en `ANALISIS_REPOSO_TAREA.md`: el
+Se descartaron, por las mismas razones que en `docs/analisis/ANALISIS_REPOSO_TAREA.md`: el
 gradient boosting (misma familia que el bosque, más hiperparámetros y sin la
 ventaja de la comparabilidad), una SVM con núcleo (sensible a la escala y sin
 coeficientes interpretables), el análisis discriminante lineal (redundante con
@@ -501,7 +501,7 @@ de la nada**; el nulo está centrado casi exactamente en 0.200.
 ### 8.2 Control de duración: los 6 contadores de procesamiento, solos
 
 **Este es el resultado que más condiciona la lectura de todo el análisis.**
-STROOP y MSIT duran ~60 s; PASAT, PVTB y PVSAT ~150 s (`ESTADO.md`,
+STROOP y MSIT duran ~60 s; PASAT, PVTB y PVSAT ~150 s (`docs/ESTADO.md`,
 «Duraciones»). Si los 6 contadores —`n_ventanas`, `n_canales_buenos` y los
 cuatro `n_validos_*`, ninguno de ellos señal cerebral— bastan por sí solos
 para distinguir las tareas, la duración es un confusor real, no hipotético.
@@ -664,14 +664,14 @@ Dos lecturas:
 
 ## 10. Las figuras
 
-### `figures/tareas_ejecutivas_confusion.png`
+### `resultados/figuras/tareas_ejecutivas_confusion.png`
 
 Las dos matrices de confusión 5×5, lado a lado y con la misma escala. El color
 es el porcentaje de cada clase real (cada fila suma 100 %). La diagonal más
 oscura es PVTB (64–66 %); los bloques claros más visibles de fuera de la
 diagonal son STROOP↔MSIT y PASAT↔PVSAT, los dos pares gemelos.
 
-### `figures/tareas_ejecutivas_pares.png`
+### `resultados/figuras/tareas_ejecutivas_pares.png`
 
 Dos paneles ordenados de mayor a menor similitud cognitiva declarada:
 separabilidad uno-contra-uno (izquierda, con IC95) y confusión real dentro del
@@ -680,7 +680,7 @@ los menos separables y los más confundidos; los de similitud 1 (azul) están
 repartidos, porque incluyen tanto el par más fácil (PVTB-MSIT) como uno
 intermedio (PASAT-PVTB).
 
-### `figures/tareas_ejecutivas_canales.png`
+### `resultados/figuras/tareas_ejecutivas_canales.png`
 
 Dos mapas de calor (theta, alfa), canales en filas y las 5 tareas en columnas,
 con el d de Cohen una-contra-resto de cada celda. El patrón más visible es la
@@ -748,7 +748,7 @@ en una parte no acotada, un reflejo de cuánto dura cada grabación.
   así que no hay forma de comparar tareas de duración distinta sin que la
   duración compita como explicación.
 - **El orden del protocolo es fijo: STROOP → PASAT → PVTB → MSIT → PVSAT**
-  (`ESTADO.md`). La condición y el tiempo acumulado en la sesión están
+  (`docs/ESTADO.md`). La condición y el tiempo acumulado en la sesión están
   perfectamente confundidos, y este diseño **no puede separarlos**. A
   diferencia de la Fase 18, aquí no hay un par adyacente con clases
   equilibradas y suficiente n para un control limpio de posición (cada tarea
@@ -838,7 +838,7 @@ en una parte no acotada, un reflejo de cuánto dura cada grabación.
 
 ```bash
 # desde la raíz del repositorio; una sola vez y nunca en paralelo (la RAM es limitada)
-python analisis/analisis_tareas_ejecutivas.py > analisis/salidas/tareas_ejecutivas.log 2>&1
+python analisis/analisis_tareas_ejecutivas.py > resultados/logs/tareas_ejecutivas.log 2>&1
 ```
 
 Duración: **~26 min** en la ejecución que produjo estos resultados. Semilla
@@ -867,7 +867,7 @@ primer paso, `preparar_tareas_ejecutivas` se niega a incluirlo sin permiso
 explícito, y el suplemento por canal lee el parquet de épocas ya filtrado a
 las grabaciones de análisis.
 
-`*.log` y `figures/` están en el `.gitignore` del repositorio (igual que en
+`*.log` y `resultados/figuras/` están en el `.gitignore` del repositorio (igual que en
 las Fases 17 y 18): el log y las figuras existen en disco pero no se
 versionan salvo que se fuerce.
 
@@ -879,9 +879,9 @@ scikit-learn 1.7.2, numpy 2.2.6, pandas 2.3.3, scipy 1.15.3, matplotlib
 
 | Documento | Qué cubre |
 |---|---|
-| `MODELADO.md`, Fase 19 | Este análisis, resumido en el cuaderno de modelado |
-| `ANALISIS_REPOSO_TAREA.md` (Fase 18) | El contraste binario anterior (reposo frente a cualquier tarea); de aquí se reutilizan el arnés, las exclusiones de X y la estructura del guion |
-| `ANALISIS_OA_OC.md` (Fase 17) | El control positivo del efecto Berger, origen del módulo `reposo.py` que ambos análisis posteriores reutilizan |
-| `ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
-| `ESTADO.md`, «Orden del protocolo» y «Duraciones» | El orden fijo que confunde condición y posición, y las duraciones por condición que explican el confusor de la sección 8.2 |
-| `ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
+| `docs/MODELADO.md`, Fase 19 | Este análisis, resumido en el cuaderno de modelado |
+| `docs/analisis/ANALISIS_REPOSO_TAREA.md` (Fase 18) | El contraste binario anterior (reposo frente a cualquier tarea); de aquí se reutilizan el arnés, las exclusiones de X y la estructura del guion |
+| `docs/analisis/ANALISIS_OA_OC.md` (Fase 17) | El control positivo del efecto Berger, origen del módulo `reposo.py` que ambos análisis posteriores reutilizan |
+| `docs/ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
+| `docs/ESTADO.md`, «Orden del protocolo» y «Duraciones» | El orden fijo que confunde condición y posición, y las duraciones por condición que explican el confusor de la sección 8.2 |
+| `docs/ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |

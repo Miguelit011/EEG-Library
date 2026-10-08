@@ -1,0 +1,4 @@
+# Hashes registrados en resultados.json (test, 2026-10-07) sobre la copia de trabajo con CRLF.
+# Se fija CRLF para que el SHA-256 sea el mismo en cualquier plataforma.
+PREREGISTRO_TEST.md text eol=crlf
+analisis/analisis_test.py text eol=crlf

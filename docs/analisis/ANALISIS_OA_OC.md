@@ -19,10 +19,10 @@
 > **Código de apoyo:** `src/eeg_library/modelado/reposo.py`
 > (`tests/test_reposo.py`, 78 pruebas)
 > **Salida numérica:** `<EEG_DATA>/processed/oa_oc.json`
-> **Registro de ejecución:** `analisis/salidas/oa_oc.log`
-> **Figuras:** `figures/oa_oc_confusion.png`, `figures/oa_oc_alfa_posterior.png`,
-> `figures/oa_oc_canales.png`
-> **Resumen en el cuaderno de modelado:** `MODELADO.md`, Fase 17
+> **Registro de ejecución:** `resultados/logs/oa_oc.log`
+> **Figuras:** `resultados/figuras/oa_oc_confusion.png`, `resultados/figuras/oa_oc_alfa_posterior.png`,
+> `resultados/figuras/oa_oc_canales.png`
+> **Resumen en el cuaderno de modelado:** `docs/MODELADO.md`, Fase 17
 >
 > Fecha de ejecución: 2026-09-19. **Solo `train` + `val`; el conjunto de test no
 > se ha abierto.**
@@ -31,8 +31,8 @@
 
 ## 1. La pregunta, y por qué es distinta de las anteriores
 
-Las Fases 14, 14b y 16 y `REGRESION_LINEAL.md` preguntan si las features de la
-Fase 13 llevan **fatiga percibida**. Lo que dice `MODELADO.md`: para una persona
+Las Fases 14, 14b y 16 y `docs/analisis/ANALISIS_REGRESION_LINEAL.md` preguntan si las features de la
+Fase 13 llevan **fatiga percibida**. Lo que dice `docs/MODELADO.md`: para una persona
 nueva no hay nada, y para una persona conocida hay un efecto pequeño (tres
 niveles: 0.3947 [0.3484, 0.4376] frente a 0.3333 de azar). Ese resultado admite
 dos lecturas: que la fatiga no esté en la señal, o que el procesamiento destruya
@@ -441,7 +441,7 @@ superó el control de calidad.)
 
 ## 9. Las figuras
 
-### `figures/oa_oc_confusion.png`
+### `resultados/figuras/oa_oc_confusion.png`
 
 Las dos matrices de confusión, lado a lado y en la misma escala. El color es el
 **porcentaje de cada clase real** (cada fila suma 100 %), no el recuento: así el
@@ -449,7 +449,7 @@ desbalance de clases no cambia el color de las celdas. La diagonal es oscura y l
 errores claros; el error dominante en ambos modelos es la celda «real OC, predicha
 OA».
 
-### `figures/oa_oc_alfa_posterior.png`
+### `resultados/figuras/oa_oc_alfa_posterior.png`
 
 Distribución del alfa relativo posterior por condición, con el corte de la
 referencia de una variable (0.286). Azul = OA, naranja = OC. Es la figura que
@@ -458,7 +458,7 @@ hace visible el efecto en estos datos: las dos nubes están desplazadas
 cola larga hacia alfa bajo. El corte es descriptivo (ajustado sobre todos los
 datos); la validación cruzada lo reestima dentro de cada pliegue.
 
-### `figures/oa_oc_canales.png`
+### `resultados/figuras/oa_oc_canales.png`
 
 El d de Cohen del alfa relativo por canal, con su IC95 remuestreando personas.
 Forma de énfasis: los cuatro canales posteriores en naranja (el color de OC), el
@@ -563,7 +563,7 @@ lo esperable.
 
 ```bash
 # desde la raíz del repositorio
-python analisis/analisis_oa_oc.py > analisis/salidas/oa_oc.log 2>&1
+python analisis/analisis_oa_oc.py > resultados/logs/oa_oc.log 2>&1
 ```
 
 Duración: ~7.5 min (453 s y 460 s en las dos últimas ejecuciones). Semilla fija
@@ -589,11 +589,11 @@ scikit-learn 1.7.2, numpy 2.2.6, pandas 2.3.3, scipy 1.15.3, matplotlib 3.10.9.
 
 | Documento | Qué cubre |
 |---|---|
-| `MODELADO.md`, Fase 17 | Este análisis, resumido en el cuaderno de modelado |
-| `MODELADO.md`, Fase 14 | El arnés de validación reutilizado y los controles positivos anteriores |
-| `MODELADO.md`, Fase 14b | El resultado sobre la fatiga en tres niveles que este control contextualiza |
-| `REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS — el mismo biomarcador, aquí sin etiqueta de fatiga |
-| `PCA_CLUSTER.md` | La vía no supervisada sobre los grupos extremos de VAS |
-| `ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
-| `ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
-| `ESTADO.md`, Fase 11.5 | La máscara de canales válidos y el contacto a lo largo de la sesión |
+| `docs/MODELADO.md`, Fase 17 | Este análisis, resumido en el cuaderno de modelado |
+| `docs/MODELADO.md`, Fase 14 | El arnés de validación reutilizado y los controles positivos anteriores |
+| `docs/MODELADO.md`, Fase 14b | El resultado sobre la fatiga en tres niveles que este control contextualiza |
+| `docs/analisis/ANALISIS_REGRESION_LINEAL.md` | El índice theta/alfa contra el VAS — el mismo biomarcador, aquí sin etiqueta de fatiga |
+| `docs/analisis/ANALISIS_PCA_CLUSTERING.md` | La vía no supervisada sobre los grupos extremos de VAS |
+| `docs/ESTADO.md`, Fase 13 | Cómo se construyen las 77 features y qué significa cada una |
+| `docs/ESTADO.md`, Fase 12 | Por qué la agrupación es `persona_uid` y nunca `sujeto_id` |
+| `docs/ESTADO.md`, Fase 11.5 | La máscara de canales válidos y el contacto a lo largo de la sesión |

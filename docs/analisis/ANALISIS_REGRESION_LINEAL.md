@@ -7,9 +7,9 @@
 >
 > **Guion reproducible:** `analisis/analisis_regresion_lineal.py`
 > **Salida numérica:** `<EEG_DATA>/processed/regresion_lineal.json`
-> **Registro de ejecución:** `analisis/salidas/regresion_lineal.log`
-> **Figuras:** `figures/regresion_vas_theta_alfa.png`,
-> `figures/regresion_vas_theta_alfa_intrapersona.png`
+> **Registro de ejecución:** `resultados/logs/regresion_lineal.log`
+> **Figuras:** `resultados/figuras/regresion_vas_theta_alfa.png`,
+> `resultados/figuras/regresion_vas_theta_alfa_intrapersona.png`
 >
 > Fecha de ejecución: 2026-08-27.
 
@@ -166,7 +166,7 @@ confusor que el criterio 7 estaba diseñado para detectar, y lo detectó.
 
 ## 5. Las gráficas
 
-### `figures/regresion_vas_theta_alfa.png`
+### `resultados/figuras/regresion_vas_theta_alfa.png`
 
 La dispersión pedida, con la recta de MCO, su banda de confianza al 95 % y —en
 gris discontinuo— la pendiente +10 que el índice tendría que tener para ser
@@ -181,7 +181,7 @@ Dos rasgos de la gráfica que son reales y no defectos de dibujo:
 - **El apelotonamiento a la izquierda.** El índice tiene asimetría +2.21. La
   versión en log₁₀ (§ 3.2) confirma que no cambia nada.
 
-### `figures/regresion_vas_theta_alfa_intrapersona.png`
+### `resultados/figuras/regresion_vas_theta_alfa_intrapersona.png`
 
 La misma regresión tras centrar ambas variables por persona. Es la nube plana y
 redonda del "fallo característico" descrito en la § 2, en su forma de manual:
@@ -213,7 +213,7 @@ proyecto:
 1. **La retirada de la Fase 10** (auto-etiquetado de fatiga por umbrales sobre
    el índice theta/alfa). Umbralizar este índice para generar etiquetas habría
    producido una variable con ρ = +0.004 respecto a la fatiga real: ruido con
-   nombre científico. Ver `ESTADO.md`, "Fase 10 — retirada".
+   nombre científico. Ver `docs/ESTADO.md`, "Fase 10 — retirada".
 2. **El uso del VAS como etiqueta** (Fase 12) en lugar de una etiqueta derivada
    de la propia señal.
 

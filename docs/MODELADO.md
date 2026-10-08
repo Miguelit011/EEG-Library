@@ -1,31 +1,31 @@
 # Modelado y resultados — EEG-Library
 
 > Documento de uso interno. No se sube al repositorio.
-> Última actualización: 2026-10-07 | Continúa a [`ESTADO.md`](ESTADO.md) en la Fase 13.
+> Última actualización: 2026-10-07 | Continúa a [`docs/ESTADO.md`](ESTADO.md) en la Fase 13.
 > **El conjunto de test se ejecutó el 2026-10-07** (sección final de este
 > documento). Todo lo anterior a ella se calculó sobre `train` + `val`.
 
 > Este documento recoge el entrenamiento del modelo, su evaluación y todo lo
 > posterior a la Fase 13 (Random Forest y, más adelante, la ruta CNN): es
 > cuaderno de análisis, no documentación de librería — cambia cada sesión de
-> trabajo, a diferencia de `ESTADO.md`, que se congela salvo que cambie el
-> propio pipeline. Ver la nota al principio de `ESTADO.md` para el porqué del
+> trabajo, a diferencia de `docs/ESTADO.md`, que se congela salvo que cambie el
+> propio pipeline. Ver la nota al principio de `docs/ESTADO.md` para el porqué del
 > split.
 
 ---
 
-## Punto de partida (heredado de `ESTADO.md`, Fase 13)
+## Punto de partida (heredado de `docs/ESTADO.md`, Fase 13)
 
 - **Matriz:** `matriz_rf.parquet`, 4543 grabaciones × 77 features (agregación
   por región y por grabación, restringida a canales válidos — detalle en
-  `ESTADO.md`, Fase 13).
+  `docs/ESTADO.md`, Fase 13).
 - **Etiqueta:** VAS 0-100 mm por sesión (no por grabación ni por ventana) —
   653 sesiones / 174 personas etiquetadas. `columnas_de_features()` en
   `matrix.py` sigue siendo la única definición válida de X.
 - **Agrupación obligatoria:** `persona_uid`, nunca `sujeto_id` — ver
-  `ESTADO.md`, Fase 12.
+  `docs/ESTADO.md`, Fase 12.
 - **Líneas base a batir:** R² = 0.260 (media por persona, leave-one-out);
-  ICC(1) = 0.457. Detalle y derivación en `ESTADO.md`, Fase 12,
+  ICC(1) = 0.457. Detalle y derivación en `docs/ESTADO.md`, Fase 12,
   "Líneas base obligatorias". **Ver la corrección de la Fase 14:** esa cifra no
   es una única línea base, son dos tareas distintas con dos rivales distintos.
 - **Ruta CNN (pendiente):** construir el tensor desde las ventanas crudas de la
@@ -109,7 +109,7 @@ tres reglas:
 
 ### Corrección: la línea base 0.260 no aplica a la tarea que se estaba evaluando
 
-`ESTADO.md` (Fase 12) fija dos cosas que, juntas, no se sostienen:
+`docs/ESTADO.md` (Fase 12) fija dos cosas que, juntas, no se sostienen:
 
 - el protocolo de evaluación es `GroupKFold` por `persona_uid` — el modelo
   nunca ve a la persona que evalúa;
@@ -167,7 +167,7 @@ vuelve impredecible (R² 0.96 → ≈0) — para que nadie vuelva a quitar el
 
 > **El banco queda validado contra la Fase 13.** Restringido a las mismas 537
 > sesiones que usa la prueba de humo (las de personas con ≥2 sesiones), da
-> R² = 0.2988 y MAE = 14.2517, frente al 0.299 / 14.25 que reporta `ESTADO.md`.
+> R² = 0.2988 y MAE = 14.2517, frente al 0.299 / 14.25 que reporta `docs/ESTADO.md`.
 > La diferencia con el 0.2961 de la tabla es solo que aquí las 10 sesiones de
 > personas con una única sesión reciben la media global en vez de descartarse.
 
@@ -530,7 +530,7 @@ niveles como prueba principal.
 `residualizar_por_visita`, `compuesto_rel_sd`), `tests/test_modeling.py`,
 `analisis/analisis_control_visita.py`
 **Salida:** `<EEG_DATA>/processed/control_visita.json`,
-`analisis/salidas/control_visita.log`
+`resultados/logs/control_visita.log`
 
 **Solo train+val.** El test se aparta al leer la matriz, antes de agregar.
 
@@ -557,7 +557,7 @@ El método es el de la Fase 15, recuperado del historial
 - **Prueba principal:** se aplica sobre X e y ya centrados por la media LOO de
   la persona; los cortes de los tercios siguen saliendo de cada pliegue.
 - **θ/α y `_rel_sd`:** se centra por la media de la persona (como en
-  `REGRESION_LINEAL.md`) y después se residualiza. Cada recta gasta un grado de
+  `docs/analisis/ANALISIS_REGRESION_LINEAL.md`) y después se residualiza. Cada recta gasta un grado de
   libertad más en la regresión intrapersona.
 
 Es un control **conservador**: si la fatiga real evolucionase de forma monótona
@@ -576,11 +576,11 @@ varianza intra-persona de la desviación del VAS (453.9 → 282.2).
 | Compuesto `_rel_sd`: ρ intra-persona | +0.156, IC95 [+0.063, +0.245] | **+0.130, IC95 [+0.007, +0.247]** |
 
 IC de la principal: bootstrap de 2000 réplicas por personas (el de la Fase 14b);
-los de θ/α y `_rel_sd`, 10 000 (el de `REGRESION_LINEAL.md`).
+los de θ/α y `_rel_sd`, 10 000 (el de `docs/analisis/ANALISIS_REGRESION_LINEAL.md`).
 
 **Reproducción de lo documentado.** Las tres cifras sin control reproducen las
 publicadas: 0.3947 con el mismo IC (Fase 14b), β = −0.073 con p = 0.925
-(`REGRESION_LINEAL.md`) y ρ = +0.1559 para el compuesto frente al +0.1561 de la
+(`docs/analisis/ANALISIS_REGRESION_LINEAL.md`) y ρ = +0.1559 para el compuesto frente al +0.1561 de la
 Fase 14 (p = 0.00029 en ambos). El código de ese compuesto no se conservó; la
 definición reconstruida (z de cada `_rel_sd` sobre las sesiones de train+val,
 media de las 16, centrado por persona, Spearman, n = 537) es la más cercana de
@@ -604,7 +604,7 @@ Añade **3 análisis** al recuento de lo explorado en train+val.
 ## Potencia de la prueba principal en test (2026-10-06)
 
 **Archivo:** `analisis/analisis_potencia_test.py` · **Salida:**
-`<EEG_DATA>/processed/potencia_test.json`, `analisis/salidas/potencia_test.log`
+`<EEG_DATA>/processed/potencia_test.json`, `resultados/logs/potencia_test.log`
 
 **Solo train+val.** Se toman las predicciones out-of-fold de la prueba
 principal (Tarea B, tres niveles, RF hoja≥5) y se simulan 5000 tests
@@ -667,9 +667,9 @@ algo conservadora.
 
 **Archivos:** `analisis/analisis_pca_clustering.py` (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\pca_clustering.json`,
-`analisis/salidas/pca_clustering.log`
-**Figuras:** `figures/pca_clustering_vas_extremos.png`,
-`figures/pca_clustering_vas_extremos_reposo.png`
+`resultados/logs/pca_clustering.log`
+**Figuras:** `resultados/figuras/pca_clustering_vas_extremos.png`,
+`resultados/figuras/pca_clustering_vas_extremos_reposo.png`
 **Fecha:** 2026-08-27
 
 **Solo `train` + `val`.** El test se aparta en el paso 1 (732 grabaciones,
@@ -820,7 +820,7 @@ cuando no hay dos grupos que encontrar.
 
 ### Las figuras
 
-`figures/pca_clustering_vas_extremos.png` y `..._reposo.png`: PC1 vs PC2, rojo =
+`resultados/figuras/pca_clustering_vas_extremos.png` y `..._reposo.png`: PC1 vs PC2, rojo =
 VAS ≥ 80, azul = VAS ≤ 20. En ambas, una sola nube con los dos colores
 completamente entremezclados. No hay dos lóbulos, ni un gradiente, ni siquiera un
 desplazamiento de centroides visible. Es la forma gráfica de un ARI negativo.
@@ -869,10 +869,10 @@ estar condicionada por esto, por la misma razón que en la Fase 14.
 
 **Archivos:** `src/eeg_library/modelado/reposo.py`, `tests/test_reposo.py`
 (78 tests), `analisis/analisis_oa_oc.py` (script reproducible)
-**Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\oa_oc.json`, `analisis/salidas/oa_oc.log`
-**Figuras:** `figures/oa_oc_confusion.png`, `figures/oa_oc_alfa_posterior.png`,
-`figures/oa_oc_canales.png`
-**Documento completo:** [`ANALISIS_OA_OC.md`](ANALISIS_OA_OC.md)
+**Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\oa_oc.json`, `resultados/logs/oa_oc.log`
+**Figuras:** `resultados/figuras/oa_oc_confusion.png`, `resultados/figuras/oa_oc_alfa_posterior.png`,
+`resultados/figuras/oa_oc_canales.png`
+**Documento completo:** [`docs/analisis/ANALISIS_OA_OC.md`](analisis/ANALISIS_OA_OC.md)
 **Fecha:** 2026-09-19
 
 **Solo `train` + `val`.** El test no se abre (`preparar_reposo` se niega sin
@@ -894,7 +894,7 @@ OA/OC (el mismo problema que ya apareció en la Fase 14), y cuatro features de l
 Fase 13 son copias exactas de otra. Por ser la etiqueta la condición y no el VAS,
 este análisis no consume el alfa del paquete de test pendiente.
 
-**Detalle, diseño y lo que no hay que hacer: `ANALISIS_OA_OC.md`.**
+**Detalle, diseño y lo que no hay que hacer: `docs/analisis/ANALISIS_OA_OC.md`.**
 
 ---
 
@@ -902,10 +902,10 @@ este análisis no consume el alfa del paquete de test pendiente.
 
 **Archivos:** `src/eeg_library/modelado/reposo_tarea.py`, `tests/test_reposo_tarea.py`
 (73 tests), `analisis/analisis_reposo_tarea.py` (script reproducible)
-**Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\reposo_tarea.json`, `analisis/salidas/reposo_tarea.log`
-**Figuras:** `figures/reposo_tarea_confusion.png`,
-`figures/reposo_tarea_por_condicion.png`, `figures/reposo_tarea_canales.png`
-**Documento completo:** [`ANALISIS_REPOSO_TAREA.md`](ANALISIS_REPOSO_TAREA.md)
+**Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\reposo_tarea.json`, `resultados/logs/reposo_tarea.log`
+**Figuras:** `resultados/figuras/reposo_tarea_confusion.png`,
+`resultados/figuras/reposo_tarea_por_condicion.png`, `resultados/figuras/reposo_tarea_canales.png`
+**Documento completo:** [`docs/analisis/ANALISIS_REPOSO_TAREA.md`](analisis/ANALISIS_REPOSO_TAREA.md)
 **Fecha:** 2026-09-21
 
 **Solo `train` + `val`.** El test no se abre (`preparar_reposo_tarea` se niega sin
@@ -931,7 +931,7 @@ seis contadores de procesamiento, con solo ellos, dan 0.990 con el Random Forest
 de X es imprescindible. Por ser la etiqueta la condición y no el VAS, este análisis
 no consume el alfa del paquete de test pendiente.
 
-**Detalle, diseño y lo que no hay que hacer: `ANALISIS_REPOSO_TAREA.md`.**
+**Detalle, diseño y lo que no hay que hacer: `docs/analisis/ANALISIS_REPOSO_TAREA.md`.**
 
 ---
 
@@ -941,10 +941,10 @@ no consume el alfa del paquete de test pendiente.
 `tests/test_tareas_ejecutivas.py` (77 tests), `analisis/analisis_tareas_ejecutivas.py`
 (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\tareas_ejecutivas.json`,
-`analisis/salidas/tareas_ejecutivas.log`
-**Figuras:** `figures/tareas_ejecutivas_confusion.png`,
-`figures/tareas_ejecutivas_pares.png`, `figures/tareas_ejecutivas_canales.png`
-**Documento completo:** [`ANALISIS_TAREAS_EJECUTIVAS.md`](ANALISIS_TAREAS_EJECUTIVAS.md)
+`resultados/logs/tareas_ejecutivas.log`
+**Figuras:** `resultados/figuras/tareas_ejecutivas_confusion.png`,
+`resultados/figuras/tareas_ejecutivas_pares.png`, `resultados/figuras/tareas_ejecutivas_canales.png`
+**Documento completo:** [`docs/analisis/ANALISIS_TAREAS_EJECUTIVAS.md`](analisis/ANALISIS_TAREAS_EJECUTIVAS.md)
 **Fecha:** 2026-09-22
 
 **Solo `train` + `val`.** El test no se abre (`preparar_tareas_ejecutivas` se niega
@@ -975,14 +975,14 @@ confunde tarea con momento de la grabación** sin que este diseño pueda
 separarlos. Por ser la etiqueta la condición y no el VAS, este análisis no
 consume el alfa del paquete de test pendiente.
 
-**Detalle, diseño y lo que no hay que hacer: `ANALISIS_TAREAS_EJECUTIVAS.md`.**
+**Detalle, diseño y lo que no hay que hacer: `docs/analisis/ANALISIS_TAREAS_EJECUTIVAS.md`.**
 
 ---
 
 ## Resultados sobre el conjunto de test (2026-10-07)
 
 **Guion:** `analisis/analisis_test.py --confirmatorio` · **Pre-registro:**
-[`PREREGISTRO_TEST.md`](PREREGISTRO_TEST.md) (fijado el 2026-10-06)
+[`PREREGISTRO_TEST.md`](../PREREGISTRO_TEST.md) (fijado el 2026-10-06)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\test_20261007-133358\`
 (`resultados.json`, `ejecucion.log`, `predicciones_test.parquet`,
 `inventario.csv`, `parametros.json`, modelos, bootstraps y permutaciones)

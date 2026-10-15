@@ -148,34 +148,34 @@ def agregar_por_region(features, regiones=None, bandas=None):
     return pd.DataFrame(salida, index=features.index)
 
 
-def construir_matriz_rf(features, grabaciones, regiones=None, bandas=None):
+def resumir_por_grabacion(features, regiones=None, bandas=None):
     """
-    Construye la matriz por grabación para el Random Forest.
+    Resume la matriz por época en una fila por grabación, sin etiquetas.
+
+    Es la parte de `construir_matriz_rf` que solo necesita la señal: no usa
+    VAS, condición ni ninguna clave del estudio. Por eso sirve igual para el
+    dataset completo que para un EDF suelto (`analizar_grabacion`), y las
+    features de una grabación nueva salen del **mismo código** que construyó
+    `matriz_rf.parquet`.
 
     Parámetros
     ----------
     features : pandas.DataFrame
-        Matriz por época de la Fase 11.5 (`matriz_modelado.parquet`).
-    grabaciones : pandas.DataFrame
-        `labels_grabaciones.csv` (Fase 12): etiqueta y claves por grabación.
+        Matriz por época con la máscara de validez ya anotada (Fase 11.5):
+        `archivo_origen`, columnas de potencia por canal, `canal_valido_*` y
+        `n_canales_buenos`.
     regiones, bandas
         Ver `agregar_por_region`.
 
     Devuelve
     --------
-    matriz : pandas.DataFrame
-        Una fila por grabación presente en `features`. Columnas de identidad
-        (`COLUMNAS_IDENTIDAD`), etiqueta (`vas`) y features: por cada región ×
-        banda, la media y la desviación típica a lo largo de las ventanas de la
-        grabación, tanto del log de la potencia absoluta como de la relativa;
-        más el índice de fatiga y sus dos componentes, los canales válidos por
-        región, el número de ventanas y la condición codificada.
-    metadata : dict
-        Recuentos y composición de la matriz.
+    resumen : pandas.DataFrame
+        Una fila por `archivo` (en el orden de aparición), con la media y la
+        desviación típica por región × banda, las de los componentes del
+        índice theta/alfa, `n_ventanas`, `n_validos_<region>` y
+        `n_canales_buenos`.
     """
-    _validar_columnas(features, ("archivo_origen", "condicion", COLUMNA_N_BUENOS),
-                      "features")
-    _validar_columnas(grabaciones, ("archivo", COLUMNA_ETIQUETA), "grabaciones")
+    _validar_columnas(features, ("archivo_origen", COLUMNA_N_BUENOS), "features")
 
     regionales = agregar_por_region(features, regiones=regiones, bandas=bandas)
     columnas_region = [c for c in regionales.columns
@@ -211,7 +211,40 @@ def construir_matriz_rf(features, grabaciones, regiones=None, bandas=None):
     resumen[columnas_validos] = agrupado[columnas_validos].first()
     resumen[COLUMNA_N_BUENOS] = (
         features.groupby("archivo_origen", sort=False)[COLUMNA_N_BUENOS].first())
-    resumen = resumen.reset_index().rename(columns={"archivo_origen": "archivo"})
+    return resumen.reset_index().rename(columns={"archivo_origen": "archivo"})
+
+
+def construir_matriz_rf(features, grabaciones, regiones=None, bandas=None):
+    """
+    Construye la matriz por grabación para el Random Forest.
+
+    Parámetros
+    ----------
+    features : pandas.DataFrame
+        Matriz por época de la Fase 11.5 (`matriz_modelado.parquet`).
+    grabaciones : pandas.DataFrame
+        `labels_grabaciones.csv` (Fase 12): etiqueta y claves por grabación.
+    regiones, bandas
+        Ver `agregar_por_region`.
+
+    Devuelve
+    --------
+    matriz : pandas.DataFrame
+        Una fila por grabación presente en `features`. Columnas de identidad
+        (`COLUMNAS_IDENTIDAD`), etiqueta (`vas`) y features: por cada región ×
+        banda, la media y la desviación típica a lo largo de las ventanas de la
+        grabación, tanto del log de la potencia absoluta como de la relativa;
+        más el índice de fatiga y sus dos componentes, los canales válidos por
+        región, el número de ventanas y la condición codificada.
+    metadata : dict
+        Recuentos y composición de la matriz.
+    """
+    _validar_columnas(features, ("archivo_origen", "condicion", COLUMNA_N_BUENOS),
+                      "features")
+    _validar_columnas(grabaciones, ("archivo", COLUMNA_ETIQUETA), "grabaciones")
+
+    # La parte que solo depende de la señal es común con `analizar_grabacion`.
+    resumen = resumir_por_grabacion(features, regiones=regiones, bandas=bandas)
 
     condicion = features.groupby("archivo_origen", sort=False)["condicion"].first()
     resumen["condicion"] = resumen["archivo"].map(condicion)

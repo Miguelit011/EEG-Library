@@ -22,6 +22,7 @@ from eeg_library.procesado.matrix import (
     agregar_por_region,
     columnas_de_features,
     construir_matriz_rf,
+    resumir_por_grabacion,
 )
 from eeg_library.preprocesado.quality import CANALES_EPOC
 
@@ -252,3 +253,26 @@ def test_la_matriz_entra_en_un_random_forest_con_nan():
     x = matriz[columnas_de_features(matriz)]
     assert meta["n_celdas_nan"] > 0
     RandomForestRegressor(n_estimators=5, random_state=0).fit(x, matriz["vas"])
+
+
+# --------------------------------------------------------------------------
+# resumir_por_grabacion — la parte de la matriz que no necesita etiquetas
+# --------------------------------------------------------------------------
+
+def test_resumir_por_grabacion_no_necesita_condicion_ni_vas():
+    features = _features([("a.edf", "OC")]).drop(columns=["condicion"])
+    resumen = resumir_por_grabacion(features)
+    assert resumen["archivo"].tolist() == ["a.edf"]
+    assert "condicion" not in resumen.columns and "vas" not in resumen.columns
+
+
+def test_resumir_por_grabacion_coincide_con_construir_matriz_rf():
+    pares = [("a.edf", "OC"), ("b.edf", "PASAT")]
+    features = _features(pares, validos=CANALES_EPOC[2:])
+    resumen = resumir_por_grabacion(features)
+    matriz, _ = construir_matriz_rf(features, _grabaciones(pares))
+    pd.testing.assert_frame_equal(
+        resumen, matriz[resumen.columns].reset_index(drop=True), check_exact=True)
+    # Lo único que añade construir_matriz_rf: identidad, etiqueta y condición.
+    añadidas = set(matriz.columns) - set(resumen.columns)
+    assert añadidas == (set(COLUMNAS_IDENTIDAD) | {"vas", "condicion_orden"}) - {"archivo"}

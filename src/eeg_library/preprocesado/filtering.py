@@ -96,9 +96,9 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
     ----------
     raw : mne.io.BaseRaw
         Objeto Raw con preload=True (tras re-referenciación, idealmente).
-    notch_freq : float
+    notch_freq : float o None
         Frecuencia central del filtro notch en Hz. Por defecto 50.0
-        (red eléctrica europea).
+        (red eléctrica europea). None omite el notch.
     banda : tuple[float, float]
         Tupla (l_freq, h_freq) en Hz del paso banda. Por defecto (1.0, 30.0).
 
@@ -109,7 +109,7 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
     metadata : dict
         Diccionario con las claves:
           - metodo        : "notch + bandpass FIR zero-phase"
-          - notch_hz      : frecuencia del notch aplicada
+          - notch_hz      : frecuencia del notch aplicada (None si se omitió)
           - banda_hz      : [l_freq, h_freq] del bandpass
           - fir_design    : "firwin"
           - phase         : "zero"
@@ -129,7 +129,7 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
             f"h_freq={h_freq} Hz >= Nyquist ({nyquist} Hz). "
             "Reduzca h_freq o aumente la frecuencia de muestreo."
         )
-    if notch_freq >= nyquist:
+    if notch_freq is not None and notch_freq >= nyquist:
         raise ValueError(
             f"notch_freq={notch_freq} Hz >= Nyquist ({nyquist} Hz)."
         )
@@ -137,14 +137,15 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
     raw_filt = raw.copy()
 
     # Filtro notch — elimina la componente de red eléctrica
-    raw_filt.notch_filter(
-        freqs=notch_freq,
-        picks="eeg",
-        method="fir",
-        fir_design="firwin",
-        phase="zero",
-        verbose=False,
-    )
+    if notch_freq is not None:
+        raw_filt.notch_filter(
+            freqs=notch_freq,
+            picks="eeg",
+            method="fir",
+            fir_design="firwin",
+            phase="zero",
+            verbose=False,
+        )
 
     # Bandpass FIR zero-phase
     raw_filt.filter(
@@ -159,15 +160,16 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
 
     metadata = {
         "metodo": "notch + bandpass FIR zero-phase",
-        "notch_hz": float(notch_freq),
+        "notch_hz": None if notch_freq is None else float(notch_freq),
         "banda_hz": [float(l_freq), float(h_freq)],
         "fir_design": "firwin",
         "phase": "zero",
         "timestamp": datetime.datetime.now().isoformat(),
     }
 
+    texto_notch = "sin notch" if notch_freq is None else f"notch {notch_freq:g} Hz"
     print(
-        f"Filtros aplicados: notch {notch_freq:g} Hz + "
+        f"Filtros aplicados: {texto_notch} + "
         f"bandpass {l_freq:g}-{h_freq:g} Hz (FIR zero-phase)."
     )
 

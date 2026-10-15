@@ -257,3 +257,16 @@ def test_recortar_metadata_timestamp_formato_iso():
     raw = _raw_senoidal([10.0])
     _, meta = recortar_registro(raw)
     datetime.datetime.fromisoformat(meta["timestamp"])
+
+
+# ---------------------------------------------------------------------------
+# Notch desactivable (parámetro notch_hz = None, ver procesado/parametros.py)
+# ---------------------------------------------------------------------------
+
+def test_sin_notch_no_atenua_50hz_y_lo_registra():
+    raw = _raw_senoidal([50.0], canales=CANALES_EPOC[:8])
+    # Con un paso banda que llega hasta 60 Hz el 50 Hz solo lo quita el notch.
+    con, _ = aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 60.0))
+    sin, meta = aplicar_filtros(raw, notch_freq=None, banda=(1.0, 60.0))
+    assert meta["notch_hz"] is None
+    assert _potencia_en(sin, 50.0) > 100 * _potencia_en(con, 50.0)

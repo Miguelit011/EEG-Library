@@ -1,0 +1,142 @@
+{
+  "id": "c3_tareas_logistica",
+  "titulo": "Cuál de las 5 tareas",
+  "archivo": "c3_tareas_logistica.joblib",
+  "sha256_modelo": "18719cb114a359f1df31dff42bb86f092583e4d03df914be968fa99e9a95193b",
+  "que_predice": "Cuál de las cinco tareas cognitivas (STROOP, PASAT, PVTB, MSIT, PVSAT) se estaba haciendo.",
+  "clases": [
+    {
+      "codigo": 0,
+      "nombre": "STROOP"
+    },
+    {
+      "codigo": 1,
+      "nombre": "PASAT"
+    },
+    {
+      "codigo": 2,
+      "nombre": "PVTB"
+    },
+    {
+      "codigo": 3,
+      "nombre": "MSIT"
+    },
+    {
+      "codigo": 4,
+      "nombre": "PVSAT"
+    }
+  ],
+  "condiciones_aplicables": [
+    "STROOP",
+    "PASAT",
+    "PVTB",
+    "MSIT",
+    "PVSAT"
+  ],
+  "parametros_validos": {
+    "referencia": "car_condicional",
+    "banda_hz": [
+      1.0,
+      30.0
+    ],
+    "notch_hz": 50.0
+  },
+  "columnas": [
+    "frontal_delta_logabs_media",
+    "frontal_delta_logabs_sd",
+    "frontal_delta_rel_media",
+    "frontal_delta_rel_sd",
+    "frontal_theta_logabs_media",
+    "frontal_theta_logabs_sd",
+    "frontal_theta_rel_media",
+    "frontal_theta_rel_sd",
+    "frontal_alfa_logabs_media",
+    "frontal_alfa_logabs_sd",
+    "frontal_alfa_rel_media",
+    "frontal_alfa_rel_sd",
+    "frontal_beta_logabs_media",
+    "frontal_beta_logabs_sd",
+    "frontal_beta_rel_media",
+    "frontal_beta_rel_sd",
+    "frontocentral_delta_logabs_media",
+    "frontocentral_delta_logabs_sd",
+    "frontocentral_delta_rel_media",
+    "frontocentral_delta_rel_sd",
+    "frontocentral_theta_logabs_media",
+    "frontocentral_theta_logabs_sd",
+    "frontocentral_theta_rel_media",
+    "frontocentral_theta_rel_sd",
+    "frontocentral_alfa_logabs_media",
+    "frontocentral_alfa_logabs_sd",
+    "frontocentral_alfa_rel_media",
+    "frontocentral_alfa_rel_sd",
+    "frontocentral_beta_logabs_media",
+    "frontocentral_beta_logabs_sd",
+    "frontocentral_beta_rel_media",
+    "frontocentral_beta_rel_sd",
+    "temporal_delta_logabs_media",
+    "temporal_delta_logabs_sd",
+    "temporal_delta_rel_media",
+    "temporal_delta_rel_sd",
+    "temporal_theta_logabs_media",
+    "temporal_theta_logabs_sd",
+    "temporal_theta_rel_media",
+    "temporal_theta_rel_sd",
+    "temporal_alfa_logabs_media",
+    "temporal_alfa_logabs_sd",
+    "temporal_alfa_rel_media",
+    "temporal_alfa_rel_sd",
+    "temporal_beta_logabs_media",
+    "temporal_beta_logabs_sd",
+    "temporal_beta_rel_media",
+    "temporal_beta_rel_sd",
+    "posterior_delta_logabs_media",
+    "posterior_delta_logabs_sd",
+    "posterior_delta_rel_media",
+    "posterior_delta_rel_sd",
+    "posterior_theta_logabs_media",
+    "posterior_theta_logabs_sd",
+    "posterior_theta_rel_media",
+    "posterior_theta_rel_sd",
+    "posterior_alfa_logabs_media",
+    "posterior_alfa_logabs_sd",
+    "posterior_alfa_rel_media",
+    "posterior_alfa_rel_sd",
+    "posterior_beta_logabs_media",
+    "posterior_beta_logabs_sd",
+    "posterior_beta_rel_media",
+    "posterior_beta_rel_sd",
+    "theta_frontal_log_media",
+    "theta_frontal_log_sd",
+    "alfa_posterior_log_media",
+    "alfa_posterior_log_sd",
+    "indice_fatiga_media",
+    "indice_fatiga_sd"
+  ],
+  "resultado_test": {
+    "metrica": "exactitud_balanceada",
+    "valor": 0.4884136955753175,
+    "ic95": [
+      0.4407738786317063,
+      0.5314252197722926
+    ],
+    "azar": 0.2,
+    "n_grabaciones": 518,
+    "n_personas": 28,
+    "fuente": "resultados.json del análisis confirmatorio (test_20261007-133358)"
+  },
+  "entrenamiento": {
+    "fecha": "2026-10-07",
+    "datos": "train + val; evaluado una sola vez en test",
+    "variante": "regresión logística, la principal del pre-registro (PREREGISTRO_TEST.md §6)",
+    "sha256_matriz_rf": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+    "commit_eeg_library": "bb55aee8d78362b1d4a4f628f3baf4de935908d1",
+    "python": "3.10.11",
+    "scikit_learn": "1.7.2"
+  },
+  "avisos": [
+    "No mide fatiga ni ningún estado del participante: clasifica la condición de la grabación.",
+    "Parte del acierto puede deberse a la duración de la grabación o al orden de las tareas en el protocolo, no solo a la actividad cerebral.",
+    "Solo es válido con los parámetros de procesado de su entrenamiento."
+  ]
+}

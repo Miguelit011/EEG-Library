@@ -1,0 +1,118 @@
+# Contrato con EEG-Platform
+
+La plataforma web no calcula nada: llama a dos funciones de la librería, guarda
+lo que devuelven y lo muestra. Este documento fija qué devuelven.
+
+```python
+from eeg_library import analizar_grabacion, listar_modelos, cargar_modelo, predecir
+
+resultado = analizar_grabacion(ruta_edf, parametros)        # dict -> JSON
+for id_modelo in listar_modelos():
+    p = predecir(id_modelo, resultado["caracteristicas"],
+                 resultado["parametros_aplicados"])
+```
+
+Hay un ejemplo real (anonimizado) en `docs/ejemplos/analisis_grabacion.json`,
+generado con `analisis/generar_ejemplo.py`.
+
+## Parámetros de procesado
+
+Son opciones cerradas (`eeg_library.procesado.parametros`):
+
+| Clave | Opciones | Estudio |
+|---|---|---|
+| `referencia` | `car_condicional`, `original` | `car_condicional` |
+| `banda_hz` | `[1, 30]`, `[3, 30]` | `[1, 30]` |
+| `notch_hz` | `50`, `None` (sin notch) | `50` |
+
+- `car_condicional`: CAR sobre los canales buenos si hay al menos 6; con menos
+  se omite. ICA usa `n_buenos − 1` componentes en ambos casos, como en el
+  estudio.
+- `original`: se conserva la referencia de hardware del Emotiv (CMS/DRL). Sin
+  CAR no hay pérdida de rango, así que ICA usa `n_buenos` componentes.
+- Las claves que faltan toman el valor del estudio. Un valor fuera de las
+  opciones lanza `ValueError`.
+- Con la banda 3–30 Hz la potencia delta (1–4 Hz) queda casi eliminada por el
+  propio filtro. Es lo esperable, pero conviene avisarlo en la interfaz.
+
+El recorte (5 s + 5 s), ICA con ICLabel, el epocado (4 s, solape 2 s) y Welch
+(1–30 Hz) no son elegibles.
+
+## `analizar_grabacion(ruta_edf, parametros=None)`
+
+Devuelve un `dict` serializable con `json.dumps(..., allow_nan=False)`: los NaN
+salen como `null`. Si falla una fase del pipeline lanza `ErrorDeFase`, con la
+fase en `.fase`.
+
+| Sección | Contenido |
+|---|---|
+| `metadatos` | `archivo`, `duracion_s` (antes del recorte), `sfreq_original_hz`, `sfreq_hz`, `resampleado`, `canales_eeg`, `n_canales_buenos`, `n_epocas`, `versiones` (eeg_library, python, mne, scikit_learn, numpy) y `fecha_analisis` |
+| `parametros_aplicados` | `referencia`, `banda_hz`, `notch_hz` (los tres elegibles, tal como se aplicaron), `car_aplicada` (bool), `recorte_s`, `ica` (`n_componentes`, `componentes_eliminadas`, `criterio`, `varianza_eliminada`, `random_state`), `epocado` y `psd` |
+| `calidad` | Por canal: `region`, `estado` (`bueno` o `descartado`; la librería no tiene estado intermedio), `motivo` (texto de `evaluar_calidad`, `null` si es bueno) y `metricas` (`cq_medio`, `pct_muestras_malas`, `varianza`, `z_robusto`) |
+| `potencia` | `bandas_hz`; `por_canal[canal]`: `valido` y, por banda, `absoluta_v2` y `relativa` (media entre épocas); `por_region[region]`: `n_canales_validos` y, por banda, `log10_absoluta_v2` y `relativa`, solo con canales válidos (el mismo agregado que la matriz) |
+| `caracteristicas` | Las 70 entradas de los modelos, por nombre |
+
+Notas:
+
+- La potencia de un canal descartado se calcula igual, pero sobre señal que no
+  pasó por CAR ni por ICA: `valido = false` y no entra en las regiones.
+- Las características salen del **mismo código** que construyó
+  `matriz_rf.parquet` (`ejecutar_fases` → `anotar_validez_de_canales` →
+  `resumir_por_grabacion`). Ninguna depende de otras grabaciones.
+- Alias neutros: `indice_fatiga_media` y `indice_fatiga_sd` de la matriz salen
+  como `indice_theta_alfa_media` e `indice_theta_alfa_sd`. `predecir` los
+  traduce de vuelta. Ninguna clave del JSON contiene «fatiga».
+
+## Modelos y fichas
+
+Cada modelo es un `.joblib` (Pipeline de scikit-learn 1.7.2) con una ficha
+`.json` del mismo nombre. Los del estudio están en `src/eeg_library/modelos/` y
+los genera `analisis/empaquetar_modelos.py`.
+
+| Clave de la ficha | Contenido |
+|---|---|
+| `id`, `titulo`, `archivo`, `sha256_modelo` | Identidad. La carga falla si el SHA-256 del `.joblib` no coincide |
+| `que_predice` | Texto para la interfaz |
+| `clases` | `[{codigo, nombre}]`, en el orden de `predict_proba` |
+| `condiciones_aplicables` | Condiciones del protocolo para las que tiene sentido |
+| `parametros_validos` | `referencia`, `banda_hz` y `notch_hz` con que se entrenó |
+| `columnas` | `feature_names_in_` del Pipeline, con los nombres de la matriz |
+| `resultado_test` | `metrica`, `valor`, `ic95`, `azar`, `n_grabaciones`, `n_personas` y `fuente` |
+| `entrenamiento` | `fecha`, `datos`, `variante`, `sha256_matriz_rf`, `commit_eeg_library`, `python` y `scikit_learn` |
+| `avisos` | Textos que la interfaz muestra siempre |
+
+| Modelo | Clases | Test (exactitud balanceada) | Azar |
+|---|---|---|---|
+| `c1_oa_oc_logistica` | OA, OC | 0.855 [0.794–0.912] | 0.5 |
+| `c2_reposo_tarea_logistica` | reposo, tarea | 0.851 [0.813–0.885] | 0.5 |
+| `c3_tareas_logistica` | STROOP, PASAT, PVTB, MSIT, PVSAT | 0.488 [0.441–0.531] | 0.2 |
+
+Un modelo externo se carga con la ruta de su ficha: `cargar_modelo("ruta/x.json")`,
+con el `.joblib` al lado.
+
+## `predecir(modelo, caracteristicas, parametros)`
+
+- `modelo`: un `Modelo` de `cargar_modelo`, o su identificador o ruta.
+- `parametros`: se comparan solo las tres claves elegibles; las demás se ignoran,
+  así que se puede pasar `parametros_aplicados` tal cual.
+- Si coinciden con `parametros_validos`:
+  `{"disponible": true, "modelo", "clase", "codigo", "probabilidades": {nombre: p}}`.
+- Si no: `{"disponible": false, "modelo", "motivo", "parametros_requeridos",
+  "parametros_aplicados"}`.
+- Si falta una columna lanza `ValueError`. Un `null` lo imputa el Pipeline.
+
+`predecir` no mira la condición de la grabación: elegir qué modelos mostrar
+según la condición conocida o estimada es cosa de la plataforma (Fase 7).
+
+## Verificación
+
+- `pytest`: tests unitarios del contrato con un EDF sintético
+  (`tests/procesado/test_grabacion.py`, `tests/modelado/test_prediccion.py`).
+- `pytest -m datos` (necesita `EEG_DATA`, ~1 min, solo train/val):
+  - la matriz reconstruida es idéntica a `matriz_rf.parquet`
+    (`check_exact=True`);
+  - paridad exacta de las 70 características en 13 grabaciones (las 7
+    condiciones, los exports de 59, 63, 67 y 71 canales, la grabación con CAR
+    omitida y regiones a NaN);
+  - con los nombres de clase de la ficha, la exactitud balanceada en train/val
+    es 0.868 (c1), 0.871 (c2) y 0.512 (c3).

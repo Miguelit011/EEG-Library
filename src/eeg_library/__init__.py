@@ -41,8 +41,15 @@ from eeg_library.procesado.matrix import (
     agregar_por_region,
     columnas_de_features,
     construir_matriz_rf,
+    resumir_por_grabacion,
     REGIONES,
 )
+from eeg_library.procesado.parametros import (
+    OPCIONES,
+    PARAMETROS_ESTUDIO,
+    normalizar_parametros,
+)
+from eeg_library.procesado.grabacion import analizar_grabacion
 from eeg_library.modelado.modeling import (
     a_clases,
     agregar_a_sesion,
@@ -75,5 +82,11 @@ from eeg_library.modelado.tareas_ejecutivas import (
     etiqueta_multiclase,
     preparar_tareas_ejecutivas,
 )
+from eeg_library.modelado.prediccion import (
+    cargar_modelo,
+    leer_ficha,
+    listar_modelos,
+    predecir,
+)
 
-__version__ = "0.13.0"
+__version__ = "0.14.0"

@@ -157,7 +157,7 @@ def cargar_tareas(ruta_manifest, dir_edf, ruta_splits=None):
 
 
 def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
-                     devolver_ventanas=False, random_state=42):
+                     devolver_ventanas=False, random_state=42, parametros=None):
     """
     Ejecuta las Fases 1-9 sobre un único archivo EDF.
 
@@ -177,6 +177,9 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         (para la CNN), alineadas fila a fila con la tabla de features.
     random_state : int
         Semilla de ICA, para que el lote sea reproducible.
+    parametros : dict o None
+        Parámetros de procesado (ver `procesado/parametros.py`). None usa
+        `PARAMETROS_ESTUDIO`, que es como se procesó el dataset.
 
     Devuelve
     --------
@@ -196,9 +199,31 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         Si falla cualquier fase, envolviendo la excepción original y
         anotando en cuál ocurrió.
     """
+    features, ventanas, registro, _ = ejecutar_fases(
+        ruta, sujeto, condicion, sesion, extras=extras,
+        devolver_ventanas=devolver_ventanas, random_state=random_state,
+        parametros=parametros,
+    )
+    return features, ventanas, registro
+
+
+def ejecutar_fases(ruta, sujeto, condicion, sesion, extras=None,
+                   devolver_ventanas=False, random_state=42, parametros=None):
+    """
+    Cadena de fases de `procesar_archivo`, que devuelve además el detalle.
+
+    El `detalle` recoge lo que el log del lote no guarda pero sí necesita
+    quien analiza una grabación suelta (`analizar_grabacion`): el motivo de
+    exclusión de cada canal y sus métricas, los metadatos de carga, filtros,
+    CAR, ICA y epocado, y los parámetros aplicados. Con `parametros=None` la
+    secuencia de llamadas es exactamente la del dataset del estudio.
+
+    Devuelve `(features, ventanas, registro, detalle)`; las tres primeras
+    son las de `procesar_archivo`.
+    """
     from eeg_library.preprocesado.reader import cargar_eeg
     from eeg_library.preprocesado.filtering import recortar_registro, aplicar_filtros
-    from eeg_library.preprocesado.quality import evaluar_calidad
+    from eeg_library.preprocesado.quality import CANALES_EPOC, evaluar_calidad
     from eeg_library.preprocesado.referencing import aplicar_car
     from eeg_library.preprocesado.artifacts import (
         entrenar_ica, identificar_componentes_oculares, eliminar_artefactos_oculares,
@@ -206,7 +231,9 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
     from eeg_library.procesado.epoching import crear_epocas
     from eeg_library.procesado.spectral import calcular_psd
     from eeg_library.procesado.bands import extraer_bandas
+    from eeg_library.procesado.parametros import normalizar_parametros
 
+    parametros = normalizar_parametros(parametros)
     extras = extras or {}
     archivo = os.path.basename(ruta)
     registro = {
@@ -214,6 +241,7 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         "sesion": sesion, "estado": "error", "fase_fallo": None, "error": None,
     }
     registro.update(extras)
+    detalle = {"parametros": parametros}
     t0 = time.time()
 
     # Una única envoltura para todo el encadenado: `fase` se va actualizando
@@ -222,6 +250,8 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
     try:
         fase = "carga"
         raw, meta_carga = cargar_eeg(ruta)
+        detalle["carga"] = meta_carga
+        detalle["canales_eeg"] = [c for c in CANALES_EPOC if c in raw.ch_names]
         registro.update(
             n_canales=meta_carga["n_canales"],
             n_canales_eeg=meta_carga["n_canales_eeg"],
@@ -231,24 +261,38 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         )
 
         fase = "recorte"
-        raw, _ = recortar_registro(raw)
+        raw, detalle["recorte"] = recortar_registro(raw)
 
         fase = "filtros"
-        raw, _ = aplicar_filtros(raw)
+        raw, detalle["filtros"] = aplicar_filtros(
+            raw, notch_freq=parametros["notch_hz"], banda=tuple(parametros["banda_hz"]))
 
         fase = "calidad"
-        good_channels, excluidos, _ = evaluar_calidad(raw)
+        good_channels, excluidos, metricas = evaluar_calidad(raw)
+        detalle["calidad"] = {"buenos": list(good_channels),
+                              "excluidos": dict(excluidos), "metricas": metricas}
         registro.update(
             n_canales_buenos=len(good_channels),
             canales_excluidos="|".join(sorted(excluidos)),
         )
 
         fase = "car"
-        raw, meta_car = aplicar_car(raw, good_channels)
+        if parametros["referencia"] == "car_condicional":
+            raw, meta_car = aplicar_car(raw, good_channels)
+            # Con CAR (y también con CAR omitida por < 6 canales) ICA usa
+            # n - 1 componentes, como en el estudio (ver entrenar_ica).
+            n_componentes = None
+        else:
+            meta_car = {"metodo": "ninguno", "canales_incluidos": [],
+                        "canales_excluidos": []}
+            # Sin re-referenciar no hay pérdida de rango.
+            n_componentes = len(good_channels)
+        detalle["car"] = meta_car
         registro["car"] = meta_car["metodo"]
 
         fase = "ica"
-        ica, meta_ica = entrenar_ica(raw, good_channels, random_state=random_state)
+        ica, meta_ica = entrenar_ica(raw, good_channels, random_state=random_state,
+                                     n_components=n_componentes)
         registro["n_componentes_ica"] = meta_ica["n_components"]
 
         fase = "iclabel"
@@ -263,6 +307,7 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
         fase = "ica_aplicar"
         raw, meta_limpieza = eliminar_artefactos_oculares(raw, ica, componentes)
         registro["varianza_eliminada"] = meta_limpieza["varianza_explicada_eliminada"]
+        detalle["ica"] = {**meta_ica, **meta_limpieza}
 
         fase = "epocado"
         epochs, meta_epocado = crear_epocas(
@@ -270,12 +315,14 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
             archivo_origen=archivo,
         )
         registro["n_epocas"] = meta_epocado["n_epocas"]
+        detalle["epocado"] = meta_epocado
 
         fase = "psd"
-        spectrum, _ = calcular_psd(epochs)
+        spectrum, detalle["psd"] = calcular_psd(epochs)
 
         fase = "bandas"
         features, meta_bandas = extraer_bandas(spectrum, canales_validos=good_channels)
+        detalle["bandas"] = meta_bandas
         registro["cluster_descartados"] = "|".join(
             meta_bandas["cluster_frontal_descartados"]
             + meta_bandas["cluster_posterior_descartados"]
@@ -302,7 +349,7 @@ def procesar_archivo(ruta, sujeto, condicion, sesion, extras=None,
 
     registro["estado"] = "ok"
     registro["segundos"] = round(time.time() - t0, 2)
-    return features, ventanas, registro
+    return features, ventanas, registro, detalle
 
 
 def _procesar_y_guardar(tarea):

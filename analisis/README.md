@@ -268,6 +268,26 @@ sensibilidad, resolución por canal, figuras y resumen.
 
 Son independientes entre sí y pueden ejecutarse en cualquier orden.
 
+### Guiones de empaquetado (plataforma web)
+
+No son análisis: preparan lo que la librería entrega a EEG-Platform. El
+contrato está en `docs/CONTRATO.md`.
+
+```bash
+python analisis/empaquetar_modelos.py   # modelos c1-c3 + fichas -> src/eeg_library/modelos/
+python analisis/generar_ejemplo.py      # JSON de ejemplo -> docs/ejemplos/
+```
+
+- `empaquetar_modelos.py` copia sin modificar los `.joblib` de la regresión
+  logística del análisis confirmatorio
+  (`<EEG_DATA>/processed/test_20261007-133358/modelos/`) y escribe su ficha
+  con las cifras de `resultados.json`. Exige que el SHA-256 de
+  `matriz_rf.parquet` sea el registrado en ese análisis. Es idempotente.
+- `generar_ejemplo.py` analiza una grabación de train y anonimiza su nombre.
+- **Verificado en:** `tests/modelado/test_prediccion.py`,
+  `tests/procesado/test_grabacion.py` y `tests/datos/test_fase0_datos.py`
+  (este último con `pytest -m datos`: matriz idéntica, paridad y clases).
+
 ---
 
 ## Garantías metodológicas

@@ -180,3 +180,19 @@ def test_entrenar_ica_valida_canales_existentes():
     raw = _raw_sintetico()
     with pytest.raises(ValueError):
         entrenar_ica(raw, ["AF3", "CANAL_INEXISTENTE"])
+
+
+def test_n_components_explicito_para_referencia_original():
+    # Sin CAR no hay pérdida de rango: se pueden pedir tantas componentes
+    # como canales buenos.
+    raw = _raw_sintetico()
+    raw_sin_car = mne.io.RawArray(
+        np.random.default_rng(1).normal(0, 3e-6, (len(CANALES), N_MUESTRAS)),
+        mne.create_info(CANALES, SFREQ, ch_types="eeg"), verbose=False)
+    good_channels = CANALES[:10]
+    ica, metadata = entrenar_ica(raw_sin_car, good_channels, random_state=42,
+                                 n_components=len(good_channels))
+    assert ica.n_components_ == len(good_channels)
+    assert metadata["n_components"] == len(good_channels)
+    with pytest.raises(ValueError, match="fuera de rango"):
+        entrenar_ica(raw, good_channels, n_components=len(good_channels) + 1)

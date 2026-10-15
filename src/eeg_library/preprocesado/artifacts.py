@@ -39,7 +39,7 @@ CATEGORIAS_ICLABEL = (
 _INDICE_EYE_BLINK = CATEGORIAS_ICLABEL.index("eye blink")
 
 
-def entrenar_ica(raw, good_channels, random_state=42):
+def entrenar_ica(raw, good_channels, random_state=42, n_components=None):
     """
     Ajusta ICA (Infomax Extended) sobre los canales buenos del registro.
 
@@ -58,7 +58,12 @@ def entrenar_ica(raw, good_channels, random_state=42):
     Nota: esta resta asume que CAR se aplicó realmente (aplicar_car con
     >= 6 canales buenos). Si CAR se omitió (< 6 canales buenos), no hay
     deficiencia de rango inducida por CAR y `-1` es conservador pero no
-    estrictamente necesario; se documenta como limitación conocida.
+    estrictamente necesario; se documenta como limitación conocida. Se
+    mantiene así porque es como se procesó el dataset del estudio.
+
+    Cuando no se re-referencia en absoluto (referencia `original`, ver
+    `procesado/parametros.py`), quien llama pasa `n_components` igual al
+    número de canales buenos: sin CAR no hay pérdida de rango.
 
     Parámetros
     ----------
@@ -70,6 +75,9 @@ def entrenar_ica(raw, good_channels, random_state=42):
     random_state : int
         Semilla para reproducibilidad (Infomax es estocástico). Por
         defecto 42.
+    n_components : int o None
+        Número de componentes. None (por defecto) usa
+        `len(good_channels) - 1`, el valor del estudio.
 
     Devuelve
     --------
@@ -78,7 +86,7 @@ def entrenar_ica(raw, good_channels, random_state=42):
     metadata : dict
         Diccionario con las claves:
           - metodo         : "infomax_extended"
-          - n_components   : nº de componentes ajustadas (len(good_channels) - 1)
+          - n_components   : nº de componentes ajustadas
           - n_good_channels: nº de canales buenos usados
           - canales_usados : list[str] con los nombres de esos canales
           - tiempo_ajuste_s: duración del ajuste en segundos
@@ -98,7 +106,13 @@ def entrenar_ica(raw, good_channels, random_state=42):
             f"{faltantes}."
         )
 
-    n_components = len(good_channels) - 1
+    if n_components is None:
+        n_components = len(good_channels) - 1
+    if not 1 <= n_components <= len(good_channels):
+        raise ValueError(
+            f"n_components={n_components} fuera de rango para "
+            f"{len(good_channels)} canales buenos."
+        )
 
     raw_picked = raw.copy().pick(good_channels)
 

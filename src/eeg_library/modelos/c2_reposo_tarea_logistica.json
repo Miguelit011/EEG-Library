@@ -23,6 +23,19 @@
     "MSIT",
     "PVSAT"
   ],
+  "condiciones_por_clase": {
+    "reposo": [
+      "OA",
+      "OC"
+    ],
+    "tarea": [
+      "STROOP",
+      "PASAT",
+      "PVTB",
+      "MSIT",
+      "PVSAT"
+    ]
+  },
   "parametros_validos": {
     "referencia": "car_condicional",
     "banda_hz": [

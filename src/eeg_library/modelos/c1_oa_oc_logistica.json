@@ -18,6 +18,14 @@
     "OA",
     "OC"
   ],
+  "condiciones_por_clase": {
+    "OA": [
+      "OA"
+    ],
+    "OC": [
+      "OC"
+    ]
+  },
   "parametros_validos": {
     "referencia": "car_condicional",
     "banda_hz": [

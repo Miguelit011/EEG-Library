@@ -13,6 +13,9 @@ Nada de la ficha se teclea a mano:
   entrenamiento (`reposo`, `reposo_tarea`, `tareas_ejecutivas`), las mismas
   con las que `analisis_test.py` construyó las etiquetas;
 - las columnas, del propio Pipeline (`feature_names_in_`);
+- `condiciones_por_clase` (qué condiciones corresponden a cada clase), de las
+  mismas constantes del código de entrenamiento: sirve a la plataforma para
+  comparar una predicción con la condición conocida de la grabación;
 - el SHA-256 de `matriz_rf.parquet` se recalcula y se exige que sea el que
   registró el análisis confirmatorio.
 
@@ -63,6 +66,8 @@ MODELOS = {
                        "con ojos cerrados (OC).",
         "clases": {0: OA, 1: OC},
         "condiciones_aplicables": list(CONDICIONES_REPOSO),
+        # Las clases se llaman como las condiciones a las que corresponden.
+        "condiciones_por_clase": {OA: [OA], OC: [OC]},
     },
     "c2_reposo_tarea_logistica": {
         "clave_resultados": "C2_reposo_tarea",
@@ -71,6 +76,8 @@ MODELOS = {
                        "cognitiva.",
         "clases": {0: REPOSO, 1: TAREA},
         "condiciones_aplicables": list(ORDEN_PROTOCOLO),
+        "condiciones_por_clase": {REPOSO: list(CONDICIONES_REPOSO),
+                                  TAREA: list(CONDICIONES_EJECUTIVAS)},
     },
     "c3_tareas_logistica": {
         "clave_resultados": "C3_tareas",
@@ -79,6 +86,7 @@ MODELOS = {
                        "PVTB, MSIT, PVSAT) se estaba haciendo.",
         "clases": {codigo: nombre for nombre, codigo in CODIGO_DE_CLASE.items()},
         "condiciones_aplicables": list(CONDICIONES_EJECUTIVAS),
+        "condiciones_por_clase": {nombre: [nombre] for nombre in CODIGO_DE_CLASE},
     },
 }
 
@@ -145,6 +153,7 @@ def main():
             "que_predice": spec["que_predice"],
             "clases": [{"codigo": c, "nombre": spec["clases"][c]} for c in codigos],
             "condiciones_aplicables": spec["condiciones_aplicables"],
+            "condiciones_por_clase": spec["condiciones_por_clase"],
             "parametros_validos": dict(PARAMETROS_ESTUDIO),
             "columnas": columnas,
             "resultado_test": {

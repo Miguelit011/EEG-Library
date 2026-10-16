@@ -33,6 +33,23 @@
     "MSIT",
     "PVSAT"
   ],
+  "condiciones_por_clase": {
+    "STROOP": [
+      "STROOP"
+    ],
+    "PASAT": [
+      "PASAT"
+    ],
+    "PVTB": [
+      "PVTB"
+    ],
+    "MSIT": [
+      "MSIT"
+    ],
+    "PVSAT": [
+      "PVSAT"
+    ]
+  },
   "parametros_validos": {
     "referencia": "car_condicional",
     "banda_hz": [

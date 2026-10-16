@@ -75,6 +75,7 @@ los genera `analisis/empaquetar_modelos.py`.
 | `que_predice` | Texto para la interfaz |
 | `clases` | `[{codigo, nombre}]`, en el orden de `predict_proba` |
 | `condiciones_aplicables` | Condiciones del protocolo para las que tiene sentido |
+| `condiciones_por_clase` | Opcional. `{clase: [condiciones]}`: qué condiciones corresponden a cada clase (en c2, `reposo` = OA y OC). La plataforma lo usa para comparar la predicción con la condición conocida de la grabación; sin él, supone que la clase se llama como la condición |
 | `parametros_validos` | `referencia`, `banda_hz` y `notch_hz` con que se entrenó |
 | `columnas` | `feature_names_in_` del Pipeline, con los nombres de la matriz |
 | `resultado_test` | `metrica`, `valor`, `ic95`, `azar`, `n_grabaciones`, `n_personas` y `fuente` |

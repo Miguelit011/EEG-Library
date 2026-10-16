@@ -48,6 +48,23 @@ def test_ficha_completa_y_coherente(id_modelo):
     assert ficha["entrenamiento"]["scikit_learn"] == "1.7.2"
 
 
+@pytest.mark.parametrize("id_modelo", MODELOS)
+def test_condiciones_por_clase(id_modelo):
+    """Cada clase dice a qué condiciones corresponde; juntas, las del modelo."""
+    ficha = leer_ficha(id_modelo)[0]
+    por_clase = ficha["condiciones_por_clase"]
+    assert list(por_clase) == [c["nombre"] for c in ficha["clases"]]
+    todas = [cond for conds in por_clase.values() for cond in conds]
+    assert sorted(todas) == sorted(ficha["condiciones_aplicables"])
+    assert len(todas) == len(set(todas))       # ninguna condición en dos clases
+
+
+def test_condiciones_de_reposo_y_tarea():
+    por_clase = leer_ficha("c2_reposo_tarea_logistica")[0]["condiciones_por_clase"]
+    assert por_clase["reposo"] == ["OA", "OC"]
+    assert por_clase["tarea"] == ["STROOP", "PASAT", "PVTB", "MSIT", "PVSAT"]
+
+
 def test_nombres_de_clase():
     nombres = {m: [c["nombre"] for c in leer_ficha(m)[0]["clases"]] for m in MODELOS}
     assert nombres == {

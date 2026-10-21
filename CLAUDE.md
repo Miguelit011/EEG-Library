@@ -119,6 +119,12 @@ de la Facultad de Ciencias del Deporte.
   no asumir)
 - Registros: 4574 archivos EEG válidos = 178 sujetos × 5 mediciones (M2–M6)
   × 7 condiciones, con ausencias (no todos los sujetos completan las 5×7)
+- Mediciones (información del equipo del estudio, 2026-10-21): tomadas al
+  inicio y al final de cada trimestre de un curso escolar. M1 = inicio 1.er
+  trimestre, M2 = final 1.º, M3 = inicio 2.º, M4 = final 2.º, M5 = inicio 3.º,
+  M6 = final 3.º. El dataset EEG solo contiene M2–M6: M1 se descartó tras
+  auditarla (solo 5 condiciones, sin MSIT ni PVSAT; ~29 % de las grabaciones
+  sin identidad de sujeto resuelta). Tabla y motivos en docs/ESTADO.md
 - Condiciones: MSIT, PASAT, PVSAT, PVTB, STROOP (carga cognitiva) más OA y
   OC (reposo con ojos abiertos y cerrados, que sirven de línea base)
 - Orden del protocolo dentro de cada sesión, fijo:

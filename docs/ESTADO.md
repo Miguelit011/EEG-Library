@@ -47,6 +47,50 @@ ventanas/                         salida de la Fase 11 (ventanas crudas CNN)
 > (160 sujetos, 960 archivos, 6 momentos, 5 condiciones, 30–37 h), que
 > describían una estimación previa a la organización del dataset.
 
+**Significado de las mediciones (M1–M6).** Información facilitada por el equipo
+del estudio el 2026-10-21 (testimonio del equipo, no deducido de los archivos).
+Las medidas se tomaron al inicio y al final de cada trimestre de un curso
+escolar:
+
+| Medición | Momento del curso            | En el dataset EEG |
+|----------|------------------------------|-------------------|
+| M1       | inicio del 1.er trimestre    | no (descartada, ver abajo) |
+| M2       | final del 1.er trimestre     | sí |
+| M3       | inicio del 2.º trimestre     | sí |
+| M4       | final del 2.º trimestre      | sí |
+| M5       | inicio del 3.er trimestre    | sí |
+| M6       | final del 3.er trimestre     | sí |
+
+Consecuencias: las mediciones son **ordinales y no equiespaciadas** (M2→M3 cubre
+las vacaciones entre trimestres; M3→M4 un trimestre lectivo), de modo que no
+conviene tratar `medicion` como variable numérica con paso constante. Los pares
+(M2, M3), (M4, M5) son fin de un trimestre e inicio del siguiente, y por tanto
+casi contiguos en el tiempo. M1 solo aparece en el VAS, no en las grabaciones
+(ver "Regla de enlace", Fase 12).
+
+**Por qué se descartó M1.** Decisión del autor tras la auditoría inicial de los
+datos crudos de M1 (1014 grabaciones EDF, 15 076 archivos, ~30 GB). Los motivos
+que recogía esa auditoría:
+
+- **Protocolo distinto:** M1 solo tiene 5 condiciones (OC, OA, STROOP, PASAT,
+  PVTB); MSIT y PVSAT no aparecen. M2–M6 tienen las 7.
+- **Identidad sin resolver:** los `.edf` crudos no llevan sujeto/centro/sexo en
+  el nombre (esquema crudo de EmotivPro: iniciales + serie + timestamp). De las
+  1014 grabaciones, ~291 (29 %) no tenían entrada canónica F/C/sexo; en C8 el
+  82 %. En C3 y C4 ocurría lo inverso: más entradas canónicas que EDF reales.
+- **Colisión de identidad:** F144 aparecía en C2 y C7, y la pulsera 44 de C8 tenía
+  dos ocupantes en M1 (la única colisión de clave `(centro, pulsera, medición)`
+  del VAS). Con identidad de persona dudosa no se puede hacer un split por sujeto
+  sin riesgo de fuga.
+- **Contaminación:** grabaciones de apps demo de Emotiv (Cerebral Circles, Star
+  Search, EmotivBCI-*) mezcladas con las experimentales en C5, y mucho ruido de
+  naming (typos, tomas inválidas, `prueba`).
+
+Estos son los hallazgos de la auditoría tal como se recogieron entonces; no se
+han vuelto a verificar contra `EEG-Data`. Las preguntas que dejó abiertas (por
+qué MSIT/PVSAT no están en M1, origen de los ~291 sin mapear) no consta que se
+hayan respondido.
+
 **Partición (`splits.csv`):** por sujeto y estratificada por centro, sin
 solape — train 125 sujetos / val 25 / test 28. Su columna `n_ventanas`
 (305 272 en total) **no descuenta el recorte de 5+5 s de la Fase 2**: el

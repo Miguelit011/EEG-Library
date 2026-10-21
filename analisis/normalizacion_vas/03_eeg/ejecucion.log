@@ -1,0 +1,57 @@
+
+==============================================================================
+1. DATOS (train + val; test apartado antes de agregar)
+==============================================================================
+VAS: 1 fila(s) duplicada(s) exacta(s) eliminada(s).
+VAS: 1 clave(s) con dos ocupantes en la misma medición: [('C8', 'M1', 44)]. Solo importan si tienen EEG.
+Grabaciones de test apartadas: 732 (no se agregan ni se leen)
+Sesiones train+val: 547; con X centrable (Tarea B): 537 de 136 personas; 77 features
+
+==============================================================================
+2. EXACTITUD BALANCEADA DE CADA VARIANTE
+==============================================================================
+(a) centrado R1 — Fase 14b             sin control  bal = 0.3947 IC95 [0.3484, 0.4376]  tau +0.105  pliegues 0.412 0.453 0.393 0.378 0.337
+                                       → reproduce el 0.3947 documentado
+(a′) centrado R4                       sin control  bal = 0.3705 IC95 [0.3323, 0.4105]  tau +0.106  pliegues 0.398 0.450 0.327 0.308 0.370
+(b) z SD encogida, R4 — principal      sin control  bal = 0.3512 IC95 [0.3134, 0.3895]  tau +0.071  pliegues 0.322 0.395 0.352 0.350 0.337
+(c) (a′) sin efecto de momento         sin control  bal = 0.3211 IC95 [0.2804, 0.3616]  tau -0.011  pliegues 0.315 0.411 0.277 0.229 0.373
+(a) centrado R1 — Fase 14b             con control  bal = 0.3795 IC95 [0.3302, 0.4290]  tau +0.092  pliegues 0.428 0.344 0.412 0.330 0.384
+                                       → reproduce el 0.3795 documentado
+(a′) centrado R4                       con control  bal = 0.3773 IC95 [0.3284, 0.4252]  tau +0.109  pliegues 0.402 0.381 0.366 0.355 0.383
+(b) z SD encogida, R4 — principal      con control  bal = 0.3891 IC95 [0.3435, 0.4357]  tau +0.115  pliegues 0.350 0.445 0.384 0.364 0.402
+(c) (a′) sin efecto de momento         con control  bal = 0.3976 IC95 [0.3519, 0.4433]  tau +0.066  pliegues 0.442 0.445 0.329 0.378 0.394
+
+Matriz de confusión de (b) sin control (amontonada; filas = real):
+         poca  media  mucha
+  poca     67     50     58
+  media    61     49     71
+  mucha    49     61     71
+
+==============================================================================
+3. ESTADÍSTICO PRINCIPAL — DIFERENCIA EMPAREJADA CON (a)
+==============================================================================
+(a′) centrado R4                       sin control  Δ = -0.0242 IC95 [-0.0736, +0.0267]  (clase real distinta de (a) en 19.6% de sesiones)
+(b) z SD encogida, R4 — principal      sin control  Δ = -0.0435 IC95 [-0.0912, +0.0040]  (clase real distinta de (a) en 20.1% de sesiones)
+(c) (a′) sin efecto de momento         sin control  Δ = -0.0736 IC95 [-0.1234, -0.0226]  (clase real distinta de (a) en 23.3% de sesiones)
+(a′) centrado R4                       con control  Δ = -0.0022 IC95 [-0.0306, +0.0249]  (clase real distinta de (a) en 2.6% de sesiones)
+(b) z SD encogida, R4 — principal      con control  Δ = +0.0096 IC95 [-0.0204, +0.0413]  (clase real distinta de (a) en 3.7% de sesiones)
+(c) (a′) sin efecto de momento         con control  Δ = +0.0180 IC95 [-0.0273, +0.0649]  (clase real distinta de (a) en 14.3% de sesiones)
+
+==============================================================================
+4. ESTABILIDAD FRENTE A LA SEMILLA DEL RF (sin control)
+==============================================================================
+(a) centrado R1 — Fase 14b             semillas 42,1–4: 0.3947 0.3877 0.3593 0.3894 0.3818   media 0.3826, SD 0.0138
+(b) z SD encogida, R4 — principal      semillas 42,1–4: 0.3512 0.3580 0.3676 0.3608 0.3505   media 0.3576, SD 0.0071
+Diferencia (b) − (a) por semilla: -0.0435 -0.0297 +0.0083 -0.0286 -0.0313   media -0.0250
+
+==============================================================================
+5. LECTURA SEGÚN LAS REGLAS FIJADAS
+==============================================================================
+Regla 1: IC95 de (b) − (a) contiene 0: normalizar la etiqueta no cambia la respuesta del EEG; la conclusión de las Fases 14/14b se mantiene.
+El IC95 de (b) sin control [0.3134, 0.3895] no excluye el azar (1/3).
+
+==============================================================================
+6. FIGURAS
+==============================================================================
+Escritas en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\03_eeg\figuras
+Resultados en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\03_eeg\resultados.json

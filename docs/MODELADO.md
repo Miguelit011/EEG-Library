@@ -1268,7 +1268,7 @@ posición apenas se relaciona con el acierto (ρ = +0.037 [−0.008, +0.083]).
 
 ---
 
-## Fase 20 — Normalización intra-sujeto del VAS (línea nueva, en curso)
+## Fase 20 — Normalización intra-sujeto del VAS (cerrada)
 
 **Carpeta:** [`analisis/normalizacion_vas/`](../analisis/normalizacion_vas/README.md)
 (una subcarpeta por paso, cada una con script, tablas, figuras e `INFORME.md`)
@@ -1292,3 +1292,17 @@ tipificado dentro de `persona_uid`)?
   frente al centrado sobre la misma referencia). Lo que cambia la etiqueta es
   estimar el nivel habitual con todas las respuestas del VAS (incluida M1,
   corregida en −7.8 mm), que reduce un 6 % el error de la referencia.
+- **Paso 3 — Tarea B con cada etiqueta** (exploratorio, reglas fijadas antes;
+  [`03_eeg/INFORME.md`](../analisis/normalizacion_vas/03_eeg/INFORME.md)):
+  mismo banco que la Fase 14b, que se reproduce exacto (0.3947 / 0.3795). La
+  variante principal da **0.351 [0.313, 0.390]**, con Δ frente a la Fase 14b
+  de −0.044 [−0.091, +0.004]: **normalizar no mejora la respuesta del EEG**.
+  Sin control de visita, cada etiqueta "más limpia" baja el resultado, hasta
+  0.321 al quitar el efecto de momento. Con control de visita todas quedan en
+  0.377–0.398. El 0.3947 está además en lo alto del rango de semillas del RF
+  (0.359–0.395, media 0.383).
+
+**Conclusión de la línea (cerrada el 2026-10-21):** la señal de la Tarea B es
+frágil (0.32–0.40 según cómo se construya la misma etiqueta) y la
+normalización no la hace más robusta. Refuerza la conclusión de las Fases
+14/14b y del test.

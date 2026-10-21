@@ -1265,3 +1265,22 @@ posición apenas se relaciona con el acierto (ρ = +0.037 [−0.008, +0.083]).
   procesamiento y orden fijo del protocolo).
 - **Leer el p = 0.0001 de la familia de condición como un valor exacto.** Es el
   mínimo alcanzable con 10 000 permutaciones.
+
+---
+
+## Fase 20 — Normalización intra-sujeto del VAS (línea nueva, en curso)
+
+**Carpeta:** [`analisis/normalizacion_vas/`](../analisis/normalizacion_vas/README.md)
+(una subcarpeta por paso, cada una con script, tablas, figuras e `INFORME.md`)
+**Inicio:** 2026-10-21, a propuesta del tutor. **Solo `train` + `val`.**
+
+¿Da una etiqueta más útil expresar el VAS relativo a cada persona (centrado o
+tipificado dentro de `persona_uid`)?
+
+- **Paso 1 — descriptivo del VAS bruto** (solo VAS, sin EEG ni modelos;
+  [`01_descriptivo/INFORME.md`](../analisis/normalizacion_vas/01_descriptivo/INFORME.md)):
+  146 personas y 786 respuestas M1–M6; 139 con ≥3 sesiones y ninguna con
+  SD = 0. ICC(1) = 0.40 [0.32, 0.48] (0.47 sobre las sesiones con EEG). Los
+  alumnos difieren sobre todo en nivel y solo modestamente en rango de uso de
+  la escala. Dentro de persona, el final de trimestre queda ≈ +4–6 mm por
+  encima del inicio.

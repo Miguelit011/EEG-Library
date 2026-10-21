@@ -1,0 +1,83 @@
+
+==============================================================================
+1. DATOS
+==============================================================================
+VAS: 1 fila(s) duplicada(s) exacta(s) eliminada(s).
+VAS: 1 clave(s) con dos ocupantes en la misma medición: [('C8', 'M1', 44)]. Solo importan si tienen EEG.
+Respuestas VAS válidas en el CSV: 944 de 181 persona_uid
+  Test apartado:   150 respuestas, 28 personas
+  Sin split (sin EEG): 8 respuestas, 7 personas — excluidas
+Analizadas (train+val): 786 sesiones, 146 personas (train 121, val 25)
+
+==============================================================================
+2. SESIONES POR PERSONA Y POR MOMENTO
+==============================================================================
+Sesiones con VAS por persona (M1–M6):
+  1 sesiones:   2 personas
+  2 sesiones:   5 personas
+  3 sesiones:   5 personas
+  4 sesiones:   9 personas
+  5 sesiones:  27 personas
+  6 sesiones:  98 personas
+  media 5.38, mediana 6
+Solo M2–M6 (el rango con EEG):
+  1 sesiones:   5 personas
+  2 sesiones:   6 personas
+  3 sesiones:   5 personas
+  4 sesiones:  28 personas
+  5 sesiones: 102 personas
+Sesiones por momento: {'M1': 132, 'M2': 132, 'M3': 126, 'M4': 131, 'M5': 129, 'M6': 136}
+
+==============================================================================
+3. PERSONAS CON ≥3 SESIONES Y CON DESVIACIÓN NULA
+==============================================================================
+Personas con ≥3 sesiones: 139 de 146
+SD = 0 (todas sus respuestas iguales): 0 de las 139 con ≥3; 1 de las 144 con ≥2
+SD < 5 mm (casi constante): 7 de 139
+
+==============================================================================
+4. ICC(1) DEL VAS BRUTO
+==============================================================================
+VAS M1–M6 (todas las respuestas): 786 sesiones, 146 personas
+  ICC(1) = 0.403  IC95 F [0.328, 0.484]  IC95 bootstrap por persona [0.321, 0.479]
+  σ² entre = 193.0  σ² dentro = 285.9  n0 = 5.38
+VAS M2–M6: 654 sesiones, 146 personas
+  ICC(1) = 0.458  IC95 F [0.377, 0.541]  IC95 bootstrap por persona [0.372, 0.532]
+  σ² entre = 218.4  σ² dentro = 258.8  n0 = 4.48
+Sesiones con EEG etiquetadas (Fase 12): 547 sesiones, 146 personas
+  ICC(1) = 0.470  IC95 F [0.384, 0.557]  IC95 bootstrap por persona [0.374, 0.554]
+  σ² entre = 221.8  σ² dentro = 249.8  n0 = 3.74
+
+==============================================================================
+5. MEDIA Y DESVIACIÓN POR PERSONA (≥3 sesiones)
+==============================================================================
+       count  mean   std  min   10%   25%   50%   75%   90%   max
+media  139.0  41.5  15.7  4.2  19.0  30.0  42.5  51.7  61.8  74.2
+sd     139.0  15.6   6.7  2.5   7.4  10.3  15.7  20.0  23.5  37.0
+rango  139.0  39.1  17.0  5.0  20.0  25.0  40.0  50.0  60.0  90.0
+SD por persona: P90/P10 = 3.2; CV de las SD = 0.43
+Spearman media–SD: ρ = +0.145 (p = 0.0879)
+Spearman distancia al borde de la escala–SD: ρ = +0.270 (p = 0.00132)
+¿Difieren las SD más que si todos tuvieran la misma dispersión?
+  SD de las SD observada = 6.75; nula: media 5.70, P95 6.18; razón 1.18; p = 0.0004
+
+==============================================================================
+6. VAS MEDIO POR MOMENTO
+==============================================================================
+medicion   tipo  trimestre   n  media    sd  mediana  ic95_inf  ic95_sup  n_centrada  media_centrada  ic95_centrada_inf  ic95_centrada_sup
+      M1 inicio          1 132  35.00 20.99     30.0     31.39     38.61         132           -6.38              -9.26              -3.50
+      M2  final          1 132  42.12 22.14     40.0     38.31     45.93         131            0.82              -1.92               3.55
+      M3 inicio          2 126  40.67 19.88     40.0     37.17     44.18         125           -0.69              -3.23               1.85
+      M4  final          2 131  44.08 21.27     40.0     40.41     47.76         131            2.60               0.42               4.77
+      M5 inicio          3 129  40.25 21.45     40.0     36.51     43.99         129           -1.41              -3.89               1.08
+      M6  final          3 136  46.32 23.74     50.0     42.30     50.35         136            4.87               2.27               7.47
+Final − inicio de trimestre, dentro de persona (144 personas con ambos): +5.59 mm (IC95 ±2.59); t p = 3.65e-05; Wilcoxon p = 3.5e-05
+Intra-persona M1–M6, VAS ~ final + visita: final +4.49 mm IC95 [+1.81, +7.22]; visita +1.17 mm/visita IC95 [+0.34, +2.03]
+Intra-persona M2–M6, VAS ~ final + visita: final +3.84 mm IC95 [+1.15, +6.42]; visita +0.73 mm/visita IC95 [-0.32, +1.76]
+R² de la media por momento sobre el VAS bruto: 0.027
+
+==============================================================================
+7. FIGURAS
+==============================================================================
+Escritas en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\01_descriptivo\figuras
+Resultados en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\01_descriptivo\resultados.json

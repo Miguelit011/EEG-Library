@@ -1,0 +1,161 @@
+{
+  "umbral_acuerdo": 0.9,
+  "datos": {
+    "respuestas": 786,
+    "sesiones_objetivo": 547,
+    "personas": 146,
+    "desplazamiento_m1": -7.786616161616163
+  },
+  "referencias": [
+    {
+      "referencia": "R1",
+      "descripcion": "otras sesiones con EEG (Fase 14)",
+      "sesiones_con_referencia": 537,
+      "n_ref_mediana": 3.0,
+      "mse": 332.3438857852266,
+      "mae": 14.251707014276848,
+      "dif_mse_vs_R1": 0.0,
+      "ic95_dif_inf": 0.0,
+      "ic95_dif_sup": 0.0
+    },
+    {
+      "referencia": "R2",
+      "descripcion": "todas las otras respuestas M2–M6",
+      "sesiones_con_referencia": 542,
+      "n_ref_mediana": 4.0,
+      "mse": 320.7410381750466,
+      "mae": 14.039882060831781,
+      "dif_mse_vs_R1": -11.602847610179992,
+      "ic95_dif_inf": -20.736580105511685,
+      "ic95_dif_sup": -3.113834210131991
+    },
+    {
+      "referencia": "R3",
+      "descripcion": "R2 + M1 tal cual",
+      "sesiones_con_referencia": 545,
+      "n_ref_mediana": 5.0,
+      "mse": 314.95599265466586,
+      "mae": 14.050434512725017,
+      "dif_mse_vs_R1": -17.387893130560713,
+      "ic95_dif_inf": -31.826713780102057,
+      "ic95_dif_sup": -3.6228258115454417
+    },
+    {
+      "referencia": "R4",
+      "descripcion": "R2 + M1 corregido por su desplazamiento",
+      "sesiones_con_referencia": 545,
+      "n_ref_mediana": 5.0,
+      "mse": 311.8672510461679,
+      "mae": 14.02927717585539,
+      "dif_mse_vs_R1": -20.47663473905868,
+      "ic95_dif_inf": -35.15769149709198,
+      "ic95_dif_sup": -5.938740960984486
+    }
+  ],
+  "referencia_elegida": "R4",
+  "previa": {
+    "d0": 7.912380708038712,
+    "s0": 14.374251878364992,
+    "n_personas": 144
+  },
+  "efecto_momento": {
+    "M2": -2.0500954310547344,
+    "M3": -2.4521112206071574,
+    "M4": 1.6355294936544924,
+    "M5": -3.5269654186493042,
+    "M6": 5.3087550307765135
+  },
+  "acuerdo": [
+    {
+      "variante": "(a′) centrado con la referencia elegida",
+      "n": 537,
+      "acuerdo": 0.8081936685288641,
+      "kappa_lineal": 0.7849686847599164,
+      "spearman": 0.9336129547258161,
+      "cambios_de_dos_niveles": 0
+    },
+    {
+      "variante": "(b) z con SD encogida",
+      "n": 537,
+      "acuerdo": 0.8026070763500931,
+      "kappa_lineal": 0.7785480859010271,
+      "spearman": 0.9310462922932701,
+      "cambios_de_dos_niveles": 0
+    },
+    {
+      "variante": "(c) (a′) sin efecto de momento",
+      "n": 537,
+      "acuerdo": 0.7802607076350093,
+      "kappa_lineal": 0.7489422380139787,
+      "spearman": 0.9088646500460924,
+      "cambios_de_dos_niveles": 2
+    },
+    {
+      "variante": "z con SD bruta (informativa)",
+      "n": 534,
+      "acuerdo": 0.7771535580524345,
+      "kappa_lineal": 0.7501749475157453,
+      "spearman": 0.9015256900880811,
+      "cambios_de_dos_niveles": 0
+    },
+    {
+      "variante": "(a) residualizada por visita (informativa)",
+      "n": 537,
+      "acuerdo": 0.6759776536312849,
+      "kappa_lineal": 0.5785584409529582,
+      "spearman": 0.745571122099615,
+      "cambios_de_dos_niveles": 28
+    },
+    {
+      "variante": "(b) frente a (a′): solo la tipificación",
+      "n": 545,
+      "acuerdo": 0.9669724770642202,
+      "kappa_lineal": 0.962928252375086,
+      "spearman": 0.9956927947156092,
+      "cambios_de_dos_niveles": 0
+    },
+    {
+      "variante": "(c) frente a (a′): solo el momento",
+      "n": 545,
+      "acuerdo": 0.8807339449541285,
+      "kappa_lineal": 0.8662213041393035,
+      "spearman": 0.9786730342575766,
+      "cambios_de_dos_niveles": 0
+    },
+    {
+      "variante": "(c) frente a (a) residualizada por visita",
+      "n": 537,
+      "acuerdo": 0.590316573556797,
+      "kappa_lineal": 0.4713286713286713,
+      "spearman": 0.669147003399149,
+      "cambios_de_dos_niveles": 32
+    }
+  ],
+  "decision": "paso 3 con variante principal b",
+  "mecanismo": [
+    {
+      "grupo_sd": "SD baja",
+      "personas": 45,
+      "sesiones": 174,
+      "sd_mediana": 8.42407741889711,
+      "extremas_a": 0.4540229885057471,
+      "extremas_b": 0.5
+    },
+    {
+      "grupo_sd": "SD media",
+      "personas": 45,
+      "sesiones": 176,
+      "sd_mediana": 14.627689124184345,
+      "extremas_a": 0.7159090909090909,
+      "extremas_b": 0.6931818181818182
+    },
+    {
+      "grupo_sd": "SD alta",
+      "personas": 46,
+      "sesiones": 187,
+      "sd_mediana": 21.00081134361788,
+      "extremas_a": 0.8449197860962567,
+      "extremas_b": 0.7914438502673797
+    }
+  ]
+}

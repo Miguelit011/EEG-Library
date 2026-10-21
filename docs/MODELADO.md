@@ -1284,3 +1284,11 @@ tipificado dentro de `persona_uid`)?
   alumnos difieren sobre todo en nivel y solo modestamente en rango de uso de
   la escala. Dentro de persona, el final de trimestre queda ≈ +4–6 mm por
   encima del inicio.
+- **Paso 2 — variantes de la etiqueta** (solo VAS, criterio fijado antes de
+  calcular; [`02_etiquetas/INFORME.md`](../analisis/normalizacion_vas/02_etiquetas/INFORME.md)):
+  ninguna variante coincide con la etiqueta de la Fase 14b en ≥ 90 % de los
+  tercios (80.8 % / 80.3 % / 78.0 %), así que hay paso 3 con la z de SD
+  encogida como principal. Pero la tipificación apenas cambia nada (96.7 %
+  frente al centrado sobre la misma referencia). Lo que cambia la etiqueta es
+  estimar el nivel habitual con todas las respuestas del VAS (incluida M1,
+  corregida en −7.8 mm), que reduce un 6 % el error de la referencia.

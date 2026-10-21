@@ -20,3 +20,4 @@ pasos:
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
 | 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Caracterización descriptiva del VAS bruto: sesiones por persona, ICC, nivel frente a rango, media por momento | Hecho (2026-10-21) |
+| 2 | [`02_etiquetas/`](02_etiquetas/INFORME.md) | Variantes normalizadas de la etiqueta (sin EEG) y criterio previo de si merece la pena volver al EEG | Hecho (2026-10-21): hay paso 3, principal (b) |

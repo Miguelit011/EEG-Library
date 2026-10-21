@@ -1,0 +1,67 @@
+
+==============================================================================
+1. DATOS
+==============================================================================
+VAS: 1 fila(s) duplicada(s) exacta(s) eliminada(s).
+VAS: 1 clave(s) con dos ocupantes en la misma medición: [('C8', 'M1', 44)]. Solo importan si tienen EEG.
+Respuestas VAS train+val: 786 de 146 personas (547 con EEG etiquetado)
+Sesiones objetivo (con EEG etiquetado): 547 de 146 personas
+VAS de labels.csv y del CSV del VAS: coinciden en todas.
+Desplazamiento de M1 frente a la media M2–M6 de la persona: -7.79 mm (132 personas)
+
+==============================================================================
+2. DECISIÓN 1 — CONJUNTO DE REFERENCIA (error al predecir la sesión dejada fuera)
+==============================================================================
+Sesiones comunes (con referencia en R1–R4): 537
+referencia  sesiones_con_referencia  n_ref_mediana     mse    mae  dif_mse_vs_R1  ic95_dif_inf  ic95_dif_sup
+        R1                      537            3.0 332.344 14.252          0.000         0.000         0.000
+        R2                      542            4.0 320.741 14.040        -11.603       -20.737        -3.114
+        R3                      545            5.0 314.956 14.050        -17.388       -31.827        -3.623
+        R4                      545            5.0 311.867 14.029        -20.477       -35.158        -5.939
+Referencia elegida: R4 — R2 + M1 corregido por su desplazamiento
+
+==============================================================================
+3. ENCOGIMIENTO DE LA SD (empírico-bayesiano de Smyth)
+==============================================================================
+Previa ajustada sobre 144 personas: d0 = 7.91 grados de libertad, SD común s0 = 14.37 mm
+(d0 es cuánto pesa la SD común frente a la propia: una persona con
+ gl = n−1 sesiones recibe un peso gl/(gl+d0) para su SD propia.)
+SD por persona, P10–P90: bruta 7.1–22.5 → encogida 12.3–17.9
+
+==============================================================================
+4. VARIANTES DE LA ETIQUETA
+==============================================================================
+(a) Fase 14b: 537 sesiones, SD 18.2 mm, rango [-50, 50]  (Fase 14b: 537, SD 18.2, ±50)
+(a′) centrado con R4: 545 sesiones
+(b) z encogida: 545 sesiones
+z bruta: 538 sesiones (sin SD propia o con SD = 0 en el resto)
+Efecto de cada momento sobre (a′), mm: {'M2': -2.05, 'M3': -2.45, 'M4': 1.64, 'M5': -3.53, 'M6': 5.31}
+
+==============================================================================
+5. CRITERIO — ACUERDO DE TERCIOS CON (a)
+==============================================================================
+                                  variante   n  acuerdo  kappa_lineal  spearman  cambios_de_dos_niveles
+   (a′) centrado con la referencia elegida 537    0.808         0.785     0.934                       0
+                     (b) z con SD encogida 537    0.803         0.779     0.931                       0
+            (c) (a′) sin efecto de momento 537    0.780         0.749     0.909                       2
+              z con SD bruta (informativa) 534    0.777         0.750     0.902                       0
+(a) residualizada por visita (informativa) 537    0.676         0.579     0.746                      28
+   (b) frente a (a′): solo la tipificación 545    0.967         0.963     0.996                       0
+        (c) frente a (a′): solo el momento 545    0.881         0.866     0.979                       0
+ (c) frente a (a) residualizada por visita 537    0.590         0.471     0.669                      32
+
+DECISIÓN: no llegan al 90%: ['a_prima', 'b', 'c']. Paso 3 con la variante principal b.
+
+==============================================================================
+6. MECANISMO — QUIÉN OCUPA LAS CLASES EXTREMAS
+==============================================================================
+grupo_sd  personas  sesiones  sd_mediana  extremas_a  extremas_b
+ SD baja        45       174       8.424       0.454       0.500
+SD media        45       176      14.628       0.716       0.693
+ SD alta        46       187      21.001       0.845       0.791
+
+==============================================================================
+7. FIGURAS
+==============================================================================
+Escritas en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\02_etiquetas\figuras
+Resultados en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\normalizacion_vas\02_etiquetas\resultados.json

@@ -1,0 +1,243 @@
+{
+  "parametros": {
+    "semilla": 42,
+    "pliegues": 5,
+    "n_bootstrap": 2000,
+    "n_permutaciones": 1000,
+    "n_permutaciones_apriori": 10000,
+    "semillas_estabilidad": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "rapido": false
+  },
+  "datos": {
+    "base": "BD_COMPLETA_corregida.xlsx",
+    "sha256_base": "f75dadf1613fdc9ad3ffbb5774d51a5318962d1184e836cf51e6301deccf12e1",
+    "matriz": "matriz_rf.parquet",
+    "sha256_matriz": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+    "grabaciones_test_apartadas": 732,
+    "personas": 146,
+    "sesiones": 531,
+    "respuestas": 843,
+    "respuestas_por_objetivo": {
+      "FG": 815,
+      "FC": 815,
+      "VAS": 787
+    },
+    "features": 70
+  },
+  "principal": {
+    "FG": {
+      "rho": 0.14617156177073082,
+      "p_unilateral": 0.08091908091908091,
+      "nula_media": -0.007357858997817995,
+      "nula_p95": 0.17499731640789873
+    },
+    "FC": {
+      "rho": 0.007663906375020487,
+      "p_unilateral": 0.4675324675324675,
+      "nula_media": -0.0018846441182837103,
+      "nula_p95": 0.17491826719416012
+    }
+  },
+  "por_variante": [
+    {
+      "objetivo": "FG",
+      "variante": "RF",
+      "rho": 0.1462,
+      "ic95_inf": -0.0294,
+      "ic95_sup": 0.3108,
+      "r2": 0.0236,
+      "n": 146,
+      "p_unilateral": 0.0809
+    },
+    {
+      "objetivo": "FG",
+      "variante": "ridge",
+      "rho": 0.0497,
+      "ic95_inf": -0.1256,
+      "ic95_sup": 0.2251,
+      "r2": -0.0123,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FG",
+      "variante": "RF sin ajuste",
+      "rho": 0.229,
+      "ic95_inf": 0.0591,
+      "ic95_sup": 0.3867,
+      "r2": 0.0501,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FC",
+      "variante": "RF",
+      "rho": 0.0077,
+      "ic95_inf": -0.1572,
+      "ic95_sup": 0.1661,
+      "r2": -0.042,
+      "n": 146,
+      "p_unilateral": 0.4675
+    },
+    {
+      "objetivo": "FC",
+      "variante": "ridge",
+      "rho": -0.1143,
+      "ic95_inf": -0.2819,
+      "ic95_sup": 0.0593,
+      "r2": -0.0089,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FC",
+      "variante": "RF sin ajuste",
+      "rho": 0.0823,
+      "ic95_inf": -0.081,
+      "ic95_sup": 0.2408,
+      "r2": -0.0103,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "RF",
+      "rho": 0.0762,
+      "ic95_inf": -0.0737,
+      "ic95_sup": 0.2237,
+      "r2": -0.0466,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "ridge",
+      "rho": 0.0641,
+      "ic95_inf": -0.1093,
+      "ic95_sup": 0.2392,
+      "r2": -0.004,
+      "n": 146,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "RF sin ajuste",
+      "rho": 0.1008,
+      "ic95_inf": -0.0555,
+      "ic95_sup": 0.2564,
+      "r2": -0.0579,
+      "n": 146,
+      "p_unilateral": NaN
+    }
+  ],
+  "diferencia_con_vas": [
+    {
+      "comparacion": "FG − VAS",
+      "diferencia": 0.07,
+      "ic95_inf": -0.1158,
+      "ic95_sup": 0.2407
+    },
+    {
+      "comparacion": "FC − VAS",
+      "diferencia": -0.0685,
+      "ic95_inf": -0.2501,
+      "ic95_sup": 0.1141
+    }
+  ],
+  "apriori": [
+    {
+      "medida": "FG",
+      "variable": "indice_theta_alfa",
+      "rho_parcial": -0.1698,
+      "ic95_inf": -0.343,
+      "ic95_sup": -0.0034,
+      "p_unilateral": 0.9764,
+      "n": 146
+    },
+    {
+      "medida": "FG",
+      "variable": "compuesto_rel_sd",
+      "rho_parcial": 0.1454,
+      "ic95_inf": -0.0366,
+      "ic95_sup": 0.3138,
+      "p_unilateral": 0.0435,
+      "n": 146
+    },
+    {
+      "medida": "FC",
+      "variable": "indice_theta_alfa",
+      "rho_parcial": -0.1484,
+      "ic95_inf": -0.3064,
+      "ic95_sup": 0.0081,
+      "p_unilateral": 0.9631,
+      "n": 146
+    },
+    {
+      "medida": "FC",
+      "variable": "compuesto_rel_sd",
+      "rho_parcial": 0.1344,
+      "ic95_inf": -0.0395,
+      "ic95_sup": 0.2974,
+      "p_unilateral": 0.0571,
+      "n": 146
+    }
+  ],
+  "estabilidad": [
+    {
+      "semilla": 42,
+      "medida": "FG",
+      "rho": 0.1462
+    },
+    {
+      "semilla": 42,
+      "medida": "FC",
+      "rho": 0.0077
+    },
+    {
+      "semilla": 1,
+      "medida": "FG",
+      "rho": 0.1277
+    },
+    {
+      "semilla": 1,
+      "medida": "FC",
+      "rho": -0.0104
+    },
+    {
+      "semilla": 2,
+      "medida": "FG",
+      "rho": 0.0987
+    },
+    {
+      "semilla": 2,
+      "medida": "FC",
+      "rho": -0.0454
+    },
+    {
+      "semilla": 3,
+      "medida": "FG",
+      "rho": 0.1722
+    },
+    {
+      "semilla": 3,
+      "medida": "FC",
+      "rho": -0.018
+    },
+    {
+      "semilla": 4,
+      "medida": "FG",
+      "rho": 0.1416
+    },
+    {
+      "semilla": 4,
+      "medida": "FC",
+      "rho": -0.0057
+    }
+  ],
+  "duracion_s": 1198.4
+}

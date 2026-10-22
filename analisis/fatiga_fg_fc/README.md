@@ -72,5 +72,5 @@ cada sesión que entra; si no, el script se detiene.
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
 | 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Solo cuestionario: corrección de la base, enlace, consistencia, efecto de calendario, ICC, fiabilidad intra-persona, relación con el VAS, sexo/curso/centro | Hecho (2026-10-22): base verificada; hay paso 3 con FG y FC |
-| 2 | `02_entre_personas/` | Rasgo: FG/FC por persona frente al EEG | Pendiente |
+| 2 | [`02_entre_personas/`](02_entre_personas/INFORME.md) | Rasgo: FG/FC por persona frente al EEG | Hecho (2026-10-22): sin evidencia de relación (FG ρ = +0.15, p = 0.08; FC +0.01) |
 | 3 | `03_intra_persona/` | Estado: FG/FC por sesión, centrado por persona y medición, frente al EEG | Pendiente |

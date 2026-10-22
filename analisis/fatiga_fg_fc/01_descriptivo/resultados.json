@@ -319,7 +319,13 @@
     "con_fgfc_tv": 815,
     "personas_tv": 146,
     "sesiones_etiquetadas_tv": 550,
-    "sesiones_con_fgfc": 534,
+    "sesiones_sin_ventanas": [
+      "C3_F069_M5",
+      "C7_F147_M6",
+      "C7_F153_M5"
+    ],
+    "sesiones_con_ventanas_sin_fgfc": 16,
+    "sesiones_con_fgfc": 531,
     "personas_con_eeg": 146
   },
   "consistencia": [
@@ -874,56 +880,56 @@
     {
       "conjunto": "sesiones con EEG",
       "variable": "FG",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.6506,
-      "ic95_boot_inf": 0.5537,
-      "ic95_boot_sup": 0.7274
+      "icc": 0.6458,
+      "ic95_boot_inf": 0.5498,
+      "ic95_boot_sup": 0.7227
     },
     {
       "conjunto": "sesiones con EEG",
       "variable": "FC",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.7159,
-      "ic95_boot_inf": 0.6276,
-      "ic95_boot_sup": 0.7824
+      "icc": 0.7169,
+      "ic95_boot_inf": 0.6294,
+      "ic95_boot_sup": 0.7832
     },
     {
       "conjunto": "sesiones con EEG",
       "variable": "FG_c",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.6599,
-      "ic95_boot_inf": 0.5701,
-      "ic95_boot_sup": 0.7318
+      "icc": 0.6553,
+      "ic95_boot_inf": 0.5657,
+      "ic95_boot_sup": 0.7276
     },
     {
       "conjunto": "sesiones con EEG",
       "variable": "FC_c",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.7198,
-      "ic95_boot_inf": 0.6326,
-      "ic95_boot_sup": 0.7869
+      "icc": 0.7205,
+      "ic95_boot_inf": 0.6335,
+      "ic95_boot_sup": 0.7865
     },
     {
       "conjunto": "sesiones con EEG",
       "variable": "VAS",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.4853,
-      "ic95_boot_inf": 0.3887,
-      "ic95_boot_sup": 0.5691
+      "icc": 0.4804,
+      "ic95_boot_inf": 0.3842,
+      "ic95_boot_sup": 0.5639
     },
     {
       "conjunto": "sesiones con EEG",
       "variable": "FATIGA_MENTAL",
-      "n": 534,
+      "n": 531,
       "personas": 146,
-      "icc": 0.3991,
-      "ic95_boot_inf": 0.2931,
-      "ic95_boot_sup": 0.4913
+      "icc": 0.3994,
+      "ic95_boot_inf": 0.2927,
+      "ic95_boot_sup": 0.4922
     }
   ],
   "fiabilidad_intra": {
@@ -1122,18 +1128,18 @@
       "M2": 41,
       "M3": 124,
       "M4": 127,
-      "M5": 119,
-      "M6": 123
+      "M5": 117,
+      "M6": 122
     },
     "sesiones_por_persona": {
       "1": 10,
       "2": 8,
-      "3": 23,
-      "4": 86,
+      "3": 26,
+      "4": 83,
       "5": 19
     },
     "personas_ge2": 136,
-    "sesiones_en_personas_ge2": 524,
+    "sesiones_en_personas_ge2": 521,
     "respuestas_por_persona": {
       "3": 4,
       "4": 7,

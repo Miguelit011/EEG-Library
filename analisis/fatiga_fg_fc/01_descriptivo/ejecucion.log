@@ -37,7 +37,7 @@ Filas con pulsera: 1040 -> 1039 respuestas de 181 persona_uid
 Test apartado: 166 respuestas de 28 personas
 Sin EEG etiquetado (sin split), apartadas: 7 personas
 Participantes train+val: 843 respuestas de 146 personas (con FG y FC: 815)
-Sesiones etiquetadas train+val: 550; sin FG/FC: 16; con FG/FC: 534 de 146 personas
+Sesiones etiquetadas train+val: 550; sin ventanas EEG: 3 ['C3_F069_M5', 'C7_F147_M6', 'C7_F153_M5']; con ventanas pero sin FG/FC: 16; con EEG y FG/FC: 531 de 146 personas
 
 ==============================================================================
 2. PUNTUACIÓN Y CONSISTENCIA
@@ -86,12 +86,12 @@ respuestas M1–M6   FG_c           n= 815 personas=146  ICC = 0.621 [0.545, 0.6
 respuestas M1–M6   FC_c           n= 815 personas=146  ICC = 0.662 [0.584, 0.728]
 respuestas M1–M6   VAS            n= 765 personas=146  ICC = 0.404 [0.324, 0.482]
 respuestas M1–M6   FATIGA_MENTAL  n= 815 personas=146  ICC = 0.313 [0.236, 0.384]
-sesiones con EEG   FG             n= 534 personas=146  ICC = 0.651 [0.554, 0.727]
-sesiones con EEG   FC             n= 534 personas=146  ICC = 0.716 [0.628, 0.782]
-sesiones con EEG   FG_c           n= 534 personas=146  ICC = 0.660 [0.570, 0.732]
-sesiones con EEG   FC_c           n= 534 personas=146  ICC = 0.720 [0.633, 0.787]
-sesiones con EEG   VAS            n= 534 personas=146  ICC = 0.485 [0.389, 0.569]
-sesiones con EEG   FATIGA_MENTAL  n= 534 personas=146  ICC = 0.399 [0.293, 0.491]
+sesiones con EEG   FG             n= 531 personas=146  ICC = 0.646 [0.550, 0.723]
+sesiones con EEG   FC             n= 531 personas=146  ICC = 0.717 [0.629, 0.783]
+sesiones con EEG   FG_c           n= 531 personas=146  ICC = 0.655 [0.566, 0.728]
+sesiones con EEG   FC_c           n= 531 personas=146  ICC = 0.721 [0.633, 0.786]
+sesiones con EEG   VAS            n= 531 personas=146  ICC = 0.480 [0.384, 0.564]
+sesiones con EEG   FATIGA_MENTAL  n= 531 personas=146  ICC = 0.399 [0.293, 0.492]
 
 ==============================================================================
 5. FIABILIDAD INTRA-PERSONA (puerta del paso 3)
@@ -134,8 +134,8 @@ medida factor                 contraste  diferencia_medias     n     p  efecto  
 ==============================================================================
 8. COBERTURA CON EEG
 ==============================================================================
-Sesiones con EEG y FG/FC por medición: {'M1': 0, 'M2': 41, 'M3': 124, 'M4': 127, 'M5': 119, 'M6': 123}
-Sesiones por persona: {1: 10, 2: 8, 3: 23, 4: 86, 5: 19} (personas con ≥2: 136, sesiones en ellas: 524)
+Sesiones con EEG y FG/FC por medición: {'M1': 0, 'M2': 41, 'M3': 124, 'M4': 127, 'M5': 117, 'M6': 122}
+Sesiones por persona: {1: 10, 2: 8, 3: 26, 4: 83, 5: 19} (personas con ≥2: 136, sesiones en ellas: 521)
 Respuestas M1–M6 por persona con EEG (para el rasgo del paso 2): {3: 4, 4: 7, 5: 35, 6: 100}
 
 ==============================================================================

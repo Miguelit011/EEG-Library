@@ -322,13 +322,16 @@ def main():
     sesiones = sesiones_tv[sesiones_tv.con_fgfc].reset_index(drop=True)
     print(f"Participantes train+val: {len(respuestas)} respuestas de "
           f"{respuestas.persona_uid.nunique()} personas (con FG y FC: {len(con_fgfc)})")
-    print(f"Sesiones etiquetadas train+val: {len(sesiones_tv)}; sin FG/FC: "
-          f"{int((~sesiones_tv.con_fgfc).sum())}; con FG/FC: {len(sesiones)} de "
-          f"{sesiones.persona_uid.nunique()} personas")
+    sin_ventanas = sesiones_tv.loc[~sesiones_tv.con_ventanas, "sesion_uid"].tolist()
+    sin_fgfc = int((sesiones_tv.con_ventanas & ~sesiones_tv.con_fgfc).sum())
+    print(f"Sesiones etiquetadas train+val: {len(sesiones_tv)}; sin ventanas EEG: "
+          f"{len(sin_ventanas)} {sin_ventanas}; con ventanas pero sin FG/FC: {sin_fgfc}; "
+          f"con EEG y FG/FC: {len(sesiones)} de {sesiones.persona_uid.nunique()} personas")
     resultados["datos"] = {
         **enlace, "respuestas_tv": int(len(respuestas)), "con_fgfc_tv": int(len(con_fgfc)),
         "personas_tv": int(respuestas.persona_uid.nunique()),
-        "sesiones_etiquetadas_tv": int(len(sesiones_tv)), "sesiones_con_fgfc": int(len(sesiones)),
+        "sesiones_etiquetadas_tv": int(len(sesiones_tv)), "sesiones_sin_ventanas": sin_ventanas,
+        "sesiones_con_ventanas_sin_fgfc": sin_fgfc, "sesiones_con_fgfc": int(len(sesiones)),
         "personas_con_eeg": int(sesiones.persona_uid.nunique())}
 
     con_fgfc["VAS"] = con_fgfc["vas_bd"]

@@ -114,7 +114,7 @@ como no analizable.
 | Media M1 → M6 | 6.5 → 9.0 | 6.0 → 7.9 | 34.7 → 46.5 |
 | Varianza intra-persona explicada por la medición | 9.0 % | 6.7 % | 6.1 % |
 | **ICC(1)**, respuestas M1–M6 | **0.60** [0.51, 0.66] | **0.64** [0.56, 0.71] | 0.40 [0.32, 0.48] |
-| ICC(1), sesiones con EEG | 0.65 [0.55, 0.73] | 0.72 [0.63, 0.78] | 0.49 [0.39, 0.57] |
+| ICC(1), sesiones con EEG | 0.65 [0.55, 0.72] | 0.72 [0.63, 0.78] | 0.48 [0.38, 0.56] |
 | **Fiabilidad intra-persona** (Spearman-Brown) | **0.67** [0.60, 0.73] | **0.76** [0.70, 0.80] | — |
 | ρ con el VAS, entre personas | 0.63 [0.52, 0.72] | 0.45 [0.31, 0.57] | — |
 | ρ con el VAS, intra-persona | 0.40 [0.32, 0.47] | 0.14 [0.05, 0.23] | — |
@@ -148,9 +148,17 @@ Tablas completas en `tablas/`, salida íntegra en `ejecucion.log` y cifras en
   C2/116 M3, 1 fila) y C3_F066 sigue siendo la única persona con dos códigos.
 - **Participantes de train+val:** 843 respuestas de 146 personas, 815 con FG y
   FC. Test apartado: 166 respuestas de 28 personas.
-- **Sesiones:** de las 550 etiquetadas de train+val, **534 de 146 personas**
-  tienen FG y FC. El VAS de la base coincide con el de `labels.csv` en todas,
+- **Sesiones:** de las 550 etiquetadas de train+val, 3 no tienen ventanas EEG
+  válidas (`C3_F069_M5`, `C7_F147_M6`, `C7_F153_M5`, las mismas que descarta
+  la Fase 14) y 16 no tienen FG/FC. Quedan **531 sesiones de 146 personas** con
+  EEG, FG y FC. El VAS de la base coincide con el de `labels.csv` en todas,
   también en `C3_F063_M6`.
+
+> **Corrección (2026-10-22, al preparar el paso 2).** La primera ejecución de
+> este paso contaba 534 sesiones porque no comprobaba que hubiera ventanas EEG.
+> El módulo común exige ahora ventanas (`con_ventanas`), y el paso se ha vuelto
+> a ejecutar. Solo cambian el recuento de sesiones, los ICC sobre sesiones con
+> EEG (en el tercer decimal) y la cobertura.
 
 ### 2. Puntuación y consistencia
 
@@ -187,7 +195,7 @@ Tablas completas en `tablas/`, salida íntegra en `ejecucion.log` y cifras en
 | Conjunto | FG | FC | FG centrada | FC centrada | VAS | `FATIGA_MENTAL` |
 |---|---|---|---|---|---|---|
 | Respuestas M1–M6 (815; VAS 765) | 0.60 [0.51, 0.66] | 0.64 [0.56, 0.71] | 0.62 | 0.66 | 0.40 [0.32, 0.48] | 0.31 [0.24, 0.38] |
-| Sesiones con EEG (534) | 0.65 [0.55, 0.73] | 0.72 [0.63, 0.78] | 0.66 | 0.72 | 0.49 [0.39, 0.57] | 0.40 [0.29, 0.49] |
+| Sesiones con EEG (531) | 0.65 [0.55, 0.72] | 0.72 [0.63, 0.78] | 0.66 | 0.72 | 0.48 [0.38, 0.56] | 0.40 [0.29, 0.49] |
 
 **Entre el 60 % y el 72 % de la varianza de FG y FC es de la persona**, frente
 al 40–49 % del VAS. Son sobre todo rasgo: la pregunta entre personas (paso 2)
@@ -252,9 +260,9 @@ puntos de la escala 0–24:
 
 | | Valor |
 |---|---|
-| Sesiones por medición, M2…M6 | 41 · 124 · 127 · 119 · 123 |
-| Sesiones por persona, 1 / 2 / 3 / 4 / 5 | 10 / 8 / 23 / 86 / 19 personas |
-| Personas con ≥ 2 sesiones (universo del paso 3) | 136 personas, 524 sesiones |
+| Sesiones por medición, M2…M6 | 41 · 124 · 127 · 117 · 122 |
+| Sesiones por persona, 1 / 2 / 3 / 4 / 5 | 10 / 8 / 26 / 83 / 19 personas |
+| Personas con ≥ 2 sesiones (universo del paso 3) | 136 personas, 521 sesiones |
 | Respuestas M1–M6 por persona con EEG (rasgo del paso 2), 6 / 5 / 4 / 3 | 100 / 35 / 7 / 4 personas |
 
 ## Conclusión
@@ -278,7 +286,7 @@ puntos de la escala 0–24:
   - y = media por persona de FG/FC centradas por medición (M1–M6). Las medias
     de cada medición se estiman en el pliegue de entrenamiento.
   - Se ajusta por sexo, curso y centro.
-- **Paso 3 (intra persona):** FG y FC, 136 personas con ≥ 2 sesiones (524
+- **Paso 3 (intra persona):** FG y FC, 136 personas con ≥ 2 sesiones (521
   sesiones).
 
 ## Lo que **no** hay que hacer

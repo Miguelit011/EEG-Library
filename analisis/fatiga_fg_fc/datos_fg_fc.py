@@ -275,8 +275,10 @@ def sesiones_etiquetadas(respuestas, labels):
     Devuelve
     --------
     sesiones : pandas.DataFrame
-        Una fila por sesión etiquetada (todas las particiones), con `con_fgfc`
-        (True si FG y FC están disponibles).
+        Una fila por sesión etiquetada (todas las particiones), con
+        `con_ventanas` (la sesión tiene ventanas EEG válidas: 3 de las 550 de
+        train+val no las tienen, las mismas que descarta la Fase 14) y
+        `con_fgfc` (tiene ventanas, FG y FC: es la que entra en los análisis).
     """
     lab = labels[labels["etiquetada"]].copy()
     s = lab.merge(respuestas.drop(columns=["split", "centro", "sexo", "curso"]),
@@ -286,7 +288,8 @@ def sesiones_etiquetadas(respuestas, labels):
     if discrepa.any():
         raise ValueError("VAS de la base distinto del de labels.csv en: "
                          f"{s.loc[discrepa, 'sesion_uid'].tolist()}.")
-    s["con_fgfc"] = s["FG"].notna() & s["FC"].notna()
+    s["con_ventanas"] = s["n_ventanas"].fillna(0) > 0
+    s["con_fgfc"] = s["con_ventanas"] & s["FG"].notna() & s["FC"].notna()
     return s
 
 

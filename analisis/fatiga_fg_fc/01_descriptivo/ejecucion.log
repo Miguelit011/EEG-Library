@@ -1,0 +1,279 @@
+
+==============================================================================
+1. DATOS Y ENLACE
+==============================================================================
+VAS: 1 fila(s) duplicada(s) exacta(s) eliminada(s).
+VAS: 58 clave(s) con dos ocupantes en la misma medición: [('C1', 'M1', 94), ('C1', 'M1', 162), ('C1', 'M2', 94), ('C1', 'M2', 162), ('C1', 'M3', 94), ('C1', 'M3', 162), ('C1', 'M4', 162), ('C1', 'M5', 94), ('C1', 'M5', 162), ('C1', 'M6', 94), ('C1', 'M6', 162), ('C2', 'M1', 166), ('C2', 'M3', 166), ('C2', 'M4', 166), ('C2', 'M5', 166), ('C2', 'M6', 166), ('C3', 'M1', 63), ('C3', 'M2', 63), ('C3', 'M4', 63), ('C3', 'M5', 63), ('C3', 'M6', 63), ('C5', 'M1', 12), ('C5', 'M1', 17), ('C6', 'M1', 33), ('C6', 'M2', 33), ('C6', 'M3', 33), ('C6', 'M4', 33), ('C6', 'M5', 33), ('C6', 'M6', 33), ('C8', 'M1', 41), ('C8', 'M1', 42), ('C8', 'M1', 43), ('C8', 'M1', 44), ('C8', 'M1', 47), ('C8', 'M2', 41), ('C8', 'M2', 42), ('C8', 'M2', 43), ('C8', 'M2', 47), ('C8', 'M3', 41), ('C8', 'M3', 42), ('C8', 'M3', 43), ('C8', 'M3', 44), ('C8', 'M3', 47), ('C8', 'M4', 41), ('C8', 'M4', 42), ('C8', 'M4', 43), ('C8', 'M4', 44), ('C8', 'M4', 47), ('C8', 'M5', 41), ('C8', 'M5', 42), ('C8', 'M5', 43), ('C8', 'M5', 44), ('C8', 'M5', 47), ('C8', 'M6', 41), ('C8', 'M6', 42), ('C8', 'M6', 43), ('C8', 'M6', 44), ('C8', 'M6', 47)]. Solo importan si tienen EEG.
+Filas con pulsera: 1044 -> 1043 respuestas de 182 persona_uid
+  Corrección aplicada: c2_f105_m4_m5_archivadas_en_c4 (2 filas)
+  Corrección aplicada: c2_f116_m3_registrada_en_c7 (1 filas)
+  Personas con dos códigos (excepción documentada): ['C3_F066']
+Test apartado: 166 respuestas de 28 personas
+Sin EEG etiquetado (sin split), apartadas: 8 personas
+Participantes train+val: 843 respuestas de 146 personas (con FG y FC: 815)
+Sesiones etiquetadas train+val: 550; excluidas ['C3_F063_M6']; sin FG/FC 17
+Sesiones con EEG y FG/FC: 533 de 145 personas
+Referencia (alumnos sin EEG): 2750 respuestas; por medición {'M1': 437, 'M2': 486, 'M3': 454, 'M4': 468, 'M5': 464, 'M6': 441}
+
+==============================================================================
+2. PUNTUACIÓN Y CONSISTENCIA INTERNA
+==============================================================================
+        grupo medicion    n  alfa_FG  media_FG  sd_FG  pct_cero_FG  alfa_FC  media_FC  sd_FC  pct_cero_FC
+participantes       M1  141     0.79      6.50   4.38         3.55     0.83      6.02   4.46         5.67
+participantes       M2  135     0.81      8.27   4.86         1.48     0.86      7.39   4.99         6.67
+participantes       M3  134     0.79      7.75   4.53         2.24     0.84      7.14   4.65         5.97
+participantes       M4  135     0.81      8.23   4.80         1.48     0.86      7.33   4.64         3.70
+participantes       M5  134     0.81      4.12   3.87        17.16     0.87      3.40   3.76        27.61
+participantes       M6  136     0.80      4.64   3.85        11.03     0.89      3.33   3.99        31.62
+participantes    todas  815     0.82      6.58   4.69         6.13     0.88      5.77   4.76        13.50
+   referencia       M1  437     0.79      6.91   4.70         3.20     0.86      7.18   5.35         5.03
+   referencia       M2  486     0.82      8.32   5.26         3.50     0.88      7.96   5.54         5.97
+   referencia       M3  454     0.83      8.16   5.16         4.63     0.87      7.84   5.42         6.39
+   referencia       M4  468     0.83      8.89   5.32         3.21     0.87      7.81   5.38         7.69
+   referencia       M5  464     0.78      4.30   3.85        16.59     0.87      3.72   4.07        31.90
+   referencia       M6  441     0.83      4.87   4.26        13.15     0.88      4.01   4.29        29.71
+   referencia    todas 2750     0.84      6.93   5.10         7.35     0.89      6.44   5.37        14.36
+
+==============================================================================
+3. EL SALTO M4 -> M5
+==============================================================================
+Media por medición:
+medicion                        M1     M2     M3     M4     M5     M6
+grupo         variable                                               
+participantes AE              2.70   3.19   3.00   3.16   2.77   3.01
+              FATIGA_MENTAL   4.17   5.16   4.87   5.24   4.73   5.41
+              FC              6.02   7.39   7.14   7.33   3.40   3.33
+              FG              6.50   8.27   7.75   8.23   4.12   4.64
+              FSD             1.63   1.58   1.59   1.54   0.98   0.89
+              VAS            34.69  42.15  40.51  44.53  39.98  46.74
+              WS              1.99   2.19   2.07   2.20   2.16   2.15
+referencia    AE              2.77   3.29   3.03   3.14   2.88   3.11
+              FATIGA_MENTAL   4.51   5.46   4.70   5.46   4.97   5.64
+              FC              7.18   7.96   7.84   7.81   3.72   4.01
+              FG              6.91   8.32   8.16   8.89   4.30   4.87
+              FSD             1.64   1.65   1.68   1.62   0.94   0.91
+              WS              2.09   2.21   2.15   2.15   2.17   2.20
+
+Cambio dentro de persona entre mediciones consecutivas (participantes):
+cambio      variable  n_personas  media  ic95_inf  ic95_sup  pct_baja  pct_sube
+ M2-M1            FG         130   1.96      1.28      2.65     28.46     56.92
+ M2-M1            FC         130   1.44      0.73      2.14     30.77     55.38
+ M2-M1 FATIGA_MENTAL         130   1.05      0.59      1.52     28.46     60.77
+ M2-M1           VAS         116   8.62      4.01     13.23     28.45     56.03
+ M3-M2            FG         123  -0.63     -1.33      0.08     48.78     39.02
+ M3-M2            FC         123  -0.34     -1.07      0.39     39.84     43.09
+ M3-M2 FATIGA_MENTAL         123  -0.24     -0.73      0.25     44.72     39.84
+ M3-M2           VAS         112  -0.40     -4.90      4.09     36.61     40.18
+ M4-M3            FG         126   0.52     -0.13      1.16     34.92     47.62
+ M4-M3            FC         126   0.28     -0.29      0.84     33.33     43.65
+ M4-M3 FATIGA_MENTAL         126   0.29     -0.15      0.72     34.92     42.06
+ M4-M3           VAS         119   3.40     -0.59      7.39     31.09     49.58
+ M5-M4            FG         126  -4.31     -4.91     -3.71     88.89      7.14
+ M5-M4            FC         126  -4.00     -4.54     -3.46     84.92      4.76
+ M5-M4 FATIGA_MENTAL         126  -0.59     -1.01     -0.17     50.79     29.37
+ M5-M4           VAS         116  -5.33     -9.21     -1.44     52.59     31.90
+ M6-M5            FG         128   0.77      0.23      1.30     26.56     47.66
+ M6-M5            FC         128  -0.03     -0.50      0.44     36.72     25.78
+ M6-M5 FATIGA_MENTAL         128   0.65      0.26      1.04     26.56     48.44
+ M6-M5           VAS         119   7.06      3.57     10.55     27.73     54.62
+
+M5 − M4 por centro (media de la medición; participantes y referencia por separado):
+        grupo centro  FG_dif  FC_dif  FATIGA_MENTAL_dif
+participantes     C1   -2.23   -3.18               0.39
+participantes     C2   -5.04   -3.92              -1.51
+participantes     C3   -1.73   -2.75               0.79
+participantes     C4   -5.69   -4.01              -0.38
+participantes     C5   -4.47   -3.47              -1.27
+participantes     C6   -2.80   -4.57              -0.38
+participantes     C7   -4.88   -4.12              -0.24
+participantes     C8   -5.44   -5.17              -1.11
+   referencia     C1   -4.41   -4.16              -0.33
+   referencia     C2   -4.69   -4.06              -0.57
+   referencia     C3   -3.86   -4.12              -0.21
+   referencia     C4   -5.30   -4.60              -0.52
+   referencia     C5   -4.26   -3.30              -0.48
+   referencia     C6   -5.25   -3.78              -0.46
+   referencia     C7   -3.98   -4.46              -0.54
+   referencia     C8   -5.51   -4.92              -0.93
+  FG: baja de M4 a M5 en 16 de 16 combinaciones centro × grupo
+  FC: baja de M4 a M5 en 16 de 16 combinaciones centro × grupo
+  FATIGA_MENTAL: baja de M4 a M5 en 14 de 16 combinaciones centro × grupo
+
+Razón media M5–M6 / media M1–M4, por ítem y bloque:
+grupo                       participantes  referencia
+variable                                             
+FG_1                                 0.62        0.63
+FG_2                                 0.54        0.53
+FG_3                                 0.56        0.57
+FG_4                                 0.54        0.50
+FG_5                                 0.54        0.53
+FG_6                                 0.58        0.58
+FC_1                                 0.53        0.51
+FC_2                                 0.45        0.50
+FC_3                                 0.53        0.49
+FC_4                                 0.45        0.49
+FC_5                                 0.45        0.50
+FC_6                                 0.49        0.51
+FS/D (media)                         0.59        0.56
+Webex (media)                        1.02        1.01
+MBI-SS agotamiento (media)           0.96        0.98
+FATIGA_MENTAL                        1.05        1.05
+
+¿Cambia el constructo o solo la escala? Spearman entre personas dentro de cada medición:
+medicion  FG_VAS_part  FC_VAS_part  FG_FM_part  FC_FM_part  FG_FM_ref  FC_FM_ref  FG_FC_ref
+      M1        0.538        0.402       0.610       0.354      0.542      0.300      0.611
+      M2        0.508        0.279       0.559       0.243      0.623      0.365      0.600
+      M3        0.471        0.298       0.505       0.185      0.631      0.422      0.674
+      M4        0.683        0.416       0.681       0.321      0.589      0.401      0.648
+      M5        0.659        0.505       0.608       0.384      0.648      0.444      0.620
+      M6        0.561        0.368       0.638       0.429      0.642      0.381      0.686
+
+==============================================================================
+4. REPRESENTATIVIDAD DE LA REFERENCIA (criterio C1)
+==============================================================================
+Participantes con EEG: 810 respuestas de 145 personas
+medicion     M1     M2     M3     M4     M5     M6
+variable                                          
+centro    0.203  0.237  0.241  0.236  0.255  0.250
+curso     0.067  0.026  0.048  0.062  0.073  0.038
+sexo      0.011  0.018  0.009  0.006  0.006  0.020
+
+Composición (% dentro de cada grupo, todas las mediciones):
+        participantes  referencia
+centro                           
+C2               13.6        19.1
+C1               13.2        10.1
+C4               13.1         7.6
+C8               13.0        13.9
+C6               12.8         6.5
+C7               12.6         4.1
+C5               11.4        20.0
+C3               10.4        18.6
+      participantes  referencia
+sexo                           
+XX             52.0        52.8
+XY             48.0        47.2
+       participantes  referencia
+curso                           
+4.0             53.8        47.6
+3.0             46.2        52.4
+
+V máxima = 0.255 -> SE PONDERA la referencia (criterio V >= 0.1)
+  Raking sobre ['centro', 'sexo', 'curso']; tamaño efectivo de Kish por medición: {'M1': 334.6, 'M2': 342.3, 'M3': 318.2, 'M4': 330.6, 'M5': 303.0, 'M6': 302.9}
+  Peso máximo / mínimo (filas con peso > 0): 4.37 / 0.34; filas con peso 0: 11
+
+FG y FC: participantes frente a referencia, diferencia tipificada (d) por medición:
+medicion  d_FG_sin_pesos  d_FG_con_pesos  d_FC_sin_pesos  d_FC_con_pesos
+      M1          -0.089          -0.072          -0.223          -0.239
+      M2          -0.008           0.021          -0.105          -0.104
+      M3          -0.080          -0.070          -0.130          -0.116
+      M4          -0.136          -0.139          -0.092          -0.095
+      M5          -0.047          -0.027          -0.079          -0.067
+      M6          -0.057          -0.011          -0.156          -0.122
+
+==============================================================================
+5. TIPIFICACIÓN DENTRO DE CADA MEDICIÓN
+==============================================================================
+Principal: percentil normalizado con referencia ponderada
+FG: percentil vs lineal r = 0.979 (|dif| media 0.151); con vs sin pesos r = 0.9996 (|dif| media 0.026, máx 0.122)
+FC: percentil vs lineal r = 0.974 (|dif| media 0.161); con vs sin pesos r = 0.9994 (|dif| media 0.024, máx 0.133)
+
+Media de los participantes por medición, bruta y tipificada:
+medicion     M1     M2     M3     M4     M5     M6
+variable                                          
+FC        6.021  7.385  7.142  7.333  3.403  3.331
+FC_z     -0.209 -0.073 -0.086 -0.054  0.015 -0.070
+FG        6.496  8.274  7.746  8.230  4.119  4.640
+FG_z     -0.069  0.050 -0.045 -0.102 -0.016  0.037
+  FG_z, M5 − M4 dentro de persona: +0.055 [-0.066, +0.176] (n = 126)
+  FC_z, M5 − M4 dentro de persona: +0.055 [-0.052, +0.161] (n = 126)
+
+==============================================================================
+6. ICC(1)
+==============================================================================
+respuestas M1–M6   FG             n= 815 personas=146  ICC = 0.503 [0.422, 0.571]
+respuestas M1–M6   FC             n= 815 personas=146  ICC = 0.524 [0.436, 0.602]
+respuestas M1–M6   FG_z           n= 815 personas=146  ICC = 0.606 [0.527, 0.672]
+respuestas M1–M6   FC_z           n= 815 personas=146  ICC = 0.650 [0.575, 0.717]
+respuestas M1–M6   VAS            n= 764 personas=146  ICC = 0.405 [0.325, 0.482]
+respuestas M1–M6   FATIGA_MENTAL  n= 815 personas=146  ICC = 0.313 [0.236, 0.384]
+sesiones con EEG   FG             n= 533 personas=145  ICC = 0.496 [0.405, 0.574]
+sesiones con EEG   FC             n= 533 personas=145  ICC = 0.535 [0.423, 0.629]
+sesiones con EEG   FG_z           n= 533 personas=145  ICC = 0.640 [0.550, 0.714]
+sesiones con EEG   FC_z           n= 533 personas=145  ICC = 0.706 [0.628, 0.768]
+sesiones con EEG   VAS            n= 533 personas=145  ICC = 0.485 [0.386, 0.568]
+sesiones con EEG   FATIGA_MENTAL  n= 533 personas=145  ICC = 0.400 [0.294, 0.496]
+
+==============================================================================
+7. FIABILIDAD INTRA-PERSONA (criterio C2)
+==============================================================================
+FG M1-M6: 815 respuestas de 146 personas; r mitades = 0.492; Spearman-Brown = 0.660 [0.589, 0.720]; (α − ICC)/(1 − ICC) = 0.551
+FG M1-M4: 544 respuestas de 145 personas; r mitades = 0.476; Spearman-Brown = 0.645 [0.547, 0.721]; (α − ICC)/(1 − ICC) = 0.469
+FC M1-M6: 815 respuestas de 146 personas; r mitades = 0.602; Spearman-Brown = 0.752 [0.691, 0.801]; (α − ICC)/(1 − ICC) = 0.644
+FC M1-M4: 544 respuestas de 145 personas; r mitades = 0.590; Spearman-Brown = 0.742 [0.665, 0.804]; (α − ICC)/(1 − ICC) = 0.512
+  Puerta del paso 3 para FG (Spearman-Brown M1–M6 >= 0.5): SÍ
+  Puerta del paso 3 para FC (Spearman-Brown M1–M6 >= 0.5): SÍ
+
+==============================================================================
+8. RELACIÓN CON VAS Y FATIGA_MENTAL
+==============================================================================
+764 respuestas de 146 personas con las cuatro medidas
+         nivel                par   rho  ic95_inf  ic95_sup
+entre_personas           FG_z~VAS 0.630     0.519     0.721
+entre_personas           FC_z~VAS 0.462     0.328     0.579
+entre_personas FG_z~FATIGA_MENTAL 0.678     0.572     0.764
+entre_personas FC_z~FATIGA_MENTAL 0.413     0.278     0.537
+entre_personas          FG_z~FC_z 0.711     0.614     0.790
+entre_personas  VAS~FATIGA_MENTAL 0.821     0.733     0.880
+ intra_persona           FG_z~VAS 0.408     0.330     0.475
+ intra_persona           FC_z~VAS 0.159     0.068     0.249
+ intra_persona FG_z~FATIGA_MENTAL 0.465     0.391     0.530
+ intra_persona FC_z~FATIGA_MENTAL 0.112     0.035     0.191
+ intra_persona          FG_z~FC_z 0.319     0.239     0.395
+ intra_persona  VAS~FATIGA_MENTAL 0.622     0.560     0.681
+
+==============================================================================
+9. SEXO, CENTRO Y CURSO (media por persona de FG y FC tipificadas)
+==============================================================================
+145 personas con EEG
+medida factor                 contraste  diferencia_medias     n     p  efecto                  efecto_nombre
+  FG_z   sexo                   XX − XY              0.293 75/70 0.025   0.216 correlación biserial de rangos
+  FG_z  curso                 4.º − 3.º              0.400 77/68 0.001   0.317 correlación biserial de rangos
+  FG_z centro Kruskal-Wallis, 8 centros              0.357   145 0.811  -0.024                         eta² H
+  FC_z   sexo                   XX − XY              0.257 75/70 0.039   0.199 correlación biserial de rangos
+  FC_z  curso                 4.º − 3.º              0.245 77/68 0.021   0.223 correlación biserial de rangos
+  FC_z centro Kruskal-Wallis, 8 centros              0.190   145 0.998  -0.045                         eta² H
+
+Media por centro:
+        FG_z       FC_z     
+        mean size  mean size
+centro                      
+C1     -0.05   20 -0.07   20
+C2      0.10   19 -0.16   19
+C3     -0.06   17  0.03   17
+C4     -0.03   18 -0.10   18
+C5     -0.21   17 -0.14   17
+C6     -0.03   18 -0.05   18
+C7     -0.09   17 -0.05   17
+C8      0.15   19 -0.10   19
+
+==============================================================================
+10. COBERTURA CON EEG
+==============================================================================
+Sesiones con EEG y FG/FC por medición: {'M1': 0, 'M2': 41, 'M3': 124, 'M4': 127, 'M5': 119, 'M6': 122}
+Sesiones por persona: {1: 9, 2: 8, 3: 23, 4: 86, 5: 19} (personas con ≥2: 136, sesiones en ellas: 524)
+Solo M2–M4: 292 sesiones de 140 personas; con ≥2: 119 personas, 271 sesiones
+Respuestas M1–M4 por persona con EEG (para el rasgo sin M5–M6): {1: 1, 2: 3, 3: 29, 4: 112}
+
+==============================================================================
+11. DECISIONES
+==============================================================================
+C1 — referencia: ponderada por raking sobre ['centro', 'sexo', 'curso'] (V máxima 0.255)
+C2 — paso 3 con FG: sí (Spearman-Brown 0.660)
+C2 — paso 3 con FC: sí (Spearman-Brown 0.752)
+
+==============================================================================
+12. FIGURAS
+==============================================================================
+Escritas en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\fatiga_fg_fc\01_descriptivo\figuras
+Resultados en C:\Users\migue\Desktop\TFG\EEG-Library\analisis\fatiga_fg_fc\01_descriptivo\resultados.json

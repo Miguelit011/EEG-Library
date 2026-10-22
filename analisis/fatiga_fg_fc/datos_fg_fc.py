@@ -1,18 +1,17 @@
 """
-Fatiga general (FG) y fatiga cognitiva (FC) — carga, enlace y tipificación.
+Fatiga general (FG) y fatiga cognitiva (FC) — carga, enlace y centrado.
 
-Módulo común a todos los pasos de la línea. Hace cuatro cosas:
+Módulo común a todos los pasos de la línea. Hace tres cosas:
 
-1. Lee la base de cuestionarios y puntúa FG y FC (suma de 6 ítems de 0 a 4).
+1. Lee la base de cuestionarios corregida y puntúa FG y FC (suma de 6 ítems
+   de 0 a 4).
 2. Enlaza las respuestas con las sesiones EEG etiquetadas de la Fase 12, por
    `(centro, pulsera)` → `persona_uid` (con `normalizar_vas`, que aplica la
    corrección F111/F115) y `(persona_uid, medición)` → sesión. Aplica las
-   correcciones y exclusiones de `CORRECCIONES_CUESTIONARIO` y
-   `EXCLUSIONES_SESION`, cada una con su evidencia escrita, y se detiene si
-   algo del enlace no cuadra.
-3. Construye la referencia para tipificar: los alumnos que no hicieron EEG.
-4. Tipifica una puntuación dentro de cada medición frente a esa referencia
-   (percentil normalizado o z lineal), con pesos opcionales por raking.
+   correcciones de `CORRECCIONES_CUESTIONARIO`, cada una con su evidencia
+   escrita, y se detiene si algo del enlace no cuadra.
+3. Centra una puntuación por medición, con las medias estimadas solo en las
+   filas que se indiquen (las del pliegue de entrenamiento).
 
 El `CÓDIGO` (iniciales + fecha de nacimiento de menores) solo se usa aquí
 dentro, para comprobar que el enlace es unívoco. Ninguna función lo devuelve.
@@ -21,17 +20,20 @@ La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
 `C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
 """
 
+import hashlib
 import os
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from scipy import stats
 
 from eeg_library.procesado.labels import GENERO_A_SEXO, normalizar_vas
 
 EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
-RUTA_BD = EEG_DATA / "BD_COMPLETA_sincalificaciones.xlsx"
+# Base corregida por el equipo del estudio (2026-10-22): restaura los ítems
+# PedsQL de M5 y M6, que en las versiones anteriores se habían codificado como
+# max(respuesta − 1, 0). Ver la hoja AUDIT_CORRECCION_PEDS y el paso 1.
+RUTA_BD = EEG_DATA / "BD_COMPLETA_corregida.xlsx"
 HOJA_BD = "CUESTIONARIOS"
 RUTA_LABELS = EEG_DATA / "metadata" / "labels.csv"
 
@@ -39,21 +41,21 @@ MEDICIONES = ["M1", "M2", "M3", "M4", "M5", "M6"]
 ITEMS_FG = [f"FG_{i}" for i in range(1, 7)]
 ITEMS_FC = [f"FC_{i}" for i in range(1, 7)]
 ITEMS = {"FG": ITEMS_FG, "FC": ITEMS_FC}
-# Otros bloques del mismo formulario, solo para describir el salto de M5.
+# Tercera subescala de la PedsQL: no se analiza, pero la corrección de M5–M6
+# también la afectó y el paso 1 la verifica.
 ITEMS_FSD = [f"FS/D_{i}" for i in range(1, 7)]
-ITEMS_WS = [f"WS_{i}" for i in range(1, 7)]
-ITEMS_AE = [f"AE_{i}" for i in range(1, 5)]
+ITEMS_PEDSQL = ITEMS_FG + ITEMS_FSD + ITEMS_FC
 
 COLUMNAS_BD = ("Marca temporal", "N_CENTRO", "PARTICIPANTES_PROYC", "MEDIDA", "CÓDIGO",
                "FITBIT", "GÉNERO", "CURSO_CLASE", "FATIGA_MENTAL", "VAS_100mm_preFE",
-               *ITEMS_FG, *ITEMS_FC, *ITEMS_FSD, *ITEMS_WS, *ITEMS_AE)
+               *ITEMS_PEDSQL)
 
-# Columnas que devuelven las funciones de respuestas (sin CÓDIGO).
-COLUMNAS_RESPUESTA = ["medicion", "centro", "sexo", "curso", "FG", "FC", "FATIGA_MENTAL",
-                      *ITEMS_FG, *ITEMS_FC]
+# Columnas que devuelve `respuestas_participantes` (sin CÓDIGO).
+COLUMNAS_RESPUESTA = ["persona_uid", "split", "medicion", "centro", "sexo", "curso",
+                      "vas_bd", "FATIGA_MENTAL", "FG", "FC", *ITEMS_FG, *ITEMS_FC]
 
 
-# --- Correcciones, exclusiones y excepciones -----------------------------------
+# --- Correcciones y excepciones ------------------------------------------------
 #
 # Mismo formato que CORRECCIONES_VAS (Fase 12): cada una lleva su evidencia y el
 # número de filas que espera tocar. Si la base cambia y deja de cuadrar, el
@@ -67,12 +69,11 @@ CORRECCIONES_CUESTIONARIO = (
         "n_esperado": 2,
         "n_centro_correcto": 2,
         "evidencia": (
-            "En BD_COMPLETA_sincalificaciones las respuestas de M4 y M5 de la "
-            "pulsera 105 figuran en el centro 4; en M1-M3 y M6, en el centro 2. "
-            "Tienen el mismo CÓDIGO que las demás filas de C2/105, en C4 no hay "
-            "ninguna otra fila con esa pulsera, y las grabaciones EEG de esas dos "
-            "sesiones están archivadas como C2_F105 (Fase 12). En la versión "
-            "anterior de la base estaban en C2."
+            "Las respuestas de M4 y M5 de la pulsera 105 figuran en el centro 4; "
+            "las de M1-M3 y M6, en el centro 2. Tienen el mismo CÓDIGO que las "
+            "demás filas de C2/105, en C4 no hay ninguna otra fila con esa "
+            "pulsera, y las grabaciones EEG de esas dos sesiones están archivadas "
+            "como C2_F105 (Fase 12). En BD_COMPLETA_ConCalificaciones estaban en C2."
         ),
     },
     {
@@ -84,32 +85,16 @@ CORRECCIONES_CUESTIONARIO = (
             "La respuesta de M3 de la pulsera 116 figura en el centro 7 y las de "
             "M1, M2 y M4-M6 en el centro 2, con el mismo CÓDIGO. Es el caso "
             "documentado en docs/ESTADO.md (Fase 12): la misma persona registrada "
-            "dos veces. Igual en las dos versiones de la base."
-        ),
-    },
-)
-
-EXCLUSIONES_SESION = (
-    {
-        "sesion_uid": "C3_F063_M6",
-        "evidencia": (
-            "En BD_COMPLETA_sincalificaciones el VAS (15) y las pruebas cognitivas "
-            "de M6 pasan del alumno de la pulsera 63 al de la 2063; en la versión "
-            "anterior, y en la Fase 12, eran del de la 63. Los dos son XY, "
-            "respondieron el mismo día y usaron las dos pulseras a la vez todo el "
-            "curso, así que nada en los datos dice de quién es la grabación EEG "
-            "(archivada como F063). Elegir mal importa: su FG sería 6 o 1. "
-            "Pendiente de confirmar con el equipo del estudio."
+            "dos veces."
         ),
     },
 )
 
 EXCEPCIONES_DOS_CODIGOS = {
     "C3_F066": (
-        "En BD_COMPLETA_sincalificaciones la pulsera 66 de C3 lleva un código en "
-        "M1, M5 y M6 y otro en M2-M4: un código corregido solo en algunas "
-        "mediciones. Misma pulsera, centro, sexo y curso en las seis, y ninguna "
-        "medición repetida: es la misma persona."
+        "La pulsera 66 de C3 lleva un código en M1, M5 y M6 y otro en M2-M4: un "
+        "código corregido solo en algunas mediciones. Misma pulsera, centro, sexo "
+        "y curso en las seis, y ninguna medición repetida: es la misma persona."
     ),
 }
 
@@ -118,6 +103,15 @@ def _validar_columnas(df, columnas, nombre):
     faltan = [c for c in columnas if c not in df.columns]
     if faltan:
         raise ValueError(f"A '{nombre}' le faltan columnas necesarias: {faltan}.")
+
+
+def sha256(ruta):
+    """SHA-256 de un archivo, para dejar constancia de qué base se leyó."""
+    h = hashlib.sha256()
+    with open(ruta, "rb") as f:
+        for bloque in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloque)
+    return h.hexdigest()
 
 
 # --- Lectura y puntuación ------------------------------------------------------
@@ -135,9 +129,10 @@ def puntuar(datos, items):
 
 def leer_bd(ruta=RUTA_BD, hoja=HOJA_BD):
     """
-    Lee la base de cuestionarios, se queda con M1–M6 y puntúa FG y FC.
+    Lee una base de cuestionarios, se queda con M1–M6 y puntúa FG y FC.
 
-    Comprueba que todos los ítems de FG y FC estén en {0, 1, 2, 3, 4}.
+    Comprueba que todos los ítems de FG y FC estén en {0, 1, 2, 3, 4}. FS/D no
+    se valida porque no se analiza (tiene un 5 en M3, ver el paso 1).
     """
     bd = pd.read_excel(ruta, sheet_name=hoja)
     bd.columns = [str(c).strip() for c in bd.columns]
@@ -188,16 +183,19 @@ def respuestas_participantes(bd, labels):
 
     Las filas con pulsera pasan por `aplicar_correcciones` y por
     `normalizar_vas` (Fase 12), que construye `persona_uid` desde
-    `(centro, pulsera)` y aplica F111/F115. Se comprueba que no haya dos
-    respuestas por `(persona_uid, medición)`, que cada `persona_uid` tenga un
-    solo CÓDIGO (salvo `EXCEPCIONES_DOS_CODIGOS`) y cada CÓDIGO un solo
-    `persona_uid`, y que ninguna persona esté en dos splits.
+    `(centro, pulsera)` y aplica F111/F115. No se usa `PARTICIPANTES_PROYC`,
+    que no es fiable (`C2_F108` tiene EEG y figura como no participante). Se
+    comprueba que no haya dos respuestas por `(persona_uid, medición)`, que
+    cada `persona_uid` tenga un solo CÓDIGO (salvo `EXCEPCIONES_DOS_CODIGOS`)
+    y cada CÓDIGO un solo `persona_uid`, y que ninguna persona esté en dos
+    splits.
 
     Devuelve
     --------
     respuestas : pandas.DataFrame
-        Una fila por `(persona_uid, medicion)`, con `vas_bd` (el VAS de la base)
-        y `split` (NaN para quien no tiene EEG etiquetado). Sin CÓDIGO.
+        Una fila por `(persona_uid, medicion)` con `COLUMNAS_RESPUESTA`: `vas_bd`
+        es el VAS de la base y `split` es NaN para quien no tiene EEG
+        etiquetado. Sin CÓDIGO.
     resumen : dict
     """
     con_pulsera = bd[bd["FITBIT"].notna()]
@@ -231,9 +229,7 @@ def respuestas_participantes(bd, labels):
     resumen = {"filas_con_pulsera": int(len(con_pulsera)), "correcciones": aplicadas,
                "respuestas": int(len(v)), "personas": int(v["persona_uid"].nunique()),
                "personas_con_dos_codigos": sorted(EXCEPCIONES_DOS_CODIGOS)}
-    columnas = ["persona_uid", "split", "vas_bd", *COLUMNAS_RESPUESTA,
-                *ITEMS_FSD, *ITEMS_WS, *ITEMS_AE]
-    return v[columnas].reset_index(drop=True), resumen
+    return v[COLUMNAS_RESPUESTA].reset_index(drop=True), resumen
 
 
 def _moda_unica(serie, nombre, persona):
@@ -274,156 +270,65 @@ def sesiones_etiquetadas(respuestas, labels):
 
     Une por `(persona_uid, medicion)`. Comprobación de integridad: en toda
     sesión con respuesta en la base, el VAS de la base tiene que ser igual al
-    de `labels.csv`; si no, se detiene. Las sesiones de `EXCLUSIONES_SESION`
-    salen marcadas y sin FG/FC, y se comprueba que la discrepancia que las
-    justifica siga existiendo.
+    de `labels.csv`; si no, se detiene.
 
     Devuelve
     --------
     sesiones : pandas.DataFrame
         Una fila por sesión etiquetada (todas las particiones), con `con_fgfc`
-        (True si FG y FC están disponibles y la sesión no está excluida).
+        (True si FG y FC están disponibles).
     """
     lab = labels[labels["etiquetada"]].copy()
-    s = lab.merge(respuestas.drop(columns=["split", "centro"]),
+    s = lab.merge(respuestas.drop(columns=["split", "centro", "sexo", "curso"]),
                   on=["persona_uid", "medicion"], how="left", indicator=True)
     s["con_respuesta"] = s.pop("_merge") == "both"
-    s["excluida"] = s["sesion_uid"].isin([e["sesion_uid"] for e in EXCLUSIONES_SESION])
-
     discrepa = s["con_respuesta"] & ~(s["vas"] == s["vas_bd"])
-    if (discrepa & ~s["excluida"]).any():
+    if discrepa.any():
         raise ValueError("VAS de la base distinto del de labels.csv en: "
-                         f"{s.loc[discrepa & ~s['excluida'], 'sesion_uid'].tolist()}.")
-    caducadas = s.loc[s["excluida"] & ~discrepa, "sesion_uid"].tolist()
-    if caducadas:
-        raise ValueError(f"Exclusiones cuya discrepancia ya no existe (revisar): {caducadas}.")
-
-    s.loc[s["excluida"], ["FG", "FC", *ITEMS_FG, *ITEMS_FC]] = np.nan
+                         f"{s.loc[discrepa, 'sesion_uid'].tolist()}.")
     s["con_fgfc"] = s["FG"].notna() & s["FC"].notna()
     return s
 
 
-# --- Referencia: alumnos sin EEG -----------------------------------------------
-
-def referencia(bd):
+def cargar_enlace(ruta_bd=RUTA_BD, ruta_labels=RUTA_LABELS):
     """
-    Respuestas de los alumnos que no participan en el estudio EEG.
+    Todo el enlace de una vez: base leída, respuestas, características de cada
+    persona, sesiones etiquetadas y un resumen con el SHA-256 de la base.
 
-    Son las filas con `PARTICIPANTES_PROYC` = 0, sin pulsera y cuyo CÓDIGO no
-    aparece nunca con pulsera. Las dos últimas condiciones hacen falta porque la
-    marca de participación no es fiable (`C2_F108` tiene EEG y figura como no
-    participante). Solo filas con FG y FC.
+    Devuelve todas las particiones: cada paso aparta el test por su cuenta.
     """
-    con_pulsera = set(bd.loc[bd["FITBIT"].notna(), "CÓDIGO"].dropna())
-    r = bd[(bd["PARTICIPANTES_PROYC"] == 0) & bd["FITBIT"].isna()
-           & ~bd["CÓDIGO"].isin(con_pulsera)].copy()
-    r["centro"] = "C" + r["N_CENTRO"].astype(int).astype(str)
-    r = r.dropna(subset=["FG", "FC"])
-    return r[[*COLUMNAS_RESPUESTA, *ITEMS_FSD, *ITEMS_WS, *ITEMS_AE]].reset_index(drop=True)
+    bd = leer_bd(ruta_bd)
+    labels = pd.read_csv(ruta_labels)
+    respuestas, resumen = respuestas_participantes(bd, labels)
+    personas = caracteristicas_persona(respuestas, labels)
+    sesiones = sesiones_etiquetadas(respuestas, labels)
+    resumen = {"base": Path(ruta_bd).name, "hoja": HOJA_BD, "sha256_base": sha256(ruta_bd),
+               **resumen}
+    return bd, respuestas, personas, sesiones, resumen
 
 
-# --- Pesos y tipificación ------------------------------------------------------
+# --- Centrado por medición -----------------------------------------------------
 
-def pesos_raking(datos, objetivo, variables, max_iter=500, tol=1e-9):
+def medias_por_medicion(datos, columna, ajuste=None):
     """
-    Pesos por raking (ajuste proporcional iterativo) para que las marginales
-    ponderadas de `variables` en `datos` igualen las de `objetivo`.
-
-    Las filas con alguna variable desconocida (NaN) o en una categoría que no
-    existe en `objetivo` reciben peso 0. Si `objetivo` tiene una categoría que
-    no aparece en `datos`, no hay pesos posibles y se detiene.
-
-    Devuelve los pesos (media 1 sobre las filas con peso > 0) y el tamaño
-    efectivo de Kish, (Σw)² / Σw².
+    Media de `columna` en cada medición, estimada solo con las filas `ajuste`
+    (máscara booleana; None = todas). En los pasos 2 y 3, `ajuste` son las
+    personas del pliegue de entrenamiento.
     """
-    w = np.ones(len(datos))
-    for v in variables:
-        w[datos[v].isna().to_numpy() | ~datos[v].isin(objetivo[v].dropna().unique()).to_numpy()] = 0
-    for v in variables:
-        faltan = set(objetivo[v].dropna().unique()) - set(datos.loc[w > 0, v])
-        if faltan:
-            raise ValueError(f"Categorías de '{v}' sin filas en la referencia: {sorted(faltan)}.")
-    metas = {v: objetivo[v].value_counts(normalize=True) for v in variables}
-    for _ in range(max_iter):
-        desvio = 0.0
-        for v in variables:
-            actual = pd.Series(w).groupby(datos[v].to_numpy()).sum() / w.sum()
-            factor = (metas[v] / actual).reindex(datos[v].to_numpy()).fillna(0).to_numpy()
-            w = w * factor
-            desvio = max(desvio, float((actual - metas[v]).abs().max()))
-        if desvio < tol:
-            break
-    else:
-        raise ValueError("El raking no converge.")
-    usados = w > 0
-    w = w / w[usados].mean()
-    kish = float(w.sum() ** 2 / (w ** 2).sum())
-    return w, kish
+    filas = datos if ajuste is None else datos[np.asarray(ajuste, bool)]
+    medias = filas.groupby("medicion")[columna].mean()
+    faltan = sorted(set(datos["medicion"]) - set(medias.dropna().index))
+    if faltan:
+        raise ValueError(f"Sin datos de ajuste para '{columna}' en: {faltan}.")
+    return medias
 
 
-def percentil_normal(x, ref_valores, ref_pesos=None):
+def centrar_por_medicion(datos, columna, ajuste=None):
     """
-    Posición de cada valor de `x` en la distribución de referencia, en escala z.
+    `columna` menos la media de su medición (estimada con `ajuste`).
 
-    p = (W(<x) + ½·W(=x) + ½) / (W + 1), con W la suma de pesos (escalados para
-    sumar el nº de filas usadas), y z = Φ⁻¹(p). El ½ de los empates da el rango
-    medio, que importa porque la puntuación es entera (0–24) y con muchos
-    empates; el ½ y el +1 del total evitan p = 0 o 1 en los extremos.
+    Quita el efecto común de calendario (M1 más baja, subida a lo largo del
+    curso) sin tocar las diferencias entre personas ni dentro de persona.
     """
-    ref = np.asarray(ref_valores, float)
-    w = np.ones(len(ref)) if ref_pesos is None else np.asarray(ref_pesos, float)
-    usados = w > 0
-    ref, w = ref[usados], w[usados]
-    w = w * len(ref) / w.sum()
-    x = np.asarray(x, float)
-    p = np.array([(w[ref < xi].sum() + 0.5 * w[ref == xi].sum() + 0.5) / (w.sum() + 1)
-                  if not np.isnan(xi) else np.nan for xi in x])
-    return stats.norm.ppf(p)
-
-
-def z_lineal(x, ref_valores, ref_pesos=None):
-    """(x − media de la referencia) / desviación de la referencia, ponderadas."""
-    ref = np.asarray(ref_valores, float)
-    w = np.ones(len(ref)) if ref_pesos is None else np.asarray(ref_pesos, float)
-    media = np.average(ref, weights=w)
-    sd = np.sqrt(np.average((ref - media) ** 2, weights=w))
-    return (np.asarray(x, float) - media) / sd
-
-
-def tipificar_por_medicion(datos, ref, columna, metodo="percentil", pesos_ref=None):
-    """
-    Tipifica `columna` de `datos` dentro de cada medición frente a `ref`.
-
-    `metodo` es "percentil" (`percentil_normal`, la principal) o "lineal"
-    (`z_lineal`, sensibilidad). `pesos_ref` (array alineado con `ref`) aplica
-    los pesos del raking; None = todos iguales.
-    """
-    funcion = {"percentil": percentil_normal, "lineal": z_lineal}[metodo]
-    salida = pd.Series(np.nan, index=datos.index)
-    pesos = np.ones(len(ref)) if pesos_ref is None else np.asarray(pesos_ref, float)
-    for m in MEDICIONES:
-        en_m = (ref["medicion"] == m).to_numpy()
-        filas = datos["medicion"] == m
-        if filas.any():
-            salida[filas] = funcion(datos.loc[filas, columna], ref.loc[en_m, columna],
-                                    pesos[en_m])
-    return salida
-
-
-def pesos_referencia(ref, objetivo, variables=("centro", "sexo", "curso")):
-    """
-    Pesos de raking de la referencia, medición a medición, hacia la composición
-    de `objetivo` (respuestas de los participantes, con las mismas `variables`).
-
-    Devuelve los pesos alineados con `ref` y el tamaño efectivo de Kish por
-    medición.
-    """
-    pesos = np.zeros(len(ref))
-    kish = {}
-    for m in MEDICIONES:
-        en_m = (ref["medicion"] == m).to_numpy()
-        obj = objetivo[objetivo["medicion"] == m]
-        w, k = pesos_raking(ref.loc[en_m].reset_index(drop=True), obj, list(variables))
-        pesos[en_m] = w
-        kish[m] = k
-    return pesos, kish
+    medias = medias_por_medicion(datos, columna, ajuste)
+    return datos[columna] - datos["medicion"].map(medias)

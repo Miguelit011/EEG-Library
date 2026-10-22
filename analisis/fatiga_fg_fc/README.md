@@ -16,15 +16,15 @@ todos los pasos:
 
 - **Solo `train` + `val`.** El test está gastado (ver `docs/MODELADO.md`) y no
   se toca. Las personas de test se apartan en el primer paso de cada script.
-- Agrupar siempre por `persona_uid`. Identidad del lado EEG: la de la Fase 12
-  (`labels.csv`); solo entran sesiones etiquetadas.
-- **Las puntuaciones se tipifican dentro de cada medición** (M1…M6). Entre M4
-  y M5 FG y FC caen a la mitad en toda la cohorte, sin que se muevan el VAS ni
-  el ítem de fatiga mental del mismo formulario: se trata como un cambio de
-  administración, no de fatiga (paso 1). La referencia para tipificar son los
-  alumnos que no hicieron EEG.
-- Cualquier estadístico estimado con datos de los participantes se estima solo
-  con la partición de entrenamiento (o dentro de cada pliegue).
+- Agrupar siempre por `persona_uid`. La identidad del lado EEG es la de la Fase
+  12 (`labels.csv`) y solo entran sesiones etiquetadas.
+- **FG y FC se centran por medición** (M1…M6) antes de cualquier análisis. Hay
+  un efecto común de calendario (M1 es la más baja y hay una subida suave a lo
+  largo del curso), del mismo orden que el del VAS. Sin quitarlo, una deriva del
+  EEG a lo largo del curso podría parecer relación con FG o FC. Las medias por
+  medición se estiman solo con la partición de entrenamiento (o dentro de cada
+  pliegue).
+- No se tipifica dentro de persona ni se transforma la escala (ver el paso 1).
 - El `CÓDIGO` del alumno (iniciales + fecha de nacimiento de menores) solo se
   usa en memoria para comprobar el enlace. No sale en ninguna tabla, figura,
   log ni archivo del repositorio.
@@ -32,35 +32,45 @@ todos los pasos:
 
 ## Datos
 
-- **Cuestionarios:** `<EEG_DATA>/BD_COMPLETA_sincalificaciones.xlsx`, hoja
-  `CUESTIONARIOS` (versión pedida por el tutor; sustituye a
-  `BD_COMPLETA_ConCalificaciones.xlsx`). Necesita `openpyxl` (grupo `dev`).
+- **Cuestionarios:** `<EEG_DATA>/BD_COMPLETA_corregida.xlsx`, hoja
+  `CUESTIONARIOS`. Necesita `openpyxl` (grupo `dev`). Cada paso registra su
+  SHA-256 en `resultados.json`.
 - **Sesiones EEG:** `<EEG_DATA>/metadata/labels.csv` (Fase 12).
+
+> **Las versiones anteriores de la base no sirven para esta línea.** En
+> `BD_COMPLETA_ConCalificaciones.xlsx` y `BD_COMPLETA_sincalificaciones.xlsx`,
+> los 18 ítems PedsQL (FG, FS/D y FC) de M5 y M6 están codificados como
+> `max(respuesta − 1, 0)`, lo que hace caer FG y FC a la mitad. El primer
+> descriptivo de esta línea lo detectó y el equipo del estudio lo corrigió
+> (hoja `AUDIT_CORRECCION_PEDS`). El paso 1 verifica la corrección celda a
+> celda.
 
 ## Enlace y correcciones
 
 Todo lo hace [`datos_fg_fc.py`](datos_fg_fc.py), que importan todos los pasos.
 
-El enlace es el de la Fase 12: `(centro, pulsera)` → `persona_uid` con
-`normalizar_vas` (que aplica la corrección F111/F115), y unión con las sesiones
-etiquetadas por `(persona_uid, medición)`. **No se usa el `CÓDIGO` para
-enlazar** (un alumno tiene dos) **ni `PARTICIPANTES_PROYC`** (`C2_F108` tiene
-cuatro sesiones EEG y figura como no participante). El VAS de la base tiene que
-coincidir con el de `labels.csv` en cada sesión que entra; si no, el script se
-detiene.
+El enlace es el de la Fase 12:
 
-| Incidencia | Resolución |
+1. `(centro, pulsera)` → `persona_uid`, con `normalizar_vas`, que aplica la
+   corrección F111/F115.
+2. Unión con las sesiones etiquetadas por `(persona_uid, medición)`.
+
+**No se usa el `CÓDIGO` para enlazar** (un alumno tiene dos) **ni
+`PARTICIPANTES_PROYC`** (`C2_F108` tiene cuatro sesiones EEG y figura como no
+participante). El VAS de la base tiene que coincidir con el de `labels.csv` en
+cada sesión que entra; si no, el script se detiene.
+
+| Incidencia en la base | Resolución |
 |---|---|
-| El VAS y las pruebas cognitivas de M6 de C3/63 pasan al alumno de la pulsera 2063 | Se excluye la sesión `C3_F063_M6`: los datos no permiten saber de quién es el EEG. Pendiente de confirmar con el equipo; si la versión nueva es la correcta, `labels.csv` atribuye ese VAS (1 sesión de val) a otra persona |
-| C3/66 aparece con dos códigos según la medición | Misma persona (`C3_F066`): misma pulsera, centro, sexo y curso, sin mediciones repetidas. Excepción documentada a la regla un código ↔ un `persona_uid` |
 | `C2_F105` figura en C4 solo en M4 y M5 | Corrección: esas dos filas van a C2 (mismo alumno; su EEG está archivado en C2) |
 | La M3 de `C2_F116` figura en C7 | Corrección: va a C2 (caso ya conocido de la Fase 12) |
+| C3/66 aparece con dos códigos según la medición | Misma persona (`C3_F066`): misma pulsera, centro, sexo y curso, sin mediciones repetidas. Excepción documentada a la regla un código ↔ un `persona_uid` |
 | Filas sin sexo, edad ni curso | El sexo y el curso de cada persona son la moda de sus filas; el sexo se contrasta con el del nombre de los EDF |
 
 ## Pasos
 
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
-| 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Solo cuestionario: enlace, salto M4→M5, representatividad de la referencia, tipificación, ICC, fiabilidad intra-persona, relación con VAS | Hecho (2026-10-22): referencia ponderada (C1); hay paso 3 con FG y FC (C2) |
+| 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Solo cuestionario: corrección de la base, enlace, consistencia, efecto de calendario, ICC, fiabilidad intra-persona, relación con el VAS, sexo/curso/centro | Hecho (2026-10-22): base verificada; hay paso 3 con FG y FC |
 | 2 | `02_entre_personas/` | Rasgo: FG/FC por persona frente al EEG | Pendiente |
-| 3 | `03_intra_persona/` | Estado: FG/FC por sesión, centrado por persona, frente al EEG | Pendiente |
+| 3 | `03_intra_persona/` | Estado: FG/FC por sesión, centrado por persona y medición, frente al EEG | Pendiente |

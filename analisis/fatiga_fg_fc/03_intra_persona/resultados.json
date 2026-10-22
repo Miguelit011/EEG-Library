@@ -1,0 +1,354 @@
+{
+  "parametros": {
+    "semilla": 42,
+    "pliegues": 5,
+    "n_bootstrap": 2000,
+    "n_permutaciones": 1000,
+    "n_permutaciones_apriori": 10000,
+    "semillas_estabilidad": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "rapido": false
+  },
+  "datos": {
+    "base": "BD_COMPLETA_corregida.xlsx",
+    "sha256_base": "f75dadf1613fdc9ad3ffbb5774d51a5318962d1184e836cf51e6301deccf12e1",
+    "matriz": "matriz_rf.parquet",
+    "sha256_matriz": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+    "grabaciones_test_apartadas": 732,
+    "personas": 136,
+    "sesiones": 521,
+    "respuestas": 793,
+    "respuestas_por_objetivo": {
+      "FG": 815,
+      "FC": 815,
+      "VAS": 787
+    },
+    "features": 70,
+    "personas_excluidas_una_sesion": 10
+  },
+  "principal": {
+    "FG": {
+      "rho": 0.17032803410135533,
+      "p_unilateral": 0.003996003996003996,
+      "nula_media": 0.00112539899854991,
+      "nula_p95": 0.09855194815752889
+    },
+    "FC": {
+      "rho": 0.05901003387424498,
+      "p_unilateral": 0.1798201798201798,
+      "nula_media": 0.005086649754399805,
+      "nula_p95": 0.10182470967062388
+    }
+  },
+  "por_variante": [
+    {
+      "objetivo": "FG",
+      "variante": "RF",
+      "rho": 0.1703,
+      "ic95_inf": 0.0849,
+      "ic95_sup": 0.2514,
+      "r2": 0.0134,
+      "n": 521,
+      "p_unilateral": 0.004
+    },
+    {
+      "objetivo": "FG",
+      "variante": "ridge",
+      "rho": 0.1315,
+      "ic95_inf": 0.0461,
+      "ic95_sup": 0.2187,
+      "r2": 0.0058,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FG",
+      "variante": "RF con control de visita",
+      "rho": 0.0673,
+      "ic95_inf": -0.0366,
+      "ic95_sup": 0.1752,
+      "r2": -0.018,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FC",
+      "variante": "RF",
+      "rho": 0.059,
+      "ic95_inf": -0.0232,
+      "ic95_sup": 0.143,
+      "r2": -0.0191,
+      "n": 521,
+      "p_unilateral": 0.1798
+    },
+    {
+      "objetivo": "FC",
+      "variante": "ridge",
+      "rho": 0.0064,
+      "ic95_inf": -0.0823,
+      "ic95_sup": 0.1013,
+      "r2": -0.0007,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "FC",
+      "variante": "RF con control de visita",
+      "rho": -0.0224,
+      "ic95_inf": -0.1299,
+      "ic95_sup": 0.0866,
+      "r2": -0.0753,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "RF",
+      "rho": -0.008,
+      "ic95_inf": -0.0945,
+      "ic95_sup": 0.0782,
+      "r2": -0.0372,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "ridge",
+      "rho": -0.0523,
+      "ic95_inf": -0.1385,
+      "ic95_sup": 0.0299,
+      "r2": -0.0048,
+      "n": 521,
+      "p_unilateral": NaN
+    },
+    {
+      "objetivo": "VAS",
+      "variante": "RF con control de visita",
+      "rho": 0.0693,
+      "ic95_inf": -0.0333,
+      "ic95_sup": 0.1746,
+      "r2": -0.0167,
+      "n": 521,
+      "p_unilateral": NaN
+    }
+  ],
+  "diferencia_con_vas": [
+    {
+      "comparacion": "FG − VAS",
+      "diferencia": 0.1783,
+      "ic95_inf": 0.066,
+      "ic95_sup": 0.2867
+    },
+    {
+      "comparacion": "FC − VAS",
+      "diferencia": 0.067,
+      "ic95_inf": -0.0451,
+      "ic95_sup": 0.1867
+    }
+  ],
+  "apriori": [
+    {
+      "medida": "FG",
+      "variable": "indice_theta_alfa",
+      "rho": -0.0428,
+      "ic95_inf": -0.1416,
+      "ic95_sup": 0.0569,
+      "p_unilateral": 0.8263,
+      "n": 521
+    },
+    {
+      "medida": "FG",
+      "variable": "compuesto_rel_sd",
+      "rho": 0.0742,
+      "ic95_inf": -0.0164,
+      "ic95_sup": 0.168,
+      "p_unilateral": 0.0373,
+      "n": 521
+    },
+    {
+      "medida": "FC",
+      "variable": "indice_theta_alfa",
+      "rho": -0.0119,
+      "ic95_inf": -0.0999,
+      "ic95_sup": 0.0738,
+      "p_unilateral": 0.6058,
+      "n": 521
+    },
+    {
+      "medida": "FC",
+      "variable": "compuesto_rel_sd",
+      "rho": 0.0719,
+      "ic95_inf": -0.0192,
+      "ic95_sup": 0.1688,
+      "p_unilateral": 0.0716,
+      "n": 521
+    }
+  ],
+  "estabilidad": [
+    {
+      "semilla": 42,
+      "medida": "FG",
+      "rho": 0.1703
+    },
+    {
+      "semilla": 42,
+      "medida": "FC",
+      "rho": 0.059
+    },
+    {
+      "semilla": 1,
+      "medida": "FG",
+      "rho": 0.1721
+    },
+    {
+      "semilla": 1,
+      "medida": "FC",
+      "rho": 0.0778
+    },
+    {
+      "semilla": 2,
+      "medida": "FG",
+      "rho": 0.1595
+    },
+    {
+      "semilla": 2,
+      "medida": "FC",
+      "rho": 0.0596
+    },
+    {
+      "semilla": 3,
+      "medida": "FG",
+      "rho": 0.1605
+    },
+    {
+      "semilla": 3,
+      "medida": "FC",
+      "rho": 0.0628
+    },
+    {
+      "semilla": 4,
+      "medida": "FG",
+      "rho": 0.1538
+    },
+    {
+      "semilla": 4,
+      "medida": "FC",
+      "rho": 0.0642
+    }
+  ],
+  "holm": [
+    {
+      "familia": "principal",
+      "paso": 2,
+      "prueba": "FG, entre personas, RF",
+      "p": 0.0809,
+      "rho": 0.1462,
+      "p_holm": 0.2428,
+      "significativa": false
+    },
+    {
+      "familia": "principal",
+      "paso": 2,
+      "prueba": "FC, entre personas, RF",
+      "p": 0.4675,
+      "rho": 0.0077,
+      "p_holm": 0.4675,
+      "significativa": false
+    },
+    {
+      "familia": "principal",
+      "paso": 3,
+      "prueba": "FG, intra persona, RF",
+      "p": 0.004,
+      "rho": 0.1703,
+      "p_holm": 0.016,
+      "significativa": true
+    },
+    {
+      "familia": "principal",
+      "paso": 3,
+      "prueba": "FC, intra persona, RF",
+      "p": 0.1798,
+      "rho": 0.059,
+      "p_holm": 0.3596,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 2,
+      "prueba": "FG ~ indice_theta_alfa, entre personas",
+      "p": 0.9764,
+      "rho": -0.1698,
+      "p_holm": 1.0,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 2,
+      "prueba": "FG ~ compuesto_rel_sd, entre personas",
+      "p": 0.0435,
+      "rho": 0.1454,
+      "p_holm": 0.3045,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 2,
+      "prueba": "FC ~ indice_theta_alfa, entre personas",
+      "p": 0.9631,
+      "rho": -0.1484,
+      "p_holm": 1.0,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 2,
+      "prueba": "FC ~ compuesto_rel_sd, entre personas",
+      "p": 0.0571,
+      "rho": 0.1344,
+      "p_holm": 0.3426,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 3,
+      "prueba": "FG ~ indice_theta_alfa, intra persona",
+      "p": 0.8263,
+      "rho": -0.0428,
+      "p_holm": 1.0,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 3,
+      "prueba": "FG ~ compuesto_rel_sd, intra persona",
+      "p": 0.0373,
+      "rho": 0.0742,
+      "p_holm": 0.2984,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 3,
+      "prueba": "FC ~ indice_theta_alfa, intra persona",
+      "p": 0.6058,
+      "rho": -0.0119,
+      "p_holm": 1.0,
+      "significativa": false
+    },
+    {
+      "familia": "secundaria",
+      "paso": 3,
+      "prueba": "FC ~ compuesto_rel_sd, intra persona",
+      "p": 0.0716,
+      "rho": 0.0719,
+      "p_holm": 0.358,
+      "significativa": false
+    }
+  ],
+  "duracion_s": 5215.6
+}

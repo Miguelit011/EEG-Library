@@ -73,4 +73,26 @@ cada sesión que entra; si no, el script se detiene.
 |---|---|---|---|
 | 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Solo cuestionario: corrección de la base, enlace, consistencia, efecto de calendario, ICC, fiabilidad intra-persona, relación con el VAS, sexo/curso/centro | Hecho (2026-10-22): base verificada; hay paso 3 con FG y FC |
 | 2 | [`02_entre_personas/`](02_entre_personas/INFORME.md) | Rasgo: FG/FC por persona frente al EEG | Hecho (2026-10-22): sin evidencia de relación (FG ρ = +0.15, p = 0.08; FC +0.01) |
-| 3 | `03_intra_persona/` | Estado: FG/FC por sesión, centrado por persona y medición, frente al EEG | Pendiente |
+| 3 | [`03_intra_persona/`](03_intra_persona/INFORME.md) | Estado: FG/FC por sesión, centrado por persona y medición, frente al EEG; cierre de las familias con Holm | Hecho (2026-10-22): FG significativa (ρ = +0.17, p Holm = 0.016) pero desaparece con el control de visita; FC nada. **Línea cerrada** |
+
+## Conclusión de la línea
+
+Todo es exploratorio: solo `train` + `val`, con el test gastado.
+
+1. **Entre personas, ni FG ni FC se reflejan en el EEG habitual** (ρ = +0.15 y
+   +0.01; p de Holm 0.24 y 0.47). Sin ajustar por sexo, curso y centro, FG
+   aparenta una relación que en parte no es fatiga.
+2. **Dentro de persona, FG es la única medida de fatiga del proyecto que
+   acompaña al EEG de forma estadísticamente robusta.** ρ = +0.17 [+0.09,
+   +0.25], p de Holm = 0.016. Se mantiene con ridge y con cinco semillas y
+   supera al VAS en la comparación emparejada (+0.18 [+0.07, +0.29]).
+3. **Pero esa relación desaparece al controlar la tendencia de cada alumno a lo
+   largo del curso** (+0.07 [−0.04, +0.18]). Según la regla fijada antes de
+   ejecutar, se reporta como dependiente de la deriva a lo largo del curso, no
+   como fatiga de la sesión. Con estos datos no se puede separar una fatiga que
+   se acumula de una deriva del registro. Además es pequeña: R² = +0.013.
+4. **FC no tiene relación con el EEG en ningún nivel.**
+5. **Ni el índice θ/α ni el compuesto `_rel_sd` se sostienen con Holm.** θ/α
+   nunca va en la dirección esperada.
+6. **De paso, la línea encontró un error de codificación en la base de origen**
+   (PedsQL de M5–M6), que el equipo del estudio corrigió.

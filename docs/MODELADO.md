@@ -1306,3 +1306,58 @@ tipificado dentro de `persona_uid`)?
 frágil (0.32–0.40 según cómo se construya la misma etiqueta) y la
 normalización no la hace más robusta. Refuerza la conclusión de las Fases
 14/14b y del test.
+
+---
+
+## Fase 21 — Fatiga general y cognitiva (PedsQL) frente al EEG (cerrada)
+
+**Carpeta:** [`analisis/fatiga_fg_fc/`](../analisis/fatiga_fg_fc/README.md)
+(una subcarpeta por paso, cada una con script, tablas, figuras e `INFORME.md`
+con el plan escrito antes de ejecutar). **Inicio:** 2026-10-22, a petición de
+los tutores. **Solo `train` + `val`.**
+
+¿Guardan relación con el EEG la fatiga general (FG) y la fatiga cognitiva (FC)
+de la PedsQL Multidimensional Fatigue Scale (6 ítems cada una, suma 0–24),
+respondidas el mismo día que el EEG?
+
+- **Paso 1 — descriptivo**, solo cuestionario
+  ([`01_descriptivo/INFORME.md`](../analisis/fatiga_fg_fc/01_descriptivo/INFORME.md)).
+  - **La base:** la primera versión de este paso detectó que en las bases
+    anteriores los ítems PedsQL de M5–M6 estaban codificados como
+    `max(respuesta − 1, 0)`. El equipo lo corrigió en
+    `BD_COMPLETA_corregida.xlsx` y la corrección se verificó celda a celda.
+  - **Las medidas:** α 0.79–0.90, un efecto de calendario pequeño (M1 más
+    baja) e ICC 0.60–0.72 (frente a 0.40–0.49 del VAS).
+  - **Puerta del paso 3:** la fiabilidad intra-persona es 0.67 (FG) y 0.76
+    (FC), así que hay paso 3 para las dos.
+  - **Relación con el VAS dentro de persona:** FG lo acompaña (ρ = 0.40); FC
+    apenas (0.14).
+  - **Universo:** 531 sesiones de 146 personas.
+- **Paso 2 — entre personas**
+  ([`02_entre_personas/INFORME.md`](../analisis/fatiga_fg_fc/02_entre_personas/INFORME.md)).
+  - **Diseño:** una fila por persona, con y centrado por medición y ajustado
+    por sexo, curso y centro dentro de cada pliegue, y Random Forest.
+  - **FG:** ρ = +0.146 [−0.029, +0.311], p = 0.081.
+  - **FC:** ρ = +0.008.
+  - Sin el ajuste, FG sube a +0.23, que en parte no es fatiga.
+- **Paso 3 — intra persona**, la Tarea B con FG y FC
+  ([`03_intra_persona/INFORME.md`](../analisis/fatiga_fg_fc/03_intra_persona/INFORME.md)).
+  - **FG:** ρ = **+0.170 [+0.085, +0.251], p = 0.004, p de Holm = 0.016**. Lo
+    reproducen ridge (+0.131) y cinco semillas, y supera al VAS por el mismo
+    camino (diferencia +0.178 [+0.066, +0.287]).
+  - **Con control de visita**, FG baja a **+0.067 [−0.037, +0.175]**.
+  - **FC:** +0.059, p de Holm = 0.36.
+  - **Hipótesis a priori (θ/α y `_rel_sd`):** ninguna con Holm.
+
+**Conclusión de la línea (cerrada el 2026-10-22):** entre personas no hay
+relación.
+
+Dentro de persona, FG es la única medida de fatiga del proyecto que acompaña al
+EEG de forma estadísticamente robusta (p de Holm = 0.016). Pero la relación
+desaparece al controlar la tendencia de cada alumno a lo largo del curso.
+Según la regla fijada antes de ejecutar, se reporta como dependiente de la
+deriva a lo largo del curso, no como fatiga de la sesión. Con 2–5 sesiones por
+persona no se puede separar una fatiga que se acumula de una deriva del
+registro. Es pequeña (R² = +0.013) y exploratoria.
+
+FC no tiene relación con el EEG.

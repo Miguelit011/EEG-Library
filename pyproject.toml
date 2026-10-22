@@ -32,6 +32,8 @@ dev = [
     # vez de mockear la lectura (los workers del lote corren en otros procesos,
     # donde un monkeypatch del proceso padre no existiría).
     "edfio",
+    # Lectura de la base de cuestionarios (.xlsx) en analisis/fatiga_fg_fc.
+    "openpyxl",
 ]
 
 [tool.setuptools.packages.find]

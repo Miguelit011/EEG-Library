@@ -39,14 +39,28 @@
 - ~~**Cerrar el paquete de test y ejecutarlo una sola vez.**~~ **Hecho el
   2026-10-07**: paquete fijado en `PREREGISTRO_TEST.md` (commit `bb55aee`) y
   ejecutado de una pasada. Resultados en la sección «Resultados sobre el
-  conjunto de test». **El test está gastado**: no se vuelve a ejecutar ni se
-  usan sus cifras para decidir nada nuevo.
-  > **El test no se gasta "una vez por modelo".** Se gasta una vez, punto.
-  > Cualquier análisis posterior sobre esos datos es exploratorio y así debe
-  > citarse.
+  conjunto de test». **El test está gastado para las preguntas de ese
+  paquete** (fatiga percibida —VAS— y condición): no se vuelve a ejecutar ni
+  se usan sus cifras para decidir nada nuevo sobre ellas.
+  > **Para una misma pregunta, el test no se gasta "una vez por modelo".** Se
+  > gasta una vez, punto: cualquier análisis posterior del VAS o de la
+  > condición sobre esos datos es exploratorio y así debe citarse.
+  >
+  > **Una pregunta nueva, con una etiqueta nueva, sí puede evaluarse en el
+  > test** (decisión del 2026-10-27), siempre que se cumpla todo esto:
+  > - que el test no se haya mirado para esa pregunta;
+  > - que el modelo, las features y las reglas de decisión se fijen en un
+  >   pre-registro antes de abrir `val`;
+  > - que el test se abra una sola vez, y solo si `val` cumple un criterio de
+  >   paso escrito de antemano.
+  >
+  > Primer caso: la línea de fatiga aguda por tiempo en tarea
+  > (`analisis/fatiga_aguda/PLAN.md`, sección 5).
 - **Ruta CNN.** No se hizo y **queda fuera del paquete de test por escrito**
   (`PREREGISTRO_TEST.md`, sección 1): es trabajo futuro. Como el test ya está
-  gastado, una CNN futura no podrá evaluarse sobre él como prueba confirmatoria.
+  gastado para el VAS, una CNN futura sobre el VAS no podrá evaluarse sobre él
+  como prueba confirmatoria. Una CNN para una pregunta nueva, como el tiempo en
+  tarea, sigue la regla anterior.
   La Fase 14 no la condiciona — mide que las features agregadas no llevan la
   señal, no que la señal cruda no la tenga.
 - **Completar el registro del test:** anotar en la sección 11 de
@@ -1245,9 +1259,10 @@ posición apenas se relaciona con el acierto (ρ = +0.037 [−0.008, +0.083]).
 - **Las pruebas S3 y S4 son equivalencias unilaterales.** Que el ΔR² sea
   negativo no es mérito de ningún modelo: significa que el RF empeora a la
   media.
-- **Test gastado.** Cualquier análisis adicional sobre estas 28 personas, o
-  cualquier ajuste posterior motivado por estos resultados, es exploratorio y
-  debe citarse así.
+- **Test gastado para estas preguntas.** Cualquier análisis adicional del VAS
+  o de la condición sobre estas 28 personas, o cualquier ajuste posterior
+  motivado por estos resultados, es exploratorio y debe citarse así. Para una
+  pregunta nueva, ver la regla de la sección «Pendientes».
 
 ### Lo que **no** hay que hacer
 

@@ -1,0 +1,11 @@
+{
+ "fecha": "2026-10-27",
+ "medida": "rho_ventanas",
+ "azar": 0.0,
+ "regla": "mayor z(H1) a igual tiempo en train; la actual si queda a menos de 0.25",
+ "z_train_igual_tiempo": {
+  "tercios_pareado": 3.4378987550755586,
+  "mitades_pareado": 2.6178380362078197,
+  "rho_ventanas": 4.885307795707927
+ }
+}

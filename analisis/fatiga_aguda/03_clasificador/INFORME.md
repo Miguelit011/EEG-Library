@@ -289,3 +289,141 @@ la salida de errores; no afectan a las cifras.
 - `train`: 32 configuraciones × 20 particiones × 2 versiones, más la elegida
   en PVSAT y OC, la transferencia (2 × 2), la regresión del minuto (3
   condiciones) y las importancias.
+
+---
+
+## Reajuste 1 — Medida más eficiente a igual tiempo
+
+> Decidido el 2026-10-27, **después de la mirada 1 a `val`** (no buena), por
+> encargo del autor: «la opción más inteligente si lo que queremos es obtener
+> resultados concluyentes». Por tanto, **está informado por `val`** y se
+> declara así en el pre-registro. Las cifras de `val` de la mirada 2 son de
+> desarrollo, no de confirmación.
+
+### Plan (escrito antes de ejecutar)
+
+**Por qué la medida y no otra cosa.** Que `test` sea concluyente depende de la
+potencia, y lo que más la limita es la medida. El acierto pareado reduce cada
+grabación a 0 o 1, y a igual tiempo los tercios solo tienen ≈ 19 ventanas y
+descartan el tercio medio. Esto se veía ya en `train`, sin `val`: a igual
+tiempo la H1 tiene un IC más ancho que con la grabación completa, y OA es la
+condición más inestable entre particiones (paso 2). Una medida continua por
+grabación, que use todas las ventanas, debería tener más señal por unidad de
+ruido. **Esto no garantiza un resultado positivo:** solo aumenta la
+probabilidad de que `test` sea concluyente en cualquiera de las dos
+direcciones.
+
+**Qué queda fijo.** La configuración elegida (`rel` + logística C = 0.01 +
+`separado`), la versión a igual tiempo, la familia (PASAT + PVTB), OA como
+control, la CV repetida de 20 particiones y el bootstrap de personas. **No se
+vuelven a elegir features ni modelo.**
+
+**Medidas candidatas (lista cerrada):**
+
+1. `tercios_pareado`: la actual (primer frente a último tercio; acierto
+   pareado).
+2. `mitades_pareado`: primera frente a segunda mitad (`t ≤ dur/2` y `t >
+   dur/2`). Se entrena y se evalúa con mitades. Usa todas las ventanas, pero
+   las mitades están más cerca en el tiempo.
+3. `rho_ventanas`: el modelo se entrena con los tercios, como ahora, y
+   puntúa **cada ventana** de las grabaciones del pliegue de prueba
+   (`decision_function` sobre `log10(pot_rel)` de la ventana, con los canales
+   excluidos a 0). Por grabación, la ρ de Spearman entre la puntuación y el
+   instante de la ventana. Es continua, va de −1 a 1 y usa todas las ventanas.
+   La puntuación es la media de las 20 repeticiones.
+
+Para cada medida, por condición: valor medio por grabación (acierto pareado o
+ρ), **H1 = PASAT + PVTB − OA** e IC95 por bootstrap de personas (2000
+réplicas, semilla 42), con la predicción media de las 20 particiones.
+
+**Regla de elección.** Se elige la medida con mayor **eficiencia de la H1**:
+`z = H1 / error típico bootstrap de H1`, a igual tiempo en `train`. Las
+escalas de las medidas son distintas y la z es lo que predice la potencia. Si
+la actual (`tercios_pareado`) queda a menos de 0.25 de la mejor z, se mantiene
+la actual, para no cambiar sin necesidad.
+
+**«Bueno» en `val`** (mirada 2, misma estructura que la definición anterior):
+con la medida elegida, a igual tiempo,
+
+- la H1 tiene estimación puntual > 0; y
+- PASAT y PVTB tienen cada una el límite inferior del IC95 por encima del
+  azar: > 0.5 si la medida es un acierto pareado y > 0 si es la ρ.
+
+**Disciplina en `val`:** `comprobacion_val_2.py` **solo calcula la medida
+elegida** (no las tres), con la misma configuración congelada entrenada con
+todo `train`. La grabación completa y la H3 se reportan al lado, como en la
+mirada 1.
+
+**Dos scripts**, como antes: `reajuste_medida.py` (solo `train`; escribe
+`medida_elegida.json`) y `comprobacion_val_2.py` (lee ese archivo; único que
+carga `val`).
+
+**Recuento previsto:** `val`, 2 miradas en total (esta es la segunda). `test`:
+0.
+
+### Resultados del reajuste 1
+
+`reajuste_medida.py` → `ejecucion_reajuste.log`, `resultados_reajuste.json`,
+`medida_elegida.json`, `tablas/reajuste_medidas.csv`;
+`comprobacion_val_2.py` → `ejecucion_val_2.log`, `resultados_val_2.json`.
+**Comprobación superada:** `tercios_pareado` reproduce exactamente las cifras
+de la selección (0.730 / 0.699 / 0.598; H1 +0.116).
+
+**Elección en `train`** (igual tiempo, predicción media de 20 particiones):
+
+| Medida | PASAT | PVTB | OA | H1 [IC95] | Error típico | **z(H1)** |
+|---|---|---|---|---|---|---|
+| `tercios_pareado` (actual) | 0.730 | 0.699 | 0.598 | +0.116 [+0.049, +0.181] | 0.034 | 3.44 |
+| `mitades_pareado` | 0.698 | 0.664 | 0.602 | +0.079 [+0.018, +0.137] | 0.030 | 2.62 |
+| **`rho_ventanas`** | ρ = 0.143 | 0.136 | 0.063 | **+0.077** [+0.046, +0.108] | **0.016** | **4.89** |
+
+**Elegida: `rho_ventanas`.** Su z supera en 1.45 a la de la actual: más del
+doble de información por persona (z² 23.9 frente a 11.8). Las mitades son
+peores que los tercios, porque acercar los segmentos en el tiempo cuesta más
+efecto del que se gana en ventanas. Con la grabación completa, el orden es el
+mismo (z = 6.05 frente a 5.83).
+
+**`val`, mirada 2** (solo la medida elegida; ρ media por grabación, IC95 por
+bootstrap de personas):
+
+| | Igual tiempo | Grabación completa |
+|---|---|---|
+| PASAT | **+0.097** [+0.051, +0.146] | +0.119 [+0.074, +0.159] |
+| PVTB | **+0.098** [+0.056, +0.139] | +0.148 [+0.102, +0.194] |
+| PASAT + PVTB | +0.097 [+0.061, +0.131] | +0.133 [+0.098, +0.167] |
+| OA | +0.039 [−0.000, +0.079] | +0.039 [−0.000, +0.079] |
+| **H1** | **+0.059** [+0.003, +0.116], z = 2.00 | +0.095 [+0.046, +0.138], z = 3.98 |
+| PVSAT (descriptiva) | +0.105 | +0.060 |
+| OC (descriptiva) | +0.092 | +0.092 |
+
+H3 en `val`: la misma que en la mirada 1 (PASAT −0.064, p = 0.031; PVTB
+−0.034, p = 0.060).
+
+**Criterio de «bueno»:** H1 > 0 → sí (+0.059); H2 PASAT, límite +0.051 > 0 →
+sí; H2 PVTB, límite +0.056 > 0 → sí. **`val` es bueno.**
+
+**Lectura y cautelas:**
+
+- **Con la medida eficiente, `val` replica a igual tiempo.** Las dos tareas
+  ordenan sus ventanas en el tiempo por encima del azar, y más que OA.
+- **La mirada 2 está informada por la 1.** La medida se eligió en `train` por
+  un criterio de eficiencia que no mira `val`, pero la decisión de buscar una
+  medida mejor se tomó porque la mirada 1 falló. Las cifras de `val` son de
+  desarrollo y se reportan con el recuento de miradas (2).
+- **La H1 en `val` va justa** (límite inferior +0.003). Una estimación gruesa
+  de potencia para `test` (28 personas), escalando la z de `train`
+  (4.89 × √(28/121) ≈ 2.35), da del orden del 75 % con α = 0.05 unilateral. El
+  paso 4 la estima bien.
+- **OC se comporta como las tareas** (ρ = 0.092 en `val`; acierto pareado 0.667
+  en `train`). El reposo con ojos cerrados también cambia de forma ordenada
+  dentro de la grabación, y OA es el control más bajo, no el único. OC es la
+  primera grabación de la sesión, justo después de colocar el casco: encaja
+  con una deriva de asentamiento. Es un dato importante para el paso 4
+  (tiempo en tarea frente a tiempo desde la colocación) y para la discusión.
+  No cambia la H1, que se fijó frente a OA antes de ver esto.
+
+### Recuento de miradas (final del paso 3)
+
+- `val`: **2** (mirada 1 con `tercios_pareado`, no buena; mirada 2 con
+  `rho_ventanas`, buena).
+- `test`: 0.

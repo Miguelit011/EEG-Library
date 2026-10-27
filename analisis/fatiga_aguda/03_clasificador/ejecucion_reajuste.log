@@ -1,0 +1,31 @@
+
+==============================================================================
+0. CARGA (solo train) Y CONFIGURACIÓN CONGELADA
+==============================================================================
+Configuración: features = rel, modelo = lr_0.01, esquema = separado
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 2672 de 3117 epoca(s) (85.7 %) tienen algun canal excluido.
+
+==============================================================================
+1. MEDIDAS — VERSIÓN IGUAL_TIEMPO
+==============================================================================
+  tercios_pareado  PASAT 0.730  PVTB 0.699  OA 0.598  H1 +0.116 [+0.049, +0.181]  z(H1) = 3.44  z(PASAT) = 9.3  z(PVTB) = 9.1
+  mitades_pareado  PASAT 0.698  PVTB 0.664  OA 0.602  H1 +0.079 [+0.018, +0.137]  z(H1) = 2.62  z(PASAT) = 8.4  z(PVTB) = 7.1
+  rho_ventanas     PASAT 0.143  PVTB 0.136  OA 0.063  H1 +0.077 [+0.046, +0.108]  z(H1) = 4.89  z(PASAT) = 10.8  z(PVTB) = 12.7
+
+==============================================================================
+1. MEDIDAS — VERSIÓN COMPLETA
+==============================================================================
+  tercios_pareado  PASAT 0.789  PVTB 0.758  OA 0.598  H1 +0.176 [+0.115, +0.234]  z(H1) = 5.83  z(PASAT) = 14.3  z(PVTB) = 13.1
+  mitades_pareado  PASAT 0.739  PVTB 0.717  OA 0.602  H1 +0.126 [+0.076, +0.179]  z(H1) = 4.83  z(PASAT) = 10.8  z(PVTB) = 10.5
+  rho_ventanas     PASAT 0.159  PVTB 0.148  OA 0.063  H1 +0.091 [+0.062, +0.121]  z(H1) = 6.05  z(PASAT) = 13.8  z(PVTB) = 13.7
+
+==============================================================================
+2. ELECCIÓN (mayor z de la H1 a igual tiempo; la actual si queda a menos de 0.25)
+==============================================================================
+                     H1  H1_error_tipico    H1_z
+medida                                          
+tercios_pareado  0.1164           0.0338  3.4379
+mitades_pareado  0.0788           0.0301  2.6178
+rho_ventanas     0.0768           0.0157  4.8853
+
+Mejor z: rho_ventanas (4.89). ELEGIDA: rho_ventanas

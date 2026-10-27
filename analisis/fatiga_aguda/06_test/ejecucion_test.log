@@ -1,0 +1,63 @@
+
+==============================================================================
+0. TEST (confirmatorio)
+==============================================================================
+Inicio: 2026-10-27 19:05:47. Git 063a41f3cc88, limpio = True
+Configuración: rel, lr_0.01, separado; medida: rho_ventanas
+Salida: C:\Users\migue\Desktop\TFG\EEG-Data\processed\fatiga_aguda_test_20261027-190547
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 3789 de 4453 epoca(s) (85.1 %) tienen algun canal excluido.
+Personas: entrena 146, evalúa 28; expuestas en los sondeos: 1; grabaciones evaluadas a 128 Hz: 5
+           grabaciones  personas
+condicion                       
+OA                 103        28
+OC                 104        28
+PASAT              102        28
+PVSAT              105        28
+PVTB               103        28
+
+==============================================================================
+1. PRINCIPALES EN SECUENCIA FIJA: H1b → H1 (bootstrap de personas, 10 000 réplicas)
+==============================================================================
+  H1b (completa)     Δρ = +0.0676  IC95 [+0.0017, +0.1275]  p = 0.0224  → CONFIRMA
+  H1 (igual tiempo)  Δρ = +0.0269  IC95 [-0.0381, +0.0874]  p = 0.2083  → NO CONCLUYE
+
+==============================================================================
+2. SECUNDARIAS
+==============================================================================
+  H2 PASAT ρ = +0.0917  IC95 [+0.0482, +0.1382]  p = 0.0001, Holm 0.0002  → CONFIRMA
+  H2 PVTB  ρ = +0.1692  IC95 [+0.1203, +0.2134]  p = 0.0001, Holm 0.0002  → CONFIRMA
+  H3 PASAT Δpendiente = -0.0294  t = -1.66  p = 0.0545, Holm 0.0545  → NO CONCLUYE (potencia 26–38 %: no indica ausencia)
+  H3 PVTB  Δpendiente = -0.0487  t = -2.53  p = 0.0088, Holm 0.0176  → CONFIRMA
+  H4 EEG 0.743 − artefactos 0.579 = +0.1634  IC95 [+0.0699, +0.2571]  p = 0.0004  → CONFIRMA  (202 grab.; sin movimiento: 2)
+
+==============================================================================
+3. DESCRIPTIVOS (sin veredicto)
+==============================================================================
+  completa | PASAT | rho                   +0.162 [+0.111, +0.217]  (102 grab.)
+  completa | PASAT | tercios_pareado       +0.735 [+0.657, +0.816]  (102 grab.)
+  completa | PVTB | rho                    +0.180 [+0.141, +0.220]  (103 grab.)
+  completa | PVTB | tercios_pareado        +0.835 [+0.757, +0.909]  (103 grab.)
+  completa | OA | rho                      +0.104 [+0.052, +0.160]  (103 grab.)
+  completa | OA | tercios_pareado          +0.670 [+0.578, +0.770]  (103 grab.)
+  completa | PVSAT | rho                   +0.034 [-0.003, +0.069]  (105 grab.)
+  completa | PVSAT | tercios_pareado       +0.552 [+0.443, +0.664]  (105 grab.)
+  completa | OC | rho                      +0.104 [+0.060, +0.152]  (104 grab.)
+  completa | OC | tercios_pareado          +0.654 [+0.566, +0.743]  (104 grab.)
+  igual_tiempo | PASAT | rho               +0.092 [+0.052, +0.137]  (102 grab.)
+  igual_tiempo | PASAT | tercios_pareado   +0.686 [+0.593, +0.782]  (102 grab.)
+  igual_tiempo | PVTB | rho                +0.169 [+0.122, +0.215]  (102 grab.)
+  igual_tiempo | PVTB | tercios_pareado    +0.775 [+0.686, +0.849]  (102 grab.)
+  igual_tiempo | OA | rho                  +0.104 [+0.052, +0.159]  (103 grab.)
+  igual_tiempo | OA | tercios_pareado      +0.670 [+0.574, +0.762]  (103 grab.)
+  igual_tiempo | PVSAT | rho               +0.054 [+0.016, +0.094]  (102 grab.)
+  igual_tiempo | PVSAT | tercios_pareado   +0.627 [+0.531, +0.718]  (102 grab.)
+  igual_tiempo | OC | rho                  +0.104 [+0.062, +0.150]  (104 grab.)
+  igual_tiempo | OC | tercios_pareado      +0.654 [+0.561, +0.738]  (104 grab.)
+
+==============================================================================
+4. SENSIBILIDADES (sin veredicto)
+==============================================================================
+  sin_personas_expuestas: H1b +0.0610 [-0.0056, +0.1241]  H1 +0.0196 [-0.0460, +0.0826]  rho_PASAT +0.0907 [+0.0454, +0.1379]  rho_PVTB +0.1648 [+0.1156, +0.2105]
+  sin_grabaciones_128_hz: H1b +0.0714 [+0.0035, +0.1339]  H1 +0.0316 [-0.0352, +0.0937]  rho_PASAT +0.0934 [+0.0490, +0.1410]  rho_PVTB +0.1683 [+0.1187, +0.2131]
+
+Fin: 2026-10-27 19:06:19. Artefactos en C:\Users\migue\Desktop\TFG\EEG-Data\processed\fatiga_aguda_test_20261027-190547

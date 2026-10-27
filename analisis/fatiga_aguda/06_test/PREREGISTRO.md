@@ -211,3 +211,6 @@ artefactos del ensayo (carpeta temporal) se borraron tras comprobarlo.
 *(Vacía hasta la ejecución. Cada entrada: fecha, qué cambió respecto a este
 documento, por qué y si ocurrió antes o después de ver algún resultado de
 test.)*
+
+- **2026-10-27:** ninguna. Ejecución única a las 19:05 sobre el commit
+  `063a41f`, completa y sin errores. Resultados en `INFORME.md`.

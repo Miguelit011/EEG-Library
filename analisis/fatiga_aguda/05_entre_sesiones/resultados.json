@@ -1,0 +1,633 @@
+{
+ "fecha": "2026-10-27T23:00:49",
+ "particiones": [
+  "train",
+  "val"
+ ],
+ "personas": 146,
+ "sesiones": 538,
+ "conducta_excluida_por_rango": {
+  "Accuracy_PASAT": {
+   "rango_valido": "(1, 100]",
+   "excluidos": 2
+  },
+  "Lapses_PVTB": {
+   "rango_valido": ">= 0",
+   "excluidos": 0
+  },
+  "Reaction_PVTB": {
+   "rango_valido": "[100, 1000]",
+   "excluidos": 0
+  }
+ },
+ "dentro_de_persona": [
+  {
+   "contraste": "A1",
+   "bloque": "A",
+   "cambio": "rho_PASAT",
+   "conducta": "Accuracy_PASAT",
+   "coef": 0.006661201649322365,
+   "ee": 0.028707202292138048,
+   "t": 0.23203938793947357,
+   "p": 0.8168587955586634,
+   "r_parcial": 0.010075759382344758,
+   "sesiones": 521,
+   "personas": 136,
+   "p_holm": 0.8168587955586634
+  },
+  {
+   "contraste": "A1",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Accuracy_PASAT",
+   "coef": -0.04161218073389886,
+   "ee": 0.03550330900053307,
+   "t": -1.1720648555117514,
+   "p": 0.24323526654368036,
+   "r_parcial": -0.06449061754473388,
+   "sesiones": 518,
+   "personas": 136,
+   "p_holm": NaN
+  },
+  {
+   "contraste": "A1",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PASAT",
+   "conducta": "Accuracy_PASAT",
+   "coef": -0.015185149141793449,
+   "ee": 0.03438836746991618,
+   "t": -0.44157807593157206,
+   "p": 0.6595010321267218,
+   "r_parcial": -0.022832505127710748,
+   "sesiones": 521,
+   "personas": 136,
+   "p_holm": NaN
+  },
+  {
+   "contraste": "A2",
+   "bloque": "A",
+   "cambio": "rho_PVTB",
+   "conducta": "Lapses_PVTB",
+   "coef": 0.09010529451970145,
+   "ee": 0.03300633068140289,
+   "t": 2.7299397618430343,
+   "p": 0.007186246881800093,
+   "r_parcial": 0.1384390129373647,
+   "sesiones": 497,
+   "personas": 135,
+   "p_holm": 0.02155874064540028
+  },
+  {
+   "contraste": "A2",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Lapses_PVTB",
+   "coef": 0.019672086464355743,
+   "ee": 0.031291395730892436,
+   "t": 0.6286739854475226,
+   "p": 0.53063267826804,
+   "r_parcial": 0.029991198926053897,
+   "sesiones": 500,
+   "personas": 135,
+   "p_holm": NaN
+  },
+  {
+   "contraste": "A2",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PVTB",
+   "conducta": "Lapses_PVTB",
+   "coef": -0.01955596497735942,
+   "ee": 0.03276575175252617,
+   "t": -0.5968416389485616,
+   "p": 0.5516201815397348,
+   "r_parcial": -0.030685164376274537,
+   "sesiones": 497,
+   "personas": 135,
+   "p_holm": NaN
+  },
+  {
+   "contraste": "A3",
+   "bloque": "A",
+   "cambio": "rho_PVTB",
+   "conducta": "Reaction_PVTB",
+   "coef": 0.03943409156751717,
+   "ee": 0.026599468257347134,
+   "t": 1.4825142813381218,
+   "p": 0.14053413650770527,
+   "r_parcial": 0.0707497031189512,
+   "sesiones": 511,
+   "personas": 136,
+   "p_holm": 0.28106827301541054
+  },
+  {
+   "contraste": "A3",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Reaction_PVTB",
+   "coef": -0.013405133567068331,
+   "ee": 0.02590620246427187,
+   "t": -0.5174488073099794,
+   "p": 0.6056897288538947,
+   "r_parcial": -0.02379966625721915,
+   "sesiones": 513,
+   "personas": 136,
+   "p_holm": NaN
+  },
+  {
+   "contraste": "A3",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PVTB",
+   "conducta": "Reaction_PVTB",
+   "coef": -0.014926674252061336,
+   "ee": 0.029912368811609823,
+   "t": -0.4990134464465375,
+   "p": 0.6185820921054226,
+   "r_parcial": -0.027438043556448497,
+   "sesiones": 511,
+   "personas": 136,
+   "p_holm": NaN
+  }
+ ],
+ "entre_personas": [
+  {
+   "contraste": "A1",
+   "bloque": "B",
+   "cambio": "rho_PASAT",
+   "conducta": "Accuracy_PASAT",
+   "rho": -0.08287093830965932,
+   "ic95": [
+    -0.24148785860074015,
+    0.0858990843248362
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A1",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Accuracy_PASAT",
+   "rho": -0.14251803007516348,
+   "ic95": [
+    -0.3031311938656107,
+    0.028174128910637305
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A1",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PASAT",
+   "conducta": "Accuracy_PASAT",
+   "rho": 0.19484768073277958,
+   "ic95": [
+    0.028074356788178188,
+    0.35942874711860356
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A2",
+   "bloque": "B",
+   "cambio": "rho_PVTB",
+   "conducta": "Lapses_PVTB",
+   "rho": 0.05944361187598254,
+   "ic95": [
+    -0.11401457364502302,
+    0.2313564731165404
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A2",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Lapses_PVTB",
+   "rho": -0.01885654171582048,
+   "ic95": [
+    -0.18493610500710062,
+    0.1446710668875111
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A2",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PVTB",
+   "conducta": "Lapses_PVTB",
+   "rho": -0.08023312938042385,
+   "ic95": [
+    -0.24490279172957152,
+    0.08251838171605096
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A3",
+   "bloque": "B",
+   "cambio": "rho_PVTB",
+   "conducta": "Reaction_PVTB",
+   "rho": 0.08430187359938908,
+   "ic95": [
+    -0.08517670013982391,
+    0.24630611000664665
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A3",
+   "bloque": "C_control_OA",
+   "cambio": "rho_OA",
+   "conducta": "Reaction_PVTB",
+   "rho": 0.07785768836264727,
+   "ic95": [
+    -0.08299308044741849,
+    0.23735186667750144
+   ],
+   "personas": 145
+  },
+  {
+   "contraste": "A3",
+   "bloque": "D_beta_post_rel",
+   "cambio": "beta_PVTB",
+   "conducta": "Reaction_PVTB",
+   "rho": 0.026899995481843766,
+   "ic95": [
+    -0.1383219704164641,
+    0.1934136689620146
+   ],
+   "personas": 145
+  }
+ ],
+ "covariables": {
+  "PASAT": {
+   "sexo": [
+    {
+     "sexo": "XX",
+     "media": 0.14864991432549832,
+     "ic95": [
+      0.11940899907008015,
+      0.1780775883723738
+     ],
+     "sesiones": 274,
+     "personas": 74
+    },
+    {
+     "sexo": "XY",
+     "media": 0.15735749605390853,
+     "ic95": [
+      0.12917739404744083,
+      0.18700341881752378
+     ],
+     "sesiones": 259,
+     "personas": 71
+    }
+   ],
+   "centro": [
+    {
+     "centro": "C1",
+     "media": 0.18047812370510982,
+     "ic95": [
+      0.1147314172005042,
+      0.24677512996283332
+     ],
+     "sesiones": 81,
+     "personas": 20
+    },
+    {
+     "centro": "C2",
+     "media": 0.17516850537330855,
+     "ic95": [
+      0.1320972295402169,
+      0.21887760079922816
+     ],
+     "sesiones": 67,
+     "personas": 19
+    },
+    {
+     "centro": "C3",
+     "media": 0.08309603328421153,
+     "ic95": [
+      0.020214091214042718,
+      0.14647389492092808
+     ],
+     "sesiones": 46,
+     "personas": 18
+    },
+    {
+     "centro": "C4",
+     "media": 0.14440849909280706,
+     "ic95": [
+      0.08039966048495044,
+      0.20562417224307364
+     ],
+     "sesiones": 70,
+     "personas": 18
+    },
+    {
+     "centro": "C5",
+     "media": 0.16419682653085826,
+     "ic95": [
+      0.13183277412247474,
+      0.19829776003099506
+     ],
+     "sesiones": 63,
+     "personas": 17
+    },
+    {
+     "centro": "C6",
+     "media": 0.1615999079588161,
+     "ic95": [
+      0.11840487440103686,
+      0.20978291083162742
+     ],
+     "sesiones": 67,
+     "personas": 18
+    },
+    {
+     "centro": "C7",
+     "media": 0.13080647295076261,
+     "ic95": [
+      0.0789372208740292,
+      0.1880959039453076
+     ],
+     "sesiones": 64,
+     "personas": 17
+    },
+    {
+     "centro": "C8",
+     "media": 0.15541905975892675,
+     "ic95": [
+      0.092067212380384,
+      0.22368787469683576
+     ],
+     "sesiones": 75,
+     "personas": 18
+    }
+   ],
+   "medicion": [
+    {
+     "medicion": "M2",
+     "media": 0.17718853141668367,
+     "ic95": [
+      0.12472013990990137,
+      0.22980795865305162
+     ],
+     "sesiones": 42,
+     "personas": 42
+    },
+    {
+     "medicion": "M3",
+     "media": 0.14622977484124433,
+     "ic95": [
+      0.10814496513225107,
+      0.1822273504461988
+     ],
+     "sesiones": 122,
+     "personas": 122
+    },
+    {
+     "medicion": "M4",
+     "media": 0.13278560362268912,
+     "ic95": [
+      0.09542581441570154,
+      0.17154683691016687
+     ],
+     "sesiones": 129,
+     "personas": 129
+    },
+    {
+     "medicion": "M5",
+     "media": 0.20350659753524217,
+     "ic95": [
+      0.1582728728374202,
+      0.24488563457675397
+     ],
+     "sesiones": 115,
+     "personas": 115
+    },
+    {
+     "medicion": "M6",
+     "media": 0.12536892455309268,
+     "ic95": [
+      0.08871033149835246,
+      0.16396331105884487
+     ],
+     "sesiones": 125,
+     "personas": 125
+    }
+   ],
+   "hora": {
+    "rho": -0.03510522384368719,
+    "ic95": [
+     -0.12085269410810763,
+     0.057485212537944363
+    ],
+    "sesiones": 532,
+    "hora_mediana": 10.7,
+    "hora_p10_p90": [
+     8.933333333333334,
+     12.816666666666666
+    ]
+   },
+   "casco_M4_M6": {
+    "diferencia": "236373 − 172358",
+    "media": 0.02153037092190999,
+    "ic95": [
+     -0.04379605163688938,
+     0.08844695297839647
+    ],
+    "personas_con_los_dos": 73
+   }
+  },
+  "PVTB": {
+   "sexo": [
+    {
+     "sexo": "XX",
+     "media": 0.15984416316797886,
+     "ic95": [
+      0.13232782232486356,
+      0.1902434987092297
+     ],
+     "sesiones": 273,
+     "personas": 74
+    },
+    {
+     "sexo": "XY",
+     "media": 0.13899300347019394,
+     "ic95": [
+      0.11538042639760462,
+      0.16130844834997315
+     ],
+     "sesiones": 256,
+     "personas": 71
+    }
+   ],
+   "centro": [
+    {
+     "centro": "C1",
+     "media": 0.1607490517350658,
+     "ic95": [
+      0.10751302818885855,
+      0.21361758812773873
+     ],
+     "sesiones": 82,
+     "personas": 20
+    },
+    {
+     "centro": "C2",
+     "media": 0.14099219866556997,
+     "ic95": [
+      0.09563644110291893,
+      0.18931484174101604
+     ],
+     "sesiones": 67,
+     "personas": 19
+    },
+    {
+     "centro": "C3",
+     "media": 0.22297904954732115,
+     "ic95": [
+      0.15543396679411875,
+      0.28747061600320756
+     ],
+     "sesiones": 44,
+     "personas": 18
+    },
+    {
+     "centro": "C4",
+     "media": 0.15278175310626216,
+     "ic95": [
+      0.11016969801453101,
+      0.19500529584467613
+     ],
+     "sesiones": 70,
+     "personas": 18
+    },
+    {
+     "centro": "C5",
+     "media": 0.10669616830427724,
+     "ic95": [
+      0.06181784830933967,
+      0.15470617434794104
+     ],
+     "sesiones": 63,
+     "personas": 17
+    },
+    {
+     "centro": "C6",
+     "media": 0.14145599440872667,
+     "ic95": [
+      0.096170378356524,
+      0.18914604092425855
+     ],
+     "sesiones": 66,
+     "personas": 18
+    },
+    {
+     "centro": "C7",
+     "media": 0.14240169919585216,
+     "ic95": [
+      0.10615515167163246,
+      0.17799529731882033
+     ],
+     "sesiones": 62,
+     "personas": 17
+    },
+    {
+     "centro": "C8",
+     "media": 0.14932140531400745,
+     "ic95": [
+      0.09136666491356682,
+      0.21135832353420142
+     ],
+     "sesiones": 75,
+     "personas": 18
+    }
+   ],
+   "medicion": [
+    {
+     "medicion": "M2",
+     "media": 0.14802464579735078,
+     "ic95": [
+      0.08536120257590638,
+      0.20795090298103228
+     ],
+     "sesiones": 42,
+     "personas": 42
+    },
+    {
+     "medicion": "M3",
+     "media": 0.1804066112249798,
+     "ic95": [
+      0.145554079026835,
+      0.21349984483662907
+     ],
+     "sesiones": 122,
+     "personas": 122
+    },
+    {
+     "medicion": "M4",
+     "media": 0.15134518089639118,
+     "ic95": [
+      0.11379483103562586,
+      0.18827044980648155
+     ],
+     "sesiones": 128,
+     "personas": 128
+    },
+    {
+     "medicion": "M5",
+     "media": 0.1440816764116027,
+     "ic95": [
+      0.10266098119722128,
+      0.18318132382827704
+     ],
+     "sesiones": 115,
+     "personas": 115
+    },
+    {
+     "medicion": "M6",
+     "media": 0.12337252293622322,
+     "ic95": [
+      0.08950236805454079,
+      0.15690587660146266
+     ],
+     "sesiones": 122,
+     "personas": 122
+    }
+   ],
+   "hora": {
+    "rho": -0.07746152388342496,
+    "ic95": [
+     -0.16720685263621143,
+     0.015599854789091478
+    ],
+    "sesiones": 528,
+    "hora_mediana": 10.7,
+    "hora_p10_p90": [
+     8.933333333333334,
+     12.816666666666666
+    ]
+   },
+   "casco_M4_M6": {
+    "diferencia": "236373 − 172358",
+    "media": 0.02804517476195936,
+    "ic95": [
+     -0.027748852898516096,
+     0.08387376211310883
+    ],
+    "personas_con_los_dos": 71
+   }
+  }
+ },
+ "algun_A_sobrevive_holm": true,
+ "A_holm_y_D_en_sentido_coherente": true,
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "BD_COMPLETA_corregida.xlsx": "f75dadf1613fdc9ad3ffbb5774d51a5318962d1184e836cf51e6301deccf12e1",
+  "labels.csv": "fa2b362eb197a2e48a4e59e8b5021c336d8cf19aa4d9b277e5e313184def2b28",
+  "manifest_canonical.csv": "33eaf484ec290b4f2a7733322cf19f12f6702f0a8349eb9f5a938169680fe7e4"
+ }
+}

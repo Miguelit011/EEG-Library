@@ -21,9 +21,9 @@
 - **Lo que se sabe (exploratorio, solo `train`).** Acierto pareado de 0.785 en
   PASAT, 0.751 en PVTB y 0.682 en PVSAT, frente a 0.620 en OA (control de
   reposo).
-- **Validación.** Exploración en `train`, pre-registro, confirmación **una
-  sola vez en `val`** y, si `val` cumple el criterio fijado de antemano,
-  evaluación **una sola vez en `test`** (sección 5).
+- **Validación.** `train` y `val` son para probar y reajustar (desarrollo).
+  Cuando los resultados en `val` sean buenos, todo se fija en un pre-registro
+  y se evalúa **una sola vez en `test`** (sección 5).
 - **Deep learning.** Medido en este ordenador: un programa cerrado con EEGNet
   y ShallowConvNet a 128 Hz cuesta 30–45 h de CPU (unas 4–6 noches). Es
   viable, pero no deja margen para búsquedas de hiperparámetros. Con GPU
@@ -95,12 +95,17 @@ escribe **antes** de ejecutar. Este `PLAN.md` es el documento de partida.
 
 Reglas comunes:
 
-- **Solo `train` hasta el pre-registro.** `val` se abre una vez (paso 6) y
-  `test` también una sola vez, solo si `val` cumple el criterio pre-registrado
-  (paso 6b, sección 5).
-- La partición válida es la columna `split` de `matriz_rf.parquet` /
-  `labels.csv` (nivel `persona_uid`). **No** se usa la `split` de
-  `features_all.parquet`, que va por `sujeto` (ver la sección 3.5).
+- **`train` y `val` para desarrollar; `test` una sola vez** (paso 6, sección
+  5). Ningún script de los pasos 1–5 carga personas de `test`: se apartan en
+  la primera línea.
+- **Las features por ventana salen de `features_all.parquet`; la partición y
+  la identidad, de `matriz_rf.parquet`.** `features_all` lleva el `sujeto`,
+  el `centro` y la `split` que tenía el manifest **antes** de las correcciones
+  de metadata de la Fase 12 (`docs/ESTADO.md`, «Las correcciones de
+  metadata»). Además no tiene `persona_uid` ni `sesion_uid`. `matriz_rf` las
+  trae corregidas: `unir_etiquetas` las sustituye uniendo por
+  `archivo_origen`. Se une por `archivo_origen` ↔ `archivo` y se toman de la
+  matriz `persona_uid`, `sesion_uid` y `split`.
 - Se agrupa siempre por `persona_uid` (GroupKFold y bootstrap).
 - Ejecutar desde la raíz del repo con `.venv/Scripts/python.exe`, salvo el
   deep learning (sección 7.7).
@@ -215,17 +220,21 @@ PASAT), no la distancia al 0.5.
 ### 3.5. Incidencias de los sondeos (hay que declararlas)
 
 - **Contaminación mínima de la partición.** Los sondeos filtraron por la
-  `split` de `features_all.parquet`, que va por `sujeto`. Tres `persona_uid`
-  cambian de partición al usar la `split` correcta (la de la matriz):
+  `split` de `features_all.parquet`, que es la anterior a las correcciones de
+  la Fase 12. Tres `persona_uid` cambian de partición al usar la `split`
+  correcta (la de la matriz). Son las grabaciones mal archivadas que corrigió
+  la Fase 12 (`docs/ESTADO.md`: `C3_F128` → `C4`, `C3_F131` → `C4`, `C3_F103`
+  → `C2`):
   - una de `test` aparecía como `train` (6 grabaciones);
   - una de `val` aparecía como `train` (7 grabaciones);
   - una de `val` aparecía como `test` (1 grabación; no se usó).
 
   Se identifican con `matriz.split != features_all.split`.
-  - **Recomendación:** mantener a esas dos personas (la de `val` y la de
-    `test`) en sus conjuntos de evaluación, declarar la exposición en el
-    pre-registro y añadir en cada conjunto un análisis de sensibilidad sin
-    ellas. Excluirlas a posteriori sería también un grado de libertad.
+  - La de `val` no plantea problema, porque `val` es desarrollo.
+  - **La de `test` sí hay que declararla.** Recomendación: mantenerla en
+    `test`, declarar la exposición en el pre-registro y añadir un análisis de
+    sensibilidad sin ella. Excluirla a posteriori sería también un grado de
+    libertad.
 - **Los sondeos usaron los 14 canales**, también los excluidos por calidad. El
   paso 1 lo corrige (sección 4.4).
 - **El guion del sondeo se editó después de ejecutarlo:** las listas de
@@ -296,8 +305,9 @@ de la Fase 13 los restringe con la Fase 11.5. Aquí:
 - **Clasificador clásico:** tras centrar por grabación, se pone a 0 el cambio de
   los canales que figuran en `canales_excluidos` de esa grabación. Así no
   aportan nada.
-- **Deep learning:** se ponen a 0 tras la normalización por grabación, con la
-  opción de un canal de máscara (como prevé `docs/MODELADO.md`, «Ruta CNN»).
+- **Deep learning:** se ponen a 0 tras la normalización por grabación **y se
+  añade un canal de máscara**. Es lo que prevén `docs/MODELADO.md` («Ruta CNN»)
+  y `docs/ESTADO.md`: poner solo ceros introduce un sesgo que la red aprende.
 - Los agregados por región solo promedian canales válidos.
 - Comparar el resultado con los 14 canales (como en el sondeo) para medir
   cuánto cambia.
@@ -325,55 +335,46 @@ asocia al rendimiento total en esa tarea.
 
 ## 5. Diseño de validación
 
-**Decisión del usuario (2026-10-27): si los resultados en `val` son buenos,
-la línea se evalúa también en `test`.** El test ya se abrió el 2026-10-07 para
-el VAS y la condición, pero **nunca para esta pregunta**. La única excepción es
-la persona declarada en 3.5.
+**Decisión del usuario (2026-10-27):** `train` y `val` son para **probar y
+reajustar**; `test` es **solo para la evaluación final, una sola vez en esta
+línea de investigación**. El test ya se abrió el 2026-10-07 para el VAS y la
+condición, pero **nunca para esta pregunta**. La única excepción es la persona
+declarada en 3.5. La regla general está en `docs/MODELADO.md`, sección
+«Pendientes».
 
-> `docs/MODELADO.md` (sección «Pendientes») recoge desde el 2026-10-27 la
-> regla matizada: el test está gastado para el VAS y la condición, y una
-> pregunta nueva puede evaluarse en él con pre-registro y criterio de paso en
-> `val`. En la memoria hay que explicar por qué el test sigue siendo válido
-> aquí: el modelo, las features y la etiqueta se fijan sin haber mirado el
-> test para el tiempo en tarea.
+| Conjunto | Papel | Uso en esta línea |
+|---|---|---|
+| `train` (120 personas) | Desarrollo | Exploración libre, selección de features y modelo, CV por persona (`GroupKFold`). La sección 3 y los pasos 1–5 |
+| `val` (25 personas) | Desarrollo | Comprobar la configuración elegida fuera de la CV, en personas que no intervinieron en el ajuste. Se puede mirar **tantas veces como haga falta** y, si no convence, volver a `train` y reajustar |
+| `test` (28 personas) | Evaluación final | **Una sola ejecución** (paso 6), con todo fijado antes en un pre-registro. No se mira hasta entonces: ni descriptivos ni comprobaciones |
 
-| Conjunto | Uso en esta línea |
-|---|---|
-| `train` (120 personas) | Exploración libre, selección del modelo, CV por persona. Toda la sección 3 y los pasos 1–5 |
-| `val` (25 personas) | **Confirmación única** tras el pre-registro (paso 6). Nunca se ha mirado para esta pregunta, salvo la persona declarada en 3.5 |
-| `test` (28 personas) | **Evaluación final única** (paso 6b), solo si `val` cumple el criterio de paso pre-registrado. No se mira hasta entonces |
+Consecuencias que hay que asumir y explicar en la memoria:
 
-Reglas de la secuencia `val` → `test`, que se fijan **en el mismo
-pre-registro**, antes de abrir `val`:
+1. **Las cifras de `val` son de desarrollo, no de confirmación.** Cada vez que
+   se mira `val` y se reajusta algo, `val` deja de ser independiente y sus
+   cifras se vuelven optimistas. Se reportan como «validación durante el
+   desarrollo». **La única cifra confirmatoria es la de `test`.**
+2. **Antes de abrir `test`, todo queda fijado en `PREREGISTRO.md`**:
+   - las features y el modelo (con sus hiperparámetros, y para la CNN las
+     épocas y las semillas);
+   - cómo se entrena el modelo final (recomendación: con `train` + `val`, con
+     exactamente la configuración elegida);
+   - las hipótesis, los contrastes, el α, la corrección por multiplicidad y las
+     reglas de decisión;
+   - el recuento de exploración (3.5 y los pasos 1–5).
 
-1. **Qué significa «buenos resultados en `val`».** Hay que escribir un criterio
-   de paso concreto; si no, se decide a la vista de los datos. Propuesta: «H1
-   CONFIRMA en `val`», es decir, el límite inferior del IC unilateral de la
-   diferencia tarea − OA es > 0. Si no hay potencia para H1 (paso 4), usar H2
-   en PASAT y PVTB y declararlo.
-2. **Qué modelo llega a `test`.** O el mismo modelo entrenado solo con `train`
-   (el que se evaluó en `val`), o uno reentrenado con `train` + `val` con
-   **exactamente** la misma configuración. Recomendación: reentrenar con
-   `train` + `val`, que tiene más datos y no implica ninguna decisión nueva.
-   Lo que no vale es cambiar nada (features, C, arquitectura) después de ver
-   `val`.
-3. **Qué se evalúa en `test`.** Las mismas hipótesis, contrastes y reglas de
-   decisión que en `val`, en una sola ejecución. Se reportan las cifras de los
-   dos conjuntos por separado, sin combinarlos ni escoger el mejor.
-4. **Si `val` no pasa el criterio**, el test no se abre y se reporta el
-   resultado de `val` como está. Abrir el test «para ver» tras un fallo en
-   `val` convertiría el test en una segunda oportunidad.
-5. **Si se cambia algo después de abrir el test**, todo lo que venga después
-   es exploratorio y se cita así.
-
-- **Potencia:** con 25 personas en `val` (≈ 88 grabaciones por tarea) y 28 en
-  `test` (≈ 103), un acierto pareado de 0.78 frente a 0.5 sale holgado. El
-  contraste **tarea − OA** (≈ 0.16 en train) es el que puede quedarse corto.
-  **El paso 4 estima la potencia** submuestreando 25 y 28 personas de `train`
-  (≥ 2000 réplicas) antes de fijar la hipótesis principal y el criterio de
-  paso.
-
----
+   Tú haces el commit del pre-registro antes de ejecutar.
+3. **Cuándo se abre `test`.** Cuando los resultados en `val` sean buenos.
+   Conviene escribir antes qué significa «buenos» (por ejemplo, PASAT + PVTB
+   por encima de OA en `val`). Si nunca llegan a serlo, el test no se abre y se
+   reporta el resultado del desarrollo como está.
+4. **Una vez abierto el test, no se cambia nada.** Su resultado se reporta salga
+   lo que salga. Cualquier ajuste posterior es exploratorio y se cita así.
+5. **Potencia.** Con 28 personas en `test` (≈ 103 grabaciones por tarea), un
+   acierto pareado de 0.78 frente a 0.5 sale holgado. El contraste **tarea −
+   OA** (≈ 0.16 en el sondeo) es el que puede quedarse corto. **El paso 4
+   estima la potencia** submuestreando 28 personas de `train` + `val`
+   (≥ 2000 réplicas) antes de elegir la hipótesis principal.
 
 ## 6. Pasos
 
@@ -434,10 +435,10 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
 
 ### Paso 4 — `04_potencia_y_controles/`: potencia y tiempo desde la colocación (≈ 6 h)
 
-- **Potencia para `val` y `test`:** submuestrear 25 y 28 personas de `train`,
-  repetir la CV y estimar la probabilidad de que los contrastes de la sección 8
-  sean significativos. De aquí sale la hipótesis principal y el criterio de
-  paso a `test` (sección 5).
+- **Potencia para `test`:** submuestrear 28 personas de `train` + `val`,
+  repetir la evaluación y estimar la probabilidad de que los contrastes de la
+  sección 8 sean significativos. De aquí sale la hipótesis principal (sección
+  5).
 - **Tiempo en tarea frente a tiempo desde que se colocó el casco.** El orden
   fijo de las tareas impide separarlos del todo. Comprobaciones parciales:
   1. **Especificidad:** si fuera deriva del hardware, el patrón espectral sería
@@ -465,28 +466,32 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
   descripción y como covariables.
 - La conexión con la fatiga crónica ya está cerrada (3.4): no se repite.
 
-### Paso 6 — `06_confirmatorio/`: pre-registro y confirmación en `val` (≈ 6 h)
+### Comprobación en `val` (dentro de los pasos 3–5, sin horas aparte)
 
-- Escribir `PREREGISTRO.md` (con el formato de `PREREGISTRO_TEST.md`): las
-  hipótesis de la sección 8 ya concretadas, el modelo y las features fijados,
-  las métricas, los contrastes, el α, la corrección por multiplicidad, las
-  reglas de decisión, el recuento de exploración (3.5 y los pasos 1–5) y el
-  tratamiento de las personas expuestas. También la secuencia `val` → `test`
-  completa (sección 5): el criterio de paso, qué modelo llega a `test` y que el
-  test no se abre si `val` no pasa.
+- Cada configuración candidata se entrena en `train` y se evalúa en `val`. Se
+  puede repetir y reajustar.
+- Anotar en el `INFORME.md` de cada paso **cuántas veces** se miró `val` y qué
+  se cambió después. Ese recuento entra en el pre-registro.
+
+### Paso 6 — `06_test/`: pre-registro y evaluación final en `test` (≈ 8 h)
+
+Solo cuando los resultados en `val` sean buenos (sección 5, punto 3).
+
+- Escribir `PREREGISTRO.md` (con el formato de `PREREGISTRO_TEST.md`):
+  - las hipótesis de la sección 8 ya concretadas;
+  - el modelo y las features fijados, y cómo se entrena el modelo final (con
+    `train` + `val`);
+  - las métricas, los contrastes, el α, la corrección por multiplicidad y las
+    reglas de decisión;
+  - el recuento de exploración (3.5, los pasos 1–5 y las miradas a `val`);
+  - el tratamiento de la persona de `test` expuesta.
+
+  Si se ejecuta el deep learning, su configuración también se fija aquí
+  (sección 7.5).
 - Commit del pre-registro **antes** de ejecutar (lo hace el usuario).
-- Entrenar con todo `train` y evaluar una sola vez en `val`. Si se ejecuta el
-  deep learning, su configuración también se fija en el pre-registro (sección
-  7.5).
-- Escribir el resultado de `val` y la decisión de paso (que aplica la regla, no
-  la decide) en el `INFORME.md` del paso. Commit antes de abrir el test.
-
-### Paso 6b — `06_confirmatorio/`: evaluación en `test` (≈ 3 h, solo si `val` pasa)
-
-- Una sola ejecución, con el modelo que dice el pre-registro (reentrenado con
-  `train` + `val` o el mismo de `val`) y las mismas hipótesis y contrastes.
-- Reportar `val` y `test` por separado, con la sensibilidad sin las personas
-  expuestas (3.5).
+- **Una sola ejecución** sobre `test`. Se reporta salga lo que salga, con la
+  sensibilidad sin la persona expuesta (3.5). Las cifras de `val` se reportan
+  aparte, como validación del desarrollo.
 - Anotar las desviaciones, si las hay, en el pre-registro.
 
 ### Paso 7 — Redacción (≈ 8 h) y plataforma (opcional, ≈ 6 h)
@@ -531,7 +536,7 @@ no se hace.
   desviación de **toda la grabación**. Es el equivalente del centrado de 3.3:
   quita el nivel de la persona y la sesión y conserva el cambio interno. Es
   simétrica respecto a la etiqueta, así que no hay fuga. Los canales excluidos
-  se ponen a 0 (4.4).
+  llevan un **canal de máscara** (4.4).
 - **Etiqueta:** 0 en el primer tercio y 1 en el último. El tercio medio no se
   entrena.
 - **Evaluación comparable con el modelo clásico:** media de las probabilidades
@@ -596,8 +601,8 @@ vez y se guarda el tensor reducido.
 | 2 semillas más de la mejor | ≈ 6–16 h |
 | Variante B por pares (mejor arquitectura) | ≈ 6–8 h |
 | Control OA (≈ 1/4 de los datos) | ≈ 1–2 h |
-| Entrenamiento final con todo `train` y evaluación en `val` | ≈ 1–2 h |
-| Reentrenamiento con `train` + `val` y evaluación en `test` (si `val` pasa) | ≈ 1–2 h |
+| Entrenamientos en `train` y comprobaciones en `val` | ≈ 1–2 h cada una |
+| Reentrenamiento final con `train` + `val` y evaluación única en `test` | ≈ 1–2 h |
 | **Total** | **≈ 30–45 h de CPU** (a 256 Hz, ×2.5) |
 
 **Veredicto:** **es viable en tu ordenador** si se cumplen tres condiciones:
@@ -620,11 +625,11 @@ Antes del paso 6 hay que fijar:
 - la comparación con la logística (diferencia del acierto pareado, bootstrap
   por persona).
 
-La CNN sigue la misma secuencia que la logística: una vez en `val` y, si pasa
-el criterio, una vez en `test`. Si para `test` se reentrena con `train` +
-`val`, hay que fijar de antemano el número de épocas, porque ya no queda un
-conjunto de parada temprana. Lo razonable es usar la mediana de las épocas
-elegidas en la CV.
+La CNN sigue la misma secuencia que la logística: se desarrolla con `train` y
+`val` y se evalúa una sola vez en `test`. Como el modelo final se reentrena
+con `train` + `val`, ya no queda un conjunto para la parada temprana, así que
+el número de épocas hay que fijarlo de antemano. Lo razonable es usar la
+mediana de las épocas elegidas en la CV.
 
 ### 7.6. Opciones con GPU
 
@@ -682,9 +687,9 @@ Se concretan en el paso 6 con lo que digan los pasos 3 y 4.
 | H5 (si hay DL) | La CNN fijada iguala o supera a la logística | Diferencia del acierto pareado; IC al 95 %. Se reporta salga lo que salga |
 
 Reglas de decisión: escribirlas en el pre-registro, como en `PREREGISTRO_TEST.md`.
-Por ejemplo, «H1 CONFIRMA si el límite inferior del IC unilateral > 0». Las
-mismas reglas se aplican en `val` y en `test`. El criterio de paso a `test` es
-el de la sección 5.
+Por ejemplo, «H1 CONFIRMA si el límite inferior del IC unilateral > 0». Se
+aplican en `test`. En `val` se calculan las mismas métricas, pero solo como
+guía del desarrollo.
 
 ---
 
@@ -698,9 +703,9 @@ el de la sección 5.
 | Parpadeo y EMG residuales (la ICA solo quita componentes oculares) | Que la CNN aprenda la tasa de parpadeo | Oclusión e importancias; comparar con la logística. La tasa de parpadeo es también un marcador de fatiga, pero no es «EEG»: si aparece, se reporta así |
 | Grabaciones de 128 Hz | Diferencias de procesado en M2 | Sensibilidad sin ellas |
 | Canales excluidos usados en el sondeo | Cifras infladas o desinfladas | Paso 1 (4.4) |
-| Personas de `val` y `test` vistas en el sondeo | Fuga mínima | Declarar y hacer sensibilidad (3.5) |
-| Potencia baja en `val` (25) o `test` (28) para tarea − OA | Un «no concluye» con efecto real | Paso 4; elegir la hipótesis principal y el criterio de paso según la potencia |
-| Decidir a la vista de `val` si se abre el test | Garden of forking paths | Criterio de paso escrito en el pre-registro (sección 5) |
+| Persona de `test` vista en el sondeo | Fuga mínima | Declarar y hacer sensibilidad (3.5) |
+| Potencia baja en `test` (28) para tarea − OA | Un «no concluye» con efecto real | Paso 4; elegir la hipótesis principal según la potencia |
+| Reajustar muchas veces mirando `val` | Cifras de `val` optimistas | Se reportan como desarrollo, con el recuento de miradas. La cifra que cuenta es la de `test` |
 | Reutilizar un test ya abierto para otra pregunta | Crítica del tribunal | Explicar en la memoria que es una pregunta y una etiqueta nuevas, fijadas sin mirar el test, y matizar `docs/MODELADO.md` |
 | Sobreinterpretación («mide la fatiga») | Choca con la evidencia y con la regla de la plataforma | 1.3 |
 
@@ -708,9 +713,9 @@ el de la sección 5.
 
 ## 10. Lo que no hay que hacer
 
-- **Mirar `test` antes de tiempo**: ni descriptivos ni comprobaciones antes
-  del paso 6b. **Abrirlo si `val` no pasa el criterio**, o tocar el modelo
-  entre `val` y `test`.
+- **Mirar `test` antes del paso 6**: ni descriptivos ni comprobaciones.
+  Tampoco **ejecutarlo más de una vez** ni cambiar nada después de abrirlo.
+- **Presentar las cifras de `val` como confirmación.** Son de desarrollo.
 - **Usar la `split` de `features_all.parquet`.**
 - **Clasificar ventanas sin centrar o normalizar por grabación** y presentarlo
   como resultado. Sin centrar, el modelo aprende quién es la persona y no el
@@ -719,8 +724,7 @@ el de la sección 5.
 - **Mezclar STROOP o MSIT** (≈ 1 min) en el análisis de tercios.
 - **Volver a conectar la pendiente con el VAS, FG o el trimestre.** Ya está
   hecho y es nulo (3.4); repetirlo es pescar.
-- **Lanzar el deep learning antes de cerrar el paso 3**, o buscar
-  hiperparámetros con `val`.
+- **Lanzar el deep learning antes de cerrar el paso 3.**
 - **Subir datos a Colab, Kaggle o la nube** sin autorización escrita.
 
 ---
@@ -729,9 +733,9 @@ el de la sección 5.
 
 **Para el tutor**
 
-1. ¿Le parece bien la secuencia `val` → `test` con criterio de paso
-   (sección 5) y la justificación de reutilizar el test para una pregunta
-   nueva?
+1. ¿Le parece bien el esquema de la sección 5 (`train` + `val` para
+   desarrollar y `test` una vez) y la justificación de reutilizar el test para
+   una pregunta nueva?
 2. ¿Entra el deep learning en el alcance (presupuesto total del TFG de 300 h)?
 3. ¿Hay recursos de cálculo con GPU en la universidad o en el grupo
    (opción 1 o 2 de 7.6)?
@@ -761,10 +765,9 @@ el de la sección 5.
 | Paso 3 — Clasificador clásico | 8 |
 | Paso 4 — Potencia y controles | 6 |
 | Paso 5 — Entre sesiones (opcional) | 4 |
-| Paso 6 — Pre-registro y confirmación en `val` | 6 |
-| Paso 6b — Evaluación en `test` (si `val` pasa) | 3 |
+| Paso 6 — Pre-registro y evaluación única en `test` | 8 |
 | Paso 7 — Redacción | 8 |
-| **Subtotal sin DL** | **≈ 44–48** |
+| **Subtotal sin DL** | **≈ 43–47** |
 | Deep learning (opcional) | +15–20 humanas, más 30–45 h de CPU nocturna |
 | Plataforma (opcional) | +6 |
 

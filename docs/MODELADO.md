@@ -49,10 +49,12 @@
   > **Una pregunta nueva, con una etiqueta nueva, sí puede evaluarse en el
   > test** (decisión del 2026-10-27), siempre que se cumpla todo esto:
   > - que el test no se haya mirado para esa pregunta;
+  > - que `train` y `val` se usen para desarrollar y reajustar, y que las
+  >   cifras de `val` se reporten como desarrollo, no como confirmación;
   > - que el modelo, las features y las reglas de decisión se fijen en un
-  >   pre-registro antes de abrir `val`;
-  > - que el test se abra una sola vez, y solo si `val` cumple un criterio de
-  >   paso escrito de antemano.
+  >   pre-registro antes de abrir el test;
+  > - que el test se ejecute una sola vez en toda la línea, y que su resultado
+  >   se reporte salga lo que salga.
   >
   > Primer caso: la línea de fatiga aguda por tiempo en tarea
   > (`analisis/fatiga_aguda/PLAN.md`, sección 5).

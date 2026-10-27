@@ -272,3 +272,126 @@ principal.
   clasificador en 4 condiciones × 4 variantes; curvas en 4 condiciones × 3
   magnitudes × 4 regiones. Es reproducción y descripción de lo ya sondeado,
   sin elegir nada.
+
+---
+
+## Anexo A — Comparación a igual tiempo transcurrido
+
+> Pedido por el autor el 2026-10-27, después de ver los resultados del paso 1
+> y antes del paso 2. **Solo `train`.** Script:
+> `anexo_igual_tiempo.py` (salidas: `ejecucion_anexo.log`,
+> `resultados_anexo.json`, `tablas/anexo_*.csv`). El script del paso 1 no se
+> modifica: el anexo importa sus funciones.
+
+### Plan (escrito antes de ejecutar)
+
+**Pregunta.** ¿Siguen superando PASAT y PVTB a OA cuando el tiempo
+transcurrido en la grabación es el mismo? En el paso 1, los tercios de OA
+están separados ≈ 36 s y los de las tareas ≈ 58 s, y la potencia absoluta
+deriva por minuto igual en OA que en las tareas. Si la ventaja de las tareas
+desaparece al igualar el tiempo, era «más tiempo», no «tarea».
+
+**Recorte.** Cada grabación de PASAT, PVTB y PVSAT se recorta a la duración
+útil de la grabación de OA **de la misma sesión** (`sesion_uid`): se conservan
+las ventanas con `tmin_s` ≤ `tmin_s` máximo de ese OA. Así la tarea y su OA
+cubren exactamente el mismo intervalo desde el inicio del archivo (mediana
+108 s). Las grabaciones de tarea cuya sesión no tiene OA en `train` se quedan
+fuera y se cuentan. OA no se toca: sus cifras son las del paso 1.
+
+Después del recorte todo es idéntico al paso 1: mínimo de 10 ventanas, tercios
+sobre la duración recortada, 56 `pot_rel` en `log10`, centrado por grabación,
+canales excluidos a 0, `StandardScaler` + `LogisticRegression(C=0.1)`,
+`GroupKFold(5)` por persona. Variante principal (centrado + canales válidos);
+la de 14 canales se reporta al lado.
+
+**Qué se calcula.**
+
+1. Recuentos: grabaciones recortadas, excluidas por no tener OA en su sesión,
+   duración recortada y ventanas por tercio.
+2. Acierto pareado y AUC de PASAT, PVTB y PVSAT recortadas, con IC95 por
+   bootstrap de personas, frente al de OA (0.647 en el paso 1, recalculado).
+3. Diferencia **tarea recortada − OA**, IC95 por bootstrap de personas.
+4. Como referencia, la pérdida al recortar (completa − recortada), que mide
+   cuánto aporta el tiempo de más.
+5. **Pendientes por minuto a igual tiempo** (de interés para la H3): alfa
+   posterior absoluta, theta frontal absoluta y beta posterior relativa
+   (regiones del sondeo, canales válidos) en las tareas recortadas y en OA.
+   Contraste **pareado por persona**: diferencia de la pendiente media de la
+   persona en la tarea menos la de OA, t de una muestra frente a 0 sobre las
+   personas que tienen las dos.
+
+Bootstrap: 2000 réplicas, semilla 42. La versión completa se recalcula en el
+mismo script y debe dar las cifras puntuales del paso 1 (comprobación).
+
+**Lectura fijada antes de mirar.** Para PASAT y PVTB por separado:
+
+- **Sigue superando a OA** si la diferencia tarea recortada − OA es > 0 y el
+  límite inferior de su IC95 es > 0.
+- **Ventaja no concluyente** si la diferencia es > 0 pero el IC95 incluye el 0.
+- **No supera a OA** si la diferencia es ≤ 0.
+
+No es una puerta: el paso 2 ya tiene el visto bueno del criterio de
+continuidad. El resultado sirve para proponer los cambios al `PLAN.md`
+(contraste principal, familia de tareas y H3), que se discuten antes de
+editarlo.
+
+**Recuento de miradas del anexo.** `val`: 0; `test`: 0. `train`: 3 tareas ×
+2 variantes de canales del clasificador y 3 magnitudes × 3 tareas en las
+pendientes.
+
+### Resultados del anexo
+
+Ejecutado el 2026-10-27 (`ejecucion_anexo.log`, `resultados_anexo.json`,
+`tablas/anexo_*.csv`). **Comprobación superada:** la versión completa da
+exactamente las cifras puntuales del paso 1.
+
+**Veredicto.** **PASAT y PVTB siguen superando a OA a igual tiempo**, según la
+lectura fijada. La ventaja se reduce alrededor de un tercio y el límite
+inferior del IC de PVTB queda muy cerca de 0. PVSAT sigue sin superar a OA.
+
+**Recorte.** Quedan fuera 14 grabaciones de tarea cuya sesión no tiene OA en
+`train` (PASAT 5, PVTB 4, PVSAT 5), y una de PVTB con menos de 10 ventanas. Duración recortada: mediana de 108 s [106–118],
+igual que OA. Ventanas por grabación: mediana de 55, igual que OA.
+
+| Tarea | Pareado completa | **Pareado a igual tiempo** | IC95 | **Igual tiempo − OA** | IC95 | Lectura |
+|---|---|---|---|---|---|---|
+| PASAT | 0.773 | **0.739** | [0.691, 0.785] | **+0.091** | [+0.021, +0.160] | sigue superando |
+| PVTB | 0.758 | **0.715** | [0.673, 0.755] | **+0.067** | [+0.006, +0.127] | sigue superando |
+| PVSAT | 0.645 | 0.632 | [0.584, 0.677] | −0.016 | [−0.085, +0.052] | no supera |
+| OA | 0.647 | (sin recortar) | [0.601, 0.691] | — | — | — |
+
+Variante principal (centrado + canales válidos). Lo que se pierde al recortar
+(completa − recortada) es +0.036 en PASAT y +0.041 en PVTB, con IC que tocan
+el 0. **De la ventaja sobre OA de la versión completa (+0.126 y +0.111),
+alrededor de un tercio era tiempo de más y dos tercios se mantienen a igual
+tiempo.** Con 14 canales la conclusión es la misma (PASAT +0.153, PVTB +0.078,
+los dos con IC > 0).
+
+**Pendientes por minuto a igual tiempo, pareadas por persona frente a OA**
+(canales válidos, regiones del sondeo, 119–120 personas):
+
+| Magnitud | PASAT − OA | PVTB − OA | PVSAT − OA |
+|---|---|---|---|
+| alfa posterior absoluta | +0.010 (t = +1.4, p = 0.18) | +0.010 (+1.5, p = 0.14) | −0.004 (−0.5) |
+| theta frontal absoluta | +0.016 (+1.7, p = 0.09) | +0.001 (+0.1) | −0.005 (−0.4) |
+| **beta posterior relativa** | **−0.014 (−2.1, p = 0.037)** | **−0.022 (−3.4, p = 0.0009)** | +0.013 (+1.9, p = 0.06) |
+
+Pendientes en sí mismas a igual tiempo: alfa posterior absoluta +0.037 en
+PASAT y PVTB y +0.027 en OA (las tres con t > 4.8); beta posterior relativa
+−0.018 en PASAT, −0.026 en PVTB y −0.003 en OA (t = −0.7).
+
+Lectura:
+
+- **La subida de la alfa absoluta no distingue la tarea del reposo**, ni
+  siquiera a igual tiempo. Lo mismo ocurre con la theta frontal absoluta. Es
+  una deriva común a toda grabación con ojos abiertos (o al registro), no una
+  firma de la tarea.
+- **Lo que distingue PASAT y PVTB de OA es la bajada de la beta relativa.** Es
+  el único componente de la firma que se separa del reposo a igual tiempo, más
+  claro en PVTB que en PASAT. En PVSAT va en sentido contrario.
+- Las pendientes de las tareas son más fuertes en sus primeros 108 s que en la
+  grabación completa (alfa +0.037 frente a +0.023). El cambio se frena con el
+  tiempo, cosa que ya sugerían las curvas por minuto.
+- **Lo que este anexo no resuelve:** a igual tiempo dentro de la grabación,
+  OA sigue estando más cerca de la colocación del casco (≈ 2 min de sesión)
+  que PASAT (≈ 7) y PVTB (≈ 10). Eso corresponde al paso 4.

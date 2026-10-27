@@ -1,0 +1,67 @@
+
+==============================================================================
+0. CARGA (solo train)
+==============================================================================
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 2672 de 3117 epoca(s) (85.7 %) tienen algun canal excluido.
+
+==============================================================================
+1. RECORTE A LA DURACIÓN DEL OA DE LA MISMA SESIÓN
+==============================================================================
+Grabaciones de tarea sin OA en su sesión (fuera del recorte): {'PASAT': 5, 'PVSAT': 5, 'PVTB': 4}
+       grabaciones  dur_mediana_s  dur_p10  dur_p90  ventanas_mediana  menos_10
+cond                                                                           
+OA             445          108.0    106.0    119.2              55.0         0
+PASAT          440          108.0    106.0    118.0              55.0         0
+PVSAT          437          108.0    106.0    118.8              55.0         0
+PVTB           439          108.0    106.0    120.0              55.0         1
+
+==============================================================================
+2-4. CLASIFICADOR DE TERCIOS A IGUAL TIEMPO
+==============================================================================
+
+Variante centrado+validos:
+  version condicion  grabaciones  personas   auc  pareado           ic95  empates
+ completa     PASAT          445       120 0.843    0.773 [0.735, 0.810]        0
+ completa      PVTB          442       120 0.829    0.758 [0.717, 0.797]        0
+ completa     PVSAT          442       120 0.703    0.645 [0.597, 0.692]        0
+ completa        OA          445       120 0.677    0.647 [0.601, 0.691]        0
+recortada     PASAT          440       120 0.795    0.739 [0.691, 0.785]        0
+recortada      PVTB          438       120 0.787    0.715 [0.673, 0.755]        0
+recortada     PVSAT          437       120 0.686    0.632 [0.584, 0.677]        0
+
+Variante centrado+14:
+  version condicion  grabaciones  personas   auc  pareado           ic95  empates
+ completa     PASAT          445       120 0.854    0.793 [0.756, 0.828]        0
+ completa      PVTB          442       120 0.833    0.753 [0.710, 0.797]        0
+ completa     PVSAT          442       120 0.716    0.663 [0.618, 0.707]        0
+ completa        OA          445       120 0.670    0.622 [0.571, 0.673]        0
+recortada     PASAT          440       120 0.831    0.775 [0.729, 0.820]        0
+recortada      PVTB          438       120 0.792    0.701 [0.660, 0.741]        0
+recortada     PVSAT          437       120 0.712    0.659 [0.613, 0.704]        0
+
+Diferencias (centrado+validos), IC95 bootstrap de personas:
+  PASAT  recortada − OA: +0.091 [+0.021, +0.160]  → sigue superando a OA;  completa − recortada: +0.036 [-0.011, +0.089]
+  PVTB   recortada − OA: +0.067 [+0.006, +0.127]  → sigue superando a OA;  completa − recortada: +0.041 [-0.009, +0.095]
+  PVSAT  recortada − OA: -0.016 [-0.085, +0.052]  → no supera a OA;  completa − recortada: +0.014 [-0.045, +0.076]
+
+Diferencias (centrado+14), IC95 bootstrap de personas:
+  PASAT  recortada − OA: +0.153 [+0.079, +0.222]  → sigue superando a OA;  completa − recortada: +0.018 [-0.031, +0.069]
+  PVTB   recortada − OA: +0.078 [+0.016, +0.141]  → sigue superando a OA;  completa − recortada: +0.053 [+0.000, +0.108]
+  PVSAT  recortada − OA: +0.037 [-0.033, +0.106]  → ventaja no concluyente;  completa − recortada: +0.005 [-0.052, +0.061]
+
+==============================================================================
+5. PENDIENTES POR MINUTO A IGUAL TIEMPO, PAREADAS POR PERSONA FRENTE A OA
+==============================================================================
+       magnitud condicion  pendiente       t      p  personas  dif_con_oa   t_dif  p_dif  personas_dif
+  alfa_post_abs     PASAT     0.0373  7.2124 0.0000       120      0.0103  1.3632 0.1754         120.0
+  alfa_post_abs      PVTB     0.0373  7.4012 0.0000       120      0.0103  1.4697 0.1443         120.0
+  alfa_post_abs     PVSAT     0.0234  4.4290 0.0000       120     -0.0036 -0.4837 0.6295         120.0
+  alfa_post_abs        OA     0.0270  4.8659 0.0000       120         NaN     NaN    NaN           NaN
+theta_front_abs     PASAT     0.0371  5.6296 0.0000       119      0.0161  1.7098 0.0899         119.0
+theta_front_abs      PVTB     0.0215  2.9977 0.0033       119      0.0005  0.0550 0.9562         119.0
+theta_front_abs     PVSAT     0.0164  2.4468 0.0159       119     -0.0046 -0.4346 0.6646         119.0
+theta_front_abs        OA     0.0206  2.8272 0.0055       120         NaN     NaN    NaN           NaN
+  beta_post_rel     PASAT    -0.0175 -3.1929 0.0018       120     -0.0144 -2.1137 0.0366         120.0
+  beta_post_rel      PVTB    -0.0255 -5.7775 0.0000       120     -0.0223 -3.4223 0.0009         120.0
+  beta_post_rel     PVSAT     0.0098  2.1986 0.0298       120      0.0130  1.8765 0.0630         120.0
+  beta_post_rel        OA    -0.0032 -0.6658 0.5068       120         NaN     NaN    NaN           NaN

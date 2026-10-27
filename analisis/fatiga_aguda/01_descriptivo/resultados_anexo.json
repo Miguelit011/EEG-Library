@@ -1,0 +1,508 @@
+{
+ "fecha": "2026-10-27",
+ "particion": "solo train (split de matriz_rf), etiquetadas",
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+ },
+ "recorte": {
+  "sin_oa_en_sesion": {
+   "PASAT": 5,
+   "PVSAT": 5,
+   "PVTB": 4
+  },
+  "resumen": [
+   {
+    "cond": "OA",
+    "grabaciones": 445,
+    "dur_mediana_s": 108.0,
+    "dur_p10": 106.0,
+    "dur_p90": 119.20000000000005,
+    "ventanas_mediana": 55.0,
+    "menos_10": 0
+   },
+   {
+    "cond": "PASAT",
+    "grabaciones": 440,
+    "dur_mediana_s": 108.0,
+    "dur_p10": 106.0,
+    "dur_p90": 118.0,
+    "ventanas_mediana": 55.0,
+    "menos_10": 0
+   },
+   {
+    "cond": "PVSAT",
+    "grabaciones": 437,
+    "dur_mediana_s": 108.0,
+    "dur_p10": 106.0,
+    "dur_p90": 118.80000000000007,
+    "ventanas_mediana": 55.0,
+    "menos_10": 0
+   },
+   {
+    "cond": "PVTB",
+    "grabaciones": 439,
+    "dur_mediana_s": 108.0,
+    "dur_p10": 106.0,
+    "dur_p90": 120.0,
+    "ventanas_mediana": 55.0,
+    "menos_10": 1
+   }
+  ]
+ },
+ "clasificador": [
+  {
+   "variante": "centrado+validos",
+   "version": "completa",
+   "condicion": "PASAT",
+   "auc": 0.843479358666835,
+   "ba": 0.7730337078651686,
+   "pareado": 0.7730337078651686,
+   "empates": 0,
+   "grabaciones": 445,
+   "personas": 120,
+   "pareado_ic95": [
+    0.7352135368485969,
+    0.8103855914073681
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "completa",
+   "condicion": "PVTB",
+   "auc": 0.8290831473557052,
+   "ba": 0.7579185520361991,
+   "pareado": 0.7579185520361991,
+   "empates": 0,
+   "grabaciones": 442,
+   "personas": 120,
+   "pareado_ic95": [
+    0.7168939510543327,
+    0.7974471909555214
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "completa",
+   "condicion": "PVSAT",
+   "auc": 0.7032871972318339,
+   "ba": 0.6447963800904978,
+   "pareado": 0.6447963800904978,
+   "empates": 0,
+   "grabaciones": 442,
+   "personas": 120,
+   "pareado_ic95": [
+    0.5967242851045668,
+    0.6924922713960299
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "completa",
+   "condicion": "OA",
+   "auc": 0.6771367251609645,
+   "ba": 0.647191011235955,
+   "pareado": 0.647191011235955,
+   "empates": 0,
+   "grabaciones": 445,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6013817100510649,
+    0.6909492273730684
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "recortada",
+   "condicion": "PASAT",
+   "auc": 0.795077479338843,
+   "ba": 0.7386363636363636,
+   "pareado": 0.7386363636363636,
+   "empates": 0,
+   "grabaciones": 440,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6913996672365368,
+    0.7852197870328751
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "recortada",
+   "condicion": "PVTB",
+   "auc": 0.7871343383165488,
+   "ba": 0.7146118721461188,
+   "pareado": 0.7146118721461188,
+   "empates": 0,
+   "grabaciones": 438,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6725545379707759,
+    0.7551963048498845
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "version": "recortada",
+   "condicion": "PVSAT",
+   "auc": 0.6859961564442396,
+   "ba": 0.631578947368421,
+   "pareado": 0.631578947368421,
+   "empates": 0,
+   "grabaciones": 437,
+   "personas": 120,
+   "pareado_ic95": [
+    0.5837009803921569,
+    0.6773455377574371
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "completa",
+   "condicion": "PASAT",
+   "auc": 0.8539881328115136,
+   "ba": 0.7932584269662921,
+   "pareado": 0.7932584269662921,
+   "empates": 0,
+   "grabaciones": 445,
+   "personas": 120,
+   "pareado_ic95": [
+    0.7563175962354394,
+    0.8281394675925925
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "completa",
+   "condicion": "PVTB",
+   "auc": 0.8332497287115334,
+   "ba": 0.753393665158371,
+   "pareado": 0.753393665158371,
+   "empates": 0,
+   "grabaciones": 442,
+   "personas": 120,
+   "pareado_ic95": [
+    0.709881216344631,
+    0.7972358103355972
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "completa",
+   "condicion": "PVSAT",
+   "auc": 0.716032636514404,
+   "ba": 0.6628959276018099,
+   "pareado": 0.6628959276018099,
+   "empates": 0,
+   "grabaciones": 442,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6183015135962193,
+    0.7068211053487898
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "completa",
+   "condicion": "OA",
+   "auc": 0.6700214619366242,
+   "ba": 0.6224719101123596,
+   "pareado": 0.6224719101123596,
+   "empates": 0,
+   "grabaciones": 445,
+   "personas": 120,
+   "pareado_ic95": [
+    0.571420756486402,
+    0.6727283128770543
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "recortada",
+   "condicion": "PASAT",
+   "auc": 0.8306973140495868,
+   "ba": 0.775,
+   "pareado": 0.775,
+   "empates": 0,
+   "grabaciones": 440,
+   "personas": 120,
+   "pareado_ic95": [
+    0.7293006977500518,
+    0.819864896073903
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "recortada",
+   "condicion": "PVTB",
+   "auc": 0.7916275724025771,
+   "ba": 0.7009132420091324,
+   "pareado": 0.7009132420091324,
+   "empates": 0,
+   "grabaciones": 438,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6598161706817824,
+    0.7408318315858453
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "version": "recortada",
+   "condicion": "PVSAT",
+   "auc": 0.711811864752918,
+   "ba": 0.6590389016018307,
+   "pareado": 0.6590389016018307,
+   "empates": 0,
+   "grabaciones": 437,
+   "personas": 120,
+   "pareado_ic95": [
+    0.6131037506745818,
+    0.7037883476822704
+   ]
+  }
+ ],
+ "diferencias": [
+  {
+   "variante": "centrado+validos",
+   "condicion": "PASAT",
+   "recortada_menos_oa": 0.09144535240040863,
+   "ic95": [
+    0.02088805961967592,
+    0.15994582999675078
+   ],
+   "lectura": "sigue superando a OA",
+   "completa_menos_recortada": 0.036363636363636376,
+   "ic95_perdida": [
+    -0.011442962729161699,
+    0.08924996850922681
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "condicion": "PVTB",
+   "recortada_menos_oa": 0.06742086091016375,
+   "ic95": [
+    0.005928703038797295,
+    0.12664127754427318
+   ],
+   "lectura": "sigue superando a OA",
+   "completa_menos_recortada": 0.041095890410958846,
+   "ic95_perdida": [
+    -0.009052362363709755,
+    0.09482958173690934
+   ]
+  },
+  {
+   "variante": "centrado+validos",
+   "condicion": "PVSAT",
+   "recortada_menos_oa": -0.015612063867533998,
+   "ic95": [
+    -0.08470481644148295,
+    0.05151144499849988
+   ],
+   "lectura": "no supera a OA",
+   "completa_menos_recortada": 0.013729977116704872,
+   "ic95_perdida": [
+    -0.04514928041020193,
+    0.07638927902621728
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "condicion": "PASAT",
+   "recortada_menos_oa": 0.15252808988764044,
+   "ic95": [
+    0.07941791286399308,
+    0.22226125154283136
+   ],
+   "lectura": "sigue superando a OA",
+   "completa_menos_recortada": 0.018181818181818188,
+   "ic95_perdida": [
+    -0.03139723636953928,
+    0.06904835996852123
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "condicion": "PVTB",
+   "recortada_menos_oa": 0.07844133189677283,
+   "ic95": [
+    0.01646953751616026,
+    0.1409343098556424
+   ],
+   "lectura": "sigue superando a OA",
+   "completa_menos_recortada": 0.05251141552511418,
+   "ic95_perdida": [
+    0.0,
+    0.10804753028890955
+   ]
+  },
+  {
+   "variante": "centrado+14",
+   "condicion": "PVSAT",
+   "recortada_menos_oa": 0.03656699148947107,
+   "ic95": [
+    -0.03272815955252991,
+    0.10597815645951279
+   ],
+   "lectura": "ventaja no concluyente",
+   "completa_menos_recortada": 0.004576659038901587,
+   "ic95_perdida": [
+    -0.05182570160088148,
+    0.06147302100705845
+   ]
+  }
+ ],
+ "pendientes": [
+  {
+   "magnitud": "alfa_post_abs",
+   "condicion": "PASAT",
+   "pendiente": 0.03733,
+   "t": 7.21236,
+   "p": 0.0,
+   "personas": 120,
+   "dif_con_oa": 0.01032,
+   "t_dif": 1.36324,
+   "p_dif": 0.17538,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "alfa_post_abs",
+   "condicion": "PVTB",
+   "pendiente": 0.03726,
+   "t": 7.40115,
+   "p": 0.0,
+   "personas": 120,
+   "dif_con_oa": 0.01025,
+   "t_dif": 1.46967,
+   "p_dif": 0.14429,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "alfa_post_abs",
+   "condicion": "PVSAT",
+   "pendiente": 0.02343,
+   "t": 4.42901,
+   "p": 2e-05,
+   "personas": 120,
+   "dif_con_oa": -0.00358,
+   "t_dif": -0.48367,
+   "p_dif": 0.62951,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "alfa_post_abs",
+   "condicion": "OA",
+   "pendiente": 0.02701,
+   "t": 4.8659,
+   "p": 0.0,
+   "personas": 120,
+   "dif_con_oa": NaN,
+   "t_dif": NaN,
+   "p_dif": NaN,
+   "personas_dif": NaN
+  },
+  {
+   "magnitud": "theta_front_abs",
+   "condicion": "PASAT",
+   "pendiente": 0.03706,
+   "t": 5.62962,
+   "p": 0.0,
+   "personas": 119,
+   "dif_con_oa": 0.01613,
+   "t_dif": 1.70983,
+   "p_dif": 0.08993,
+   "personas_dif": 119.0
+  },
+  {
+   "magnitud": "theta_front_abs",
+   "condicion": "PVTB",
+   "pendiente": 0.02146,
+   "t": 2.9977,
+   "p": 0.00332,
+   "personas": 119,
+   "dif_con_oa": 0.00054,
+   "t_dif": 0.05502,
+   "p_dif": 0.95622,
+   "personas_dif": 119.0
+  },
+  {
+   "magnitud": "theta_front_abs",
+   "condicion": "PVSAT",
+   "pendiente": 0.01635,
+   "t": 2.44683,
+   "p": 0.01589,
+   "personas": 119,
+   "dif_con_oa": -0.00458,
+   "t_dif": -0.43461,
+   "p_dif": 0.66464,
+   "personas_dif": 119.0
+  },
+  {
+   "magnitud": "theta_front_abs",
+   "condicion": "OA",
+   "pendiente": 0.02063,
+   "t": 2.82724,
+   "p": 0.00551,
+   "personas": 120,
+   "dif_con_oa": NaN,
+   "t_dif": NaN,
+   "p_dif": NaN,
+   "personas_dif": NaN
+  },
+  {
+   "magnitud": "beta_post_rel",
+   "condicion": "PASAT",
+   "pendiente": -0.01754,
+   "t": -3.19287,
+   "p": 0.0018,
+   "personas": 120,
+   "dif_con_oa": -0.01437,
+   "t_dif": -2.11374,
+   "p_dif": 0.03663,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "beta_post_rel",
+   "condicion": "PVTB",
+   "pendiente": -0.02545,
+   "t": -5.77748,
+   "p": 0.0,
+   "personas": 120,
+   "dif_con_oa": -0.02228,
+   "t_dif": -3.42228,
+   "p_dif": 0.00085,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "beta_post_rel",
+   "condicion": "PVSAT",
+   "pendiente": 0.00984,
+   "t": 2.19858,
+   "p": 0.02984,
+   "personas": 120,
+   "dif_con_oa": 0.01301,
+   "t_dif": 1.87655,
+   "p_dif": 0.06303,
+   "personas_dif": 120.0
+  },
+  {
+   "magnitud": "beta_post_rel",
+   "condicion": "OA",
+   "pendiente": -0.00317,
+   "t": -0.66578,
+   "p": 0.50684,
+   "personas": 120,
+   "dif_con_oa": NaN,
+   "t_dif": NaN,
+   "p_dif": NaN,
+   "personas_dif": NaN
+  }
+ ],
+ "miradas": {
+  "val": 0,
+  "test": 0
+ }
+}

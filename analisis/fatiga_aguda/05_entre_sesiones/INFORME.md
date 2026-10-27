@@ -183,9 +183,82 @@ En PASAT y PVTB no se ve ningún patrón:
 5. **Las covariables no confunden:** ni el casco, ni la hora, ni el sexo, ni la
    medición mueven la ρ de las tareas de forma apreciable.
 
+## Desviación 1: control del movimiento en A2 (plan escrito antes de ejecutar)
+
+**No estaba en el plan.** La pidió el usuario el 2026-10-27, después de ver A2,
+para comprobar la alternativa del punto 4 de la lectura: que las sesiones con
+más lapsos sean sesiones con más movimiento y que eso infle la `rho_ventanas`.
+
+- **Datos:** las grabaciones PVTB de `train` + `val` con acelerómetro y
+  cuaterniones. Las 40 grabaciones de M2 sin movimiento (paso 2) quedan
+  fuera (en PVTB resultaron ser 11; ver el resultado). El movimiento se calcula como en el paso 2 (`artefactos.medidas_grabacion`):
+  `mov_acc` (log₁₀ de la desviación del módulo de la aceleración) y `mov_ang`
+  (log₁₀ de la velocidad angular media), por ventana.
+- **Covariables por grabación (4, fijadas aquí):** nivel (media de `mov_acc` y
+  de `mov_ang` en la grabación) y tendencia (ρ de Spearman de cada una con el
+  tiempo dentro de la grabación, análoga a `rho_ventanas`). El CQ no entra,
+  porque está saturado (99.4 % de las ventanas = 4, paso 2).
+- **Modelo:** el mismo de A2 (z de rangos, efectos fijos de persona y de
+  medición, errores agrupados por persona). Se añaden las 4 covariables en z
+  de rangos. Para comparar sobre las mismas sesiones, se estima también A2 sin
+  covariables en esa misma muestra.
+- **Descriptivo:** la asociación dentro de persona de cada covariable con los
+  lapsos y con la `rho_ventanas` del PVTB (los dos caminos de la explicación
+  alternativa).
+- **Regla de lectura, fijada antes:** la asociación **aguanta** si, con las 4
+  covariables, el coeficiente de `rho_ventanas` sigue con p < 0.05 (un solo
+  contraste de seguimiento, sin Holm) y conserva al menos la mitad del valor
+  que tiene sin covariables en la misma muestra. Si no, la asociación de A2
+  **no se distingue del movimiento** y se reporta así.
+- Script: `movimiento.py`; salida en `ejecucion_movimiento.log`,
+  `resultados_movimiento.json` y `tablas/movimiento.csv` (solo agregados).
+
+### Resultado de la desviación 1
+
+En PVTB, solo **11** grabaciones no tienen movimiento. Las «40» del paso 2
+eran de todas las condiciones; la regla no cambia. Quedan 518 grabaciones con
+movimiento y una muestra común de **487 sesiones de 134 personas**.
+
+| Modelo (mismas 487 sesiones) | Coef. de `rho_ventanas` | EE | p |
+|---|---|---|---|
+| Sin covariables | +0.097 | 0.033 | 0.004 |
+| Con las 4 covariables de movimiento | **+0.093** | 0.034 | **0.006** |
+
+Con las cuatro covariables se conserva el **97 %** del coeficiente. Ninguna de
+ellas se asocia con los lapsos (todas con p ≥ 0.26).
+
+Caminos de la alternativa (dentro de persona, cada covariable por separado):
+
+| Covariable | ↔ lapsos | ↔ `rho_ventanas` |
+|---|---|---|
+| Nivel de `mov_acc` | 0.000 (p 1.00) | +0.014 (p 0.87) |
+| Nivel de `mov_ang` | −0.013 (p 0.80) | −0.073 (p 0.34) |
+| Tendencia de `mov_acc` | +0.041 (p 0.26) | +0.108 (p 0.036) |
+| Tendencia de `mov_ang` | +0.035 (p 0.34) | +0.034 (p 0.56) |
+
+**Veredicto según la regla fijada: AGUANTA.** El movimiento no explica la
+asociación de A2. Que el movimiento aceleramétrico crezca dentro de la
+grabación se asocia algo con la `rho_ventanas` (+0.11), pero no con los
+lapsos, así que no hace de puente entre las dos.
+
+## Cierre del paso 5
+
+- **Lo que queda:** una asociación exploratoria, pequeña y específica de la
+  tarea. Dentro de persona, en las sesiones en que el EEG cambia más a lo
+  largo del PVTB hay más lapsos en el PVTB (r ≈ 0.14). El cambio en reposo no
+  la muestra, y el movimiento no la explica.
+- **Lo que no:**
+  - no replica con la pendiente de la beta;
+  - no aparece en PASAT;
+  - no aparece entre personas;
+  - no se ha comprobado en datos independientes (el `test` está gastado).
+- Ni las covariables (casco, hora, sexo, medición, centro) ni el movimiento
+  confunden.
+
 **Formulación para la memoria (exploratoria):** «En un análisis exploratorio
 sobre las personas de desarrollo, las sesiones en que el EEG cambió más a lo
 largo del PVTB fueron también aquellas con más lapsos en esa tarea (dentro de
 persona, r ≈ 0.14; p corregida = 0.022). El cambio en el reposo de la misma
-sesión no mostró esta asociación. No se observó relación con la precisión en
-el PASAT ni entre personas, y no se ha replicado en datos independientes.»
+sesión no mostró esta asociación, y el movimiento de la cabeza no la explicó.
+No se observó relación con la precisión en el PASAT ni entre personas, y no se
+ha replicado en datos independientes.»

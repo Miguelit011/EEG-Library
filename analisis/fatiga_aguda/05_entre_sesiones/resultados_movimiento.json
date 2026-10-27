@@ -1,0 +1,102 @@
+{
+ "fecha": "2026-10-27T23:34:02",
+ "particiones": [
+  "train",
+  "val"
+ ],
+ "tarea": "PVTB",
+ "conducta": "Lapses_PVTB",
+ "grabaciones_sin_movimiento_excluidas": 11,
+ "A2_paso5": {
+  "coef": 0.09010529451970142,
+  "ee": 0.0330063306814029,
+  "t": 2.729939761843033,
+  "p": 0.007186246881800121,
+  "r_parcial": 0.1384390129373648,
+  "sesiones": 497,
+  "personas": 135
+ },
+ "muestra": {
+  "sesiones": 487,
+  "personas": 134
+ },
+ "sin_covariables": {
+  "rho": {
+   "coef": 0.0966992952562381,
+   "ee": 0.03337855812756854,
+   "t": 2.8970483052822678,
+   "p": 0.004406229202284571
+  }
+ },
+ "con_movimiento": {
+  "rho": {
+   "coef": 0.09341361147640562,
+   "ee": 0.03371145048045425,
+   "t": 2.7709757410339377,
+   "p": 0.006389758411714262
+  },
+  "nivel_mov_acc": {
+   "coef": 0.004237244697024967,
+   "ee": 0.07574189490596393,
+   "t": 0.055943209531338585,
+   "p": 0.9554710022548811
+  },
+  "nivel_mov_ang": {
+   "coef": -0.013446791153663394,
+   "ee": 0.0679904355075282,
+   "t": -0.19777474659909342,
+   "p": 0.843523262405975
+  },
+  "tendencia_mov_acc": {
+   "coef": 0.017474150412327562,
+   "ee": 0.04556440681227958,
+   "t": 0.38350439816585713,
+   "p": 0.7019581464350626
+  },
+  "tendencia_mov_ang": {
+   "coef": 0.020303929041150155,
+   "ee": 0.04532178779700131,
+   "t": 0.4479948834342663,
+   "p": 0.6548857894695657
+  }
+ },
+ "caminos": [
+  {
+   "covariable": "nivel_mov_acc",
+   "con_lapsos_coef": 3.845624332418807e-05,
+   "con_lapsos_p": 0.999467353460691,
+   "con_rho_coef": 0.014194909850216127,
+   "con_rho_p": 0.8672712738616024
+  },
+  {
+   "covariable": "nivel_mov_ang",
+   "con_lapsos_coef": -0.013126888665088597,
+   "con_lapsos_p": 0.7960443042460956,
+   "con_rho_coef": -0.07271128070822512,
+   "con_rho_p": 0.34179891042576915
+  },
+  {
+   "covariable": "tendencia_mov_acc",
+   "con_lapsos_coef": 0.04069653237811401,
+   "con_lapsos_p": 0.2608827710401915,
+   "con_rho_coef": 0.10756493525783513,
+   "con_rho_p": 0.0357476619717665
+  },
+  {
+   "covariable": "tendencia_mov_ang",
+   "con_lapsos_coef": 0.0349190938752563,
+   "con_lapsos_p": 0.340356527522766,
+   "con_rho_coef": 0.033758653515253215,
+   "con_rho_p": 0.5558637010817078
+  }
+ ],
+ "proporcion_conservada": 0.9660216367541673,
+ "aguanta": true,
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "BD_COMPLETA_corregida.xlsx": "f75dadf1613fdc9ad3ffbb5774d51a5318962d1184e836cf51e6301deccf12e1",
+  "labels.csv": "fa2b362eb197a2e48a4e59e8b5021c336d8cf19aa4d9b277e5e313184def2b28"
+ }
+}

@@ -119,6 +119,17 @@ Reglas comunes:
   `archivo_origen`. Se une por `archivo_origen` ↔ `archivo` y se toman de la
   matriz `persona_uid`, `sesion_uid` y `split`.
 - Se agrupa siempre por `persona_uid` (GroupKFold y bootstrap).
+- **CV repetida desde el paso 3** (visto bueno del autor, 2026-10-27). Una sola
+  partición en pliegues mueve el acierto pareado ±0.02–0.05 (diagnóstico del
+  paso 2: la del paso 1 era, por azar, la más favorable a OA de 20). Toda cifra
+  de desarrollo que sirva para **elegir** (selección del paso 3) o para
+  **estimar potencia** (paso 4) se promedia sobre **20 particiones por
+  persona** (semillas 0–19). En cada repetición, todas las condiciones y todas
+  las configuraciones usan **la misma asignación de personas a pliegues**, de
+  modo que las comparaciones son pareadas. Se reportan la media y el rango
+  sobre repeticiones. Los IC por bootstrap de personas se calculan sobre las
+  predicciones medias de las 20 repeticiones. `test` no cambia: allí se
+  entrena una vez con `train` + `val` y se evalúa una vez, sin pliegues.
 - Ejecutar desde la raíz del repo con `.venv/Scripts/python.exe`, salvo el
   deep learning (sección 7.7).
 - Registrar en `resultados.json` el SHA-256 de cada archivo de datos leído.
@@ -409,8 +420,10 @@ Consecuencias que hay que asumir y explicar en la memoria:
 
    Tú haces el commit del pre-registro antes de ejecutar.
 3. **Cuándo se abre `test`.** Cuando los resultados en `val` sean buenos.
-   Conviene escribir antes qué significa «buenos» (por ejemplo, PASAT + PVTB
-   por encima de OA en `val`). Si nunca llegan a serlo, el test no se abre y se
+   **«Bueno»** (fijado el 2026-10-27, antes de mirar `val`): con la
+   configuración elegida en el paso 3, la H1 a igual tiempo tiene estimación
+   puntual > 0 **y** PASAT y PVTB tienen cada una un acierto pareado con el
+   límite inferior del IC95 > 0.5. Si nunca llegan a serlo, el test no se abre y se
    reporta el resultado del desarrollo como está.
 4. **Una vez abierto el test, no se cambia nada.** Su resultado se reporta salga
    lo que salga. Cualquier ajuste posterior es exploratorio y se cita así.
@@ -479,7 +492,7 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
   3. ambas;
   4. agregados por región.
 - Modelos: logística (C en {0.01, 0.1, 1}) y Random Forest (el ya validado en
-  la Fase 14, sin búsqueda de hiperparámetros).
+  la Fase 14, sin búsqueda de hiperparámetros). CV repetida (sección 2).
 - Tareas: PASAT y PVTB por separado y conjuntas; PVSAT, descriptiva. OA y OC
   como controles. Contraste frente a OA a igual tiempo (principal) y con la
   grabación completa.
@@ -489,8 +502,10 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
   grabación, promediado).
 - Importancias e interpretación: qué canales y bandas pesan.
 - **Salidas:** el modelo y las features que se fijarán en el pre-registro. Se
-  elige por el criterio declarado aquí (el mayor acierto pareado medio en
-  PASAT + PVTB con CV por persona), no a ojo.
+  elige por el criterio declarado aquí, no a ojo: la **mayor H1 = PASAT +
+  PVTB − OA a igual tiempo**, media de la CV repetida (decisión del autor,
+  2026-10-27; antes era el mayor acierto en PASAT + PVTB, que premiaría la
+  deriva común). Desempate por simplicidad (`03_clasificador/INFORME.md`).
 
 ### Paso 4 — `04_potencia_y_controles/`: potencia y tiempo desde la colocación (≈ 6 h)
 
@@ -602,9 +617,11 @@ no se hace.
 - **Evaluación comparable con el modelo clásico:** media de las probabilidades
   de las ventanas de cada tercio, y acierto pareado por grabación. Además, AUC
   por ventana.
-- **Mismos pliegues:** el mismo `GroupKFold(5)` por persona que el modelo
-  clásico (guardar la asignación de pliegues en el paso 3). Así la comparación
-  es pareada por grabación.
+- **Mismos pliegues:** la misma asignación de personas a pliegues que el
+  modelo clásico (guardarla en el paso 3). Así la comparación es pareada por
+  grabación. Por coste, la CNN no puede repetir 20 particiones: usa las de las
+  primeras semillas que quepan en el presupuesto (al menos la 0), y la
+  logística se compara **con esas mismas** particiones, no con su media de 20.
 - **Variante B, por pares:** dos ventanas de la misma grabación y se predice
   cuál es posterior. Optimiza directamente el acierto pareado. Cuesta el doble
   por ejemplo; se prueba solo si la variante A funciona.

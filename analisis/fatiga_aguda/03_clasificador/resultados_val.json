@@ -1,0 +1,170 @@
+{
+ "fecha": "2026-10-27",
+ "configuracion": {
+  "fecha": "2026-10-27",
+  "features": "rel",
+  "modelo": "lr_0.01",
+  "esquema": "separado",
+  "regla": "mayor H1 = PASAT + PVTB − OA a igual tiempo, media de 20 particiones; desempate por simplicidad a menos de 0.01",
+  "H1_media_train_igual_tiempo": 0.11960558982365435,
+  "sha256": {
+   "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+   "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+   "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+  }
+ },
+ "val": {
+  "igual_tiempo": {
+   "PASAT": {
+    "pareado": 0.5930232558139535,
+    "ic95": [
+     0.4942528735632184,
+     0.6854095897569897
+    ],
+    "grabaciones": 86,
+    "personas": 25
+   },
+   "PVTB": {
+    "pareado": 0.6588235294117647,
+    "ic95": [
+     0.5747126436781609,
+     0.7415820949619427
+    ],
+    "grabaciones": 85,
+    "personas": 25
+   },
+   "PVSAT": {
+    "pareado": 0.6904761904761905,
+    "ic95": [
+     0.5952380952380952,
+     0.7820652173913043
+    ],
+    "grabaciones": 84,
+    "personas": 25
+   },
+   "OA": {
+    "pareado": 0.5697674418604651,
+    "ic95": [
+     0.47674418604651164,
+     0.6582355665328804
+    ],
+    "grabaciones": 86,
+    "personas": 25
+   },
+   "OC": {
+    "pareado": 0.7045454545454546,
+    "ic95": [
+     0.599945652173913,
+     0.8064516129032258
+    ],
+    "grabaciones": 88,
+    "personas": 25
+   },
+   "familia": {
+    "pareado": 0.6257309941520468,
+    "ic95": [
+     0.5574566384472435,
+     0.6902372374206154
+    ]
+   },
+   "H1": {
+    "diferencia": 0.055963552291581675,
+    "ic95": [
+     -0.05815262711977477,
+     0.16482870975678826
+    ]
+   }
+  },
+  "completa": {
+   "PASAT": {
+    "pareado": 0.7272727272727273,
+    "ic95": [
+     0.6128584229390681,
+     0.8242109634551492
+    ],
+    "grabaciones": 88,
+    "personas": 25
+   },
+   "PVTB": {
+    "pareado": 0.7586206896551724,
+    "ic95": [
+     0.6823395721925134,
+     0.8333333333333334
+    ],
+    "grabaciones": 87,
+    "personas": 25
+   },
+   "PVSAT": {
+    "pareado": 0.6162790697674418,
+    "ic95": [
+     0.5222222222222223,
+     0.7066829268292683
+    ],
+    "grabaciones": 86,
+    "personas": 25
+   },
+   "OA": {
+    "pareado": 0.5697674418604651,
+    "ic95": [
+     0.47913194444444446,
+     0.6588302139037433
+    ],
+    "grabaciones": 86,
+    "personas": 25
+   },
+   "OC": {
+    "pareado": 0.7045454545454546,
+    "ic95": [
+     0.6043898809523809,
+     0.8045977011494253
+    ],
+    "grabaciones": 88,
+    "personas": 25
+   },
+   "familia": {
+    "pareado": 0.7428571428571429,
+    "ic95": [
+     0.6588200070447341,
+     0.8139698197021165
+    ]
+   },
+   "H1": {
+    "diferencia": 0.17308970099667775,
+    "ic95": [
+     0.062285192206267145,
+     0.2853915920425665
+    ]
+   }
+  }
+ },
+ "H3": {
+  "PASAT": {
+   "pendiente_tarea": -0.03375780830665744,
+   "pendiente_oa": 0.0297144016232448,
+   "diferencia": -0.06347220992990227,
+   "t": -2.287980514646175,
+   "p": 0.031245891051587843,
+   "personas": 25
+  },
+  "PVTB": {
+   "pendiente_tarea": -0.004622960715033858,
+   "pendiente_oa": 0.0297144016232448,
+   "diferencia": -0.03433736233827867,
+   "t": -1.9707920645882773,
+   "p": 0.060386668316634765,
+   "personas": 25
+  }
+ },
+ "bueno": {
+  "H1": true,
+  "H2": {
+   "PASAT": false,
+   "PVTB": true
+  },
+  "val_bueno": false
+ },
+ "miradas": {
+  "val": 1,
+  "test": 0
+ }
+}

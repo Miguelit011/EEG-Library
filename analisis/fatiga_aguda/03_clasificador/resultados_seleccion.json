@@ -1,0 +1,216 @@
+{
+ "fecha": "2026-10-27",
+ "features": "rel",
+ "modelo": "lr_0.01",
+ "esquema": "separado",
+ "regla": "mayor H1 = PASAT + PVTB − OA a igual tiempo, media de 20 particiones; desempate por simplicidad a menos de 0.01",
+ "H1_media_train_igual_tiempo": 0.11960558982365435,
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+ },
+ "elegida_train": {
+  "igual_tiempo": {
+   "PASAT": {
+    "pareado": 0.7295454545454545,
+    "ic95": [
+     0.6782239745586708,
+     0.7762922871816624
+    ],
+    "grabaciones": 440,
+    "personas": 120
+   },
+   "PVTB": {
+    "pareado": 0.6986301369863014,
+    "ic95": [
+     0.6566017101592846,
+     0.7402321105961825
+    ],
+    "grabaciones": 438,
+    "personas": 120
+   },
+   "OA": {
+    "pareado": 0.597752808988764,
+    "ic95": [
+     0.5494442628309906,
+     0.6455995436254786
+    ],
+    "grabaciones": 445,
+    "personas": 120
+   },
+   "PVSAT": {
+    "pareado": 0.6910755148741419,
+    "ic95": [
+     0.6407322654462243,
+     0.7356334497949263
+    ],
+    "grabaciones": 437,
+    "personas": 120
+   },
+   "OC": {
+    "pareado": 0.6666666666666666,
+    "ic95": [
+     0.6216814159292036,
+     0.7114591628947872
+    ],
+    "grabaciones": 453,
+    "personas": 121
+   },
+   "familia": {
+    "pareado": 0.714123006833713,
+    "ic95": [
+     0.6814409364648023,
+     0.7463540216572191
+    ]
+   },
+   "H1": {
+    "diferencia": 0.11637019784494895,
+    "ic95": [
+     0.05138045931569511,
+     0.1823556063874793
+    ]
+   },
+   "H1_rango_20": [
+    0.09706943769035858,
+    0.15469529830308926
+   ]
+  },
+  "completa": {
+   "PASAT": {
+    "pareado": 0.7887640449438202,
+    "ic95": [
+     0.7472023054226353,
+     0.8286401278038602
+    ],
+    "grabaciones": 445,
+    "personas": 120
+   },
+   "PVTB": {
+    "pareado": 0.7579185520361991,
+    "ic95": [
+     0.717770553064275,
+     0.7982357877556048
+    ],
+    "grabaciones": 442,
+    "personas": 120
+   },
+   "OA": {
+    "pareado": 0.597752808988764,
+    "ic95": [
+     0.5480297133092842,
+     0.6441860465116279
+    ],
+    "grabaciones": 445,
+    "personas": 120
+   },
+   "PVSAT": {
+    "pareado": 0.6515837104072398,
+    "ic95": [
+     0.6043150160722486,
+     0.6985981308411215
+    ],
+    "grabaciones": 442,
+    "personas": 120
+   },
+   "OC": {
+    "pareado": 0.6666666666666666,
+    "ic95": [
+     0.6244475463796958,
+     0.7090090279235776
+    ],
+    "grabaciones": 453,
+    "personas": 121
+   },
+   "familia": {
+    "pareado": 0.7733934611048479,
+    "ic95": [
+     0.7468478751925584,
+     0.800217214858569
+    ]
+   },
+   "H1": {
+    "diferencia": 0.17564065211608382,
+    "ic95": [
+     0.11912867535993998,
+     0.2353298807184288
+    ]
+   },
+   "H1_rango_20": [
+    0.14302218056065763,
+    0.21387330098932145
+   ]
+  }
+ },
+ "transferencia": {
+  "igual_tiempo: PASAT → PVTB": {
+   "pareado": 0.6095890410958904,
+   "ic95": [
+    0.5667377826404084,
+    0.6558909994279297
+   ],
+   "grabaciones": 438,
+   "personas": 120
+  },
+  "igual_tiempo: PVTB → PASAT": {
+   "pareado": 0.6136363636363636,
+   "ic95": [
+    0.5723752984610446,
+    0.6584269662921348
+   ],
+   "grabaciones": 440,
+   "personas": 120
+  },
+  "completa: PASAT → PVTB": {
+   "pareado": 0.6561085972850679,
+   "ic95": [
+    0.609537644912442,
+    0.7034505645407384
+   ],
+   "grabaciones": 442,
+   "personas": 120
+  },
+  "completa: PVTB → PASAT": {
+   "pareado": 0.6539325842696629,
+   "ic95": [
+    0.6067314047485892,
+    0.6974623882864557
+   ],
+   "grabaciones": 445,
+   "personas": 120
+  }
+ },
+ "regresion_minuto": [
+  {
+   "condicion": "PASAT",
+   "rho_medio": 0.34984,
+   "t": 13.52326,
+   "p": 0.0,
+   "personas": 120,
+   "grabaciones": 445,
+   "bloques_por_grabacion": 5.0
+  },
+  {
+   "condicion": "PVTB",
+   "rho_medio": 0.33845,
+   "t": 12.85662,
+   "p": 0.0,
+   "personas": 120,
+   "grabaciones": 441,
+   "bloques_por_grabacion": 5.0
+  },
+  {
+   "condicion": "OA",
+   "rho_medio": 0.13176,
+   "t": 3.25439,
+   "p": 0.00148,
+   "personas": 120,
+   "grabaciones": 443,
+   "bloques_por_grabacion": 3.0
+  }
+ ],
+ "miradas": {
+  "val": 0,
+  "test": 0
+ }
+}

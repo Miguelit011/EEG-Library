@@ -1,0 +1,13 @@
+{
+ "fecha": "2026-10-27",
+ "features": "rel",
+ "modelo": "lr_0.01",
+ "esquema": "separado",
+ "regla": "mayor H1 = PASAT + PVTB − OA a igual tiempo, media de 20 particiones; desempate por simplicidad a menos de 0.01",
+ "H1_media_train_igual_tiempo": 0.11960558982365435,
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+ }
+}

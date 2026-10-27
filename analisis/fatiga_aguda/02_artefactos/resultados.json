@@ -1,0 +1,2020 @@
+{
+ "fecha": "2026-10-27",
+ "particion": "solo train (split de matriz_rf), etiquetadas",
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+ },
+ "edf_leidos": 1774,
+ "sin_movimiento": {
+  "OA": 10,
+  "PASAT": 10,
+  "PVSAT": 10,
+  "PVTB": 10
+ },
+ "igual_tiempo_sin_oa": {
+  "PASAT": 5,
+  "PVSAT": 5,
+  "PVTB": 4
+ },
+ "saturacion_cq": {
+  "cq_validos_en_4": 0.9943943914945392,
+  "cq_overall_en_100": 0.8926388365827516,
+  "grabaciones_cq_overall_constante": 0.7831603229527105
+ },
+ "tendencias": [
+  {
+   "version": "completa",
+   "medida": "mov_acc",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.0027,
+   "t": 1.60219,
+   "p": 0.11181,
+   "final_menos_inicial": 0.0067,
+   "pend_menos_oa": 0.00016,
+   "t_menos_oa": 0.05714,
+   "p_menos_oa": 0.95453
+  },
+  {
+   "version": "completa",
+   "medida": "mov_acc",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": 0.00019,
+   "t": 0.11216,
+   "p": 0.91089,
+   "final_menos_inicial": 0.00287,
+   "pend_menos_oa": -0.00235,
+   "t_menos_oa": -0.95623,
+   "p_menos_oa": 0.34093
+  },
+  {
+   "version": "completa",
+   "medida": "mov_acc",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.00671,
+   "t": -3.22023,
+   "p": 0.00166,
+   "final_menos_inicial": -0.01003,
+   "pend_menos_oa": -0.00925,
+   "t_menos_oa": -3.10529,
+   "p_menos_oa": 0.00239
+  },
+  {
+   "version": "completa",
+   "medida": "mov_acc",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.00254,
+   "t": 1.25614,
+   "p": 0.21157,
+   "final_menos_inicial": 0.00431,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "completa",
+   "medida": "mov_ang",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.01214,
+   "t": 2.91111,
+   "p": 0.00431,
+   "final_menos_inicial": 0.0248,
+   "pend_menos_oa": -0.00104,
+   "t_menos_oa": -0.15982,
+   "p_menos_oa": 0.8733
+  },
+  {
+   "version": "completa",
+   "medida": "mov_ang",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -0.00278,
+   "t": -0.5927,
+   "p": 0.55452,
+   "final_menos_inicial": 0.00227,
+   "pend_menos_oa": -0.01596,
+   "t_menos_oa": -2.7113,
+   "p_menos_oa": 0.00771
+  },
+  {
+   "version": "completa",
+   "medida": "mov_ang",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.01636,
+   "t": -4.10168,
+   "p": 8e-05,
+   "final_menos_inicial": -0.02405,
+   "pend_menos_oa": -0.02954,
+   "t_menos_oa": -4.86737,
+   "p_menos_oa": 0.0
+  },
+  {
+   "version": "completa",
+   "medida": "mov_ang",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.01318,
+   "t": 2.75,
+   "p": 0.00691,
+   "final_menos_inicial": 0.01847,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "completa",
+   "medida": "cq_validos",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.00052,
+   "t": 0.83694,
+   "p": 0.40433,
+   "final_menos_inicial": 0.00071,
+   "pend_menos_oa": -0.0002,
+   "t_menos_oa": -0.08527,
+   "p_menos_oa": 0.93219
+  },
+  {
+   "version": "completa",
+   "medida": "cq_validos",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": 0.00063,
+   "t": 1.85487,
+   "p": 0.06613,
+   "final_menos_inicial": 0.00071,
+   "pend_menos_oa": -8e-05,
+   "t_menos_oa": -0.03362,
+   "p_menos_oa": 0.97324
+  },
+  {
+   "version": "completa",
+   "medida": "cq_validos",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": 2e-05,
+   "t": 0.29592,
+   "p": 0.76782,
+   "final_menos_inicial": 0.00011,
+   "pend_menos_oa": -0.00069,
+   "t_menos_oa": -0.30493,
+   "p_menos_oa": 0.76096
+  },
+  {
+   "version": "completa",
+   "medida": "cq_validos",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.00071,
+   "t": 0.32182,
+   "p": 0.74816,
+   "final_menos_inicial": 0.00035,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "completa",
+   "medida": "cq_overall",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.04225,
+   "t": 0.53233,
+   "p": 0.59551,
+   "final_menos_inicial": 0.08386,
+   "pend_menos_oa": 0.22484,
+   "t_menos_oa": 0.99796,
+   "p_menos_oa": 0.32036
+  },
+  {
+   "version": "completa",
+   "medida": "cq_overall",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": 0.01219,
+   "t": 0.2099,
+   "p": 0.83411,
+   "final_menos_inicial": 0.00619,
+   "pend_menos_oa": 0.19477,
+   "t_menos_oa": 0.82527,
+   "p_menos_oa": 0.4109
+  },
+  {
+   "version": "completa",
+   "medida": "cq_overall",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.0208,
+   "t": -0.46343,
+   "p": 0.64392,
+   "final_menos_inicial": -0.03076,
+   "pend_menos_oa": 0.16179,
+   "t_menos_oa": 0.75784,
+   "p_menos_oa": 0.45007
+  },
+  {
+   "version": "completa",
+   "medida": "cq_overall",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": -0.18259,
+   "t": -0.88064,
+   "p": 0.38032,
+   "final_menos_inicial": -0.23635,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "completa",
+   "medida": "eq_overall",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": -0.44725,
+   "t": -1.55105,
+   "p": 0.12359,
+   "final_menos_inicial": -1.00094,
+   "pend_menos_oa": -0.13348,
+   "t_menos_oa": -0.22485,
+   "p_menos_oa": 0.82249
+  },
+  {
+   "version": "completa",
+   "medida": "eq_overall",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -0.71827,
+   "t": -2.18737,
+   "p": 0.0307,
+   "final_menos_inicial": -1.58485,
+   "pend_menos_oa": -0.4045,
+   "t_menos_oa": -0.61899,
+   "p_menos_oa": 0.53712
+  },
+  {
+   "version": "completa",
+   "medida": "eq_overall",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": 0.21676,
+   "t": 0.7836,
+   "p": 0.43486,
+   "final_menos_inicial": -0.08967,
+   "pend_menos_oa": 0.53053,
+   "t_menos_oa": 0.85894,
+   "p_menos_oa": 0.39213
+  },
+  {
+   "version": "completa",
+   "medida": "eq_overall",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": -0.31377,
+   "t": -0.58257,
+   "p": 0.5613,
+   "final_menos_inicial": -0.3199,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_acc",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.00101,
+   "t": 0.33585,
+   "p": 0.73759,
+   "final_menos_inicial": 0.00203,
+   "pend_menos_oa": -0.00153,
+   "t_menos_oa": -0.40795,
+   "p_menos_oa": 0.68405
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_acc",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -0.00167,
+   "t": -0.53246,
+   "p": 0.59542,
+   "final_menos_inicial": -0.0009,
+   "pend_menos_oa": -0.00421,
+   "t_menos_oa": -1.16424,
+   "p_menos_oa": 0.24669
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_acc",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.01673,
+   "t": -4.49238,
+   "p": 2e-05,
+   "final_menos_inicial": -0.0179,
+   "pend_menos_oa": -0.01927,
+   "t_menos_oa": -4.44652,
+   "p_menos_oa": 2e-05
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_acc",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.00254,
+   "t": 1.25614,
+   "p": 0.21157,
+   "final_menos_inicial": 0.00431,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_ang",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.01285,
+   "t": 1.69162,
+   "p": 0.09338,
+   "final_menos_inicial": 0.01715,
+   "pend_menos_oa": -0.00033,
+   "t_menos_oa": -0.03619,
+   "p_menos_oa": 0.97119
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_ang",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -0.01604,
+   "t": -2.08305,
+   "p": 0.03942,
+   "final_menos_inicial": -0.01511,
+   "pend_menos_oa": -0.02922,
+   "t_menos_oa": -3.54989,
+   "p_menos_oa": 0.00056
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_ang",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.03564,
+   "t": -5.1633,
+   "p": 0.0,
+   "final_menos_inicial": -0.03807,
+   "pend_menos_oa": -0.04882,
+   "t_menos_oa": -5.80153,
+   "p_menos_oa": 0.0
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "mov_ang",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.01318,
+   "t": 2.75,
+   "p": 0.00691,
+   "final_menos_inicial": 0.01847,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_validos",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.00195,
+   "t": 1.98002,
+   "p": 0.05005,
+   "final_menos_inicial": 0.00214,
+   "pend_menos_oa": 0.00123,
+   "t_menos_oa": 0.50178,
+   "p_menos_oa": 0.61676
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_validos",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -2e-05,
+   "t": -0.02518,
+   "p": 0.97996,
+   "final_menos_inicial": 0.00012,
+   "pend_menos_oa": -0.00073,
+   "t_menos_oa": -0.30092,
+   "p_menos_oa": 0.76401
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_validos",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -4e-05,
+   "t": -0.40719,
+   "p": 0.68461,
+   "final_menos_inicial": -0.00013,
+   "pend_menos_oa": -0.00075,
+   "t_menos_oa": -0.33922,
+   "p_menos_oa": 0.73505
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_validos",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": 0.00071,
+   "t": 0.32182,
+   "p": 0.74816,
+   "final_menos_inicial": 0.00035,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_overall",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": 0.1138,
+   "t": 1.21037,
+   "p": 0.22857,
+   "final_menos_inicial": 0.13902,
+   "pend_menos_oa": 0.29639,
+   "t_menos_oa": 1.25131,
+   "p_menos_oa": 0.21332
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_overall",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -0.00824,
+   "t": -0.09686,
+   "p": 0.923,
+   "final_menos_inicial": 0.00945,
+   "pend_menos_oa": 0.17435,
+   "t_menos_oa": 0.70431,
+   "p_menos_oa": 0.48264
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_overall",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": -0.08972,
+   "t": -1.53737,
+   "p": 0.1269,
+   "final_menos_inicial": -0.12125,
+   "pend_menos_oa": 0.09287,
+   "t_menos_oa": 0.43203,
+   "p_menos_oa": 0.66652
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "cq_overall",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": -0.18259,
+   "t": -0.88064,
+   "p": 0.38032,
+   "final_menos_inicial": -0.23635,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "eq_overall",
+   "condicion": "PASAT",
+   "personas": 118,
+   "pendiente": -0.31894,
+   "t": -0.64618,
+   "p": 0.51943,
+   "final_menos_inicial": -0.24657,
+   "pend_menos_oa": -0.00517,
+   "t_menos_oa": -0.00767,
+   "p_menos_oa": 0.99389
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "eq_overall",
+   "condicion": "PVTB",
+   "personas": 118,
+   "pendiente": -1.04367,
+   "t": -2.07103,
+   "p": 0.04056,
+   "final_menos_inicial": -1.38484,
+   "pend_menos_oa": -0.7299,
+   "t_menos_oa": -0.96274,
+   "p_menos_oa": 0.33766
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "eq_overall",
+   "condicion": "PVSAT",
+   "personas": 118,
+   "pendiente": 0.95043,
+   "t": 1.87975,
+   "p": 0.06263,
+   "final_menos_inicial": 0.96568,
+   "pend_menos_oa": 1.2642,
+   "t_menos_oa": 1.55217,
+   "p_menos_oa": 0.12332
+  },
+  {
+   "version": "igual_tiempo",
+   "medida": "eq_overall",
+   "condicion": "OA",
+   "personas": 118,
+   "pendiente": -0.31377,
+   "t": -0.58257,
+   "p": 0.5613,
+   "final_menos_inicial": -0.3199,
+   "pend_menos_oa": NaN,
+   "t_menos_oa": NaN,
+   "p_menos_oa": NaN
+  }
+ ],
+ "clasificadores": [
+  {
+   "version": "completa",
+   "modelo": "eeg",
+   "condicion": "PASAT",
+   "auc": 0.86088,
+   "pareado": 0.8,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7593457943925234,
+    0.8398191901118679
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art",
+   "condicion": "PASAT",
+   "auc": 0.57467,
+   "pareado": 0.56092,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5022416542102641,
+    0.6213260481497562
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art",
+   "condicion": "PASAT",
+   "auc": 0.86182,
+   "pareado": 0.7931,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7517548543304381,
+    0.8314529852393953
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PASAT",
+   "auc": 0.84615,
+   "pareado": 0.76322,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7228608681851516,
+    0.8009153318077803
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res",
+   "condicion": "PASAT",
+   "auc": 0.83096,
+   "pareado": 0.76092,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7215748127430103,
+    0.8004587155963303
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art_eq",
+   "condicion": "PASAT",
+   "auc": 0.58197,
+   "pareado": 0.56782,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5111607142857143,
+    0.6195899772209568
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art_eq",
+   "condicion": "PASAT",
+   "auc": 0.8609,
+   "pareado": 0.7954,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7582148117462947,
+    0.8337236533957846
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res_eq",
+   "condicion": "PASAT",
+   "auc": 0.8321,
+   "pareado": 0.77011,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7325842696629213,
+    0.8058263385127878
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg",
+   "condicion": "PVTB",
+   "auc": 0.82508,
+   "pareado": 0.75694,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7142772711921648,
+    0.7946935558416691
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art",
+   "condicion": "PVTB",
+   "auc": 0.54154,
+   "pareado": 0.53009,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.4864251997095134,
+    0.5768431656995486
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art",
+   "condicion": "PVTB",
+   "auc": 0.82266,
+   "pareado": 0.75694,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7191748206131767,
+    0.7958248632367654
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PVTB",
+   "auc": 0.82742,
+   "pareado": 0.73843,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6981022378236068,
+    0.7777777777777778
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res",
+   "condicion": "PVTB",
+   "auc": 0.8077,
+   "pareado": 0.7338,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6958475255459827,
+    0.7723009934607646
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art_eq",
+   "condicion": "PVTB",
+   "auc": 0.57864,
+   "pareado": 0.56713,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5191873589164786,
+    0.612108671053183
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art_eq",
+   "condicion": "PVTB",
+   "auc": 0.82352,
+   "pareado": 0.75463,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.7129350189964627,
+    0.7949413246168685
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res_eq",
+   "condicion": "PVTB",
+   "auc": 0.8043,
+   "pareado": 0.7338,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6924785351322936,
+    0.7738429633494195
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg",
+   "condicion": "PVSAT",
+   "auc": 0.70742,
+   "pareado": 0.64815,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.603247328593627,
+    0.6936936936936937
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art",
+   "condicion": "PVSAT",
+   "auc": 0.56927,
+   "pareado": 0.56713,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5168132267441861,
+    0.6157348059244127
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art",
+   "condicion": "PVSAT",
+   "auc": 0.70173,
+   "pareado": 0.64352,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5963708419147475,
+    0.6912158053847639
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PVSAT",
+   "auc": 0.70778,
+   "pareado": 0.66435,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6219070167552737,
+    0.7064471354779432
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res",
+   "condicion": "PVSAT",
+   "auc": 0.69796,
+   "pareado": 0.65278,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6070567715458276,
+    0.6964368386243386
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art_eq",
+   "condicion": "PVSAT",
+   "auc": 0.57243,
+   "pareado": 0.56713,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5179320516490157,
+    0.6181818181818182
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art_eq",
+   "condicion": "PVSAT",
+   "auc": 0.71219,
+   "pareado": 0.6412,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5972128378378379,
+    0.6825877185662388
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res_eq",
+   "condicion": "PVSAT",
+   "auc": 0.69625,
+   "pareado": 0.64583,
+   "empates": 0,
+   "grabaciones": 432,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5958417420301743,
+    0.694257662835249
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg",
+   "condicion": "OA",
+   "auc": 0.65377,
+   "pareado": 0.6,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5502332535885167,
+    0.6484018264840182
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art",
+   "condicion": "OA",
+   "auc": 0.55782,
+   "pareado": 0.51494,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.4641233495989096,
+    0.5604695066787292
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art",
+   "condicion": "OA",
+   "auc": 0.6625,
+   "pareado": 0.6023,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5540221790513195,
+    0.6474692780337942
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_log_ventana",
+   "condicion": "OA",
+   "auc": 0.64434,
+   "pareado": 0.61149,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5637543418109031,
+    0.6580840566787701
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res",
+   "condicion": "OA",
+   "auc": 0.64677,
+   "pareado": 0.58621,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.533596969080771,
+    0.6370126182453445
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "art_eq",
+   "condicion": "OA",
+   "auc": 0.54625,
+   "pareado": 0.49885,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.45304920331617715,
+    0.5464768334859118
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg+art_eq",
+   "condicion": "OA",
+   "auc": 0.66145,
+   "pareado": 0.5954,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5435742782125417,
+    0.6470588235294118
+   ]
+  },
+  {
+   "version": "completa",
+   "modelo": "eeg_res_eq",
+   "condicion": "OA",
+   "auc": 0.64575,
+   "pareado": 0.58851,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5418579715470628,
+    0.6351106074205553
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg",
+   "condicion": "PASAT",
+   "auc": 0.80755,
+   "pareado": 0.72093,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6726852179898571,
+    0.7674459547985588
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art",
+   "condicion": "PASAT",
+   "auc": 0.54074,
+   "pareado": 0.54186,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.4915903024186985,
+    0.593139332003988
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art",
+   "condicion": "PASAT",
+   "auc": 0.80296,
+   "pareado": 0.72093,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6718300601837187,
+    0.7674983417062172
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PASAT",
+   "auc": 0.79023,
+   "pareado": 0.74186,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6962565322982848,
+    0.7872045160045215
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res",
+   "condicion": "PASAT",
+   "auc": 0.77097,
+   "pareado": 0.69767,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.65457757885763,
+    0.7403205493253899
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art_eq",
+   "condicion": "PASAT",
+   "auc": 0.53249,
+   "pareado": 0.53721,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.4826769744350911,
+    0.5883754343758353
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art_eq",
+   "condicion": "PASAT",
+   "auc": 0.80215,
+   "pareado": 0.72791,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6821345707656613,
+    0.7762362340747139
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res_eq",
+   "condicion": "PASAT",
+   "auc": 0.7633,
+   "pareado": 0.68837,
+   "empates": 0,
+   "grabaciones": 430,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6467748736406378,
+    0.7307758620689654
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg",
+   "condicion": "PVTB",
+   "auc": 0.79457,
+   "pareado": 0.72664,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6870588235294117,
+    0.7658104907387694
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art",
+   "condicion": "PVTB",
+   "auc": 0.5742,
+   "pareado": 0.56776,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5260632768487883,
+    0.6111142322097378
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art",
+   "condicion": "PVTB",
+   "auc": 0.78958,
+   "pareado": 0.71495,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6720174343273912,
+    0.7558153182661863
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PVTB",
+   "auc": 0.79149,
+   "pareado": 0.72664,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6845900963266268,
+    0.767609805753955
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res",
+   "condicion": "PVTB",
+   "auc": 0.78187,
+   "pareado": 0.71495,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6742497118478338,
+    0.7556573999462799
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art_eq",
+   "condicion": "PVTB",
+   "auc": 0.59121,
+   "pareado": 0.57009,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5238095238095238,
+    0.6177899742562929
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art_eq",
+   "condicion": "PVTB",
+   "auc": 0.79677,
+   "pareado": 0.71262,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6721311475409836,
+    0.7553071135430915
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res_eq",
+   "condicion": "PVTB",
+   "auc": 0.76441,
+   "pareado": 0.68458,
+   "empates": 0,
+   "grabaciones": 428,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6450705786082035,
+    0.7274726512226511
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg",
+   "condicion": "PVSAT",
+   "auc": 0.71857,
+   "pareado": 0.66979,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6229498415430964,
+    0.7166687192118226
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art",
+   "condicion": "PVSAT",
+   "auc": 0.64412,
+   "pareado": 0.59953,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5511604430204938,
+    0.6470622594832326
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art",
+   "condicion": "PVSAT",
+   "auc": 0.72228,
+   "pareado": 0.65808,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6051994266587127,
+    0.7082377450980393
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_log_ventana",
+   "condicion": "PVSAT",
+   "auc": 0.70422,
+   "pareado": 0.65105,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6,
+    0.7002346328654736
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res",
+   "condicion": "PVSAT",
+   "auc": 0.6605,
+   "pareado": 0.62998,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5795691167003353,
+    0.6829282506111775
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art_eq",
+   "condicion": "PVSAT",
+   "auc": 0.62998,
+   "pareado": 0.58782,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5414611082281036,
+    0.634032634032634
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art_eq",
+   "condicion": "PVSAT",
+   "auc": 0.72702,
+   "pareado": 0.66511,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.6173672417278793,
+    0.7126174938231818
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res_eq",
+   "condicion": "PVSAT",
+   "auc": 0.65766,
+   "pareado": 0.62998,
+   "empates": 0,
+   "grabaciones": 427,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5773629541452496,
+    0.6811594202898551
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg",
+   "condicion": "OA",
+   "auc": 0.65377,
+   "pareado": 0.6,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5483108700134007,
+    0.6518695474231718
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art",
+   "condicion": "OA",
+   "auc": 0.55782,
+   "pareado": 0.51494,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.47096881860013506,
+    0.5588932251949976
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art",
+   "condicion": "OA",
+   "auc": 0.6625,
+   "pareado": 0.6023,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5540815533376862,
+    0.6484638949555496
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_log_ventana",
+   "condicion": "OA",
+   "auc": 0.64434,
+   "pareado": 0.61149,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5653180832386657,
+    0.6597269144144143
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res",
+   "condicion": "OA",
+   "auc": 0.64677,
+   "pareado": 0.58621,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5313137794386382,
+    0.6376844607309101
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "art_eq",
+   "condicion": "OA",
+   "auc": 0.54625,
+   "pareado": 0.49885,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.4492065358247638,
+    0.5458718294657312
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg+art_eq",
+   "condicion": "OA",
+   "auc": 0.66145,
+   "pareado": 0.5954,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5462705838907325,
+    0.6466614590408911
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "modelo": "eeg_res_eq",
+   "condicion": "OA",
+   "auc": 0.64575,
+   "pareado": 0.58851,
+   "empates": 0,
+   "grabaciones": 435,
+   "personas": 118,
+   "pareado_ic95": [
+    0.5408635635198135,
+    0.6361608071562305
+   ]
+  }
+ ],
+ "contrastes": [
+  {
+   "version": "completa",
+   "contraste": "eeg − art",
+   "tareas": "PASAT",
+   "diferencia": 0.23908,
+   "ic95": [
+    0.16541656355687545,
+    0.31591757047461116
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art",
+   "tareas": "PVTB",
+   "diferencia": 0.22685,
+   "ic95": [
+    0.16515837104072395,
+    0.28873239436619713
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art",
+   "tareas": "PVSAT",
+   "diferencia": 0.08102,
+   "ic95": [
+    0.02011630937642533,
+    0.14483501446555636
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.23299,
+   "ic95": [
+    0.18539129409915928,
+    0.2808683417124879
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art_eq",
+   "tareas": "PASAT",
+   "diferencia": 0.23218,
+   "ic95": [
+    0.1628399214257495,
+    0.3064562264708054
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art_eq",
+   "tareas": "PVTB",
+   "diferencia": 0.18981,
+   "ic95": [
+    0.12970534912078033,
+    0.24774138020294045
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art_eq",
+   "tareas": "PVSAT",
+   "diferencia": 0.08102,
+   "ic95": [
+    0.016428103504749443,
+    0.14588361947649872
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − art_eq",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.21107,
+   "ic95": [
+    0.16395203833618735,
+    0.259169901299111
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PASAT",
+   "diferencia": -0.0069,
+   "ic95": [
+    -0.025944929524064485,
+    0.013637140194657197
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PVTB",
+   "diferencia": 0.0,
+   "ic95": [
+    -0.016129032258064502,
+    0.015946240417719786
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PVSAT",
+   "diferencia": -0.00463,
+   "ic95": [
+    -0.026009371833839848,
+    0.01830979974480373
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PASAT+PVTB",
+   "diferencia": -0.00346,
+   "ic95": [
+    -0.016110471806674246,
+    0.01007895302408179
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PASAT",
+   "diferencia": -0.0023,
+   "ic95": [
+    -0.02803738317756999,
+    0.024719101123595544
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PVTB",
+   "diferencia": -0.00463,
+   "ic95": [
+    -0.03294703094507947,
+    0.02506125786294952
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PVSAT",
+   "diferencia": -0.01157,
+   "ic95": [
+    -0.04629742547425473,
+    0.02370522694130501
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PASAT+PVTB",
+   "diferencia": -0.00346,
+   "ic95": [
+    -0.022910822572308982,
+    0.015894673474508982
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − OA",
+   "tareas": "PASAT",
+   "diferencia": 0.2,
+   "ic95": [
+    0.13960740616048037,
+    0.26261629715073564
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − OA",
+   "tareas": "PVTB",
+   "diferencia": 0.15694,
+   "ic95": [
+    0.09514220461559367,
+    0.2211695810672001
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − OA",
+   "tareas": "PVSAT",
+   "diferencia": 0.04815,
+   "ic95": [
+    -0.02424754953213447,
+    0.11724599661146634
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg − OA",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.17855,
+   "ic95": [
+    0.12274703695508715,
+    0.2352663373217159
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PASAT",
+   "diferencia": 0.17471,
+   "ic95": [
+    0.11116041327079208,
+    0.24472961458400058
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PVTB",
+   "diferencia": 0.14759,
+   "ic95": [
+    0.08286687139936681,
+    0.21173639182965617
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PVSAT",
+   "diferencia": 0.06657,
+   "ic95": [
+    -0.009303832913005064,
+    0.1386224447945187
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.1612,
+   "ic95": [
+    0.10126399001599157,
+    0.22060600865143845
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PASAT",
+   "diferencia": 0.18161,
+   "ic95": [
+    0.12614195739529366,
+    0.24016429200835132
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PVTB",
+   "diferencia": 0.14529,
+   "ic95": [
+    0.08106776193794707,
+    0.205503842155625
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PVSAT",
+   "diferencia": 0.05733,
+   "ic95": [
+    -0.017775709406842952,
+    0.12828416491054476
+   ]
+  },
+  {
+   "version": "completa",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.16351,
+   "ic95": [
+    0.11338047781755023,
+    0.2168768890141105
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art",
+   "tareas": "PASAT",
+   "diferencia": 0.17907,
+   "ic95": [
+    0.10867321499800552,
+    0.2535998430887211
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art",
+   "tareas": "PVTB",
+   "diferencia": 0.15888,
+   "ic95": [
+    0.10271164858110039,
+    0.21759259259259256
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art",
+   "tareas": "PVSAT",
+   "diferencia": 0.07026,
+   "ic95": [
+    0.004482744317239063,
+    0.13397643994912484
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.169,
+   "ic95": [
+    0.12397636653617516,
+    0.21319630570134915
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art_eq",
+   "tareas": "PASAT",
+   "diferencia": 0.18372,
+   "ic95": [
+    0.11007917556868167,
+    0.25565739994627995
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art_eq",
+   "tareas": "PVTB",
+   "diferencia": 0.15654,
+   "ic95": [
+    0.09637974976830396,
+    0.21811012787999773
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art_eq",
+   "tareas": "PVSAT",
+   "diferencia": 0.08197,
+   "ic95": [
+    0.018197629188517663,
+    0.14780803760205577
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − art_eq",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.17016,
+   "ic95": [
+    0.12315492120130837,
+    0.21580293606351417
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PASAT",
+   "diferencia": 0.0,
+   "ic95": [
+    -0.020271414190714432,
+    0.020501138952163992
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PVTB",
+   "diferencia": -0.01168,
+   "ic95": [
+    -0.03256003686236246,
+    0.00919540229885063
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PVSAT",
+   "diferencia": -0.01171,
+   "ic95": [
+    -0.03529828952857737,
+    0.009549421788707832
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg+art − eeg",
+   "tareas": "PASAT+PVTB",
+   "diferencia": -0.00583,
+   "ic95": [
+    -0.020192433063679564,
+    0.008046208483790302
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PASAT",
+   "diferencia": -0.04419,
+   "ic95": [
+    -0.07857343499197426,
+    -0.009111099606543901
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PVTB",
+   "diferencia": -0.01168,
+   "ic95": [
+    -0.045895173310500095,
+    0.018476819775895943
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PVSAT",
+   "diferencia": -0.02108,
+   "ic95": [
+    -0.06368300883179454,
+    0.018182853592876372
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − eeg_log_ventana",
+   "tareas": "PASAT+PVTB",
+   "diferencia": -0.02797,
+   "ic95": [
+    -0.049600614347046025,
+    -0.005753739930955179
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − OA",
+   "tareas": "PASAT",
+   "diferencia": 0.12093,
+   "ic95": [
+    0.051989076567627454,
+    0.1942593547397241
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − OA",
+   "tareas": "PVTB",
+   "diferencia": 0.12664,
+   "ic95": [
+    0.06252365247075052,
+    0.19023579444431252
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − OA",
+   "tareas": "PVSAT",
+   "diferencia": 0.06979,
+   "ic95": [
+    0.0021040215149686573,
+    0.13436159098712847
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg − OA",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.12378,
+   "ic95": [
+    0.06052392512364933,
+    0.1843319095781117
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PASAT",
+   "diferencia": 0.11147,
+   "ic95": [
+    0.042285929324435326,
+    0.18070035519550526
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PVTB",
+   "diferencia": 0.12875,
+   "ic95": [
+    0.06760734405993063,
+    0.18822273028090886
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PVSAT",
+   "diferencia": 0.04377,
+   "ic95": [
+    -0.029570695472824714,
+    0.1177864982312005
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res − OA (residualizado)",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.12009,
+   "ic95": [
+    0.060751750126263465,
+    0.17971895313314595
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PASAT",
+   "diferencia": 0.09987,
+   "ic95": [
+    0.036107030138679524,
+    0.1673795732537866
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PVTB",
+   "diferencia": 0.09607,
+   "ic95": [
+    0.032740921472556375,
+    0.1548009647697604
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PVSAT",
+   "diferencia": 0.04147,
+   "ic95": [
+    -0.028687524172441536,
+    0.11565201701448072
+   ]
+  },
+  {
+   "version": "igual_tiempo",
+   "contraste": "eeg_res_eq − OA (residualizado)",
+   "tareas": "PASAT+PVTB",
+   "diferencia": 0.09797,
+   "ic95": [
+    0.0430605288027667,
+    0.15244706258656315
+   ]
+  }
+ ],
+ "criterio_continuidad": {
+  "a": {
+   "PASAT": true,
+   "PVTB": true
+  },
+  "b": true,
+  "se_cumple": true
+ },
+ "miradas": {
+  "val": 0,
+  "test": 0
+ }
+}

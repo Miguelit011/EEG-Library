@@ -32,7 +32,7 @@ ejecutar. Reglas comunes a todos los pasos:
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
 | 1 | [`01_descriptivo/`](01_descriptivo/INFORME.md) | Reproducir los sondeos (pendientes y clasificador de tercios) con la partición correcta y los canales excluidos; curvas por minuto; descriptivo de duraciones | Hecho (2026-10-27): se reproduce. Acierto pareado PASAT 0.773 y PVTB 0.758 frente a OA 0.647; PVSAT ≈ OA. Criterio de continuidad cumplido. Anexo A (igual tiempo): PASAT +0.091 y PVTB +0.067 sobre OA; solo la beta relativa se separa del reposo |
-| 2 | `02_artefactos/` | Movimiento (`MOT.*`) y calidad de contacto (`CQ.*`) frente al tiempo en tarea | Pendiente |
+| 2 | [`02_artefactos/`](02_artefactos/INFORME.md) | Movimiento (`MOT.*`) y calidad de contacto (`CQ.*`) frente al tiempo en tarea | Hecho (2026-10-27): el movimiento no crece más que en reposo; solo artefactos 0.54–0.57; EEG residualizado − OA +0.120 a igual tiempo. Criterio cumplido. Diagnóstico: la cifra depende de la partición en pliegues (±0.02–0.05) |
 | 3 | `03_clasificador/` | Modelo clásico: variantes de features, transferencia entre tareas, regresión del minuto | Pendiente |
 | 4 | `04_potencia_y_controles/` | Potencia para `test`; tiempo en tarea frente a tiempo desde la colocación | Pendiente |
 | 5 | `05_entre_sesiones/` | (Opcional) Pendiente frente a rendimiento y covariables | Pendiente |

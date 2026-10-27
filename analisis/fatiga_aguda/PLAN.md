@@ -7,6 +7,14 @@
 > línea sin ellos: datos, definiciones, resultados, el código esencial
 > (apéndice A) y las decisiones pendientes. Nada de lo de la sección 3 es
 > citable en la memoria hasta que el paso 1 lo reproduzca desde el repo.
+>
+> **Actualización del 2026-10-27, tras el paso 1 y su anexo A** (visto bueno
+> del autor): el paso 1 reproduce los sondeos (sección 3.6, que es la que se
+> cita). A la vista de esos resultados de `train` cambian el contraste
+> principal (comparación a igual tiempo frente a OA), la familia de tareas
+> (PASAT y PVTB; PVSAT pasa a descriptiva) y la H3 (beta relativa frente a OA,
+> no alfa absoluta). Afecta a las secciones 0, 3.6, 5, 6, 8, 9 y 10. Los
+> cambios se declaran en el pre-registro como decididos sobre `train`.
 
 ## 0. Resumen
 
@@ -18,9 +26,13 @@
   resultados nulos o frágiles. La etiqueta de aquí es objetiva y gratuita (el
   instante de cada ventana) y la comparación es dentro de la grabación, donde
   no influyen el casco, la colocación ni el día.
-- **Lo que se sabe (exploratorio, solo `train`).** Acierto pareado de 0.785 en
-  PASAT, 0.751 en PVTB y 0.682 en PVSAT, frente a 0.620 en OA (control de
-  reposo).
+- **Lo que se sabe (paso 1, solo `train`, canales válidos).** Acierto pareado
+  de 0.773 en PASAT, 0.758 en PVTB y 0.645 en PVSAT, frente a 0.647 en OA
+  (control de reposo). **A igual tiempo transcurrido** (cada tarea recortada a
+  la duración del OA de su sesión), PASAT supera a OA en +0.091 [+0.021,
+  +0.160] y PVTB en +0.067 [+0.006, +0.127]. PVSAT no se distingue de OA. Lo
+  único de la firma espectral que se separa del reposo es la **bajada de la
+  beta relativa**; la subida de la alfa absoluta también ocurre en OA.
 - **Validación.** `train` y `val` son para probar y reajustar (desarrollo).
   Cuando los resultados en `val` sean buenos, todo se fija en un pre-registro
   y se evalúa **una sola vez en `test`** (sección 5).
@@ -245,6 +257,38 @@ PASAT), no la distancia al 0.5.
   clasificadores en 2 variantes y la fatigabilidad frente a 4 variables) se
   anotan en el pre-registro como exploración previa.
 
+### 3.6. Reproducción en el repositorio (paso 1 y anexo A, 2026-10-27)
+
+Detalle en `01_descriptivo/INFORME.md`. Solo `train` de `matriz_rf` (120
+personas por condición), canales excluidos anulados. **Estas son las cifras
+citables**; las de 3.2 y 3.3 quedan como registro del sondeo.
+
+| | PASAT | PVTB | PVSAT | OA |
+|---|---|---|---|---|
+| Acierto pareado, grabación completa | 0.773 | 0.758 | 0.645 | 0.647 |
+| − OA, grabación completa | +0.126 [+0.069, +0.183] | +0.111 [+0.047, +0.170] | −0.002 | — |
+| Acierto pareado, **igual tiempo** | 0.739 | 0.715 | 0.632 | 0.647 |
+| − OA, **igual tiempo** | **+0.091** [+0.021, +0.160] | **+0.067** [+0.006, +0.127] | −0.016 | — |
+
+- La corrección de la partición apenas mueve las cifras. Lo que cambia es
+  quitar los canales excluidos: la ventaja de PASAT sobre OA pasa de +0.165 a
+  +0.126, y PVSAT deja de distinguirse de OA.
+- **Igual tiempo:** OA dura 108 s y las tareas, 172–174 s. Al recortar cada
+  tarea a la duración del OA de su sesión, alrededor de un tercio de la
+  ventaja desaparece (era tiempo de más) y dos tercios se mantienen.
+- **Pendientes por minuto a igual tiempo, pareadas por persona frente a OA:**
+  la alfa posterior absoluta (+0.010, p = 0.14–0.18) y la theta frontal
+  absoluta no se distinguen del reposo. **La beta posterior relativa sí**:
+  −0.014 por minuto en PASAT (p = 0.037) y −0.022 en PVTB (p = 0.0009). En
+  PVSAT va al revés (+0.013).
+- **Corrige la lectura de 3.2:** la subida de la potencia absoluta lenta es una
+  **deriva común** a toda grabación con ojos abiertos, no una firma de la
+  tarea. Lo específico de PASAT y PVTB es el desplazamiento relativo hacia
+  frecuencias lentas (bajada de la beta relativa).
+- No resuelto: a igual tiempo dentro de la grabación, OA sigue más cerca de la
+  colocación del casco (≈ 2 min de sesión, frente a ≈ 7 en PASAT y ≈ 10 en
+  PVTB). Es el paso 4.
+
 ---
 
 ## 4. Datos y definiciones
@@ -371,10 +415,15 @@ Consecuencias que hay que asumir y explicar en la memoria:
 4. **Una vez abierto el test, no se cambia nada.** Su resultado se reporta salga
    lo que salga. Cualquier ajuste posterior es exploratorio y se cita así.
 5. **Potencia.** Con 28 personas en `test` (≈ 103 grabaciones por tarea), un
-   acierto pareado de 0.78 frente a 0.5 sale holgado. El contraste **tarea −
-   OA** (≈ 0.16 en el sondeo) es el que puede quedarse corto. **El paso 4
-   estima la potencia** submuestreando 28 personas de `train` + `val`
-   (≥ 2000 réplicas) antes de elegir la hipótesis principal.
+   acierto pareado de 0.75 frente a 0.5 sale holgado. El contraste **tarea −
+   OA a igual tiempo** (+0.07 a +0.09 en `train`, paso 1) es el que puede
+   quedarse corto. Una estimación gruesa, escalando los IC de `train` a 28
+   personas, da una potencia de ~30–45 % a igual tiempo y de ~60 % con la
+   grabación completa; para la H3, ~50 % en PVTB y ~25 % en PASAT. **El paso
+   4 la estima bien** submuestreando 28 personas de `train` + `val`
+   (≥ 2000 réplicas). Si sale baja, antes del pre-registro hay que elegir entre
+   el contraste limpio con poca potencia y el confundido (grabación completa)
+   con más, y declarar la elección.
 
 ## 6. Pasos
 
@@ -392,6 +441,14 @@ Las horas son de trabajo humano. El cómputo del deep learning va aparte
   excluidas (< 10 ventanas).
 - **Criterio de continuidad:** el acierto pareado centrado de PASAT y PVTB
   sigue siendo ≥ 0.70 y supera a OA.
+- **Hecho (2026-10-27):** criterio cumplido (sección 3.6). Anexo A: comparación
+  a igual tiempo frente a OA.
+
+**Familia de tareas desde aquí:** PASAT y PVTB. PVSAT sigue en los análisis
+descriptivos de los pasos 2 y 3, pero fuera de las hipótesis. **Igual
+tiempo:** todo contraste frente a OA se calcula también con cada tarea
+recortada a la duración del OA de su sesión (anexo A del paso 1), y esa es la
+versión principal.
 
 ### Paso 2 — `02_artefactos/`: movimiento y calidad de contacto (≈ 8 h)
 
@@ -411,6 +468,7 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
     la grabación?
   - ¿Qué acierto pareado alcanza un clasificador que **solo** usa movimiento y
     contacto? Es la referencia de artefacto que hay que superar.
+  - Todo lo anterior también a igual tiempo frente a OA.
 - Comprobar la existencia de `MOT`/`CQ` por versión de export (4.5).
 
 ### Paso 3 — `03_clasificador/`: modelo clásico (≈ 8 h)
@@ -422,8 +480,9 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
   4. agregados por región.
 - Modelos: logística (C en {0.01, 0.1, 1}) y Random Forest (el ya validado en
   la Fase 14, sin búsqueda de hiperparámetros).
-- Tareas: PASAT, PVTB y PVSAT por separado y conjuntas. OA y OC como
-  controles.
+- Tareas: PASAT y PVTB por separado y conjuntas; PVSAT, descriptiva. OA y OC
+  como controles. Contraste frente a OA a igual tiempo (principal) y con la
+  grabación completa.
 - **Transferencia entre tareas:** entrenar en PASAT y evaluar en PVTB (y al
   revés). Si funciona, el cambio es común a las tareas y no específico de una.
 - Variante de regresión: predecir el minuto (ρ de Spearman dentro de la
@@ -437,8 +496,9 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
 
 - **Potencia para `test`:** submuestrear 28 personas de `train` + `val`,
   repetir la evaluación y estimar la probabilidad de que los contrastes de la
-  sección 8 sean significativos. De aquí sale la hipótesis principal (sección
-  5).
+  sección 8 sean significativos: la H1 a igual tiempo (PASAT + PVTB conjuntas
+  frente a OA), su versión con la grabación completa y la nueva H3. De aquí
+  sale la hipótesis principal (sección 5, punto 5).
 - **Tiempo en tarea frente a tiempo desde que se colocó el casco.** El orden
   fijo de las tareas impide separarlos del todo. Comprobaciones parciales:
   1. **Especificidad:** si fuera deriva del hardware, el patrón espectral sería
@@ -680,9 +740,10 @@ Se concretan en el paso 6 con lo que digan los pasos 3 y 4.
 
 | Id | Hipótesis | Contraste propuesto |
 |---|---|---|
-| **H1 (principal)** | El acierto pareado en PASAT + PVTB supera al de OA de las mismas sesiones | Diferencia de acierto pareado; bootstrap por persona (10 000); unilateral, α = 0.05 |
-| H2 | El acierto pareado supera 0.5 en PASAT, PVTB y PVSAT | Bootstrap por persona; Holm sobre 3 |
-| H3 | Firma espectral en PASAT y PVTB: pendiente de alfa posterior absoluta > 0 y de beta posterior relativa < 0 | t sobre las pendientes por persona; Holm sobre 4 |
+| **H1 (principal)** | **A igual tiempo transcurrido**, el acierto pareado de PASAT + PVTB (conjuntas) supera al de OA de las mismas sesiones | Cada tarea recortada a la duración del OA de su sesión. Diferencia de acierto pareado; bootstrap por persona (10 000); unilateral, α = 0.05 |
+| H1b (secundaria) | Lo mismo con la grabación completa | Igual que H1. Confunde tarea con tiempo transcurrido: se reporta como secundaria |
+| H2 | El acierto pareado supera 0.5 en PASAT y en PVTB | Bootstrap por persona; Holm sobre 2. PVSAT y OA se reportan como descriptivos |
+| H3 | Firma específica de la tarea: a igual tiempo, la pendiente de la beta posterior relativa es más negativa en PASAT y en PVTB que en el OA de la misma persona | t sobre la diferencia de pendientes por persona (tarea − OA); Holm sobre 2. La subida de alfa y theta absolutas se reporta como deriva común, sin hipótesis |
 | H4 | El efecto supera a la referencia de artefactos: el acierto pareado del EEG es mayor que el de solo movimiento y contacto | Diferencia pareada; bootstrap por persona |
 | H5 (si hay DL) | La CNN fijada iguala o supera a la logística | Diferencia del acierto pareado; IC al 95 %. Se reporta salga lo que salga |
 
@@ -702,7 +763,8 @@ guía del desarrollo.
 | Contacto que empeora | Lo mismo | Paso 2 (CQ) |
 | Parpadeo y EMG residuales (la ICA solo quita componentes oculares) | Que la CNN aprenda la tasa de parpadeo | Oclusión e importancias; comparar con la logística. La tasa de parpadeo es también un marcador de fatiga, pero no es «EEG»: si aparece, se reporta así |
 | Grabaciones de 128 Hz | Diferencias de procesado en M2 | Sensibilidad sin ellas |
-| Canales excluidos usados en el sondeo | Cifras infladas o desinfladas | Paso 1 (4.4) |
+| Canales excluidos usados en el sondeo | Cifras infladas o desinfladas | Paso 1 (4.4). Resuelto: inflaban la ventaja sobre OA (3.6) |
+| OA dura menos que las tareas (108 s frente a 172–174 s) | Que la ventaja sobre OA sea «más tiempo» y no «tarea» | Contraste a igual tiempo (anexo A del paso 1, H1). Explica alrededor de un tercio de la ventaja |
 | Persona de `test` vista en el sondeo | Fuga mínima | Declarar y hacer sensibilidad (3.5) |
 | Potencia baja en `test` (28) para tarea − OA | Un «no concluye» con efecto real | Paso 4; elegir la hipótesis principal según la potencia |
 | Reajustar muchas veces mirando `val` | Cifras de `val` optimistas | Se reportan como desarrollo, con el recuento de miradas. La cifra que cuenta es la de `test` |
@@ -720,7 +782,10 @@ guía del desarrollo.
 - **Clasificar ventanas sin centrar o normalizar por grabación** y presentarlo
   como resultado. Sin centrar, el modelo aprende quién es la persona y no el
   momento: el AUC baja a ≈ 0.60.
-- **Comparar contra 0.5 en vez de contra OA** en el titular.
+- **Comparar contra 0.5 en vez de contra OA** en el titular, ni contra OA con
+  la grabación completa sin decir que confunde tarea y tiempo.
+- **Presentar la subida de la alfa o la theta absolutas como firma de la
+  tarea.** También ocurre en OA (3.6).
 - **Mezclar STROOP o MSIT** (≈ 1 min) en el análisis de tercios.
 - **Volver a conectar la pendiente con el VAS, FG o el trimestre.** Ya está
   hecho y es nulo (3.4); repetirlo es pescar.

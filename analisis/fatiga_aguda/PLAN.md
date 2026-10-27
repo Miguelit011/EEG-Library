@@ -446,6 +446,13 @@ Consecuencias que hay que asumir y explicar en la memoria:
    el contraste limpio con poca potencia y el confundido (grabación completa)
    con más, y declarar la elección.
 
+   **Estimada en el paso 4:** H1 (igual tiempo) 0.75 (0.58 con un efecto un
+   25 % menor), H1b (grabación completa) 0.92 (0.83), H2 1.00 y H3 0.26–0.38.
+   **Decisión del autor (2026-10-27): secuencia fija H1b → H1.** Primero se
+   contrasta la H1b a α = 0.05; solo si confirma se contrasta la H1, también a
+   α = 0.05. La secuencia controla el error de familia sin repartir el α. H2 y
+   H3 son secundarias, con Holm dentro de cada una.
+
 ## 6. Pasos
 
 Las horas son de trabajo humano. El cómputo del deep learning va aparte
@@ -778,12 +785,16 @@ GPU, ampliar el programa. Si no, el programa de 7.4 basta para la memoria.
 
 Se concretan en el paso 6 con lo que digan los pasos 3 y 4.
 
+**Orden de contraste (decisión del autor, 2026-10-27, tras el paso 4):** las
+principales van en **secuencia fija H1b → H1** (H1 solo se contrasta si H1b
+confirma). H2 y H3 son secundarias.
+
 | Id | Hipótesis | Contraste propuesto |
 |---|---|---|
-| **H1 (principal)** | **A igual tiempo transcurrido**, el EEG ordena en el tiempo las ventanas de PASAT + PVTB (conjuntas) mejor que las de OA de las mismas sesiones | Cada tarea recortada a la duración del OA de su sesión. Medida `rho_ventanas`: el modelo fijado (entrenado con los tercios) puntúa cada ventana, y por grabación se calcula la ρ de Spearman entre la puntuación y el instante. Diferencia de la ρ media (tareas − OA); bootstrap por persona (10 000); unilateral, α = 0.05 |
-| H1b (secundaria) | Lo mismo con la grabación completa | Igual que H1. Confunde tarea con tiempo transcurrido: se reporta como secundaria |
-| H2 | La ρ media de `rho_ventanas` supera 0 en PASAT y en PVTB | Bootstrap por persona; Holm sobre 2. PVSAT, OA y OC se reportan como descriptivos. El acierto pareado de tercios se reporta también, como cifra interpretable |
-| H3 | Firma específica de la tarea: a igual tiempo, la pendiente de la beta posterior relativa es más negativa en PASAT y en PVTB que en el OA de la misma persona | t sobre la diferencia de pendientes por persona (tarea − OA); Holm sobre 2. La subida de alfa y theta absolutas se reporta como deriva común, sin hipótesis |
+| **H1 (principal, paso 2 de la secuencia)** | **A igual tiempo transcurrido**, el EEG ordena en el tiempo las ventanas de PASAT + PVTB (conjuntas) mejor que las de OA de las mismas sesiones | Cada tarea recortada a la duración del OA de su sesión. Medida `rho_ventanas`: el modelo fijado (entrenado con los tercios) puntúa cada ventana, y por grabación se calcula la ρ de Spearman entre la puntuación y el instante. Diferencia de la ρ media (tareas − OA); bootstrap por persona (10 000); unilateral, α = 0.05 |
+| **H1b (principal, paso 1 de la secuencia)** | Lo mismo con la grabación completa | Igual que H1. Confunde tarea con tiempo transcurrido; por eso, si confirma, se contrasta después la H1 |
+| H2 (secundaria) | La ρ media de `rho_ventanas` supera 0 en PASAT y en PVTB | Bootstrap por persona; Holm sobre 2. PVSAT, OA y OC se reportan como descriptivos. El acierto pareado de tercios se reporta también, como cifra interpretable |
+| H3 (secundaria) | Firma específica de la tarea: a igual tiempo, la pendiente de la beta posterior relativa es más negativa en PASAT y en PVTB que en el OA de la misma persona | t sobre la diferencia de pendientes por persona (tarea − OA); Holm sobre 2. La subida de alfa y theta absolutas se reporta como deriva común, sin hipótesis |
 | H4 | El efecto supera a la referencia de artefactos: el acierto pareado del EEG es mayor que el de solo movimiento y contacto | Diferencia pareada; bootstrap por persona |
 | H5 (si hay DL) | La CNN fijada iguala o supera a la logística | Diferencia del acierto pareado; IC al 95 %. Se reporta salga lo que salga |
 

@@ -1,0 +1,374 @@
+{
+ "modo": "ensayo",
+ "inicio": "2026-10-27 18:31:53",
+ "fin": "2026-10-27 18:32:19",
+ "sha256": {
+  "guion": "45f9495d0cf043b3950747db5d6f2a0743fdab53c61c83574a80b7e63457f8f6",
+  "preregistro": "ea45d11044867a039bb99f8eaaf9dbf6b5157f4ae2008620a9f30ac031a6deb4",
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "configuracion_elegida.json": "c0d77dc864f9251f9f85a9c94b6d3a10a6440c3039b567b95ead1c8b77670ed1",
+  "medida_elegida.json": "d3e6c41cc79b4aacad53cd9c0930b6ab88bba6ddcf3a7d6eb4616960841a596f"
+ },
+ "entorno": {
+  "python": "3.10.11",
+  "sklearn": "1.7.2",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "so": "Windows-10-10.0.26300-SP0",
+  "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD"
+ },
+ "parametros": {
+  "n_boot": 10000,
+  "semilla": 42,
+  "alfa": 0.05
+ },
+ "inventario": [
+  {
+   "condicion": "OA",
+   "grabaciones": 86,
+   "personas": 25
+  },
+  {
+   "condicion": "OC",
+   "grabaciones": 88,
+   "personas": 25
+  },
+  {
+   "condicion": "PASAT",
+   "grabaciones": 88,
+   "personas": 25
+  },
+  {
+   "condicion": "PVSAT",
+   "grabaciones": 86,
+   "personas": 25
+  },
+  {
+   "condicion": "PVTB",
+   "grabaciones": 87,
+   "personas": 25
+  }
+ ],
+ "personas_expuestas": 1,
+ "grabaciones_128_hz": 5,
+ "H1b": {
+  "valor": 0.09468185222453873,
+  "ic95": [
+   0.04399931105348138,
+   0.13773064561678272
+  ],
+  "p_unilateral": 0.00019998000199980003,
+  "replicas_validas": 10000,
+  "veredicto": "CONFIRMA"
+ },
+ "H1": {
+  "valor": 0.0587107559011619,
+  "ic95": [
+   0.0010351311638220275,
+   0.11419994672697373
+  ],
+  "p_unilateral": 0.022997700229977002,
+  "replicas_validas": 10000,
+  "veredicto": "CONFIRMA"
+ },
+ "H2": {
+  "PASAT": {
+   "valor": 0.09723497049410469,
+   "ic95": [
+    0.04957111305003733,
+    0.14383267593400892
+   ],
+   "p_unilateral": 9.999000099990002e-05,
+   "replicas_validas": 10000,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  },
+  "PVTB": {
+   "valor": 0.09762130736886702,
+   "ic95": [
+    0.05693110764991142,
+    0.13619365334654496
+   ],
+   "p_unilateral": 9.999000099990002e-05,
+   "replicas_validas": 10000,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  }
+ },
+ "H3": {
+  "PASAT": {
+   "diferencia": -0.06347220992990227,
+   "t": -2.287980514646175,
+   "p_unilateral": 0.015622945525793921,
+   "personas": 25,
+   "p_holm": 0.031245891051587843,
+   "veredicto": "CONFIRMA"
+  },
+  "PVTB": {
+   "diferencia": -0.03433736233827867,
+   "t": -1.9707920645882773,
+   "p_unilateral": 0.030193334158317382,
+   "personas": 25,
+   "p_holm": 0.031245891051587843,
+   "veredicto": "CONFIRMA"
+  }
+ },
+ "H4": {
+  "valor": 0.08875739644970415,
+  "ic95": [
+   -0.0053475935828876135,
+   0.18493150684931509
+  ],
+  "p_unilateral": 0.03569643035696431,
+  "replicas_validas": 10000,
+  "eeg": 0.6449704142011834,
+  "art": 0.5562130177514792,
+  "grabaciones": 169,
+  "sin_movimiento_evaluadas": 2,
+  "sin_movimiento_entreno": 20,
+  "veredicto": "CONFIRMA"
+ },
+ "descriptivos": {
+  "completa | PASAT | rho": {
+   "valor": 0.11902584937522677,
+   "ic95": [
+    0.07368861182233374,
+    0.15855414933667122
+   ],
+   "grabaciones": 88
+  },
+  "completa | PASAT | tercios_pareado": {
+   "valor": 0.7272727272727273,
+   "ic95": [
+    0.61643437400446,
+    0.8241758241758241
+   ],
+   "grabaciones": 88
+  },
+  "completa | PVTB | rho": {
+   "valor": 0.1479355602021115,
+   "ic95": [
+    0.10261466423746636,
+    0.19220844914523552
+   ],
+   "grabaciones": 87
+  },
+  "completa | PVTB | tercios_pareado": {
+   "valor": 0.7586206896551724,
+   "ic95": [
+    0.6805416666666667,
+    0.8333333333333334
+   ],
+   "grabaciones": 87
+  },
+  "completa | OA | rho": {
+   "valor": 0.03871625339033927,
+   "ic95": [
+    0.0007206186157929323,
+    0.07945400631550223
+   ],
+   "grabaciones": 86
+  },
+  "completa | OA | tercios_pareado": {
+   "valor": 0.5697674418604651,
+   "ic95": [
+    0.47674418604651164,
+    0.6626506024096386
+   ],
+   "grabaciones": 86
+  },
+  "completa | PVSAT | rho": {
+   "valor": 0.05954733042069232,
+   "ic95": [
+    0.0172001991739104,
+    0.10417303630423146
+   ],
+   "grabaciones": 86
+  },
+  "completa | PVSAT | tercios_pareado": {
+   "valor": 0.6162790697674418,
+   "ic95": [
+    0.5217391304347826,
+    0.7058823529411765
+   ],
+   "grabaciones": 86
+  },
+  "completa | OC | rho": {
+   "valor": 0.09235382784682931,
+   "ic95": [
+    0.0423546642056393,
+    0.1442563903713225
+   ],
+   "grabaciones": 88
+  },
+  "completa | OC | tercios_pareado": {
+   "valor": 0.7045454545454546,
+   "ic95": [
+    0.6043898809523809,
+    0.8
+   ],
+   "grabaciones": 88
+  },
+  "igual_tiempo | PASAT | rho": {
+   "valor": 0.09723497049410469,
+   "ic95": [
+    0.04762310386416734,
+    0.14489541480531118
+   ],
+   "grabaciones": 86
+  },
+  "igual_tiempo | PASAT | tercios_pareado": {
+   "valor": 0.5930232558139535,
+   "ic95": [
+    0.5,
+    0.686046511627907
+   ],
+   "grabaciones": 86
+  },
+  "igual_tiempo | PVTB | rho": {
+   "valor": 0.09762130736886702,
+   "ic95": [
+    0.05611251421851728,
+    0.1365182320949903
+   ],
+   "grabaciones": 85
+  },
+  "igual_tiempo | PVTB | tercios_pareado": {
+   "valor": 0.6588235294117647,
+   "ic95": [
+    0.5713901689708141,
+    0.735632183908046
+   ],
+   "grabaciones": 85
+  },
+  "igual_tiempo | OA | rho": {
+   "valor": 0.03871625339033927,
+   "ic95": [
+    0.0009696498228526154,
+    0.07853598395837609
+   ],
+   "grabaciones": 86
+  },
+  "igual_tiempo | OA | tercios_pareado": {
+   "valor": 0.5697674418604651,
+   "ic95": [
+    0.47725951374207193,
+    0.6625
+   ],
+   "grabaciones": 86
+  },
+  "igual_tiempo | PVSAT | rho": {
+   "valor": 0.10467332361578703,
+   "ic95": [
+    0.05466100156722494,
+    0.15098834867334263
+   ],
+   "grabaciones": 84
+  },
+  "igual_tiempo | PVSAT | tercios_pareado": {
+   "valor": 0.6904761904761905,
+   "ic95": [
+    0.5977011494252874,
+    0.776503267973856
+   ],
+   "grabaciones": 84
+  },
+  "igual_tiempo | OC | rho": {
+   "valor": 0.09235382784682931,
+   "ic95": [
+    0.04370820047143573,
+    0.14319935002756073
+   ],
+   "grabaciones": 88
+  },
+  "igual_tiempo | OC | tercios_pareado": {
+   "valor": 0.7045454545454546,
+   "ic95": [
+    0.6043498168498168,
+    0.8023255813953488
+   ],
+   "grabaciones": 88
+  }
+ },
+ "sensibilidades": {
+  "sin_personas_expuestas": {
+   "H1b": {
+    "valor": 0.09472250687982386,
+    "ic95": [
+     0.04410841817156813,
+     0.13949457477417415
+    ],
+    "p_unilateral": 0.00019998000199980003,
+    "replicas_validas": 10000
+   },
+   "H1": {
+    "valor": 0.06160442509618886,
+    "ic95": [
+     0.0008579955872245229,
+     0.11886471104683487
+    ],
+    "p_unilateral": 0.0230976902309769,
+    "replicas_validas": 10000
+   },
+   "rho_PASAT": {
+    "valor": 0.09850738912669961,
+    "ic95": [
+     0.04796232151951415,
+     0.14801433046187257
+    ],
+    "p_unilateral": 0.00019998000199980003,
+    "replicas_validas": 10000
+   },
+   "rho_PVTB": {
+    "valor": 0.09879010984693182,
+    "ic95": [
+     0.05674148748565472,
+     0.13971337035848905
+    ],
+    "p_unilateral": 9.999000099990002e-05,
+    "replicas_validas": 10000
+   }
+  },
+  "sin_grabaciones_128_hz": {
+   "H1b": {
+    "valor": 0.09195241633708251,
+    "ic95": [
+     0.040814340436273175,
+     0.13509583644489997
+    ],
+    "p_unilateral": 0.00019998000199980003,
+    "replicas_validas": 10000
+   },
+   "H1": {
+    "valor": 0.0575632248886587,
+    "ic95": [
+     -0.0008209788350748075,
+     0.11377896079853347
+    ],
+    "p_unilateral": 0.027297270272972702,
+    "replicas_validas": 10000
+   },
+   "rho_PASAT": {
+    "valor": 0.09735040422682857,
+    "ic95": [
+     0.04911980011407503,
+     0.1443069501701214
+    ],
+    "p_unilateral": 9.999000099990002e-05,
+    "replicas_validas": 10000
+   },
+   "rho_PVTB": {
+    "valor": 0.09559285940382986,
+    "ic95": [
+     0.05448431326417558,
+     0.13486722272011842
+    ],
+    "p_unilateral": 9.999000099990002e-05,
+    "replicas_validas": 10000
+   }
+  }
+ },
+ "commit": "3295cdaaebac56d6518f21f13a3abeb2508e728d"
+}

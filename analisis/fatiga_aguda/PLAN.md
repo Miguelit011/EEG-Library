@@ -26,6 +26,10 @@
   resultados nulos o frágiles. La etiqueta de aquí es objetiva y gratuita (el
   instante de cada ventana) y la comparación es dentro de la grabación, donde
   no influyen el casco, la colocación ni el día.
+- **Paso 3 (2026-10-27).** Configuración fijada: 56 `log10(pot_rel)` +
+  logística C = 0.01, un modelo por tarea. Medida de la H1: `rho_ventanas`. En
+  `val` (25 personas, mirada 2), H1 = +0.059 [+0.003, +0.116]; PASAT ρ = 0.097
+  y PVTB ρ = 0.098, frente a OA 0.039. OC se comporta casi como las tareas.
 - **Lo que se sabe (paso 1, solo `train`, canales válidos).** Acierto pareado
   de 0.773 en PASAT, 0.758 en PVTB y 0.645 en PVSAT, frente a 0.647 en OA
   (control de reposo). **A igual tiempo transcurrido** (cada tarea recortada a
@@ -299,6 +303,10 @@ citables**; las de 3.2 y 3.3 quedan como registro del sondeo.
 - No resuelto: a igual tiempo dentro de la grabación, OA sigue más cerca de la
   colocación del casco (≈ 2 min de sesión, frente a ≈ 7 en PASAT y ≈ 10 en
   PVTB). Es el paso 4.
+- **Pasos 2 y 3:** el efecto no lo explican el movimiento ni el contacto
+  (`02_artefactos/INFORME.md`). El clasificador fijado y la medida
+  `rho_ventanas`, con las dos miradas a `val`, están en
+  `03_clasificador/INFORME.md` y en la sección 0.
 
 ---
 
@@ -427,13 +435,13 @@ Consecuencias que hay que asumir y explicar en la memoria:
    reporta el resultado del desarrollo como está.
 4. **Una vez abierto el test, no se cambia nada.** Su resultado se reporta salga
    lo que salga. Cualquier ajuste posterior es exploratorio y se cita así.
-5. **Potencia.** Con 28 personas en `test` (≈ 103 grabaciones por tarea), un
-   acierto pareado de 0.75 frente a 0.5 sale holgado. El contraste **tarea −
-   OA a igual tiempo** (+0.07 a +0.09 en `train`, paso 1) es el que puede
-   quedarse corto. Una estimación gruesa, escalando los IC de `train` a 28
-   personas, da una potencia de ~30–45 % a igual tiempo y de ~60 % con la
-   grabación completa; para la H3, ~50 % en PVTB y ~25 % en PASAT. **El paso
-   4 la estima bien** submuestreando 28 personas de `train` + `val`
+5. **Potencia.** Con 28 personas en `test` (≈ 103 grabaciones por tarea), que
+   las tareas superen el azar sale holgado. El contraste **tarea − OA a igual
+   tiempo** es el que puede quedarse corto. Con el acierto pareado de tercios,
+   la estimación gruesa era de ~30–45 %. Con la medida `rho_ventanas` (paso 3,
+   reajuste 1), escalando la z de `train` (4.89 × √(28/121) ≈ 2.35), es del
+   orden del **75 %**; para la H3, ~50 % en PVTB y ~25 % en PASAT. **El paso 4
+   la estima bien** submuestreando 28 personas de `train` + `val`
    (≥ 2000 réplicas). Si sale baja, antes del pre-registro hay que elegir entre
    el contraste limpio con poca potencia y el confundido (grabación completa)
    con más, y declarar la elección.
@@ -506,14 +514,26 @@ Es el paso que más protege la línea frente a la crítica de «es el casco».
   PVTB − OA a igual tiempo**, media de la CV repetida (decisión del autor,
   2026-10-27; antes era el mayor acierto en PASAT + PVTB, que premiaría la
   deriva común). Desempate por simplicidad (`03_clasificador/INFORME.md`).
+- **Hecho (2026-10-27):** elegida `rel` (56 `log10(pot_rel)`) + logística
+  C = 0.01, un modelo por tarea. Mirada 1 a `val` con el acierto pareado de
+  tercios: **no buena** (PASAT a igual tiempo con IC [0.494, 0.685]).
+  **Reajuste 1** (decidido después de la mirada 1 y elegido en `train` por
+  eficiencia, z de la H1): la medida pasa a ser **`rho_ventanas`**. Mirada 2:
+  **`val` bueno** (H1 = +0.059 [+0.003, +0.116]). **`val` lleva 2 miradas.**
 
 ### Paso 4 — `04_potencia_y_controles/`: potencia y tiempo desde la colocación (≈ 6 h)
 
 - **Potencia para `test`:** submuestrear 28 personas de `train` + `val`,
   repetir la evaluación y estimar la probabilidad de que los contrastes de la
   sección 8 sean significativos: la H1 a igual tiempo (PASAT + PVTB conjuntas
-  frente a OA), su versión con la grabación completa y la nueva H3. De aquí
-  sale la hipótesis principal (sección 5, punto 5).
+  frente a OA) **con la medida `rho_ventanas`**, su versión con la grabación
+  completa y la nueva H3. De aquí sale la hipótesis principal (sección 5,
+  punto 5).
+- **OC como control** (añadido tras el paso 3): en `train` y en `val`, OC
+  ordena sus ventanas en el tiempo casi como las tareas (ρ = 0.092 en `val`,
+  frente a 0.039 de OA). OC es la primera grabación de la sesión, justo
+  después de colocar el casco, así que es el mejor indicio de una deriva de
+  asentamiento. Se incluye en las comprobaciones de abajo.
 - **Tiempo en tarea frente a tiempo desde que se colocó el casco.** El orden
   fijo de las tareas impide separarlos del todo. Comprobaciones parciales:
   1. **Especificidad:** si fuera deriva del hardware, el patrón espectral sería
@@ -614,7 +634,10 @@ no se hace.
   llevan un **canal de máscara** (4.4).
 - **Etiqueta:** 0 en el primer tercio y 1 en el último. El tercio medio no se
   entrena.
-- **Evaluación comparable con el modelo clásico:** media de las probabilidades
+- **Medida principal, la misma que la H1:** `rho_ventanas` (la red puntúa cada
+  ventana y, por grabación, se calcula la ρ de Spearman con el instante). Así
+  la comparación con la logística es directa y pareada por grabación.
+- **Evaluación complementaria:** media de las probabilidades
   de las ventanas de cada tercio, y acierto pareado por grabación. Además, AUC
   por ventana.
 - **Mismos pliegues:** la misma asignación de personas a pliegues que el
@@ -757,9 +780,9 @@ Se concretan en el paso 6 con lo que digan los pasos 3 y 4.
 
 | Id | Hipótesis | Contraste propuesto |
 |---|---|---|
-| **H1 (principal)** | **A igual tiempo transcurrido**, el acierto pareado de PASAT + PVTB (conjuntas) supera al de OA de las mismas sesiones | Cada tarea recortada a la duración del OA de su sesión. Diferencia de acierto pareado; bootstrap por persona (10 000); unilateral, α = 0.05 |
+| **H1 (principal)** | **A igual tiempo transcurrido**, el EEG ordena en el tiempo las ventanas de PASAT + PVTB (conjuntas) mejor que las de OA de las mismas sesiones | Cada tarea recortada a la duración del OA de su sesión. Medida `rho_ventanas`: el modelo fijado (entrenado con los tercios) puntúa cada ventana, y por grabación se calcula la ρ de Spearman entre la puntuación y el instante. Diferencia de la ρ media (tareas − OA); bootstrap por persona (10 000); unilateral, α = 0.05 |
 | H1b (secundaria) | Lo mismo con la grabación completa | Igual que H1. Confunde tarea con tiempo transcurrido: se reporta como secundaria |
-| H2 | El acierto pareado supera 0.5 en PASAT y en PVTB | Bootstrap por persona; Holm sobre 2. PVSAT y OA se reportan como descriptivos |
+| H2 | La ρ media de `rho_ventanas` supera 0 en PASAT y en PVTB | Bootstrap por persona; Holm sobre 2. PVSAT, OA y OC se reportan como descriptivos. El acierto pareado de tercios se reporta también, como cifra interpretable |
 | H3 | Firma específica de la tarea: a igual tiempo, la pendiente de la beta posterior relativa es más negativa en PASAT y en PVTB que en el OA de la misma persona | t sobre la diferencia de pendientes por persona (tarea − OA); Holm sobre 2. La subida de alfa y theta absolutas se reporta como deriva común, sin hipótesis |
 | H4 | El efecto supera a la referencia de artefactos: el acierto pareado del EEG es mayor que el de solo movimiento y contacto | Diferencia pareada; bootstrap por persona |
 | H5 (si hay DL) | La CNN fijada iguala o supera a la logística | Diferencia del acierto pareado; IC al 95 %. Se reporta salga lo que salga |
@@ -782,6 +805,8 @@ guía del desarrollo.
 | Grabaciones de 128 Hz | Diferencias de procesado en M2 | Sensibilidad sin ellas |
 | Canales excluidos usados en el sondeo | Cifras infladas o desinfladas | Paso 1 (4.4). Resuelto: inflaban la ventaja sobre OA (3.6) |
 | OA dura menos que las tareas (108 s frente a 172–174 s) | Que la ventaja sobre OA sea «más tiempo» y no «tarea» | Contraste a igual tiempo (anexo A del paso 1, H1). Explica alrededor de un tercio de la ventaja |
+| OC cambia dentro de la grabación casi como las tareas | Que lo que se mide sea asentamiento del casco y no tarea; OA sería un control «fácil» | Paso 4 (tiempo desde la colocación, con OC). Se declara; la H1 se fijó frente a OA antes de verlo y no se cambia |
+| `val` mirado dos veces (la segunda, tras un fallo) | Cifras de `val` optimistas | Se reportan como desarrollo, con el recuento. La medida se eligió en `train` por eficiencia, no por `val` |
 | Persona de `test` vista en el sondeo | Fuga mínima | Declarar y hacer sensibilidad (3.5) |
 | Potencia baja en `test` (28) para tarea − OA | Un «no concluye» con efecto real | Paso 4; elegir la hipótesis principal según la potencia |
 | Reajustar muchas veces mirando `val` | Cifras de `val` optimistas | Se reportan como desarrollo, con el recuento de miradas. La cifra que cuenta es la de `test` |

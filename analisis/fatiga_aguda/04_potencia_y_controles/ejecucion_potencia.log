@@ -1,0 +1,30 @@
+
+==============================================================================
+0. CARGA (train + val)
+==============================================================================
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 3184 de 3728 epoca(s) (85.4 %) tienen algun canal excluido.
+Personas: 146 (pseudo-test de 28, entreno con 118)
+
+==============================================================================
+1. SIMULACIÓN — efecto_estimado (2000 réplicas)
+==============================================================================
+  244 s
+  H1_igual_tiempo    potencia = 0.752 (± 0.019)
+  H2_PASAT           potencia = 1.000 (± 0.000)
+  H2_PVTB            potencia = 1.000 (± 0.000)
+  H1_completa        potencia = 0.916 (± 0.012)
+  H3_PASAT           potencia = 0.263 (± 0.019)
+  H3_PVTB            potencia = 0.380 (± 0.021)
+  H1_igual_tiempo: mediana +0.071, p5–p95 [+0.025, +0.122]
+  H1_completa: mediana +0.090, p5–p95 [+0.044, +0.137]
+
+==============================================================================
+1. SIMULACIÓN — efecto_25_menor (2000 réplicas)
+==============================================================================
+  232 s
+  H1_igual_tiempo    potencia = 0.581 (± 0.022)
+  H2_PASAT           potencia = 1.000 (± 0.000)
+  H2_PVTB            potencia = 1.000 (± 0.000)
+  H1_completa        potencia = 0.829 (± 0.017)
+  H1_igual_tiempo: mediana +0.054, p5–p95 [+0.019, +0.092]
+  H1_completa: mediana +0.068, p5–p95 [+0.033, +0.103]

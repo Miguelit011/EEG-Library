@@ -1,0 +1,105 @@
+{
+ "fecha": "2026-10-27",
+ "n_replicas": 2000,
+ "n_boot": 2000,
+ "n_test": 28,
+ "personas_train_val": 146,
+ "resultados": {
+  "efecto_estimado": {
+   "potencia": {
+    "H1_igual_tiempo": {
+     "potencia": 0.7525,
+     "error_mc": 0.009649967616525975
+    },
+    "H2_PASAT": {
+     "potencia": 1.0,
+     "error_mc": 0.0
+    },
+    "H2_PVTB": {
+     "potencia": 1.0,
+     "error_mc": 0.0
+    },
+    "H1_completa": {
+     "potencia": 0.916,
+     "error_mc": 0.006202580108309766
+    },
+    "H3_PASAT": {
+     "potencia": 0.2625,
+     "error_mc": 0.009838540288071193
+    },
+    "H3_PVTB": {
+     "potencia": 0.38,
+     "error_mc": 0.010853570840972108
+    }
+   },
+   "distribucion_H1": {
+    "H1_igual_tiempo": {
+     "count": 2000.0,
+     "mean": 0.0726,
+     "std": 0.0294,
+     "min": -0.0197,
+     "5%": 0.0248,
+     "50%": 0.0714,
+     "95%": 0.1224,
+     "max": 0.173
+    },
+    "H1_completa": {
+     "count": 2000.0,
+     "mean": 0.0907,
+     "std": 0.0289,
+     "min": -0.0289,
+     "5%": 0.0441,
+     "50%": 0.0904,
+     "95%": 0.1369,
+     "max": 0.2016
+    }
+   }
+  },
+  "efecto_25_menor": {
+   "potencia": {
+    "H1_igual_tiempo": {
+     "potencia": 0.5805,
+     "error_mc": 0.011034485715247448
+    },
+    "H2_PASAT": {
+     "potencia": 1.0,
+     "error_mc": 0.0
+    },
+    "H2_PVTB": {
+     "potencia": 1.0,
+     "error_mc": 0.0
+    },
+    "H1_completa": {
+     "potencia": 0.8285,
+     "error_mc": 0.00842875287334965
+    }
+   },
+   "distribucion_H1": {
+    "H1_igual_tiempo": {
+     "count": 2000.0,
+     "mean": 0.0545,
+     "std": 0.022,
+     "min": -0.0148,
+     "5%": 0.0186,
+     "50%": 0.0536,
+     "95%": 0.0918,
+     "max": 0.1297
+    },
+    "H1_completa": {
+     "count": 2000.0,
+     "mean": 0.068,
+     "std": 0.0216,
+     "min": -0.0217,
+     "5%": 0.0331,
+     "50%": 0.0678,
+     "95%": 0.1027,
+     "max": 0.1512
+    }
+   }
+  }
+ },
+ "miradas": {
+  "val": "uso 3 (potencia)",
+  "test": 0
+ }
+}

@@ -1,0 +1,107 @@
+
+==============================================================================
+0. CARGA (solo train, siete condiciones)
+==============================================================================
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 2672 de 3117 epoca(s) (85.7 %) tienen algun canal excluido.
+Grabaciones: 3114; personas: 121; sin marca de tiempo válida: 0
+
+==============================================================================
+B1. ESPECIFICIDAD: MATRIZ DE TRANSFERENCIA (rho_ventanas, CV repetida de 20 particiones)
+==============================================================================
+ρ media por grabación (filas: condición con la que se entrena; columnas: condición puntuada):
+                  OC     OA  STROOP  PASAT   PVTB   MSIT  PVSAT
+modelo OC      0.108  0.009   0.053  0.082  0.006  0.096  0.053
+modelo OA      0.006  0.063   0.045 -0.007  0.030  0.034  0.013
+modelo STROOP  0.046  0.043   0.165  0.089  0.071  0.161  0.053
+modelo PASAT   0.063  0.019   0.073  0.159  0.085  0.067  0.046
+modelo PVTB   -0.013  0.027   0.079  0.094  0.148  0.015  0.009
+modelo MSIT    0.072  0.041   0.139  0.080  0.040  0.181  0.067
+modelo PVSAT   0.058  0.049   0.077  0.056  0.036  0.103  0.072
+
+Propia − ajena (pareado por persona), IC95:
+  modelo PASAT : OC +0.096[+0.063,+0.129]  OA +0.140[+0.107,+0.174]  STROOP +0.086[+0.053,+0.121]  PVTB +0.074[+0.042,+0.103]  MSIT +0.092[+0.058,+0.127]  PVSAT +0.113[+0.084,+0.142]
+  modelo PVTB  : OC +0.161[+0.128,+0.195]  OA +0.121[+0.089,+0.154]  STROOP +0.069[+0.029,+0.108]  PASAT +0.054[+0.024,+0.082]  MSIT +0.134[+0.101,+0.166]  PVSAT +0.139[+0.108,+0.167]
+  modelo OA    : OC +0.056[+0.022,+0.093]  STROOP +0.017[-0.016,+0.052]  PASAT +0.070[+0.035,+0.104]  PVTB +0.032[-0.002,+0.065]  MSIT +0.029[-0.009,+0.066]  PVSAT +0.050[+0.020,+0.081]
+  modelo OC    : OA +0.098[+0.063,+0.132]  STROOP +0.054[+0.016,+0.093]  PASAT +0.025[-0.008,+0.061]  PVTB +0.101[+0.070,+0.132]  MSIT +0.012[-0.025,+0.048]  PVSAT +0.054[+0.022,+0.088]
+
+==============================================================================
+B2. DIENTES DE SIERRA (últimos 30 s de k − primeros 30 s de k; primeros 30 s de k+1 − últimos 30 s de k)
+==============================================================================
+Dentro de k (t) | salto a k+1 (t):
+magnitud                       alfa_post_abs                 theta_front_abs                  beta_post_rel
+transicion                                                                                                 
+OC→OA         -0.020 (-2.3) | -0.564 (-21.4)   -0.024 (-2.2) | -0.040 (-2.4)  +0.019 (+2.7) | +0.085 (+6.2)
+OA→STROOP      +0.038 (+4.9) | -0.086 (-4.3)   +0.033 (+3.3) | +0.119 (+7.1)  -0.006 (-0.9) | +0.108 (+9.9)
+STROOP→PASAT   +0.032 (+5.9) | -0.065 (-7.3)   +0.019 (+3.2) | -0.011 (-0.9)  -0.014 (-3.0) | +0.024 (+3.1)
+PASAT→PVTB     +0.064 (+8.9) | -0.012 (-1.2)  +0.075 (+8.9) | -0.149 (-11.0)  -0.037 (-4.8) | +0.040 (+4.5)
+PVTB→MSIT      +0.064 (+9.2) | -0.049 (-4.3)   +0.045 (+5.7) | +0.093 (+6.9)  -0.036 (-6.2) | +0.036 (+4.4)
+MSIT→PVSAT     +0.017 (+3.4) | -0.027 (-3.2)   +0.004 (+0.6) | +0.002 (+0.1)  +0.000 (+0.1) | -0.014 (-1.8)
+
+Hueco mediano entre archivos (s): {'OC→OA': 14.0, 'OA→STROOP': 27.0, 'STROOP→PASAT': 37.0, 'PASAT→PVTB': 24.0, 'PVTB→MSIT': 26.0, 'MSIT→PVSAT': 20.0}
+
+==============================================================================
+B3. DESACELERACIÓN: PENDIENTE POR MINUTO FRENTE AL MOMENTO DE LA SESIÓN
+==============================================================================
+magnitud                alfa_post_abs               beta_post_rel             theta_front_abs
+condicion                                                                                    
+OC         -0.0153 [-0.0293, -0.0012]  +0.0177 [+0.0078, +0.0276]  -0.0176 [-0.0344, -0.0007]
+OA         +0.0270 [+0.0161, +0.0379]  -0.0032 [-0.0125, +0.0062]  +0.0206 [+0.0063, +0.0349]
+STROOP     +0.0647 [+0.0438, +0.0856]  -0.0305 [-0.0484, -0.0127]  +0.0421 [+0.0190, +0.0652]
+PASAT      +0.0235 [+0.0185, +0.0285]  -0.0125 [-0.0177, -0.0073]  +0.0280 [+0.0220, +0.0339]
+PVTB       +0.0236 [+0.0190, +0.0283]  -0.0144 [-0.0182, -0.0106]  +0.0190 [+0.0131, +0.0248]
+MSIT       +0.0307 [+0.0086, +0.0528]  +0.0132 [-0.0068, +0.0333]  +0.0076 [-0.0185, +0.0336]
+PVSAT      +0.0158 [+0.0100, +0.0217]  +0.0062 [+0.0007, +0.0116]  +0.0078 [+0.0013, +0.0144]
+Inicio mediano en la sesión (min): {'OC': 0.1, 'OA': 2.4, 'STROOP': 5.0, 'PASAT': 6.8, 'PVTB': 10.4, 'MSIT': 14.0, 'PVSAT': 15.6}
+
+==============================================================================
+B4. MODELO DE VENTANAS: EF DE SESIÓN Y CONDICIÓN, t_rec POR CONDICIÓN Y t_ses COMÚN
+==============================================================================
+Desviación entre sesiones del momento de inicio de cada condición (min): {'OC': 1.2, 'OA': 5.65, 'STROOP': 4.8, 'PASAT': 4.65, 'PVTB': 4.82, 'MSIT': 4.82, 'PVSAT': 4.77}
+alfa_post_abs — pendiente_por_condicion:
+                coef      se       t
+t_rec_OC     -0.0179  0.0077 -2.3143
+t_rec_OA      0.0321  0.0063  5.0574
+t_rec_STROOP  0.0695  0.0121  5.7253
+t_rec_PASAT   0.0272  0.0041  6.6288
+t_rec_PVTB    0.0272  0.0036  7.5601
+t_rec_MSIT    0.0411  0.0109  3.7596
+t_rec_PVSAT   0.0219  0.0038  5.7688
+t_ses        -0.0046  0.0027 -1.7140
+
+alfa_post_abs — correlación t_ses ~ t_rec tras la transformación within: 0.292
+alfa_post_abs — pendiente_comun:
+         coef      se       t
+t_rec  0.0232  0.0033  7.0754
+t_ses -0.0047  0.0027 -1.7209
+theta_front_abs — pendiente_por_condicion:
+                coef      se       t
+t_rec_OC     -0.0134  0.0072 -1.8506
+t_rec_OA      0.0226  0.0070  3.2473
+t_rec_STROOP  0.0510  0.0180  2.8358
+t_rec_PASAT   0.0302  0.0039  7.7453
+t_rec_PVTB    0.0218  0.0033  6.6394
+t_rec_MSIT    0.0168  0.0302  0.5579
+t_rec_PVSAT   0.0140  0.0035  3.9873
+t_ses        -0.0035  0.0021 -1.6698
+
+theta_front_abs — correlación t_ses ~ t_rec tras la transformación within: 0.292
+theta_front_abs — pendiente_comun:
+         coef      se       t
+t_rec  0.0196  0.0028  6.9282
+t_ses -0.0035  0.0021 -1.6876
+beta_post_rel — pendiente_por_condicion:
+                coef      se       t
+t_rec_OC      0.0184  0.0050  3.6858
+t_rec_OA     -0.0036  0.0052 -0.6914
+t_rec_STROOP -0.0382  0.0112 -3.4086
+t_rec_PASAT  -0.0132  0.0035 -3.8358
+t_rec_PVTB   -0.0155  0.0028 -5.4936
+t_rec_MSIT   -0.0203  0.0171 -1.1923
+t_rec_PVSAT   0.0034  0.0033  1.0330
+t_ses         0.0017  0.0020  0.8136
+
+beta_post_rel — correlación t_ses ~ t_rec tras la transformación within: 0.292
+beta_post_rel — pendiente_comun:
+         coef      se       t
+t_rec -0.0065  0.0025 -2.5847
+t_ses  0.0017  0.0020  0.8254

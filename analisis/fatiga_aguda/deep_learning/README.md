@@ -45,5 +45,5 @@ memoria.
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
 | 1 | [`01_psd_fina/`](01_psd_fina/INFORME.md) | Filtro barato: logística con la PSD de 1 Hz (14 × 30) frente a las 4 bandas (14 × 4), solo en `train` | Hecho (2026-10-29): mejora real pero pequeña. D1 = +0.019 [+0.013, +0.026], justo bajo el umbral de +0.02. Sin mejora en OA; el contraste tarea − OA a igual tiempo mejora en +0.025 [+0.005, +0.046]. OC gana +0.052 (deriva de asentamiento) |
-| 2 | [`02_piloto_cnn/`](02_piloto_cnn/INFORME.md) | Piloto de EEGNet en un pliegue (≈ 2–3 h de CPU): validar el código, fijar lr y épocas, y comprobar si llega al nivel de la logística sobre el espectro fino | Plan escrito (2026-10-29), sin ejecutar |
-| 3 | `03_cv_cnn/` | EEGNet y ShallowConvNet en CV de 5 pliegues, con los mismos pliegues que la logística y el control OA | Depende del paso 2 |
+| 2 | [`02_piloto_cnn/`](02_piloto_cnn/INFORME.md) | Piloto de EEGNet en un pliegue (≈ 2–3 h de CPU): validar el código, fijar lr y épocas, y comprobar si llega al nivel de la logística sobre el espectro fino | Hecho (2026-10-29): no iguala a las bandas. ρ EEGNet = 0.156 (3 semillas, lr 3·10⁻⁴), frente a 0.190 de la logística F y 0.176 de la B. EEGNet − F = −0.035 [−0.060, −0.010]. Requisitos técnicos cumplidos. Regla de decisión: parar |
+| 3 | `03_cv_cnn/` | EEGNet y ShallowConvNet en CV de 5 pliegues, con los mismos pliegues que la logística y el control OA | No se ejecuta según la regla del paso 2 |

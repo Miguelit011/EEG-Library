@@ -1,0 +1,31 @@
+
+==============================================================================
+0. CARGA (solo train) Y PLIEGUE
+==============================================================================
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 2672 de 3117 epoca(s) (85.7 %) tienen algun canal excluido.
+            personas  grabaciones  ventanas  tercios
+papel                                               
+entreno           81          592     52030    35006
+evaluacion        25          188     16507    11103
+interno           14          107      9327     6284
+
+==============================================================================
+1. ESPECTRO FINO (para la referencia F) E INTEGRIDAD
+==============================================================================
+  250/887 archivos
+  500/887 archivos
+  750/887 archivos
+Archivos: 887. Desalineados: 0. (137 s)
+
+==============================================================================
+2. REFERENCIAS LOGÍSTICAS EN EL PLIEGUE 0
+==============================================================================
+  F (C = 0.003): PASAT ρ = 0.200  PVTB ρ = 0.181  PASAT + PVTB ρ = 0.190
+  B (C = 0.03): PASAT ρ = 0.177  PVTB ρ = 0.176  PASAT + PVTB ρ = 0.176
+
+==============================================================================
+3. TENSOR A 128 Hz
+==============================================================================
+Forma: (77864, 14, 512), 2.23 GB. NaN: 0. (170 s)
+
+Caché: C:\Users\migue\Desktop\TFG\EEG-DL-cache\piloto. Tiempo total: 172 s

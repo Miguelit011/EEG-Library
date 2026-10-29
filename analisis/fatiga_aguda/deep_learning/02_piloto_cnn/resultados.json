@@ -1,0 +1,153 @@
+{
+ "fecha": "2026-10-29",
+ "particion": "train (pliegue 0 de la semilla 0)",
+ "mejor_lr": 0.0003,
+ "rho_cnn": 0.15563636198051373,
+ "rho_F": 0.19045611437637183,
+ "rho_B": 0.176438591075769,
+ "desviacion_entre_semillas": 0.00699854623441042,
+ "diferencias": {
+  "F": {
+   "valor": -0.034819752395858106,
+   "ic95": [
+    -0.06038485213940466,
+    -0.010394320721580417
+   ]
+  },
+  "B": {
+   "valor": -0.0208022290952553,
+   "ic95": [
+    -0.04614845897434417,
+    0.003221612686073934
+   ]
+  }
+ },
+ "decision": "NO IGUALA A LAS BANDAS: parar",
+ "requisitos": {
+  "perdida_interna_baja": true,
+  "mejor_epoca_ni_1_ni_max": true,
+  "sin_nan": true,
+  "logistica_F_cerca_del_paso_1": true
+ },
+ "entrenamiento": {
+  "mejor_lr": 0.0003,
+  "ejecuciones": [
+   "lr0.0003_s0",
+   "lr0.001_s0",
+   "lr0.003_s0",
+   "lr0.0003_s1",
+   "lr0.0003_s2"
+  ],
+  "torch": "2.14.1+cpu",
+  "python": "3.10.11",
+  "hilos": 6,
+  "segundos": 1800
+ },
+ "ejecuciones": [
+  {
+   "nombre": "lr0.0003_s0",
+   "lr": 0.0003,
+   "semilla": 0.0,
+   "epocas": 47.0,
+   "mejor_epoca": 39.0,
+   "mejor_perdida_interna": 0.6822579503059387,
+   "auc_interna_mejor": 0.5844260954168569,
+   "segundos_por_epoca": 40.13235950469971,
+   "nan": false,
+   "rho_PASAT": 0.15347346359163747,
+   "rho_PVTB": 0.14949520905456698,
+   "rho_familia": 0.15150549725149093,
+   "auc_ventanas": 0.5789579377580912
+  },
+  {
+   "nombre": "lr0.001_s0",
+   "lr": 0.001,
+   "semilla": 0.0,
+   "epocas": 28.0,
+   "mejor_epoca": 20.0,
+   "mejor_perdida_interna": 0.6826814413070679,
+   "auc_interna_mejor": 0.5854674080785807,
+   "segundos_por_epoca": 28.78733241558075,
+   "nan": false,
+   "rho_PASAT": 0.16215012153781885,
+   "rho_PVTB": 0.14430507168233236,
+   "rho_familia": 0.15332251708803032,
+   "auc_ventanas": 0.579887833632207
+  },
+  {
+   "nombre": "lr0.003_s0",
+   "lr": 0.003,
+   "semilla": 0.0,
+   "epocas": 16.0,
+   "mejor_epoca": 8.0,
+   "mejor_perdida_interna": 0.6844983696937561,
+   "auc_interna_mejor": 0.5782455806255068,
+   "segundos_por_epoca": 39.31921863555908,
+   "nan": false,
+   "rho_PASAT": 0.17079531895845088,
+   "rho_PVTB": 0.14280527861460512,
+   "rho_familia": 0.15694918197984634,
+   "auc_ventanas": 0.577427487849882
+  },
+  {
+   "nombre": "lr0.0003_s1",
+   "lr": 0.0003,
+   "semilla": 1.0,
+   "epocas": 52.0,
+   "mejor_epoca": 44.0,
+   "mejor_perdida_interna": 0.6792603135108948,
+   "auc_interna_mejor": 0.593865777026394,
+   "segundos_por_epoca": 39.351165413856506,
+   "nan": false,
+   "rho_PASAT": 0.16149958805398207,
+   "rho_PVTB": 0.16598191637217818,
+   "rho_familia": 0.16371691004117486,
+   "auc_ventanas": 0.5853917685046797
+  },
+  {
+   "nombre": "lr0.0003_s2",
+   "lr": 0.0003,
+   "semilla": 2.0,
+   "epocas": 56.0,
+   "mejor_epoca": 48.0,
+   "mejor_perdida_interna": 0.6826137900352478,
+   "auc_interna_mejor": 0.5840643709504156,
+   "segundos_por_epoca": 39.132928013801575,
+   "nan": false,
+   "rho_PASAT": 0.150179695964345,
+   "rho_PVTB": 0.1532260695631807,
+   "rho_familia": 0.15168667864887542,
+   "auc_ventanas": 0.5829106563403237
+  },
+  {
+   "nombre": "logistica_F",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.1997768574003524,
+   "rho_PVTB": 0.18093492526585409,
+   "rho_familia": 0.19045611437637183,
+   "auc_ventanas": 0.6229627773634235
+  },
+  {
+   "nombre": "logistica_B",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.17701100482730678,
+   "rho_PVTB": 0.1758538673510799,
+   "rho_familia": 0.176438591075769,
+   "auc_ventanas": 0.6127117449010908
+  }
+ ]
+}

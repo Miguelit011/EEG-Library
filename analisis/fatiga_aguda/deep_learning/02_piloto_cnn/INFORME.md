@@ -178,4 +178,104 @@ PyTorch no se instala en `.venv` (regla del PLAN, 7.7). Propuesta:
 
 ## Resultados
 
-*(Pendiente de ejecutar.)*
+Ejecutado el 2026-10-29: `preparar.py` → `preparar.log` y
+`resultados_preparar.json`; `entrenar.py` → `entrenar.log`; `evaluar.py` →
+`evaluar.log`, `resultados.json`, `tablas/` y `figuras/`. Entrenamiento: 122
+min de CPU para las 5 ejecuciones (≈ 40 s por época).
+
+Entorno: el propuesto arriba. `C:\venvs\eeg-dl` con Python 3.10.11, PyTorch
+2.14.1+cpu, numpy 2.2.6 y pandas 2.3.3. La caché está en
+`TFG\EEG-DL-cache\piloto\`, fuera de los repos y sin git.
+
+### Pliegue
+
+| Papel | Personas | Grabaciones | Ventanas |
+|---|---|---|---|
+| Entreno | 81 | — | 35 006 (tercios) |
+| Interno | 14 | — | 6 284 (tercios) |
+| Evaluación | 25 | 188 | 16 507 (los tres tercios) |
+
+Tensor de 77 864 × 14 × 512 (2.23 GB). Tras normalizar: media 0, desviación
+1.002, sin NaN, un 14.1 % de canales excluidos.
+
+### Ejecuciones (personas de evaluación del pliegue 0)
+
+| Modelo | Épocas | Mejor época | Pérdida interna | ρ PASAT | ρ PVTB | ρ PASAT + PVTB | AUC por ventana |
+|---|---|---|---|---|---|---|---|
+| EEGNet, lr 3·10⁻⁴, semilla 0 | 47 | 39 | **0.6823** | 0.154 | 0.150 | 0.152 | 0.579 |
+| EEGNet, lr 1·10⁻³, semilla 0 | 28 | 20 | 0.6827 | 0.162 | 0.144 | 0.153 | 0.580 |
+| EEGNet, lr 3·10⁻³, semilla 0 | 16 | 8 | 0.6845 | 0.171 | 0.143 | 0.157 | 0.577 |
+| EEGNet, lr 3·10⁻⁴, semilla 1 | 52 | 44 | 0.6793 | 0.162 | 0.166 | 0.164 | 0.585 |
+| EEGNet, lr 3·10⁻⁴, semilla 2 | 56 | 48 | 0.6826 | 0.150 | 0.153 | 0.152 | 0.583 |
+| Logística F (C = 0.003) | — | — | — | **0.200** | **0.181** | **0.190** | **0.623** |
+| Logística B (C = 0.03) | — | — | — | 0.177 | 0.176 | 0.176 | 0.613 |
+
+**Mejor lr:** 3·10⁻⁴, por la menor pérdida interna de la rejilla (0.6823). Las
+tres lr quedan a menos de 0.003 entre sí.
+
+### Regla de decisión
+
+- ρ_CNN (media de las 3 semillas con lr 3·10⁻⁴) = **0.156**. La desviación
+  entre semillas es de 0.007.
+- ρ_F = 0.190 y ρ_B = 0.176, así que el umbral inferior es ρ_B − 0.01 = 0.166.
+- EEGNet − F: **−0.035 [−0.060, −0.010]**.
+- EEGNet − B: −0.021 [−0.046, +0.003].
+
+**Resultado: ρ_CNN < ρ_B − 0.01. Ni siquiera iguala a las bandas, así que se
+para y se documenta.** Ninguna ejecución por separado llega al umbral. La mejor
+es la de la semilla 1, con 0.164.
+
+### Requisitos técnicos
+
+Se cumplen los cuatro:
+
+- la pérdida interna baja en todas las ejecuciones;
+- la mejor época está entre la 8 y la 48, nunca en la 1 ni en la 60;
+- no hay NaN;
+- la logística F da 0.190, a 0.016 del 0.174 del paso 1.
+
+El resultado no se debe a un fallo de la cadena.
+
+### Lectura
+
+1. **EEGNet aprende algo, pero poco.** La pérdida interna solo baja de 0.693
+   (azar) a ≈ 0.68 (`figuras/curvas.png`). La AUC por ventana se queda en
+   0.58, frente a 0.61–0.62 de las logísticas. Con lr 1·10⁻³ hay picos de
+   inestabilidad en las épocas 17 y 27.
+2. **Queda por debajo de las dos logísticas, en las dos tareas.** La diferencia
+   con F excluye el 0 incluso con 25 personas. Con B, el IC roza el 0 por
+   arriba.
+3. **La variabilidad entre semillas (0.007) es pequeña** frente a la distancia
+   a la logística F (0.035). Más semillas no cambiarían la lectura.
+4. **Lo que este piloto no descarta:** otra arquitectura (ShallowConvNet, más
+   cercana a una potencia por banda), aumentos de datos o más personas. Ninguna
+   de esas opciones está en el plan, y el paso 1 ya acotaba el margen de la vía
+   espectral a ≈ +0.02 de ρ sobre las bandas.
+5. **Para la memoria:** con este tamaño de muestra, una CNN pequeña sobre la
+   señal cruda no extrae más información del tiempo en tarea que una logística
+   sobre la potencia espectral. Es una cifra de desarrollo en un pliegue de
+   `train`.
+
+### Desviaciones del plan
+
+- **BN tras la conv temporal.** EEGNet lleva una BatchNorm después de la
+  primera conv, como en Lawhern et al. (2018). El plan no la nombraba. Con ella
+  y con el segundo mapa de entrada (la máscara), el modelo tiene 2 097
+  parámetros, frente a los ≈ 1 800 del PLAN.
+- **Interrupción por falta de memoria del equipo.** El proceso se paró en la
+  época 5 de la última ejecución (semilla 2), con las otras 4 terminadas. Se
+  relanzó sin cambios en el código y reanudó desde el checkpoint: modelo,
+  optimizador, estado aleatorio de PyTorch y un orden de lotes que depende solo
+  de la semilla y de la época. `entrenar.log` recoge las dos sesiones. El
+  campo `segundos` de `entrenamiento.json` (1 800 s) cuenta solo la segunda.
+  El tiempo total sale de `tablas/curvas.csv`.
+- Los tres scripts se ejecutaron con `PYTHONIOENCODING=utf-8`, como en el
+  paso 1.
+- El pliegue tiene 95 personas para entrenar (81 + 14 internas) y 25 para
+  evaluar, frente a las ≈ 97 y ≈ 24 estimadas.
+
+### Recuento de miradas
+
+- `train`: pliegue 0 de la semilla 0, 5 ejecuciones de EEGNet y 2 logísticas.
+- `val`: 2 (no se cargó).
+- `test`: no se cargó.

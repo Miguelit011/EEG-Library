@@ -1,0 +1,32 @@
+
+==============================================================================
+1. EJECUCIONES Y REFERENCIAS (personas de evaluación del pliegue 0)
+==============================================================================
+Personas: 25  grabaciones: 188  ventanas: 16507
+                 lr  semilla  epocas  mejor_epoca  mejor_perdida_interna  auc_interna_mejor  segundos_por_epoca    nan  rho_PASAT  rho_PVTB  rho_familia  auc_ventanas
+nombre                                                                                                                                                                
+lr0.0003_s0  0.0003      0.0    47.0         39.0                 0.6823             0.5844             40.1324  False     0.1535    0.1495       0.1515        0.5790
+lr0.001_s0   0.0010      0.0    28.0         20.0                 0.6827             0.5855             28.7873  False     0.1622    0.1443       0.1533        0.5799
+lr0.003_s0   0.0030      0.0    16.0          8.0                 0.6845             0.5782             39.3192  False     0.1708    0.1428       0.1569        0.5774
+lr0.0003_s1  0.0003      1.0    52.0         44.0                 0.6793             0.5939             39.3512  False     0.1615    0.1660       0.1637        0.5854
+lr0.0003_s2  0.0003      2.0    56.0         48.0                 0.6826             0.5841             39.1329  False     0.1502    0.1532       0.1517        0.5829
+logistica_F     NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1998    0.1809       0.1905        0.6230
+logistica_B     NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1770    0.1759       0.1764        0.6127
+
+==============================================================================
+2. REGLA DE DECISIÓN (media de las 3 semillas de la mejor lr)
+==============================================================================
+  EEGNet − logística F: -0.0348 [-0.0604, -0.0104]
+  EEGNet − logística B: -0.0208 [-0.0461, +0.0032]
+  ρ EEGNet (media de 3 semillas, lr = 0.0003): 0.1556  (desviación entre semillas 0.0070)
+  ρ logística F: 0.1905   ρ logística B: 0.1764
+
+  Decisión: NO IGUALA A LAS BANDAS: parar
+
+==============================================================================
+3. REQUISITOS TÉCNICOS
+==============================================================================
+  perdida_interna_baja: sí
+  mejor_epoca_ni_1_ni_max: sí
+  sin_nan: sí
+  logistica_F_cerca_del_paso_1: sí

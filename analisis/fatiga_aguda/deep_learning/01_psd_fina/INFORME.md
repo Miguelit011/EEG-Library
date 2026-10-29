@@ -115,8 +115,8 @@ usa todas las ventanas.
 | Resultado de D1 | Lectura | Qué se propone |
 |---|---|---|
 | Δρ ≥ +0.02 **y** límite inferior del IC95 > 0 | **Hay margen:** el espectro fino tiene información que las bandas pierden | Piloto de CNN (paso 2) y mirar en qué frecuencias está la mejora |
-| Límite inferior del IC95 > 0, pero Δρ < +0.02 | Mejora real pero pequeña | Decide el autor. Una CNN difícilmente aporta algo apreciable por la vía espectral |
-| IC95 incluye 0, o Δρ < 0 | **Sin margen:** las bandas recogen lo que da el espectro | La CNN solo tiene sentido como convergencia (CNN ≈ logística) o por los puntos 2 y 3. Decide el autor si se hace el piloto |
+| Límite inferior del IC95 > 0, pero Δρ < +0.02 | Mejora real pero pequeña | Se valora a la vista del resultado. Una CNN difícilmente aporta algo apreciable por la vía espectral |
+| IC95 incluye 0, o Δρ < 0 | **Sin margen:** las bandas recogen lo que da el espectro | La CNN solo tiene sentido como convergencia (CNN ≈ logística) o por los puntos 2 y 3. El piloto se valora a la vista del resultado |
 
 - **Por qué +0.02.** En `train`, la ρ de PASAT + PVTB a igual tiempo es
   ≈ 0.14 (paso 3, reajuste 1). Un +0.02 es una mejora relativa de ≈ 15 %, más
@@ -163,4 +163,104 @@ usa todas las ventanas.
 
 ## Resultados
 
-*(Pendiente de ejecutar.)*
+Ejecutado el 2026-10-29 con `psd_fina.py` → `ejecucion.log`,
+`resultados.json`, `tablas/` y `figuras/`. Duración: 350 s.
+
+### Integridad
+
+- 1 785 grabaciones de `train` (121 personas, 128 492 ventanas). Ningún `.npy`
+  desalineado.
+- La `pot_rel` recalculada desde la PSD fina reproduce la de `features_all`:
+  r mínima = 1.000000 y diferencia absoluta máxima de 4.9·10⁻⁸.
+- **Comprobación adicional:** B con C = 0.01 reproduce exactamente las cifras
+  del paso 3 en `train` a igual tiempo (PASAT 0.143, PVTB 0.136, OA 0.063).
+
+### Rejilla (ρ media por grabación, grabación completa)
+
+| C | B PASAT + PVTB | F PASAT + PVTB |
+|---|---|---|
+| 0.001 | 0.135 | 0.170 |
+| 0.003 | 0.148 | **0.174** |
+| 0.01 | 0.154 | 0.168 |
+| 0.03 | **0.154** | 0.159 |
+| 0.1 | 0.151 | 0.149 |
+
+Mejor C: **0.03 para B** y **0.003 para F**. Como era de esperar con 420
+features, F pide más regularización. La rejilla completa por condición está en
+`tablas/rejilla.csv`.
+
+### Contrastes (F − B con la mejor C de cada una; IC95 por bootstrap de personas)
+
+| # | Qué | Versión | Δρ | IC95 |
+|---|---|---|---|---|
+| **D1** | PASAT + PVTB | Completa | **+0.019** | [+0.013, +0.026] |
+| D2 | PASAT | Completa | +0.023 | [+0.015, +0.032] |
+| D2 | PVTB | Completa | +0.015 | [+0.005, +0.025] |
+| D1′ | PASAT + PVTB | Igual tiempo | +0.028 | [+0.018, +0.038] |
+| D2 | PASAT | Igual tiempo | +0.035 | [+0.021, +0.050] |
+| D2 | PVTB | Igual tiempo | +0.022 | [+0.011, +0.033] |
+| D3 | OA | — | +0.003 | [−0.015, +0.021] |
+| D3 | OC | — | **+0.052** | [+0.032, +0.074] |
+| D4 | H1 (tareas − OA) | Igual tiempo | **+0.025** | [+0.005, +0.046] |
+
+ρ y acierto pareado con la mejor C de cada representación:
+
+| | ρ B | ρ F | Pareado B | Pareado F |
+|---|---|---|---|---|
+| PASAT (completa) | 0.157 | 0.180 | 0.793 | 0.791 |
+| PVTB (completa) | 0.152 | 0.167 | 0.767 | 0.760 |
+| PASAT (igual tiempo) | 0.142 | 0.177 | 0.743 | 0.766 |
+| PVTB (igual tiempo) | 0.138 | 0.160 | 0.705 | 0.749 |
+| OA | 0.069 | 0.073 | 0.620 | 0.616 |
+| OC | 0.104 | 0.156 | 0.662 | 0.733 |
+
+### Veredicto según el criterio fijado
+
+**D1 = +0.019 [+0.013, +0.026]: mejora real pero pequeña.** El IC excluye el
+0, pero el valor se queda justo por debajo del umbral de +0.02. La
+continuación se valora a la vista del resultado.
+
+### Lectura
+
+1. **El espectro fino tiene algo de información que las bandas pierden**, en
+   las dos tareas y con la grabación completa. Es una mejora de un 12 % sobre
+   la mejor B. Con el acierto pareado de la grabación completa no se nota; solo
+   aparece en la medida continua.
+2. **La mejora no está en OA** (D3: +0.003), y por eso **mejora el contraste
+   tarea − OA a igual tiempo** (D4: +0.025 [+0.005, +0.046]). Es la pregunta
+   que quedó abierta en el test (H1 no concluyó). Aquí es una cifra de
+   desarrollo en `train`, elegida con C ajustada sobre los mismos datos, y no
+   sustituye a ningún veredicto.
+3. **OC es la condición que más gana** (+0.052). Encaja con la deriva de
+   asentamiento del casco al principio de la sesión (paso 4 de la línea): el
+   espectro fino describe mejor ese cambio. Es un aviso para la CNN. Una red
+   más flexible aprenderá también esa deriva, y OA es el único control que no
+   la tiene.
+4. **Perfil de frecuencias** (`figuras/perfil_frecuencias.png`): es ruidoso y
+   los coeficientes de features tan correlacionadas no se pueden leer uno a
+   uno. Descriptivamente, en PASAT el último tercio pesa más en 6–9 Hz y menos
+   en 11 Hz y en 20–30 Hz. Eso es compatible con un desplazamiento del pico de
+   alfa hacia frecuencias bajas y con la bajada de beta ya conocida (H3). En
+   PVTB el patrón es distinto (más 10–11 Hz y menos 5–6 Hz y 13–14 Hz). No hay
+   una concentración en 1–3 Hz ni en 20–30 Hz que haga sospechar de un
+   artefacto.
+5. **Para la CNN:** por la vía espectral, el margen sobre la logística ronda
+   +0.02 de ρ. Una CNN puede sumar información espacial o temporal (puntos 2 y
+   3 de «Por qué se hace»), pero este paso no dice nada de eso.
+
+### Desviaciones del plan
+
+- **Primera ejecución interrumpida** por la codificación de la consola de
+  Windows al imprimir «ρ», después de la comprobación de integridad y antes de
+  entrenar ningún modelo. No se vio ninguna cifra de modelo. Se relanzó sin
+  cambios en el código, con `PYTHONIOENCODING=utf-8`.
+- Se añadió `tablas/descriptivos.csv` (ρ, IC y acierto pareado por condición
+  con la mejor C). No estaba en la lista de productos.
+- El perfil de frecuencias se calculó aunque D1 no llegara al umbral, porque
+  no cuesta nada. Se usan los coeficientes de los 5 pliegues de la semilla 0.
+
+### Recuento de miradas
+
+- `train`: 2 representaciones × 5 C × 4 condiciones × 2 versiones.
+- `val`: 2 (no se cargó).
+- `test`: no se cargó.

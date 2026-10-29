@@ -1,0 +1,151 @@
+{
+ "fecha": "2026-10-29",
+ "particion": "train",
+ "mejor_C": {
+  "B": 0.03,
+  "F": 0.003
+ },
+ "criterio": {
+  "umbral": 0.02,
+  "D1": {
+   "id": "D1",
+   "que": "Δρ PASAT + PVTB",
+   "version": "completa",
+   "valor": 0.01913489576694488,
+   "ic95": [
+    0.012547545338154263,
+    0.02553254630076632
+   ],
+   "grabaciones": 887,
+   "personas": 120
+  },
+  "lectura": "MEJORA REAL PERO PEQUEÑA"
+ },
+ "contrastes": [
+  {
+   "id": "D1",
+   "que": "Δρ PASAT + PVTB",
+   "version": "completa",
+   "valor": 0.01913489576694488,
+   "ic95": [
+    0.012547545338154263,
+    0.02553254630076632
+   ],
+   "grabaciones": 887,
+   "personas": 120
+  },
+  {
+   "id": "D2",
+   "que": "Δρ PASAT",
+   "version": "completa",
+   "valor": 0.02344927442875985,
+   "ic95": [
+    0.0145607526381276,
+    0.03185073590200005
+   ],
+   "grabaciones": 445,
+   "personas": 120
+  },
+  {
+   "id": "D2",
+   "que": "Δρ PVTB",
+   "version": "completa",
+   "valor": 0.014791233992040667,
+   "ic95": [
+    0.0052487525097179855,
+    0.024500421164955353
+   ],
+   "grabaciones": 442,
+   "personas": 120
+  },
+  {
+   "id": "D1'",
+   "que": "Δρ PASAT + PVTB",
+   "version": "igual_tiempo",
+   "valor": 0.02829436602766952,
+   "ic95": [
+    0.01836928938164106,
+    0.038389109516636995
+   ],
+   "grabaciones": 878,
+   "personas": 120
+  },
+  {
+   "id": "D2",
+   "que": "Δρ PASAT",
+   "version": "igual_tiempo",
+   "valor": 0.034857717071034924,
+   "ic95": [
+    0.020501631258659347,
+    0.04967265984646734
+   ],
+   "grabaciones": 440,
+   "personas": 120
+  },
+  {
+   "id": "D2",
+   "que": "Δρ PVTB",
+   "version": "igual_tiempo",
+   "valor": 0.0217010453448367,
+   "ic95": [
+    0.010693543847505638,
+    0.03278362869823081
+   ],
+   "grabaciones": 438,
+   "personas": 120
+  },
+  {
+   "id": "D3",
+   "que": "Δρ OA",
+   "version": "completa",
+   "valor": 0.0031972248233719616,
+   "ic95": [
+    -0.01480929287767514,
+    0.021054274580052552
+   ],
+   "grabaciones": 445,
+   "personas": 120
+  },
+  {
+   "id": "D3",
+   "que": "Δρ OC",
+   "version": "completa",
+   "valor": 0.05213172938794159,
+   "ic95": [
+    0.03215511671568246,
+    0.07413660372212215
+   ],
+   "grabaciones": 453,
+   "personas": 121
+  },
+  {
+   "id": "D4",
+   "que": "Δ H1 (tareas − OA), F − B",
+   "version": "igual_tiempo",
+   "valor": 0.025097141204297558,
+   "ic95": [
+    0.004702843010071212,
+    0.04620911744912384
+   ],
+   "grabaciones": 878,
+   "personas": 120
+  }
+ ],
+ "integridad": {
+  "archivos": 1785,
+  "desalineados": [],
+  "r_minima": 0.9999999999999972,
+  "dif_abs_max": 4.869636294202451e-08
+ },
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "ventanas_npy_combinado": "da96c0e0ddf0bf023b4a54719e06b2f597811997c42b0e314fc5bac515ddd867"
+ },
+ "miradas": {
+  "val": 2,
+  "test": "gastado (2026-10-27); no se carga"
+ },
+ "segundos": 350
+}

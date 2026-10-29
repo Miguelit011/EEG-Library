@@ -29,21 +29,21 @@ memoria.
 
 - **No se carga `test`.** Los scripts filtran la lista de archivos por la
   `split` de `matriz_rf.parquet` **antes** de abrir ningún `.npy`.
-- **`val`:** propuesta pendiente de visto bueno. Se reserva para **una sola**
-  comprobación de la configuración final (sería la mirada 3 de `val` en la
-  línea). Los pasos de cribado usan solo `train`.
+- **`val`** se reserva para **una sola** comprobación de la configuración
+  final (sería la mirada 3 de `val` en la línea). Los pasos de cribado usan
+  solo `train`.
 - **Nada derivado de los datos se guarda en el repositorio** salvo tablas
   agregadas y figuras. Tampoco se escribe en `EEG-Data` (solo lectura). Lo que
   haga falta cachear, en memoria o en una carpeta fuera del repo que se
   decida antes.
 - Igual que en la línea: plan en el `INFORME.md` **antes** de ejecutar, el
   SHA-256 de los datos leídos en `resultados.json`, agrupar por `persona_uid`
-  y parar entre pasos hasta tener el visto bueno.
+  y no empezar un paso sin haber revisado el anterior.
 
 ## Pasos
 
 | Paso | Carpeta | Qué hace | Estado |
 |---|---|---|---|
-| 1 | [`01_psd_fina/`](01_psd_fina/INFORME.md) | Filtro barato: logística con la PSD de 1 Hz (14 × 30) frente a las 4 bandas (14 × 4), solo en `train` | Plan escrito (2026-10-29), sin ejecutar |
-| 2 | `02_piloto_cnn/` | Piloto de EEGNet en un pliegue (≈ 3 h de CPU): validar el código, épocas y lr | Depende del paso 1 y de la decisión del autor |
+| 1 | [`01_psd_fina/`](01_psd_fina/INFORME.md) | Filtro barato: logística con la PSD de 1 Hz (14 × 30) frente a las 4 bandas (14 × 4), solo en `train` | Hecho (2026-10-29): mejora real pero pequeña. D1 = +0.019 [+0.013, +0.026], justo bajo el umbral de +0.02. Sin mejora en OA; el contraste tarea − OA a igual tiempo mejora en +0.025 [+0.005, +0.046]. OC gana +0.052 (deriva de asentamiento) |
+| 2 | `02_piloto_cnn/` | Piloto de EEGNet en un pliegue (≈ 3 h de CPU): validar el código, épocas y lr | Depende del resultado del paso 1 |
 | 3 | `03_cv_cnn/` | EEGNet y ShallowConvNet en CV de 5 pliegues, con los mismos pliegues que la logística y el control OA | Depende del paso 2 |

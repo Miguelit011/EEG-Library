@@ -38,3 +38,6 @@ ejecutar. Reglas comunes a todos los pasos:
 | 5 | [`05_entre_sesiones/`](05_entre_sesiones/INFORME.md) | (Opcional, exploratorio, `train` + `val`) Pendiente frente a rendimiento y covariables | Hecho (2026-10-27, después del test): dentro de persona, más `rho_ventanas` en PVTB ↔ más lapsos del PVTB (r ≈ 0.14, Holm 0.022); OA no (control). Desviación 1: con el movimiento como covariable conserva el 97 % (p 0.006). No replica con la pendiente de la beta, ni en PASAT, ni entre personas. Casco, hora, sexo y medición no mueven la ρ |
 | 6 | [`06_test/`](06_test/PREREGISTRO.md) | Pre-registro y evaluación única en `test` | **Hecho (2026-10-27, ejecución única).** H1b CONFIRMA por poco (+0.068 [+0.002, +0.128]; no robusta sin la persona expuesta); **H1 (igual tiempo) NO CONCLUYE** (+0.027); H2 CONFIRMA en PASAT y PVTB; H3 CONFIRMA en PVTB y no concluye en PASAT; H4 CONFIRMA (+0.163). Ver [`06_test/INFORME.md`](06_test/INFORME.md) |
 | 7 | [`07_redaccion/`](07_redaccion/INFORME.md) | Borradores en Markdown para la memoria (método, resultados, discusión, referencias) y figuras en PDF | Hecho (2026-10-28). Nada escrito en `EEG-Memoria`. Pendiente: confirmar tres DOI y la vista de la plataforma (fase aparte) |
+
+La sublínea exploratoria de deep learning, posterior al test, está en
+[`deep_learning/`](deep_learning/README.md).

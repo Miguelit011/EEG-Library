@@ -48,3 +48,10 @@ memoria.
 | 2 | [`02_piloto_cnn/`](02_piloto_cnn/INFORME.md) | Piloto de EEGNet en un pliegue (≈ 2–3 h de CPU): validar el código, fijar lr y épocas, y comprobar si llega al nivel de la logística sobre el espectro fino | Hecho (2026-10-29): no iguala a las bandas. ρ EEGNet = 0.156 (3 semillas, lr 3·10⁻⁴), frente a 0.190 de la logística F y 0.176 de la B. EEGNet − F = −0.035 [−0.060, −0.010]. Requisitos técnicos cumplidos. Regla de decisión: parar |
 | 3 | [`03_piloto_shallow/`](03_piloto_shallow/INFORME.md) | Piloto de ShallowConvNet (filtro temporal de 1 s) en el mismo pliegue que el paso 2, reutilizando su caché: ¿llega al nivel de la logística F? | Hecho (2026-10-30): no. ρ Shallow = 0.128 (3 semillas, lr 3·10⁻⁴), por debajo de EEGNet (0.156) y de las logísticas F (0.190) y B (0.176). Shallow − F = −0.063 [−0.086, −0.039]. Sobreajusta desde la época 3–4. Requisitos técnicos cumplidos. Regla de decisión: parar |
 | 4 | `04_cv_cnn/` | ShallowConvNet en CV de 5 pliegues, con los mismos pliegues que la logística y el control OA | No se ejecuta según la regla del paso 3. **Sublínea cerrada** |
+
+**Caché borrada el 2026-10-30.** Al cerrar la sublínea se borró
+`TFG\EEG-DL-cache\` (tensor, máscara, tabla de ventanas, checkpoints y
+puntuaciones de los pasos 2 y 3), como fijaba el plan del paso 2. Para volver a
+ejecutar `evaluar.py` de los pasos 2 o 3, hay que regenerarla con
+`02_piloto_cnn/preparar.py` y los `entrenar.py`. Las cifras y los SHA-256
+quedan en los `resultados.json`.

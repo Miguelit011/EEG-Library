@@ -1,0 +1,46 @@
+
+==============================================================================
+1. EJECUCIONES Y REFERENCIAS (personas de evaluación del pliegue 0)
+==============================================================================
+Personas: 25  grabaciones: 188  ventanas: 16507
+                         lr  semilla  epocas  mejor_epoca  mejor_perdida_interna  auc_interna_mejor  segundos_por_epoca    nan  rho_PASAT  rho_PVTB  rho_familia  auc_ventanas
+nombre                                                                                                                                                                        
+shallow_lr0.0003_s0  0.0003      0.0    11.0          3.0                 0.6904             0.5644             67.2368  False     0.1353    0.1396       0.1374        0.5698
+shallow_lr0.001_s0   0.0010      0.0    12.0          4.0                 0.6939             0.5561             66.2373  False     0.0746    0.0856       0.0800        0.5440
+shallow_lr0.0003_s1  0.0003      1.0    11.0          3.0                 0.6876             0.5696             67.1472  False     0.1504    0.1155       0.1331        0.5697
+shallow_lr0.0003_s2  0.0003      2.0    12.0          4.0                 0.6907             0.5726             67.6366  False     0.0989    0.1272       0.1129        0.5609
+eegnet_lr0.0003_s0      NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1535    0.1495       0.1515        0.5790
+eegnet_lr0.0003_s1      NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1615    0.1660       0.1637        0.5854
+eegnet_lr0.0003_s2      NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1502    0.1532       0.1517        0.5829
+logistica_F             NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1998    0.1809       0.1905        0.6230
+logistica_B             NaN      NaN     NaN          NaN                    NaN                NaN                 NaN    NaN     0.1770    0.1759       0.1764        0.6127
+
+==============================================================================
+2. REGLA DE DECISIÓN (media de las 3 semillas de la mejor lr)
+==============================================================================
+  ShallowConvNet − F: -0.0626 [-0.0864, -0.0385]
+  ShallowConvNet − B: -0.0486 [-0.0739, -0.0249]
+  ShallowConvNet − EEGNet: -0.0278 [-0.0423, -0.0136]
+  ρ ShallowConvNet (media de 3 semillas, lr = 0.0003): 0.1278  (desviación entre semillas 0.0131)
+  ρ logística F: 0.1905   ρ logística B: 0.1764   ρ EEGNet (paso 2): 0.1556
+  Umbrales: ρ_F − 0.01 = 0.1805   ρ_B − 0.01 = 0.1664
+
+  Decisión: NO IGUALA A LAS BANDAS: parar
+
+==============================================================================
+3. REQUISITOS TÉCNICOS
+==============================================================================
+  perdida_interna_baja: sí
+  mejor_epoca_ni_1_ni_max: sí
+  sin_nan: sí
+  reproduce_F_del_paso_2: sí
+  reproduce_B_del_paso_2: sí
+  reproduce_EEGNet_del_paso_2: sí
+
+==============================================================================
+4. FIGURAS Y HUELLAS DE LA CACHÉ
+==============================================================================
+  No llega a F: no se calcula la respuesta en frecuencia de los filtros (según el plan).
+  SHA-256 X.npy: 6a7c48723a6c004012c260fe7af211a3245021e8dd2505a7dc6a93ae3b78cec2
+  SHA-256 mascara.npy: 453518079536a240e48709ba8a3304f9282c4674c6200b239ff8842ae2358a53
+  SHA-256 ventanas.parquet: fefe58287a7f9775d085061bb9281c1e3d98162bfe0022788090aad55098ba42

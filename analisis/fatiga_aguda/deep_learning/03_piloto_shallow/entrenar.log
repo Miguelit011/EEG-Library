@@ -1,0 +1,53 @@
+Tensor (77864, 14, 512); ventanas de entreno 35006, internas 6284, evaluación 16507. PyTorch 2.14.1+cpu, 6 hilos
+Parámetros de ShallowConvNet: 34801
+[lr0.0003_s0] época  1  entreno 0.7339  interna 0.6970  AUC interna 0.530  74 s
+[lr0.0003_s0] época  2  entreno 0.7005  interna 0.6922  AUC interna 0.555  69 s
+[lr0.0003_s0] época  3  entreno 0.6880  interna 0.6904  AUC interna 0.564  89 s
+[lr0.0003_s0] época  4  entreno 0.6729  interna 0.6994  AUC interna 0.578  77 s
+[lr0.0003_s0] época  5  entreno 0.6624  interna 0.6905  AUC interna 0.576  67 s
+[lr0.0003_s0] época  6  entreno 0.6479  interna 0.7014  AUC interna 0.571  67 s
+[lr0.0003_s0] época  7  entreno 0.6369  interna 0.7134  AUC interna 0.575  67 s
+[lr0.0003_s0] época  8  entreno 0.6248  interna 0.7078  AUC interna 0.569  66 s
+[lr0.0003_s0] época  9  entreno 0.6121  interna 0.7210  AUC interna 0.561  66 s
+[lr0.0003_s0] época 10  entreno 0.6003  interna 0.7203  AUC interna 0.575  68 s
+[lr0.0003_s0] época 11  entreno 0.5931  interna 0.7408  AUC interna 0.555  66 s
+[lr0.001_s0] época  1  entreno 0.7328  interna 0.7054  AUC interna 0.504  66 s
+[lr0.001_s0] época  2  entreno 0.7044  interna 0.7009  AUC interna 0.559  67 s
+[lr0.001_s0] época  3  entreno 0.6964  interna 0.6944  AUC interna 0.568  66 s
+[lr0.001_s0] época  4  entreno 0.6839  interna 0.6939  AUC interna 0.556  66 s
+[lr0.001_s0] época  5  entreno 0.6720  interna 0.7025  AUC interna 0.569  66 s
+[lr0.001_s0] época  6  entreno 0.6576  interna 0.7181  AUC interna 0.554  66 s
+[lr0.001_s0] época  7  entreno 0.6433  interna 0.7187  AUC interna 0.572  66 s
+[lr0.001_s0] época  8  entreno 0.6283  interna 0.7211  AUC interna 0.565  66 s
+[lr0.001_s0] época  9  entreno 0.6119  interna 0.7608  AUC interna 0.562  66 s
+[lr0.001_s0] época 10  entreno 0.5989  interna 0.7461  AUC interna 0.550  66 s
+[lr0.001_s0] época 11  entreno 0.5918  interna 0.7463  AUC interna 0.558  67 s
+[lr0.001_s0] época 12  entreno 0.5747  interna 0.7706  AUC interna 0.557  67 s
+
+Mejor lr (menor pérdida interna): 0.0003 (0.6904)
+
+[lr0.0003_s1] época  1  entreno 0.7290  interna 0.6959  AUC interna 0.533  67 s
+[lr0.0003_s1] época  2  entreno 0.7013  interna 0.6918  AUC interna 0.545  66 s
+[lr0.0003_s1] época  3  entreno 0.6877  interna 0.6876  AUC interna 0.570  67 s
+[lr0.0003_s1] época  4  entreno 0.6756  interna 0.6921  AUC interna 0.569  67 s
+[lr0.0003_s1] época  5  entreno 0.6631  interna 0.6927  AUC interna 0.575  67 s
+[lr0.0003_s1] época  6  entreno 0.6495  interna 0.6987  AUC interna 0.563  67 s
+[lr0.0003_s1] época  7  entreno 0.6378  interna 0.7031  AUC interna 0.573  68 s
+[lr0.0003_s1] época  8  entreno 0.6289  interna 0.7079  AUC interna 0.565  68 s
+[lr0.0003_s1] época  9  entreno 0.6163  interna 0.7135  AUC interna 0.570  67 s
+[lr0.0003_s1] época 10  entreno 0.6074  interna 0.7263  AUC interna 0.560  68 s
+[lr0.0003_s1] época 11  entreno 0.5950  interna 0.7384  AUC interna 0.556  67 s
+[lr0.0003_s2] época  1  entreno 0.7307  interna 0.6943  AUC interna 0.545  68 s
+[lr0.0003_s2] época  2  entreno 0.7015  interna 0.6912  AUC interna 0.554  68 s
+[lr0.0003_s2] época  3  entreno 0.6903  interna 0.7066  AUC interna 0.569  68 s
+[lr0.0003_s2] época  4  entreno 0.6762  interna 0.6907  AUC interna 0.573  68 s
+[lr0.0003_s2] época  5  entreno 0.6627  interna 0.7000  AUC interna 0.558  69 s
+[lr0.0003_s2] época  6  entreno 0.6516  interna 0.6939  AUC interna 0.572  67 s
+[lr0.0003_s2] época  7  entreno 0.6403  interna 0.6975  AUC interna 0.584  67 s
+[lr0.0003_s2] época  8  entreno 0.6272  interna 0.6951  AUC interna 0.583  68 s
+[lr0.0003_s2] época  9  entreno 0.6152  interna 0.7123  AUC interna 0.570  68 s
+[lr0.0003_s2] época 10  entreno 0.6028  interna 0.7250  AUC interna 0.565  67 s
+[lr0.0003_s2] época 11  entreno 0.5914  interna 0.7224  AUC interna 0.573  67 s
+[lr0.0003_s2] época 12  entreno 0.5864  interna 0.7337  AUC interna 0.559  67 s
+
+Tiempo total: 53 min

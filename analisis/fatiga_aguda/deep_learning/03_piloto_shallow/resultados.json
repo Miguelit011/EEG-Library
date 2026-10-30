@@ -1,0 +1,198 @@
+{
+ "fecha": "2026-10-30",
+ "particion": "train (pliegue 0 de la semilla 0)",
+ "mejor_lr": 0.0003,
+ "rho_shallow": 0.12781842848988956,
+ "rho_F": 0.19045611437637183,
+ "rho_B": 0.176438591075769,
+ "rho_eegnet": 0.15563636198051373,
+ "desviacion_entre_semillas": 0.013085248530455187,
+ "diferencias": {
+  "F": {
+   "valor": -0.06263768588648227,
+   "ic95": [
+    -0.08641658833812613,
+    -0.038495201585436935
+   ]
+  },
+  "B": {
+   "valor": -0.04862016258587946,
+   "ic95": [
+    -0.07388836420311472,
+    -0.024916965654547256
+   ]
+  },
+  "EEGNet": {
+   "valor": -0.027817933490624162,
+   "ic95": [
+    -0.04229999767369419,
+    -0.013647263272712302
+   ]
+  }
+ },
+ "decision": "NO IGUALA A LAS BANDAS: parar",
+ "requisitos": {
+  "perdida_interna_baja": true,
+  "mejor_epoca_ni_1_ni_max": true,
+  "sin_nan": true,
+  "reproduce_F_del_paso_2": true,
+  "reproduce_B_del_paso_2": true,
+  "reproduce_EEGNet_del_paso_2": true
+ },
+ "sha256_cache": {
+  "X.npy": "6a7c48723a6c004012c260fe7af211a3245021e8dd2505a7dc6a93ae3b78cec2",
+  "mascara.npy": "453518079536a240e48709ba8a3304f9282c4674c6200b239ff8842ae2358a53",
+  "ventanas.parquet": "fefe58287a7f9775d085061bb9281c1e3d98162bfe0022788090aad55098ba42"
+ },
+ "entrenamiento": {
+  "mejor_lr": 0.0003,
+  "ejecuciones": [
+   "lr0.0003_s0",
+   "lr0.001_s0",
+   "lr0.0003_s1",
+   "lr0.0003_s2"
+  ],
+  "torch": "2.14.1+cpu",
+  "python": "3.10.11",
+  "hilos": 6,
+  "segundos": 3162
+ },
+ "perfil_filtros": null,
+ "ejecuciones": [
+  {
+   "nombre": "shallow_lr0.0003_s0",
+   "lr": 0.0003,
+   "semilla": 0.0,
+   "epocas": 11.0,
+   "mejor_epoca": 3.0,
+   "mejor_perdida_interna": 0.6903807520866394,
+   "auc_interna_mejor": 0.5643647207727188,
+   "segundos_por_epoca": 67.23676419258118,
+   "nan": false,
+   "rho_PASAT": 0.13527536357851794,
+   "rho_PVTB": 0.1395687589605713,
+   "rho_familia": 0.1373992240600656,
+   "auc_ventanas": 0.5697978217492938
+  },
+  {
+   "nombre": "shallow_lr0.001_s0",
+   "lr": 0.001,
+   "semilla": 0.0,
+   "epocas": 12.0,
+   "mejor_epoca": 4.0,
+   "mejor_perdida_interna": 0.6939327120780945,
+   "auc_interna_mejor": 0.5561053285731433,
+   "segundos_por_epoca": 66.23729729652405,
+   "nan": false,
+   "rho_PASAT": 0.07456733371060295,
+   "rho_PVTB": 0.08556319445937924,
+   "rho_familia": 0.08000677546398698,
+   "auc_ventanas": 0.5440276339543584
+  },
+  {
+   "nombre": "shallow_lr0.0003_s1",
+   "lr": 0.0003,
+   "semilla": 1.0,
+   "epocas": 11.0,
+   "mejor_epoca": 3.0,
+   "mejor_perdida_interna": 0.6875748038291931,
+   "auc_interna_mejor": 0.5696445203706789,
+   "segundos_por_epoca": 67.14721536636353,
+   "nan": false,
+   "rho_PASAT": 0.15043532978224555,
+   "rho_PVTB": 0.11548552533500106,
+   "rho_familia": 0.13314633077376822,
+   "auc_ventanas": 0.5696900961425083
+  },
+  {
+   "nombre": "shallow_lr0.0003_s2",
+   "lr": 0.0003,
+   "semilla": 2.0,
+   "epocas": 12.0,
+   "mejor_epoca": 4.0,
+   "mejor_perdida_interna": 0.6907439231872559,
+   "auc_interna_mejor": 0.5725858234600247,
+   "segundos_por_epoca": 67.63659501075745,
+   "nan": false,
+   "rho_PASAT": 0.0989462873228866,
+   "rho_PVTB": 0.1271734630522874,
+   "rho_familia": 0.11290973063583487,
+   "auc_ventanas": 0.5608526377945167
+  },
+  {
+   "nombre": "eegnet_lr0.0003_s0",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.15347346359163747,
+   "rho_PVTB": 0.14949520905456698,
+   "rho_familia": 0.15150549725149093,
+   "auc_ventanas": 0.5789579377580912
+  },
+  {
+   "nombre": "eegnet_lr0.0003_s1",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.16149958805398207,
+   "rho_PVTB": 0.16598191637217818,
+   "rho_familia": 0.16371691004117486,
+   "auc_ventanas": 0.5853917685046797
+  },
+  {
+   "nombre": "eegnet_lr0.0003_s2",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.150179695964345,
+   "rho_PVTB": 0.1532260695631807,
+   "rho_familia": 0.15168667864887542,
+   "auc_ventanas": 0.5829106563403237
+  },
+  {
+   "nombre": "logistica_F",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.1997768574003524,
+   "rho_PVTB": 0.18093492526585409,
+   "rho_familia": 0.19045611437637183,
+   "auc_ventanas": 0.6229627773634235
+  },
+  {
+   "nombre": "logistica_B",
+   "lr": NaN,
+   "semilla": NaN,
+   "epocas": NaN,
+   "mejor_epoca": NaN,
+   "mejor_perdida_interna": NaN,
+   "auc_interna_mejor": NaN,
+   "segundos_por_epoca": NaN,
+   "nan": NaN,
+   "rho_PASAT": 0.17701100482730678,
+   "rho_PVTB": 0.1758538673510799,
+   "rho_familia": 0.176438591075769,
+   "auc_ventanas": 0.6127117449010908
+  }
+ ]
+}

@@ -319,3 +319,8 @@ de la caché al terminar.
   cruda no mejora ni empeora de forma detectable a la logística por bandas».
 
 **Coste total del paso:** ≈ 2 h 20 min de CPU, más ≈ 1 min del test.
+
+**Caché borrada** (`TFG\EEG-DL-cache\`, 2026-10-31) al cerrar el paso. Los
+pesos finales quedan en la carpeta de datos en bruto del test, con los SHA-256
+comprobados. Si algún día se lleva el modelo a EEG-Platform, se parte de esos
+pesos y de las ventanas de `EEG-Data/ventanas/`; la caché no hace falta.

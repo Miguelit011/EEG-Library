@@ -1,0 +1,64 @@
+
+==============================================================================
+FASE A: EEGNet (train) frente a la logística del paso 6 (train), en val. 2026-10-31 20:36:14
+==============================================================================
+
+==============================================================================
+PRINCIPAL
+==============================================================================
+  P1 Δρ (EEGNet − logística), PASAT + PVTB, completa: +0.0326  IC95 [+0.0036, +0.0648]  p bilateral = 0.0284  → EEGNET SUPERA
+
+==============================================================================
+SECUNDARIA
+==============================================================================
+  S1_PASAT  ρ = +0.1632  IC95 [+0.1192, +0.2058]  p = 0.0001, Holm 0.0002  → CONFIRMA
+  S1_PVTB   ρ = +0.1689  IC95 [+0.1134, +0.2250]  p = 0.0001, Holm 0.0002  → CONFIRMA
+
+==============================================================================
+DESCRIPTIVOS (sin veredicto)
+==============================================================================
+  dif_PASAT                    +0.0442 [+0.0025, +0.0900]
+  dif_PVTB                     +0.0209 [-0.0216, +0.0640]
+  cnn_familia                  +0.1660 [+0.1309, +0.1997]
+  lr_familia                   +0.1334 [+0.0976, +0.1670]
+  lr_PASAT                     +0.1190 [+0.0767, +0.1584]
+  lr_PVTB                      +0.1479 [+0.1020, +0.1947]
+  igual_cnn_PASAT              +0.1053 [+0.0562, +0.1551]
+  igual_cnn_PVTB               +0.0872 [+0.0299, +0.1425]
+  igual_cnn_familia            +0.0963 [+0.0589, +0.1309]
+  igual_lr_familia             +0.0974 [+0.0613, +0.1312]
+  igual_dif_familia            -0.0011 [-0.0459, +0.0468]
+  cnn_OA                       +0.0262 [-0.0315, +0.0841]
+  cnn_tareas_menos_OA          +0.1398 [+0.0764, +0.2001]
+  igual_cnn_tareas_menos_OA    +0.0701 [+0.0101, +0.1330]
+  tercios_cnn_familia          +0.7657 [+0.7106, +0.8159]
+  ens_familia                  +0.1808 [+0.1391, +0.2192]
+  ens_menos_lr                 +0.0474 [+0.0150, +0.0824]
+  auc_ventanas_media_semillas  0.582794149778281
+  rho_familia_por_semilla      {0: 0.17201934766923796, 1: 0.16022461576580968, 2: 0.16583451264885632}
+  desviacion_entre_semillas    0.005899700952046982
+
+==============================================================================
+SENSIBILIDADES (sin veredicto)
+==============================================================================
+  sin_personas_expuestas: P1 +0.0358 [+0.0060, +0.0682]  S1_PASAT +0.1699 [+0.1262, +0.2128]  S1_PVTB +0.1653 [+0.1086, +0.2223]  (P1 tendría: EEGNET SUPERA)
+  sin_grabaciones_128_hz: P1 +0.0331 [+0.0037, +0.0660]  S1_PASAT +0.1611 [+0.1170, +0.2046]  S1_PVTB +0.1669 [+0.1119, +0.2230]  (P1 tendría: EEGNET SUPERA)
+
+Inventario: [{'condicion': 'OA', 'grabaciones': 86, 'personas': 25, 'con_logistica': 86}, {'condicion': 'PASAT', 'grabaciones': 88, 'personas': 25, 'con_logistica': 88}, {'condicion': 'PVTB', 'grabaciones': 87, 'personas': 25, 'con_logistica': 87}]
+Emparejamiento: {'solo_cnn': 0, 'solo_logistica': 0}; personas expuestas 1; grabaciones a 128 Hz 3
+
+==============================================================================
+ÉPOCAS Y REQUISITOS TÉCNICOS
+==============================================================================
+nombre  semilla  epocas  mejor_epoca  mejor_perdida_interna  auc_interna_mejor  segundos_por_epoca   nan
+    s0        0      46           38               0.679456           0.592399           34.867028 False
+    s1        1      32           24               0.679112           0.588702           35.571691 False
+    s2        2      35           27               0.681264           0.585771           35.649716 False
+  perdida_interna_baja: sí
+  mejor_epoca_ni_1_ni_max: sí
+  sin_nan: sí
+  logistica_reproduce_el_ensayo: sí
+
+  Épocas del modelo final (mediana de las mejores épocas [38, 24, 27]): 27
+  Escrito configuracion_dl.json (sin pesos; los añade entrenar.py --fase-b).
+Tiempo: 18 s

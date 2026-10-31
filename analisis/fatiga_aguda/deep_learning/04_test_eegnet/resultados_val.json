@@ -1,0 +1,307 @@
+{
+ "fecha": "2026-10-31 20:36:32",
+ "particion": "val (EEGNet y logística entrenadas con train)",
+ "cifras": {
+  "P1": {
+   "valor": 0.03262805307975662,
+   "ic95": [
+    0.003575929394325614,
+    0.0648201039637811
+   ],
+   "replicas_validas": 10000,
+   "p_bilateral": 0.028397160283971604,
+   "veredicto": "EEGNET SUPERA",
+   "dentro_de_0.02": false
+  },
+  "S1_PASAT": {
+   "valor": 0.1632321480719712,
+   "ic95": [
+    0.1192045919924563,
+    0.2057995245270036
+   ],
+   "replicas_validas": 10000,
+   "p_unilateral": 9.999000099990002e-05,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  },
+  "S1_PVTB": {
+   "valor": 0.16885228438192645,
+   "ic95": [
+    0.11342483823404606,
+    0.22499030256646274
+   ],
+   "replicas_validas": 10000,
+   "p_unilateral": 9.999000099990002e-05,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  },
+  "dif_PASAT": {
+   "valor": 0.0442062986967444,
+   "ic95": [
+    0.0024757952779334022,
+    0.09000957957761006
+   ],
+   "replicas_validas": 10000
+  },
+  "dif_PVTB": {
+   "valor": 0.020916724179814956,
+   "ic95": [
+    -0.021599545885849135,
+    0.06397706797633107
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_familia": {
+   "valor": 0.16602615869463466,
+   "ic95": [
+    0.13088760107070946,
+    0.19971608513726796
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_familia": {
+   "valor": 0.13339810561487805,
+   "ic95": [
+    0.09764337867360422,
+    0.1670295789735798
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_PASAT": {
+   "valor": 0.11902584937522677,
+   "ic95": [
+    0.07668791167733961,
+    0.15837704621945586
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_PVTB": {
+   "valor": 0.1479355602021115,
+   "ic95": [
+    0.10203085873632468,
+    0.19469982614071435
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_PASAT": {
+   "valor": 0.10530300994118783,
+   "ic95": [
+    0.056239188955212266,
+    0.1550605282902716
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_PVTB": {
+   "valor": 0.08724026261097603,
+   "ic95": [
+    0.029911979000365057,
+    0.14253450239163545
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_familia": {
+   "valor": 0.09632445132675506,
+   "ic95": [
+    0.058850671653670854,
+    0.13091530675781177
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_lr_familia": {
+   "valor": 0.09742700929150117,
+   "ic95": [
+    0.061275243568789495,
+    0.13124105888206727
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_dif_familia": {
+   "valor": -0.0011025579647461112,
+   "ic95": [
+    -0.045904786075117325,
+    0.04676287981017714
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_OA": {
+   "valor": 0.026245744170047648,
+   "ic95": [
+    -0.03153963212407695,
+    0.0841097131794893
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_tareas_menos_OA": {
+   "valor": 0.139780414524587,
+   "ic95": [
+    0.07644123719079451,
+    0.2001163297464404
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_tareas_menos_OA": {
+   "valor": 0.07007870715670741,
+   "ic95": [
+    0.010121992736330777,
+    0.13304678935256853
+   ],
+   "replicas_validas": 10000
+  },
+  "tercios_cnn_familia": {
+   "valor": 0.7657142857142857,
+   "ic95": [
+    0.7105762760193898,
+    0.8158946189469444
+   ],
+   "replicas_validas": 10000
+  },
+  "ens_familia": {
+   "valor": 0.18079033510595302,
+   "ic95": [
+    0.13913607652539023,
+    0.21922428111346098
+   ],
+   "replicas_validas": 10000
+  },
+  "ens_menos_lr": {
+   "valor": 0.047392229491074966,
+   "ic95": [
+    0.015033946130363752,
+    0.08241333261780713
+   ],
+   "replicas_validas": 10000
+  }
+ },
+ "sensibilidades": {
+  "sin_personas_expuestas": {
+   "P1": {
+    "valor": 0.03581236315888233,
+    "ic95": [
+     0.005969616844271139,
+     0.06815775397503421
+    ],
+    "veredicto_que_tendria": "EEGNET SUPERA"
+   },
+   "S1_PASAT": {
+    "valor": 0.16986861357730937,
+    "ic95": [
+     0.12619816176180232,
+     0.2128006578887798
+    ]
+   },
+   "S1_PVTB": {
+    "valor": 0.1652607966334292,
+    "ic95": [
+     0.10858682430048179,
+     0.22225805421714764
+    ]
+   }
+  },
+  "sin_grabaciones_128_hz": {
+   "P1": {
+    "valor": 0.0330918638002902,
+    "ic95": [
+     0.0036591544493013227,
+     0.06603442102814719
+    ],
+    "veredicto_que_tendria": "EEGNET SUPERA"
+   },
+   "S1_PASAT": {
+    "valor": 0.1610958181836237,
+    "ic95": [
+     0.11696643667684675,
+     0.20456980102866243
+    ]
+   },
+   "S1_PVTB": {
+    "valor": 0.166853235486776,
+    "ic95": [
+     0.11191364405548428,
+     0.22303164712331078
+    ]
+   }
+  }
+ },
+ "extra": {
+  "auc_ventanas_media_semillas": 0.582794149778281,
+  "rho_familia_por_semilla": {
+   "0": 0.17201934766923796,
+   "1": 0.16022461576580968,
+   "2": 0.16583451264885632
+  },
+  "desviacion_entre_semillas": 0.005899700952046982
+ },
+ "inventario": [
+  {
+   "condicion": "OA",
+   "grabaciones": 86,
+   "personas": 25,
+   "con_logistica": 86
+  },
+  {
+   "condicion": "PASAT",
+   "grabaciones": 88,
+   "personas": 25,
+   "con_logistica": 88
+  },
+  {
+   "condicion": "PVTB",
+   "grabaciones": 87,
+   "personas": 25,
+   "con_logistica": 87
+  }
+ ],
+ "personas_expuestas": 1,
+ "grabaciones_128_hz": 3,
+ "emparejamiento": {
+  "solo_cnn": 0,
+  "solo_logistica": 0
+ },
+ "fase_a": [
+  {
+   "nombre": "s0",
+   "semilla": 0,
+   "epocas": 46,
+   "mejor_epoca": 38,
+   "mejor_perdida_interna": 0.6794559955596924,
+   "auc_interna_mejor": 0.592398610884847,
+   "segundos_por_epoca": 34.86702811717987,
+   "nan": false
+  },
+  {
+   "nombre": "s1",
+   "semilla": 1,
+   "epocas": 32,
+   "mejor_epoca": 24,
+   "mejor_perdida_interna": 0.6791120171546936,
+   "auc_interna_mejor": 0.588702261296932,
+   "segundos_por_epoca": 35.57169055938721,
+   "nan": false
+  },
+  {
+   "nombre": "s2",
+   "semilla": 2,
+   "epocas": 35,
+   "mejor_epoca": 27,
+   "mejor_perdida_interna": 0.6812644600868225,
+   "auc_interna_mejor": 0.5857713952373229,
+   "segundos_por_epoca": 35.64971566200256,
+   "nan": false
+  }
+ ],
+ "epocas_modelo_final": 27,
+ "requisitos": {
+  "perdida_interna_baja": true,
+  "mejor_epoca_ni_1_ni_max": true,
+  "sin_nan": true,
+  "logistica_reproduce_el_ensayo": true
+ },
+ "entorno_entrenamiento": {
+  "torch": "2.14.1+cpu",
+  "python": "3.10.11",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "hilos": 6
+ },
+ "segundos_fase_a": 4207
+}

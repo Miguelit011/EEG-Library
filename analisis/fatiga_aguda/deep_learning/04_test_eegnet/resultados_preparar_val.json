@@ -1,0 +1,130 @@
+{
+ "fecha": "2026-10-31 19:24:43",
+ "particiones": [
+  "train",
+  "val"
+ ],
+ "interno": {
+  "fraccion": 0.15,
+  "semilla": 0,
+  "personas": 18
+ },
+ "resumen": [
+  {
+   "papel": "entreno",
+   "condicion": "PASAT",
+   "personas": 102,
+   "grabaciones": 376,
+   "ventanas": 33332,
+   "tercios": 22434
+  },
+  {
+   "papel": "entreno",
+   "condicion": "PVTB",
+   "personas": 102,
+   "grabaciones": 373,
+   "ventanas": 32473,
+   "tercios": 21838
+  },
+  {
+   "papel": "interno",
+   "condicion": "PASAT",
+   "personas": 18,
+   "grabaciones": 69,
+   "ventanas": 6137,
+   "tercios": 4137
+  },
+  {
+   "papel": "interno",
+   "condicion": "PVTB",
+   "personas": 18,
+   "grabaciones": 69,
+   "ventanas": 5922,
+   "tercios": 3984
+  },
+  {
+   "papel": "val",
+   "condicion": "OA",
+   "personas": 25,
+   "grabaciones": 86,
+   "ventanas": 4813,
+   "tercios": 3262
+  },
+  {
+   "papel": "val",
+   "condicion": "PASAT",
+   "personas": 25,
+   "grabaciones": 88,
+   "ventanas": 7814,
+   "tercios": 5258
+  },
+  {
+   "papel": "val",
+   "condicion": "PVTB",
+   "personas": 25,
+   "grabaciones": 87,
+   "ventanas": 7450,
+   "tercios": 5010
+  }
+ ],
+ "forma_tensor": [
+  97941,
+  14,
+  512
+ ],
+ "gb": 2.808164352,
+ "fraccion_canales_excluidos": 0.1384156934130898,
+ "ventanas_npy_combinado": "8e8fc7ea27210f2284a2cd4dd25794e8917e2765717fdf549c5fbdc3ac8ea612",
+ "archivos_npy": 1148,
+ "logistica": {
+  "features": "rel",
+  "modelo": "lr_0.01",
+  "reproduccion_ensayo": {
+   "completa | PASAT": {
+    "ahora": 0.11902584937522677,
+    "ensayo": 0.11902584937522677,
+    "grabaciones": 88,
+    "grabaciones_ensayo": 88
+   },
+   "completa | PVTB": {
+    "ahora": 0.1479355602021115,
+    "ensayo": 0.1479355602021115,
+    "grabaciones": 87,
+    "grabaciones_ensayo": 87
+   },
+   "completa | OA": {
+    "ahora": 0.03871625339033927,
+    "ensayo": 0.03871625339033927,
+    "grabaciones": 86,
+    "grabaciones_ensayo": 86
+   },
+   "igual_tiempo | PASAT": {
+    "ahora": 0.09723497049410469,
+    "ensayo": 0.09723497049410469,
+    "grabaciones": 86,
+    "grabaciones_ensayo": 86
+   },
+   "igual_tiempo | PVTB": {
+    "ahora": 0.09762130736886702,
+    "ensayo": 0.09762130736886702,
+    "grabaciones": 85,
+    "grabaciones_ensayo": 85
+   },
+   "igual_tiempo | OA": {
+    "ahora": 0.03871625339033927,
+    "ensayo": 0.03871625339033927,
+    "grabaciones": 86,
+    "grabaciones_ensayo": 86
+   }
+  },
+  "reproduce_ensayo": true
+ },
+ "sha256": {
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "configuracion_elegida.json": "c0d77dc864f9251f9f85a9c94b6d3a10a6440c3039b567b95ead1c8b77670ed1",
+  "medida_elegida.json": "d3e6c41cc79b4aacad53cd9c0930b6ab88bba6ddcf3a7d6eb4616960841a596f"
+ },
+ "segundos": 73
+}

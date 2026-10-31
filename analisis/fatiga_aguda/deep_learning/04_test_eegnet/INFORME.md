@@ -1,9 +1,10 @@
 # Deep learning — paso 4: EEGNet entrenada con `train` + `val` y evaluada en `test`
 
-> Plan escrito el 2026-10-31, **antes** de ejecutar nada de este paso. No se
-> ha cargado `val` ni `test` para el deep learning. Las pruebas sobre `test`
-> están en [`PREREGISTRO.md`](PREREGISTRO.md). Este informe cubre el cómo:
-> datos, scripts, orden de ejecución y coste.
+> Plan escrito el 2026-10-31, **antes** de ejecutar nada de este paso. Ese
+> mismo día se ejecutaron las fases A (`val`) y B (modelo final); sus
+> resultados están al final. `test` **no se ha cargado** para el deep
+> learning. Las pruebas sobre `test` están en [`PREREGISTRO.md`](PREREGISTRO.md).
+> Este informe cubre el cómo: datos, scripts, orden de ejecución y coste.
 
 ## Para qué sirve
 
@@ -98,8 +99,9 @@ fase A; se anota):
 - la pérdida interna baja respecto a la época 1;
 - la mejor época no es la 1 ni la 80;
 - no hay NaN;
-- la logística reentrenada reproduce en `val` las ρ por grabación de la
-  versión completa del ensayo general del paso 6 (diferencia < 10⁻⁶).
+- la logística reentrenada reproduce en `val` las ρ medias y los recuentos de
+  grabaciones del ensayo general del paso 6 (PASAT, PVTB y OA, las dos
+  versiones; diferencia < 10⁻⁶). El ensayo no guardó las ρ por grabación.
 
 ### Fase B — modelo final
 
@@ -127,7 +129,7 @@ limpio. Construye el tensor de `test`, lo puntúa con los pesos congelados
 
 | Script | Entorno | Qué hace |
 |---|---|---|
-| `preparar.py --val` | `.venv` | Tensor y máscara de PASAT, PVTB y OA de `train` + `val`; tabla de ventanas con papel (entreno, interno, `val`); referencias logísticas en `val` |
+| `preparar.py --val` | `.venv` | Tensor y máscara de PASAT y PVTB de `train` + `val` y de OA de `val` (el OA de `train` no se usa); tabla de ventanas con papel (entreno, interno, `val`); referencias logísticas en `val` |
 | `entrenar.py --fase-a` | `eeg-dl` | 3 semillas con parada temprana; puntuaciones de `val`; checkpoints por época |
 | `evaluar.py --val` | `.venv` | Cifras de la fase A, requisitos, épocas fijadas y figuras |
 | `entrenar.py --fase-b` | `eeg-dl` | 3 semillas con todo `train` + `val` y épocas fijas; pesos y hashes en `configuracion_dl.json` |
@@ -168,8 +170,8 @@ ventanas).
 Trabajo humano: ≈ 8–12 h (adaptar los tres scripts, el `.ps1`, comprobaciones
 e informe).
 
-**Memoria:** el tensor de `train` + `val` (PASAT + PVTB + OA) ocupa
-≈ 3.2 GB en float32. Se abre con `mmap_mode="r"`, como en el piloto, que se
+**Memoria:** el tensor de `train` + `val` (PASAT + PVTB, y OA de `val`)
+ocupa ≈ 3 GB en float32. Se abre con `mmap_mode="r"`, como en el piloto, que se
 cortó una vez por falta de memoria. Hay checkpoint por época y se reanuda
 desde ahí.
 
@@ -190,4 +192,51 @@ desde ahí.
 
 ## Resultados
 
-*(Vacío hasta ejecutar.)*
+### Preparación (`preparar.py --val`, 73 s)
+
+| Papel | Personas | PASAT (grab. / ventanas) | PVTB (grab. / ventanas) | OA (grab.) |
+|---|---|---|---|---|
+| Entreno | 102 | 376 / 33 332 | 373 / 32 473 | — |
+| Interno | 18 | 69 / 6 137 | 69 / 5 922 | — |
+| `val` | 25 | 88 / 7 814 | 87 / 7 450 | 86 |
+
+1 148 `.npy`, ninguno desalineado. Tensor (97 941, 14, 512), 2.81 GB, con un
+13.8 % de canales excluidos. La logística del paso 6 reentrenada con `train`
+reproduce exactamente el ensayo general en `val`, en las dos versiones y en
+las tres condiciones.
+
+### Fase A (`entrenar.py --fase-a`, 70 min; `evaluar.py --val`, 18 s)
+
+Paró por paciencia en las épocas 46, 32 y 35. Las mejores fueron la 38, la 24
+y la 27, así que **E = 27**. Se cumplen los cuatro requisitos técnicos. Cada
+época tardó ≈ 35 s con 44 272 ventanas (≈ 0.8 ms por ventana y época), algo
+más rápido que en el piloto.
+
+Cifras de desarrollo en `val` (tabla completa en `PREREGISTRO.md`, sección 12):
+
+- **P1:** Δρ = **+0.033** [+0.004, +0.065]. En `val`, EEGNet supera a la
+  logística del paso 6 (ρ 0.166 frente a 0.133). Es el signo contrario al
+  que esperaba la sección 7 del preregistro.
+- **A igual tiempo, la diferencia desaparece:** −0.001 [−0.046, +0.047].
+- **Control OA:** ρ +0.026 [−0.032, +0.084], sin diferencia clara con 0.
+- **Semillas:** muy estables (ρ entre 0.160 y 0.172).
+- **Sensibilidades:** sin la persona expuesta o sin las grabaciones a 128 Hz,
+  P1 apenas cambia.
+
+Figuras: `figuras/curvas_fase_a.png` (pérdida interna por época) y
+`figuras/rho_val.png`.
+
+### Fase B (`entrenar.py --fase-b`, 65 min)
+
+3 semillas × 27 épocas con 62 661 ventanas de 145 personas (`train` +
+`val`), sin NaN. La pérdida de entrenamiento final es 0.678–0.679. Los pesos y
+sus SHA-256 están en `configuracion_dl.json`
+(`tablas/curvas_fase_b.csv`), y también en el preregistro (sección 4.1).
+
+**Coste real hasta aquí:** ≈ 2 h 20 min de CPU, frente a las 5.5–6.5 h
+estimadas.
+
+### Fase C
+
+Pendiente: el commit del autor que fija el preregistro. Fase D (test): sin
+ejecutar.

@@ -1,0 +1,32 @@
+
+==============================================================================
+0. CARGA (train + val; test no se carga). 2026-10-31 19:23:31
+==============================================================================
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 3184 de 3728 epoca(s) (85.4 %) tienen algun canal excluido.
+  papel condicion  personas  grabaciones  ventanas  tercios
+entreno     PASAT       102          376     33332    22434
+entreno      PVTB       102          373     32473    21838
+interno     PASAT        18           69      6137     4137
+interno      PVTB        18           69      5922     3984
+    val        OA        25           86      4813     3262
+    val     PASAT        25           88      7814     5258
+    val      PVTB        25           87      7450     5010
+
+==============================================================================
+1. INTEGRIDAD Y TENSOR A 128 Hz
+==============================================================================
+Archivos .npy: 1148. Desalineados: 0. Hash combinado: 8e8fc7ea27210f22…
+Tensor (97941, 14, 512), 2.81 GB, 13.8 % de canales excluidos. Caché: C:\Users\migue\Desktop\TFG\EEG-DL-cache\test_eegnet\dev
+
+==============================================================================
+2. LOGÍSTICA PREREGISTRADA DEL PASO 6: train → val
+==============================================================================
+  completa     PASAT ρ = +0.119026  (ensayo +0.119026; 88 grab., ensayo 88)
+  completa     PVTB  ρ = +0.147936  (ensayo +0.147936; 87 grab., ensayo 87)
+  completa     OA    ρ = +0.038716  (ensayo +0.038716; 86 grab., ensayo 86)
+  igual_tiempo PASAT ρ = +0.097235  (ensayo +0.097235; 86 grab., ensayo 86)
+  igual_tiempo PVTB  ρ = +0.097621  (ensayo +0.097621; 85 grab., ensayo 85)
+  igual_tiempo OA    ρ = +0.038716  (ensayo +0.038716; 86 grab., ensayo 86)
+  Reproduce el ensayo general del paso 6: sí
+
+Tiempo total: 73 s

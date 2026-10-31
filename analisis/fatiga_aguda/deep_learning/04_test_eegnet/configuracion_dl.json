@@ -1,0 +1,41 @@
+{
+ "fecha": "2026-10-31 20:36:32",
+ "arquitectura": "EEGNet-8,2 de 02_piloto_cnn/entrenar.py (BN tras la conv temporal, 2 mapas de entrada: señal y máscara)",
+ "frecuencia_hz": 128,
+ "lr": 0.0003,
+ "weight_decay": 0.01,
+ "lote": 256,
+ "dropout": 0.25,
+ "optimizador": "AdamW",
+ "perdida": "BCEWithLogitsLoss",
+ "semillas": [
+  0,
+  1,
+  2
+ ],
+ "epocas": 27,
+ "regla_epocas": "mediana de las mejores épocas de las 3 semillas de la fase A",
+ "mejores_epocas_fase_a": [
+  38,
+  24,
+  27
+ ],
+ "pesos": {
+  "s0": "533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81",
+  "s1": "90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52",
+  "s2": "f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313"
+ },
+ "tensor_entrenamiento_sha256": "f6cc66f2f3435b35c79566a9500683963d91d109892af434dbc0b654545d112b",
+ "ventanas_entrenamiento": 62661,
+ "entorno_entrenamiento": {
+  "torch": "2.14.1+cpu",
+  "python": "3.10.11",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "hilos": 6
+ },
+ "fase_b": {
+  "segundos": 3895,
+  "nan": false
+ }
+}

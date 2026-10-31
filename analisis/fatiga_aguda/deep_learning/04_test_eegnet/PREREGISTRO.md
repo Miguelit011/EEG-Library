@@ -1,6 +1,7 @@
 # Pre-registro — EEGNet frente a la logística en el conjunto de test (fatiga aguda)
 
-> **Estado: BORRADOR (2026-10-31).** Queda **FIJADO** en el commit que lo
+> **Estado: COMPLETO, PENDIENTE DE FIJAR (2026-10-31).** Fases A y B hechas;
+> secciones 4.1 y 12 rellenadas. Queda **FIJADO** en el commit que lo
 > incluye junto con los scripts de `04_test_eegnet/` y
 > `configuracion_dl.json`, que contiene los SHA-256 de los pesos finales. Ese
 > commit lo hace el autor después de las fases A y B (`INFORME.md`) y antes de
@@ -61,9 +62,9 @@ Las decisiones del deep learning **se tomaron después** de conocerlos
 |---|---|
 | Partición | `split` de `matriz_rf.parquet` (Fase 12). Nunca la de `features_all.parquet` |
 | Test | **28 personas**. PASAT 102, PVTB 103 y OA 103 grabaciones según la matriz |
-| Entrenamiento del modelo final | `train` + `val`: **146 personas** |
+| Entrenamiento del modelo final | `train` + `val`: **145 personas** con grabaciones válidas de PASAT o PVTB (de las 146 de `train` + `val`), 62 661 ventanas de los tercios primero y último |
 | Ventanas | `EEG-Data/ventanas/*.npy` (14 × 1024 a 256 Hz), alineadas con `features_all.parquet`; canales válidos de `procesamiento_log.csv` (Fase 11.5) |
-| Referencia logística | `EEG-Data/processed/fatiga_aguda_test_20261027-190547/predicciones_por_grabacion.parquet`, filas de `rho_ventanas`, versiones completa e igual tiempo (solo lectura) |
+| Referencia logística | `EEG-Data/processed/fatiga_aguda_test_20261027-190547/predicciones_por_grabacion.parquet`, filas de `rho_ventanas` (las que no llevan `medida`; las de tercios llevan `tercios_pareado`), versiones completa e igual tiempo (solo lectura) |
 
 **Exclusiones** (las de la línea): grabaciones sin `persona_uid` y con < 10
 ventanas. En la versión a igual tiempo, además, las tareas cuya sesión no
@@ -91,11 +92,21 @@ en `test`, con una sensibilidad sin ella (sección 6).
   el último tercio (1) de todas las grabaciones de `train` + `val`. AdamW (lr
   3·10⁻⁴, `weight_decay` 0.01), lote de 256, `BCEWithLogitsLoss`, **sin
   parada temprana**, durante **E épocas**.
-- **E** = mediana de las mejores épocas de las 3 semillas de la fase A:
-  **[se rellena tras la fase A]**.
-- **Semillas:** 0, 1 y 2. Los SHA-256 de sus pesos están en
-  `configuracion_dl.json`: **[se rellenan tras la fase B]**. El script se
-  niega a puntuar si no coinciden.
+- **E** = mediana de las mejores épocas de las 3 semillas de la fase A
+  (38, 24 y 27): **E = 27**.
+- **Semillas:** 0, 1 y 2. Los SHA-256 de sus pesos (`fase_b/s{k}/final.pt`)
+  están en `configuracion_dl.json`. El script se niega a puntuar si no
+  coinciden:
+
+  | Semilla | SHA-256 de los pesos |
+  |---|---|
+  | 0 | `533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81` |
+  | 1 | `90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52` |
+  | 2 | `f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313` |
+
+  SHA-256 del tensor de entrenamiento:
+  `f6cc66f2f3435b35c79566a9500683963d91d109892af434dbc0b654545d112b`.
+  Fase B: 65 min y sin NaN.
 - **Puntuación:** el logit de cada ventana de `test` (los tres tercios y las
   ventanas de OA, puntuadas con el mismo modelo de tareas).
 
@@ -174,6 +185,9 @@ CONFIRMA si la p de Holm < 0.05; si no, NO CONCLUYE.
 
 ## 7. Qué cabe esperar (no es una predicción)
 
+*(Escrita antes de la fase A y no se ha retocado después. La fase A en `val`
+dio un resultado distinto del esperado: ver la sección 12.)*
+
 Cifras de desarrollo del paso 2 (pliegue 0 de `train`, 25 personas): EEGNet −
 logística B = −0.021 [−0.046, +0.003]. De ahí, el error típico de Δρ con 28
 personas es ≈ 0.012, y la semiamplitud del IC95, ≈ 0.023.
@@ -242,7 +256,58 @@ ventanas.
 documento, por qué y si ocurrió antes o después de ver algún resultado de
 `test`.)*
 
-## 12. Fase A en `val` (se rellena antes del commit)
+## 12. Fase A en `val` (rellenada antes del commit, 2026-10-31)
 
-*(Mejores épocas por semilla, E fijada, requisitos técnicos y las cifras de la
-sección 5 calculadas en `val`. Son de desarrollo.)*
+Cifras de **desarrollo**: entrenamiento con `train` y puntuación en `val`
+(25 personas). Detalle completo en `resultados_val.json`, `evaluar_val.log`,
+`tablas/cifras_val.csv` y `figuras/`. No cambian nada de lo fijado arriba: la
+fase A no era una puerta.
+
+**Épocas y requisitos técnicos**
+
+| Semilla | Épocas | Mejor época | Pérdida interna | AUC interna |
+|---|---|---|---|---|
+| 0 | 46 | 38 | 0.6795 | 0.592 |
+| 1 | 32 | 24 | 0.6791 | 0.589 |
+| 2 | 35 | 27 | 0.6813 | 0.586 |
+
+E = 27. Se cumplen los cuatro requisitos: la pérdida interna baja, la mejor
+época no es ni la 1 ni la 80, no hay NaN y la logística reproduce el ensayo
+general del paso 6 (diferencia 0 en las ρ medias y en los recuentos). Fase A:
+70 min.
+
+**Cifras de la sección 5 en `val`**
+
+| Cifra | Valor | IC95 |
+|---|---|---|
+| P1: Δρ (EEGNet − logística), completa | **+0.033** | [+0.004, +0.065] (p bilateral 0.028; aquí sería «EEGNET SUPERA») |
+| S1: ρ EEGNet PASAT | +0.163 | [+0.119, +0.206] (Holm 0.0002) |
+| S1: ρ EEGNet PVTB | +0.169 | [+0.113, +0.225] (Holm 0.0002) |
+| ρ logística PASAT / PVTB | +0.119 / +0.148 | [+0.077, +0.158] / [+0.102, +0.195] |
+| Δρ PASAT / PVTB | +0.044 / +0.021 | [+0.002, +0.090] / [−0.022, +0.064] |
+| Igual tiempo: Δρ (EEGNet − logística) | −0.001 | [−0.046, +0.047] |
+| Control OA: ρ EEGNet en OA | +0.026 | [−0.032, +0.084] |
+| Tareas − OA (completa / igual tiempo) | +0.140 / +0.070 | [+0.076, +0.200] / [+0.010, +0.133] |
+| Acierto pareado de tercios | 0.766 | [0.711, 0.816] |
+| Conjunto EEGNet + logística: ρ / ganancia sobre la logística | +0.181 / +0.047 | [+0.139, +0.219] / [+0.015, +0.082] |
+| AUC por ventana (media de semillas) | 0.583 | — |
+| ρ por semilla (0, 1, 2) | 0.172, 0.160, 0.166 | desviación típica 0.006 |
+| Sensibilidades: P1 sin la persona expuesta / sin 128 Hz | +0.036 / +0.033 | [+0.006, +0.068] / [+0.004, +0.066] |
+
+Emparejamiento: todas las grabaciones tienen ρ de las dos fuentes (0 sin
+pareja). Inventario de `val`: OA 86, PASAT 88 y PVTB 87 grabaciones de 25
+personas.
+
+**Lectura (de desarrollo)**
+
+- El signo es el **contrario** al que esperaba la sección 7: en `val`, EEGNet
+  supera a la logística del paso 6. No contradice los pilotos. Allí la
+  referencia era la logística F (espectro fino) o la B en un pliegue de
+  `train`. Aquí es la logística preregistrada, que en `val` saca ρ 0.133.
+- **La ventaja depende de la versión.** A igual tiempo desaparece (−0.001).
+  Si en `test` pasa lo mismo, parte de la diferencia de P1 vendría de los
+  tramos finales de las grabaciones largas. Esos tramos no tienen control:
+  el OA de la sesión es más corto.
+- La semiamplitud del IC95 de P1 en `val` es ≈ 0.031, más ancha que la ≈ 0.023
+  prevista en la sección 7 para `test`. La potencia real puede ser menor que
+  la calculada allí.

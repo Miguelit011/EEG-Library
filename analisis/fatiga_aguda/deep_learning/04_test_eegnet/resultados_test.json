@@ -1,0 +1,329 @@
+{
+ "modo": "test",
+ "inicio": "2026-10-31 22:42:53",
+ "fin": "2026-10-31 22:43:12",
+ "commit": "e20279d652fe6783f2639eebddef28807c4e817f",
+ "cifras": {
+  "P1": {
+   "valor": -0.010708451709490769,
+   "ic95": [
+    -0.04711793154902131,
+    0.027515007208001985
+   ],
+   "replicas_validas": 10000,
+   "p_bilateral": 0.5613438656134386,
+   "veredicto": "NO SE DISTINGUE",
+   "dentro_de_0.02": false
+  },
+  "S1_PASAT": {
+   "valor": 0.17961577784453855,
+   "ic95": [
+    0.13336107785933937,
+    0.22514345554440005
+   ],
+   "replicas_validas": 10000,
+   "p_unilateral": 9.999000099990002e-05,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  },
+  "S1_PVTB": {
+   "valor": 0.14141037835710554,
+   "ic95": [
+    0.09805208706328998,
+    0.18307374374300492
+   ],
+   "replicas_validas": 10000,
+   "p_unilateral": 9.999000099990002e-05,
+   "p_holm": 0.00019998000199980003,
+   "veredicto": "CONFIRMA"
+  },
+  "dif_PASAT": {
+   "valor": 0.017757448344462214,
+   "ic95": [
+    -0.02628140489002628,
+    0.06448150663776789
+   ],
+   "replicas_validas": 10000
+  },
+  "dif_PVTB": {
+   "valor": -0.03889798380175488,
+   "ic95": [
+    -0.08055292482900929,
+    0.0015776630235868549
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_familia": {
+   "valor": 0.1604198941996332,
+   "ic95": [
+    0.1303392169754962,
+    0.18991788027514708
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_familia": {
+   "valor": 0.17112834590912399,
+   "ic95": [
+    0.1379030446628709,
+    0.20552145733928592
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_PASAT": {
+   "valor": 0.1618583295000764,
+   "ic95": [
+    0.11036496229987562,
+    0.21709153466921155
+   ],
+   "replicas_validas": 10000
+  },
+  "lr_PVTB": {
+   "valor": 0.1803083621588604,
+   "ic95": [
+    0.14077257361905623,
+    0.2211061877356163
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_PASAT": {
+   "valor": 0.11804614438674033,
+   "ic95": [
+    0.059299225760010045,
+    0.17846704076039227
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_PVTB": {
+   "valor": 0.10110094231259283,
+   "ic95": [
+    0.05682932991401101,
+    0.1454571860242282
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_familia": {
+   "valor": 0.1095735433496666,
+   "ic95": [
+    0.07384764577504895,
+    0.1455837923462857
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_lr_familia": {
+   "valor": 0.13042151075468944,
+   "ic95": [
+    0.09682596886698965,
+    0.16467457528829813
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_dif_familia": {
+   "valor": -0.020847967405022882,
+   "ic95": [
+    -0.06246789747296309,
+    0.02274880517043281
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_OA": {
+   "valor": 0.034691742726517365,
+   "ic95": [
+    -0.009802559259233,
+    0.07618893452382162
+   ],
+   "replicas_validas": 10000
+  },
+  "cnn_tareas_menos_OA": {
+   "valor": 0.12572815147311583,
+   "ic95": [
+    0.07441549483617622,
+    0.17728034310087593
+   ],
+   "replicas_validas": 10000
+  },
+  "igual_cnn_tareas_menos_OA": {
+   "valor": 0.07488180062314923,
+   "ic95": [
+    0.01954413318085213,
+    0.13238341252186267
+   ],
+   "replicas_validas": 10000
+  },
+  "tercios_cnn_familia": {
+   "valor": 0.7365853658536585,
+   "ic95": [
+    0.6826923076923077,
+    0.7867300701557696
+   ],
+   "replicas_validas": 10000
+  },
+  "ens_familia": {
+   "valor": 0.1723161516002444,
+   "ic95": [
+    0.13964467744398976,
+    0.2039401158835689
+   ],
+   "replicas_validas": 10000
+  },
+  "ens_menos_lr": {
+   "valor": 0.0011878056911204399,
+   "ic95": [
+    -0.03590255649806405,
+    0.0399373171542598
+   ],
+   "replicas_validas": 10000
+  }
+ },
+ "sensibilidades": {
+  "sin_personas_expuestas": {
+   "P1": {
+    "valor": -0.007073657464045265,
+    "ic95": [
+     -0.04456043692201726,
+     0.032134294897838186
+    ],
+    "veredicto_que_tendria": "NO SE DISTINGUE"
+   },
+   "S1_PASAT": {
+    "valor": 0.18281483026822634,
+    "ic95": [
+     0.13601945994431514,
+     0.2302884432307072
+    ]
+   },
+   "S1_PVTB": {
+    "valor": 0.1416678407317434,
+    "ic95": [
+     0.09672763214298706,
+     0.1845885468237834
+    ]
+   }
+  },
+  "sin_grabaciones_128_hz": {
+   "P1": {
+    "valor": -0.010740149322276547,
+    "ic95": [
+     -0.047525652397472855,
+     0.02776298302640357
+    ],
+    "veredicto_que_tendria": "NO SE DISTINGUE"
+   },
+   "S1_PASAT": {
+    "valor": 0.18094058418987477,
+    "ic95": [
+     0.1338305036694547,
+     0.2272532743356932
+    ]
+   },
+   "S1_PVTB": {
+    "valor": 0.13914590987268666,
+    "ic95": [
+     0.09570264007523656,
+     0.18154418266409827
+    ]
+   }
+  }
+ },
+ "extra": {
+  "auc_ventanas_media_semillas": 0.5814709072991388,
+  "rho_familia_por_semilla": {
+   "0": 0.16311877356171214,
+   "1": 0.1579319709236256,
+   "2": 0.16020893811356193
+  },
+  "desviacion_entre_semillas": 0.002599828312466667
+ },
+ "inventario": [
+  {
+   "condicion": "OA",
+   "grabaciones": 103,
+   "personas": 28,
+   "con_logistica": 103
+  },
+  {
+   "condicion": "PASAT",
+   "grabaciones": 102,
+   "personas": 28,
+   "con_logistica": 102
+  },
+  {
+   "condicion": "PVTB",
+   "grabaciones": 103,
+   "personas": 28,
+   "con_logistica": 103
+  }
+ ],
+ "personas_expuestas": 1,
+ "grabaciones_128_hz": 3,
+ "emparejamiento": {
+  "solo_cnn": 0,
+  "solo_logistica": 0
+ },
+ "configuracion": {
+  "fecha": "2026-10-31 20:36:32",
+  "arquitectura": "EEGNet-8,2 de 02_piloto_cnn/entrenar.py (BN tras la conv temporal, 2 mapas de entrada: señal y máscara)",
+  "frecuencia_hz": 128,
+  "lr": 0.0003,
+  "weight_decay": 0.01,
+  "lote": 256,
+  "dropout": 0.25,
+  "optimizador": "AdamW",
+  "perdida": "BCEWithLogitsLoss",
+  "semillas": [
+   0,
+   1,
+   2
+  ],
+  "epocas": 27,
+  "regla_epocas": "mediana de las mejores épocas de las 3 semillas de la fase A",
+  "mejores_epocas_fase_a": [
+   38,
+   24,
+   27
+  ],
+  "pesos": {
+   "s0": "533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81",
+   "s1": "90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52",
+   "s2": "f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313"
+  },
+  "tensor_entrenamiento_sha256": "f6cc66f2f3435b35c79566a9500683963d91d109892af434dbc0b654545d112b",
+  "ventanas_entrenamiento": 62661,
+  "entorno_entrenamiento": {
+   "torch": "2.14.1+cpu",
+   "python": "3.10.11",
+   "numpy": "2.2.6",
+   "pandas": "2.3.3",
+   "hilos": 6
+  },
+  "fase_b": {
+   "segundos": 3895,
+   "nan": false
+  }
+ },
+ "sha256": {
+  "comun_dl.py": "1a6ac553f38da9331680f4f2940fc208d201bbda58c0756a4781d4a515237e4c",
+  "preparar.py": "75ba62456d5bd28433e3072b4fa272faa4697843263b2c591c8b88bb08a326da",
+  "entrenar.py": "2e75a53b4b81badef34b714b1c0e27b6e3e39e1fb0e4a568720dc6cd7f83d5de",
+  "evaluar.py": "3a5e37e3059931ae6fc0c6231be7920d81381494d2da944a784c8c8729292a3a",
+  "ejecutar_test.ps1": "a6d4bf1e379417587b8225dc2f5baaf6f58afe48ff2438aefde0531d341add00",
+  "preregistro": "7a16f33ea27d7dcc831dcd73a24c2d4f75eef1b342d563d6b621f1bbb3662164",
+  "configuracion_dl.json": "e16e82bb94179d3489de20bdc0e18f09bf08acad3b0c622a57038f26777d769f",
+  "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+  "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+  "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7",
+  "predicciones_por_grabacion.parquet": "cbf9a708e7645339ee62e0b2ea4df6d930d59f272a8a0a8f7803fe13fff9571f"
+ },
+ "entorno_evaluacion": {
+  "python": "3.10.11",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "scipy": "1.15.3",
+  "so": "Windows-10-10.0.26300-SP0",
+  "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD"
+ },
+ "parametros": {
+  "n_boot": 10000,
+  "semilla": 42,
+  "alfa": 0.05
+ }
+}

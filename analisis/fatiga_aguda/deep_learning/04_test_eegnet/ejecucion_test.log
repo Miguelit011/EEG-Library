@@ -1,0 +1,74 @@
+
+==============================================================================
+0. CARGA DE TEST (evaluación única). 2026-10-31 22:42:17. Commit e20279d652fe
+==============================================================================
+Salida: C:\Users\migue\Desktop\TFG\EEG-Data\processed\fatiga_aguda_dl_test_20261031-224217
+Validez de canal anotada: 14 columna(s) 'canal_valido_*' + 'n_canales_buenos'. 605 de 725 epoca(s) (83.4 %) tienen algun canal excluido.
+papel condicion  personas  grabaciones  ventanas  tercios
+ test        OA        28          103      5786     3912
+ test     PASAT        28          102      9066     6102
+ test      PVTB        28          103      9008     6053
+
+==============================================================================
+1. INTEGRIDAD Y TENSOR A 128 Hz
+==============================================================================
+Archivos .npy: 308. Desalineados: 0. Hash combinado: 8415a18ef1bff56e…
+Tensor (23860, 14, 512), 0.68 GB, 13.8 % de canales excluidos. Caché: C:\Users\migue\Desktop\TFG\EEG-DL-cache\test_eegnet\test
+
+Tiempo total: 11 s
+
+Puntuación de test con los pesos congelados. Commit e20279d652fe. Salida: C:\Users\migue\Desktop\TFG\EEG-Data\processed\fatiga_aguda_dl_test_20261031-224217
+  s0: SHA-256 comprobado; 23860 ventanas puntuadas
+  s1: SHA-256 comprobado; 23860 ventanas puntuadas
+  s2: SHA-256 comprobado; 23860 ventanas puntuadas
+
+
+==============================================================================
+FASE D: EVALUACIÓN ÚNICA EN TEST. 2026-10-31 22:42:53. Commit e20279d652fe
+==============================================================================
+
+==============================================================================
+PRINCIPAL
+==============================================================================
+  P1 Δρ (EEGNet − logística), PASAT + PVTB, completa: -0.0107  IC95 [-0.0471, +0.0275]  p bilateral = 0.5613  → NO SE DISTINGUE
+
+==============================================================================
+SECUNDARIA
+==============================================================================
+  S1_PASAT  ρ = +0.1796  IC95 [+0.1334, +0.2251]  p = 0.0001, Holm 0.0002  → CONFIRMA
+  S1_PVTB   ρ = +0.1414  IC95 [+0.0981, +0.1831]  p = 0.0001, Holm 0.0002  → CONFIRMA
+
+==============================================================================
+DESCRIPTIVOS (sin veredicto)
+==============================================================================
+  dif_PASAT                    +0.0178 [-0.0263, +0.0645]
+  dif_PVTB                     -0.0389 [-0.0806, +0.0016]
+  cnn_familia                  +0.1604 [+0.1303, +0.1899]
+  lr_familia                   +0.1711 [+0.1379, +0.2055]
+  lr_PASAT                     +0.1619 [+0.1104, +0.2171]
+  lr_PVTB                      +0.1803 [+0.1408, +0.2211]
+  igual_cnn_PASAT              +0.1180 [+0.0593, +0.1785]
+  igual_cnn_PVTB               +0.1011 [+0.0568, +0.1455]
+  igual_cnn_familia            +0.1096 [+0.0738, +0.1456]
+  igual_lr_familia             +0.1304 [+0.0968, +0.1647]
+  igual_dif_familia            -0.0208 [-0.0625, +0.0227]
+  cnn_OA                       +0.0347 [-0.0098, +0.0762]
+  cnn_tareas_menos_OA          +0.1257 [+0.0744, +0.1773]
+  igual_cnn_tareas_menos_OA    +0.0749 [+0.0195, +0.1324]
+  tercios_cnn_familia          +0.7366 [+0.6827, +0.7867]
+  ens_familia                  +0.1723 [+0.1396, +0.2039]
+  ens_menos_lr                 +0.0012 [-0.0359, +0.0399]
+  auc_ventanas_media_semillas  0.5814709072991388
+  rho_familia_por_semilla      {0: 0.16311877356171214, 1: 0.1579319709236256, 2: 0.16020893811356193}
+  desviacion_entre_semillas    0.002599828312466667
+
+==============================================================================
+SENSIBILIDADES (sin veredicto)
+==============================================================================
+  sin_personas_expuestas: P1 -0.0071 [-0.0446, +0.0321]  S1_PASAT +0.1828 [+0.1360, +0.2303]  S1_PVTB +0.1417 [+0.0967, +0.1846]  (P1 tendría: NO SE DISTINGUE)
+  sin_grabaciones_128_hz: P1 -0.0107 [-0.0475, +0.0278]  S1_PASAT +0.1809 [+0.1338, +0.2273]  S1_PVTB +0.1391 [+0.0957, +0.1815]  (P1 tendría: NO SE DISTINGUE)
+
+Inventario: [{'condicion': 'OA', 'grabaciones': 103, 'personas': 28, 'con_logistica': 103}, {'condicion': 'PASAT', 'grabaciones': 102, 'personas': 28, 'con_logistica': 102}, {'condicion': 'PVTB', 'grabaciones': 103, 'personas': 28, 'con_logistica': 103}]
+Emparejamiento: {'solo_cnn': 0, 'solo_logistica': 0}; personas expuestas 1; grabaciones a 128 Hz 3
+
+Fin: 2026-10-31 22:43:12. Artefactos en C:\Users\migue\Desktop\TFG\EEG-Data\processed\fatiga_aguda_dl_test_20261031-224217

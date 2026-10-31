@@ -1,9 +1,10 @@
 # Deep learning — paso 4: EEGNet entrenada con `train` + `val` y evaluada en `test`
 
 > Plan escrito el 2026-10-31, **antes** de ejecutar nada de este paso. Ese
-> mismo día se ejecutaron las fases A (`val`) y B (modelo final); sus
-> resultados están al final. `test` **no se ha cargado** para el deep
-> learning. Las pruebas sobre `test` están en [`PREREGISTRO.md`](PREREGISTRO.md).
+> mismo día se ejecutaron las fases A (`val`) y B (modelo final), se fijó el
+> preregistro (commit `e20279d`) y se hizo la evaluación única en `test`. Los
+> resultados están al final. **P1: NO SE DISTINGUE** (Δρ −0.011
+> [−0.047, +0.028]). Las pruebas están en [`PREREGISTRO.md`](PREREGISTRO.md).
 > Este informe cubre el cómo: datos, scripts, orden de ejecución y coste.
 
 ## Para qué sirve
@@ -238,5 +239,83 @@ estimadas.
 
 ### Fase C
 
-Pendiente: el commit del autor que fija el preregistro. Fase D (test): sin
-ejecutar.
+El autor fijó el preregistro en el commit `e20279d` (2026-10-31).
+
+### Fase D — evaluación única en `test` (2026-10-31, 22:42–22:43)
+
+Una sola ejecución de `ejecutar_test.ps1`, sin fallos y con los SHA-256 de
+los pesos comprobados. `test`: 28 personas; PASAT 102, PVTB 103 y OA 103
+grabaciones; 23 860 ventanas, sin ningún `.npy` desalineado. Emparejamiento
+completo con la logística (0 grabaciones sin pareja). La logística reproduce
+las ρ del paso 6: PASAT +0.162 y PVTB +0.180.
+
+Datos en bruto en
+`EEG-Data/processed/fatiga_aguda_dl_test_20261031-224217/`. En el
+repositorio: `resultados_test.json`, `ejecucion_test.log` y
+`figuras/rho_test.png`. El tensor y las puntuaciones de `test` se borraron
+de la caché al terminar.
+
+**Prueba principal**
+
+| | Δρ (EEGNet − logística) | IC95 | p bilateral | Veredicto |
+|---|---|---|---|---|
+| **P1**: PASAT + PVTB, grabación completa | **−0.011** | [−0.047, +0.028] | 0.56 | **NO SE DISTINGUE** |
+
+**Prueba secundaria**
+
+| | ρ EEGNet | IC95 | p de Holm | Veredicto |
+|---|---|---|---|---|
+| S1 PASAT | +0.180 | [+0.133, +0.225] | 0.0002 | **CONFIRMA** |
+| S1 PVTB | +0.141 | [+0.098, +0.183] | 0.0002 | **CONFIRMA** |
+
+**Descriptivos** (sin veredicto)
+
+| Cifra | `test` | IC95 | En `val` |
+|---|---|---|---|
+| ρ EEGNet, PASAT + PVTB | +0.160 | [+0.130, +0.190] | +0.166 |
+| ρ logística, PASAT + PVTB | +0.171 | [+0.138, +0.206] | +0.133 |
+| Δρ PASAT | +0.018 | [−0.026, +0.065] | +0.044 |
+| Δρ PVTB | −0.039 | [−0.081, +0.002] | +0.021 |
+| Igual tiempo: ρ EEGNet / logística | +0.110 / +0.130 | [+0.074, +0.146] / [+0.097, +0.165] | +0.096 / +0.097 |
+| Igual tiempo: Δρ | −0.021 | [−0.063, +0.023] | −0.001 |
+| Control OA: ρ EEGNet en OA | +0.035 | [−0.010, +0.076] | +0.026 |
+| Tareas − OA (completa / igual tiempo) | +0.126 / +0.075 | [+0.074, +0.177] / [+0.020, +0.132] | +0.140 / +0.070 |
+| Acierto pareado de tercios | 0.737 | [0.683, 0.787] | 0.766 |
+| AUC por ventana (media de semillas) | 0.581 | — | 0.583 |
+| Conjunto EEGNet + logística: ρ | +0.172 | [+0.140, +0.204] | +0.181 |
+| Conjunto − logística | +0.001 | [−0.036, +0.040] | +0.047 |
+| ρ por semilla (0, 1, 2) | 0.163, 0.158, 0.160 | desviación típica 0.003 | 0.172, 0.160, 0.166 |
+
+**Sensibilidades** (sin veredicto): sin la persona expuesta, P1 = −0.007
+[−0.045, +0.032]; sin las grabaciones a 128 Hz, P1 = −0.011 [−0.048, +0.028].
+**Ninguna cambia el veredicto.** S1 se mantiene en las dos.
+
+### Lectura
+
+- **Veredicto oficial: NO SE DISTINGUE.** En personas no vistas, EEGNet sobre
+  la señal cruda ordena en el tiempo las ventanas de las tareas casi igual que
+  la logística sobre la potencia por banda (ρ 0.160 frente a 0.171). **No
+  equivale a «son iguales»** (preregistro, sección 7). El IC95 tiene una
+  semiamplitud de ≈ 0.037, más ancha que la ≈ 0.023 prevista, así que no
+  descarta diferencias de unos ±0.04 en ninguno de los dos sentidos.
+- **EEGNet sí aprende el efecto (S1 confirma en las dos tareas)**, con
+  personas no vistas, sin rasgos diseñados a mano y con un control OA
+  pequeño. Las dos tareas superan con holgura al OA. Así que no se limita a
+  aprender la deriva común del casco.
+- **La ventaja de `val` no se repite.** EEGNet es estable entre `val` y
+  `test` (ρ 0.166 y 0.160). La que cambia es la logística: 0.133 en `val` y
+  0.171 en `test`. La diferencia de `val` venía sobre todo de una logística
+  baja en esas 25 personas, no de que EEGNet fuera mejor. Es un ejemplo de por
+  qué la fase A no era una puerta.
+- **El conjunto no suma nada en `test`** (+0.001). Encaja con que las dos
+  fuentes capturen sobre todo la misma información. No es una prueba.
+- **Por tarea:** EEGNet queda algo por encima en PASAT y por debajo en PVTB
+  (−0.039, con el IC rozando el 0). Es descriptivo, sin corrección y con el
+  signo distinto en cada tarea: no se interpreta.
+- **Para la memoria:** es la **segunda evaluación preregistrada** de la línea
+  en `test`, posterior a la principal. No cambia ningún veredicto del paso 6.
+  Se decidió hacerla antes de la fase A, y el resultado de `val` no
+  condicionó nada. La formulación honesta es: «una CNN pequeña sobre la señal
+  cruda no mejora ni empeora de forma detectable a la logística por bandas».
+
+**Coste total del paso:** ≈ 2 h 20 min de CPU, más ≈ 1 min del test.

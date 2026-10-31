@@ -1,7 +1,8 @@
 # Pre-registro — EEGNet frente a la logística en el conjunto de test (fatiga aguda)
 
-> **Estado: COMPLETO, PENDIENTE DE FIJAR (2026-10-31).** Fases A y B hechas;
-> secciones 4.1 y 12 rellenadas. Queda **FIJADO** en el commit que lo
+> **Estado: FIJADO en el commit `e20279d` (2026-10-31) y EJECUTADO ese mismo
+> día.** Resultados en `INFORME.md`; desviaciones en la sección 11.
+> Quedó **FIJADO** en el commit que lo
 > incluye junto con los scripts de `04_test_eegnet/` y
 > `configuracion_dl.json`, que contiene los SHA-256 de los pesos finales. Ese
 > commit lo hace el autor después de las fases A y B (`INFORME.md`) y antes de
@@ -252,9 +253,18 @@ ventanas.
 
 ## 11. Desviaciones
 
-*(Vacía hasta la ejecución. Cada entrada: fecha, qué cambió respecto a este
-documento, por qué y si ocurrió antes o después de ver algún resultado de
-`test`.)*
+*(Cada entrada: fecha, qué cambió respecto a este documento, por qué y si
+ocurrió antes o después de ver algún resultado de `test`.)*
+
+**Ejecución: 2026-10-31, 22:42–22:43, commit `e20279d`.** Una sola ejecución
+de `ejecutar_test.ps1`, sin fallos. Se comprobaron los SHA-256 de los pesos.
+Ninguna desviación en datos, modelo, pruebas ni análisis.
+
+1. **2026-10-31, después de ver los resultados. Solo cambia el nombre del
+   registro.** La sección 8 dice `ejecucion.log` en la carpeta de datos en
+   bruto. Lo que se guardó allí son los tres registros por separado:
+   `preparar.log`, `puntuar.log` y `evaluar.log`. Su unión está en el
+   repositorio como `ejecucion_test.log`. El contenido es el mismo.
 
 ## 12. Fase A en `val` (rellenada antes del commit, 2026-10-31)
 

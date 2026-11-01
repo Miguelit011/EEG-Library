@@ -1,0 +1,41 @@
+{
+ "torch": "2.14.1+cpu",
+ "onnx": "1.23.2",
+ "onnxruntime": "1.23.2",
+ "opset": 17,
+ "referencia": {
+  "grabaciones": 20,
+  "ventanas": 1757,
+  "forma": [
+   1757,
+   14,
+   512
+  ],
+  "canales_excluidos": 0.16680217903894623,
+  "sha256_X": "a0adc2c6d7a121efb7d4b69b783ae7305fc0cc2203e85007dcf3deb789ff8c30"
+ },
+ "semillas": {
+  "s0": {
+   "exportador": "dynamo",
+   "dif_max": 1.9073486328125e-06,
+   "sha256_pt": "533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81",
+   "bytes": 11400,
+   "sha256_onnx": "ed13c3f679815e58db0b36c4c2de8b6a712416c4ca5085330e973be1f6860cf4"
+  },
+  "s1": {
+   "exportador": "dynamo",
+   "dif_max": 7.152557373046875e-07,
+   "sha256_pt": "90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52",
+   "bytes": 11400,
+   "sha256_onnx": "94a920baf8c7146e47c23ab0f9f988e877bc9192cfa15589dae35852e9e62246"
+  },
+  "s2": {
+   "exportador": "dynamo",
+   "dif_max": 2.1457672119140625e-06,
+   "sha256_pt": "f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313",
+   "bytes": 11400,
+   "sha256_onnx": "cfc5e960e2bf418442df5dd857b48f96f58c600dac9590fc93f2a90cfbfc0d67"
+  }
+ },
+ "cumple": true
+}

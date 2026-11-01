@@ -113,6 +113,8 @@ def test_potencia_por_ventana(resultado):
             assert len(valores) == n
             media = resultado["potencia"]["por_canal"][canal][banda]["relativa"]
             assert sum(valores) / n == pytest.approx(media, rel=1e-12)
+    # EEGNet: una puntuación por ventana (con los parámetros del estudio).
+    assert len(pv["eegnet"]) == n and all(isinstance(x, float) for x in pv["eegnet"])
 
 
 def test_ninguna_clave_menciona_fatiga(resultado):
@@ -126,6 +128,7 @@ def test_referencia_original_no_aplica_car(edf):
     assert aplicados["car_aplicada"] is False
     # Sin CAR no hay pérdida de rango: tantas componentes como canales buenos.
     assert aplicados["ica"]["n_componentes"] == r["metadatos"]["n_canales_buenos"]
+    assert r["por_ventana"]["eegnet"] is None          # EEGNet solo con los parámetros del estudio
 
 
 def test_banda_y_notch_aplicados(edf, resultado):

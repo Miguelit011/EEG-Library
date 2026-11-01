@@ -2,7 +2,7 @@
 
 La plataforma web no calcula nada: llama a funciones de la librería, guarda lo
 que devuelven y lo muestra. Este documento fija qué devuelven. Versión de la
-librería: **0.15.0** (añade `por_ventana` y los modelos de fatiga aguda).
+librería: **0.16.0** (0.15.0 añadió `por_ventana` y los modelos de fatiga aguda; 0.16.0, EEGNet).
 
 ```python
 from eeg_library import (analizar_grabacion, listar_modelos, cargar_modelo, predecir,
@@ -57,7 +57,7 @@ fase en `.fase`.
 | `calidad` | Por canal: `region`, `estado` (`bueno` o `descartado`; la librería no tiene estado intermedio), `motivo` (texto de `evaluar_calidad`, `null` si es bueno) y `metricas` (`cq_medio`, `pct_muestras_malas`, `varianza`, `z_robusto`) |
 | `potencia` | `bandas_hz`; `por_canal[canal]`: `valido` y, por banda, `absoluta_v2` y `relativa` (media entre épocas); `por_region[region]`: `n_canales_validos` y, por banda, `log10_absoluta_v2` y `relativa`, solo con canales válidos (el mismo agregado que la matriz) |
 | `caracteristicas` | Las 70 entradas de los modelos, por nombre |
-| `por_ventana` | `instante_s` (inicio de cada ventana de 4 s, en segundos desde el registro recortado; paso de 2 s), `canal_valido[canal]` (bool, la misma máscara que `potencia.por_canal[canal].valido`) y `pot_rel[canal][banda]`: una lista con la potencia relativa de cada ventana, sin redondear |
+| `por_ventana` | `instante_s` (inicio de cada ventana de 4 s, en segundos desde el registro recortado; paso de 2 s), `canal_valido[canal]` (bool, la misma máscara que `potencia.por_canal[canal].valido`), `pot_rel[canal][banda]`: una lista con la potencia relativa de cada ventana, sin redondear, y `eegnet` (desde 0.16.0): la puntuación de EEGNet de cada ventana, media de los logits de las tres semillas, o `null` si los parámetros no son los del estudio o EEGNet falló |
 
 Notas:
 
@@ -151,6 +151,26 @@ del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
   los del entrenamiento, si falta `por_ventana` (hay que reprocesar) o si hay
   menos de 10 ventanas.
 
+## Fatiga aguda con EEGNet: `puntuar_eegnet(resultado, condicion)` (desde 0.16.0)
+
+La red neuronal de la línea (EEGNet, paso 4 de `deep_learning/`), exportada a
+ONNX (`fa_eegnet_s0/1/2.onnx` y la ficha `fa_eegnet.json` en
+`src/eeg_library/modelos/fatiga_aguda/`). Trabaja con la señal de cada ventana,
+así que se aplica **al procesar** (`por_ventana["eegnet"]`); `puntuar_eegnet`
+solo resume: `{"disponible": true, "modelo", "condicion", "n_ventanas",
+"instante_s", "puntuacion", "rho", "tercios": {"media_primero", "media_ultimo",
+"final_mayor"}}`, o «no disponible» con el motivo (otra condición, otros
+parámetros, menos de 10 ventanas o grabación sin `eegnet`, que hay que
+reprocesar).
+
+| Modelo | Condición | Acierto pareado de tercios en test | ρ media en test | Frente a la logística |
+|---|---|---|---|---|
+| `fa_eegnet` | PASAT y PVTB | 0.737 [0.683–0.787] | +0.160 [+0.130, +0.190] | Δρ −0.011 [−0.047, +0.028]: no se distinguen |
+
+En el test cada semilla se evaluó por separado y se promediaron las cifras; aquí
+se combinan las tres en una puntuación por ventana (media de los logits). Se
+declara en la ficha.
+
 ## Verificación
 
 - `pytest`: tests unitarios del contrato con un EDF sintético
@@ -168,3 +188,8 @@ del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
   `pot_rel` por ventana coincide exactamente con `features_all.parquet` y la
   puntuación, la ρ y el veredicto de tercios coinciden con los del análisis
   (`medidas.ventanas`, `comun.tercios`; diferencia máxima 1.4·10⁻¹⁴).
+- `pytest -m datos tests/datos/test_fatiga_aguda_eegnet_datos.py` (~2 min, solo
+  train/val): en 20 grabaciones PASAT y PVTB, la entrada de EEGNet que prepara
+  la librería y la puntuación que guarda `analizar_grabacion` son idénticas a
+  las del análisis (diferencia 0). ONNX = PyTorch se comprobó al exportar
+  (`analisis/fatiga_aguda/deep_learning/05_onnx/`).

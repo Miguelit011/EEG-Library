@@ -94,5 +94,6 @@ from eeg_library.modelado.fatiga_aguda import (
     leer_ficha_fatiga_aguda,
     puntuar as puntuar_fatiga_aguda,
 )
+from eeg_library.modelado.fatiga_aguda_eegnet import leer_ficha_eegnet, puntuar_eegnet
 
-__version__ = "0.15.0"
+__version__ = "0.16.0"

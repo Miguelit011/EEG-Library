@@ -33,6 +33,7 @@ import datetime
 import math
 import os
 import platform
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -94,6 +95,28 @@ def _versiones():
     }
 
 
+def _puntuacion_eegnet(ventanas, detalle, validez):
+    """
+    Puntuación de EEGNet de cada ventana (media de las tres semillas), o None.
+
+    Las ventanas crudas no se guardan, así que EEGNet se aplica aquí, al procesar. Solo con los
+    parámetros de su entrenamiento; con otros, None. Un fallo de EEGNet no impide procesar la
+    grabación: también devuelve None, y la pestaña lo trata como «no disponible».
+    """
+    from eeg_library.modelado.fatiga_aguda_eegnet import leer_ficha_eegnet, puntuar_ventanas
+    from eeg_library.procesado.parametros import normalizar_parametros
+    try:
+        ficha = leer_ficha_eegnet()
+        if normalizar_parametros(detalle["parametros"]) != normalizar_parametros(ficha["parametros_validos"]):
+            return None
+        orden = [detalle["canales_eeg"].index(c) for c in ficha["canales"]]
+        valido = [bool(validez[f"{PREFIJO_VALIDEZ}{c}"]) for c in ficha["canales"]]
+        return [float(v) for v in puntuar_ventanas(ventanas[:, orden, :], valido)]
+    except Exception as error:  # noqa: BLE001
+        warnings.warn(f"No se pudo aplicar EEGNet: {error}")
+        return None
+
+
 def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
     """
     Procesa un EDF y devuelve todo lo que la web muestra de él.
@@ -124,8 +147,10 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         la relativa, del mismo agregado que la matriz.
       - `caracteristicas`: entradas de los modelos, con alias neutros.
       - `por_ventana`: instante de cada ventana (`instante_s`, inicio respecto
-        al registro recortado), validez de cada canal y potencia relativa por
-        canal y banda, una lista con un valor por ventana.
+        al registro recortado), validez de cada canal, potencia relativa por
+        canal y banda (una lista con un valor por ventana) y `eegnet`: la
+        puntuación de EEGNet de cada ventana (media de las tres semillas), o
+        `null` si los parámetros no son los del estudio.
 
     Raises
     ------
@@ -133,9 +158,9 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         Si falla alguna fase del pipeline (indica cuál).
     """
     ruta_edf = os.fspath(ruta_edf)
-    features, _, registro, detalle = ejecutar_fases(
+    features, ventanas, registro, detalle = ejecutar_fases(
         ruta_edf, sujeto=None, condicion=None, sesion=None,
-        random_state=random_state, parametros=parametros,
+        random_state=random_state, parametros=parametros, devolver_ventanas=True,
     )
     archivo = registro["archivo"]
 
@@ -180,6 +205,7 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         "canal_valido": {c: bool(validez[f"{PREFIJO_VALIDEZ}{c}"]) for c in detalle["canales_eeg"]},
         "pot_rel": {c: {b: [float(v) for v in features[f"pot_rel_{c}_{b}"]] for b in bandas}
                     for c in detalle["canales_eeg"]},
+        "eegnet": _puntuacion_eegnet(ventanas, detalle, validez),
     }
 
     ica = detalle["ica"]

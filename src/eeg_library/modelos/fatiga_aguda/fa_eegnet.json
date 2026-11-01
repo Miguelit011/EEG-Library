@@ -1,0 +1,113 @@
+{
+  "id": "fa_eegnet",
+  "titulo": "Fatiga aguda · Red neuronal (EEGNet)",
+  "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación, a partir de la señal (no de la potencia por banda): al primer tercio o al último.",
+  "condiciones_aplicables": [
+    "PASAT",
+    "PVTB"
+  ],
+  "parametros_validos": {
+    "referencia": "car_condicional",
+    "banda_hz": [
+      1.0,
+      30.0
+    ],
+    "notch_hz": 50.0
+  },
+  "canales": [
+    "AF3",
+    "F7",
+    "F3",
+    "FC5",
+    "T7",
+    "P7",
+    "O1",
+    "O2",
+    "P8",
+    "T8",
+    "FC6",
+    "F4",
+    "F8",
+    "AF4"
+  ],
+  "entrada": {
+    "forma": [
+      2,
+      14,
+      512
+    ],
+    "frecuencia_hz": 128,
+    "preparacion": "ventana de 4 s remuestreada a 128 Hz (resample_poly 1/2), z-score por grabación y canal sobre todas sus ventanas, canales excluidos a 0; segundo mapa: máscara de canales válidos (02_piloto_cnn/preparar.py, tensor)"
+  },
+  "semillas": [
+    {
+      "semilla": 0,
+      "archivo": "fa_eegnet_s0.onnx",
+      "sha256": "ed13c3f679815e58db0b36c4c2de8b6a712416c4ca5085330e973be1f6860cf4",
+      "sha256_pt": "533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81"
+    },
+    {
+      "semilla": 1,
+      "archivo": "fa_eegnet_s1.onnx",
+      "sha256": "94a920baf8c7146e47c23ab0f9f988e877bc9192cfa15589dae35852e9e62246",
+      "sha256_pt": "90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52"
+    },
+    {
+      "semilla": 2,
+      "archivo": "fa_eegnet_s2.onnx",
+      "sha256": "cfc5e960e2bf418442df5dd857b48f96f58c600dac9590fc93f2a90cfbfc0d67",
+      "sha256_pt": "f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313"
+    }
+  ],
+  "combinacion": "media de los logits de las tres semillas",
+  "resultado_test": {
+    "metrica": "acierto_pareado_tercios",
+    "valor": 0.7365853658536585,
+    "ic95": [
+      0.6826923076923077,
+      0.7867300701557696
+    ],
+    "azar": 0.5,
+    "n_grabaciones": 205,
+    "n_personas": 28,
+    "fuente": "analisis/fatiga_aguda/deep_learning/04_test_eegnet/resultados_test.json"
+  },
+  "resultado_test_rho": {
+    "valor": 0.1604198941996332,
+    "ic95": [
+      0.1303392169754962,
+      0.18991788027514708
+    ],
+    "azar": 0.0
+  },
+  "comparacion_logistica": {
+    "diferencia_rho": -0.010708451709490769,
+    "ic95": [
+      -0.04711793154902131,
+      0.027515007208001985
+    ],
+    "p_bilateral": 0.5613438656134386,
+    "veredicto": "NO SE DISTINGUE"
+  },
+  "entrenamiento": {
+    "fecha": "2026-10-31",
+    "datos": "train + val; evaluado una sola vez en test",
+    "arquitectura": "EEGNet-8,2 de 02_piloto_cnn/entrenar.py (BN tras la conv temporal, 2 mapas de entrada: señal y máscara)",
+    "epocas": 27,
+    "commit_preregistro": "e20279d652fe6783f2639eebddef28807c4e817f",
+    "torch": "2.14.1+cpu"
+  },
+  "exportacion": {
+    "fecha_paso": "2026-11-01",
+    "torch": "2.14.1+cpu",
+    "onnx": "1.23.2",
+    "opset": 17,
+    "dif_max_onnx_torch": 2.1457672119140625e-06
+  },
+  "avisos": [
+    "Mide el cambio del EEG con el tiempo en tarea, no el nivel de fatiga de la persona.",
+    "En el test no se distingue de la regresión logística (diferencia de ρ −0,011, IC95 −0,047 a +0,028).",
+    "Las cifras del test se calcularon con cada una de las tres semillas por separado y se promediaron; la plataforma combina las tres en una sola puntuación por ventana (media de los logits).",
+    "Solo es válido con los parámetros de procesado de su entrenamiento."
+  ]
+}

@@ -43,7 +43,7 @@ def _claves(objeto):
 
 def test_secciones_del_contrato(resultado):
     assert set(resultado) == {"metadatos", "parametros_aplicados", "calidad",
-                              "potencia", "caracteristicas"}
+                              "potencia", "caracteristicas", "por_ventana"}
 
 
 def test_es_json_estricto(resultado):
@@ -97,6 +97,22 @@ def test_setenta_caracteristicas_con_alias_neutro(resultado):
     for original, alias in ALIAS_CARACTERISTICAS.items():
         assert original not in caracteristicas
         assert alias in caracteristicas
+
+
+def test_potencia_por_ventana(resultado):
+    """Una lista por canal y banda, con un valor por ventana, coherente con la media guardada."""
+    pv = resultado["por_ventana"]
+    n = resultado["metadatos"]["n_epocas"]
+    assert len(pv["instante_s"]) == n
+    assert pv["instante_s"][:2] == [0.0, 2.0]          # ventanas de 4 s con paso de 2 s
+    assert list(pv["pot_rel"]) == CANALES_EPOC == list(pv["canal_valido"])
+    for canal, bandas in pv["pot_rel"].items():
+        assert list(bandas) == ["delta", "theta", "alfa", "beta"]
+        assert pv["canal_valido"][canal] == resultado["potencia"]["por_canal"][canal]["valido"]
+        for banda, valores in bandas.items():
+            assert len(valores) == n
+            media = resultado["potencia"]["por_canal"][canal][banda]["relativa"]
+            assert sum(valores) / n == pytest.approx(media, rel=1e-12)
 
 
 def test_ninguna_clave_menciona_fatiga(resultado):

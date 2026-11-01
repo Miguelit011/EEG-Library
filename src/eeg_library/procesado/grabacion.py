@@ -22,6 +22,11 @@ Decisiones de diseño:
   `predecir` deshace el alias antes de llamar al modelo.
 - **NaN se escribe como `null`.** Una región sin canales válidos no tiene
   valor; se deja vacía en vez de inventarla.
+- **Potencia por ventana, sin redondear.** `por_ventana` guarda el instante
+  y la potencia relativa de cada ventana de 4 s tal como sale de
+  `ejecutar_fases`, que es lo que necesitan los modelos de fatiga aguda
+  (`modelado/fatiga_aguda.py`). Redondearla rompería la paridad exacta con
+  `features_all.parquet`.
 """
 
 import datetime
@@ -34,7 +39,7 @@ import pandas as pd
 
 from eeg_library.procesado.bands import BANDAS_DEFECTO
 from eeg_library.procesado.batch import ejecutar_fases
-from eeg_library.procesado.features import anotar_validez_de_canales
+from eeg_library.procesado.features import PREFIJO_VALIDEZ, anotar_validez_de_canales
 from eeg_library.procesado.matrix import REGIONES, resumir_por_grabacion
 
 # Nombre en la matriz -> nombre en el JSON. Es general, no de un modelo.
@@ -118,6 +123,9 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         absoluta (V²) y relativa; por región y banda, log₁₀ de la absoluta y
         la relativa, del mismo agregado que la matriz.
       - `caracteristicas`: entradas de los modelos, con alias neutros.
+      - `por_ventana`: instante de cada ventana (`instante_s`, inicio respecto
+        al registro recortado), validez de cada canal y potencia relativa por
+        canal y banda, una lista con un valor por ventana.
 
     Raises
     ------
@@ -166,6 +174,14 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         for c in columnas_de_caracteristicas(resumen.to_frame().T)
     }
 
+    validez = anotadas.iloc[0]
+    por_ventana = {
+        "instante_s": [float(t) for t in features["tmin_s"]],
+        "canal_valido": {c: bool(validez[f"{PREFIJO_VALIDEZ}{c}"]) for c in detalle["canales_eeg"]},
+        "pot_rel": {c: {b: [float(v) for v in features[f"pot_rel_{c}_{b}"]] for b in bandas}
+                    for c in detalle["canales_eeg"]},
+    }
+
     ica = detalle["ica"]
     resultado = {
         "metadatos": {
@@ -211,6 +227,7 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
         "potencia": {"bandas_hz": {b: list(BANDAS_DEFECTO[b]) for b in bandas},
                      "por_canal": por_canal, "por_region": por_region},
         "caracteristicas": caracteristicas,
+        "por_ventana": por_ventana,
     }
     return _a_json(resultado)
 

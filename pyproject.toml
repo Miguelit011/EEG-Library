@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eeg-library"
-version = "0.14.0"
+version = "0.15.0"
 description = "Librería para el procesamiento de señales EEG del casco Emotiv Epoc X"
 # Los modelos empaquetados (src/eeg_library/modelos) se guardaron con
 # Python 3.10 y scikit-learn 1.7.2; con otras versiones joblib no garantiza
@@ -40,8 +40,10 @@ dev = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-# Modelos c1, c2 y c3 con sus fichas (ver analisis/empaquetar_modelos.py).
-eeg_library = ["modelos/*.joblib", "modelos/*.json"]
+# Modelos c1, c2 y c3 con sus fichas (ver analisis/empaquetar_modelos.py) y los de
+# fatiga aguda (analisis/empaquetar_modelos_fatiga_aguda.py).
+eeg_library = ["modelos/*.joblib", "modelos/*.json",
+               "modelos/fatiga_aguda/*.joblib", "modelos/fatiga_aguda/*.json"]
 
 [tool.pytest.ini_options]
 markers = [

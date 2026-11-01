@@ -1,15 +1,19 @@
 # Contrato con EEG-Platform
 
-La plataforma web no calcula nada: llama a dos funciones de la librería, guarda
-lo que devuelven y lo muestra. Este documento fija qué devuelven.
+La plataforma web no calcula nada: llama a funciones de la librería, guarda lo
+que devuelven y lo muestra. Este documento fija qué devuelven. Versión de la
+librería: **0.15.0** (añade `por_ventana` y los modelos de fatiga aguda).
 
 ```python
-from eeg_library import analizar_grabacion, listar_modelos, cargar_modelo, predecir
+from eeg_library import (analizar_grabacion, listar_modelos, cargar_modelo, predecir,
+                         puntuar_fatiga_aguda)
 
 resultado = analizar_grabacion(ruta_edf, parametros)        # dict -> JSON
 for id_modelo in listar_modelos():
     p = predecir(id_modelo, resultado["caracteristicas"],
                  resultado["parametros_aplicados"])
+
+fa = puntuar_fatiga_aguda(resultado, "PVTB")                 # solo PASAT y PVTB
 ```
 
 Hay un ejemplo real (anonimizado) en `docs/ejemplos/analisis_grabacion.json`,
@@ -51,6 +55,7 @@ fase en `.fase`.
 | `calidad` | Por canal: `region`, `estado` (`bueno` o `descartado`; la librería no tiene estado intermedio), `motivo` (texto de `evaluar_calidad`, `null` si es bueno) y `metricas` (`cq_medio`, `pct_muestras_malas`, `varianza`, `z_robusto`) |
 | `potencia` | `bandas_hz`; `por_canal[canal]`: `valido` y, por banda, `absoluta_v2` y `relativa` (media entre épocas); `por_region[region]`: `n_canales_validos` y, por banda, `log10_absoluta_v2` y `relativa`, solo con canales válidos (el mismo agregado que la matriz) |
 | `caracteristicas` | Las 70 entradas de los modelos, por nombre |
+| `por_ventana` | `instante_s` (inicio de cada ventana de 4 s, en segundos desde el registro recortado; paso de 2 s), `canal_valido[canal]` (bool, la misma máscara que `potencia.por_canal[canal].valido`) y `pot_rel[canal][banda]`: una lista con la potencia relativa de cada ventana, sin redondear |
 
 Notas:
 
@@ -59,6 +64,9 @@ Notas:
 - Las características salen del **mismo código** que construyó
   `matriz_rf.parquet` (`ejecutar_fases` → `anotar_validez_de_canales` →
   `resumir_por_grabacion`). Ninguna depende de otras grabaciones.
+- `por_ventana` ocupa unos 100–200 KB en las grabaciones más largas. Es la
+  entrada de los modelos de fatiga aguda; las grabaciones analizadas con 0.14.0
+  o antes no lo tienen.
 - Alias neutros: `indice_fatiga_media` y `indice_fatiga_sd` de la matriz salen
   como `indice_theta_alfa_media` e `indice_theta_alfa_sd`. `predecir` los
   traduce de vuelta. Ninguna clave del JSON contiene «fatiga».
@@ -105,6 +113,42 @@ con el `.joblib` al lado.
 `predecir` no mira la condición de la grabación: elegir qué modelos mostrar
 según la condición conocida o estimada es cosa de la plataforma (Fase 7).
 
+## Fatiga aguda: `puntuar_fatiga_aguda(resultado, condicion)`
+
+Modelos de la línea `analisis/fatiga_aguda/` (evaluación única en test del
+2026-10-27): una regresión logística por tarea, entrenada con `train` + `val`
+para distinguir el primer tercio de la grabación del último. Miden el cambio
+del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
+`src/eeg_library/modelos/fatiga_aguda/` (los genera
+`analisis/empaquetar_modelos_fatiga_aguda.py`) y no aparecen en
+`listar_modelos()`: sus entradas son por ventana, no las 70 de la grabación.
+
+| Modelo | Condición | Acierto pareado de tercios en test | ρ media en test | Azar |
+|---|---|---|---|---|
+| `fa_pasat_logistica` | PASAT | 0.735 [0.657–0.816], 102 grabaciones | +0.162 [+0.111, +0.217] | 0.5 / 0 |
+| `fa_pvtb_logistica` | PVTB | 0.835 [0.757–0.909], 103 grabaciones | +0.180 [+0.141, +0.220] | 0.5 / 0 |
+
+- **Ficha:** las claves de la de c1–c3 (con `clases` = primer tercio / último
+  tercio y `condiciones_aplicables` = su tarea) más `canales` (orden de las 56
+  entradas: canal × banda) y `resultado_test_rho`. `resultado_test` es el
+  acierto pareado de tercios.
+- **Devuelve**, si se puede: `{"disponible": true, "modelo", "condicion",
+  "n_ventanas", "instante_s", "puntuacion", "rho", "tercios": {"p_primero",
+  "p_ultimo", "final_mayor"}, "pesos": {canal: {banda: peso}}}`.
+  - `puntuacion`: una por ventana (`decision_function`); positiva = se parece
+    al último tercio. Es el cálculo de `rho_ventanas` del test.
+  - `rho`: Spearman entre la puntuación y el instante de la ventana.
+  - `tercios`: probabilidad de «último tercio» de la media del primer tercio y
+    de la del último; `final_mayor` es `true` si el último puntúa más (`null`
+    si empatan). Es el cálculo del acierto pareado del test.
+  - `pesos`: coeficiente de la logística dividido por la escala del
+    `StandardScaler`, por canal y banda. Descriptivo: las entradas están
+    correlacionadas.
+- **No disponible** (`{"disponible": false, "condicion", "modelo",
+  "motivo"}`) si la condición no es PASAT ni PVTB, si los parámetros no son
+  los del entrenamiento, si falta `por_ventana` (hay que reprocesar) o si hay
+  menos de 10 ventanas.
+
 ## Verificación
 
 - `pytest`: tests unitarios del contrato con un EDF sintético
@@ -117,3 +161,8 @@ según la condición conocida o estimada es cosa de la plataforma (Fase 7).
     omitida y regiones a NaN);
   - con los nombres de clase de la ficha, la exactitud balanceada en train/val
     es 0.868 (c1), 0.871 (c2) y 0.512 (c3).
+- `pytest -m datos tests/datos/test_fatiga_aguda_datos.py` (~2 min, solo
+  train/val): en 20 grabaciones PASAT y PVTB (19 con algún canal excluido), la
+  `pot_rel` por ventana coincide exactamente con `features_all.parquet` y la
+  puntuación, la ρ y el veredicto de tercios coinciden con los del análisis
+  (`medidas.ventanas`, `comun.tercios`; diferencia máxima 1.4·10⁻¹⁴).

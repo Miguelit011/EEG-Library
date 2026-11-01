@@ -84,9 +84,15 @@ from eeg_library.modelado.tareas_ejecutivas import (
 )
 from eeg_library.modelado.prediccion import (
     cargar_modelo,
+    comparar_parametros,
     leer_ficha,
     listar_modelos,
     predecir,
 )
+from eeg_library.modelado.fatiga_aguda import (
+    cargar_modelo_fatiga_aguda,
+    leer_ficha_fatiga_aguda,
+    puntuar as puntuar_fatiga_aguda,
+)
 
-__version__ = "0.14.0"
+__version__ = "0.15.0"

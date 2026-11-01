@@ -1,0 +1,144 @@
+{
+  "id": "fa_pvtb_logistica",
+  "titulo": "Fatiga aguda · PVTB",
+  "archivo": "fa_pvtb_logistica.joblib",
+  "sha256_modelo": "ced9011263ae981bbe8ac6e2a9d153dbc6763b79c17effa3b013c9501fefaac1",
+  "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación: al primer tercio o al último.",
+  "clases": [
+    {
+      "codigo": 0,
+      "nombre": "primer tercio"
+    },
+    {
+      "codigo": 1,
+      "nombre": "último tercio"
+    }
+  ],
+  "condiciones_aplicables": [
+    "PVTB"
+  ],
+  "parametros_validos": {
+    "referencia": "car_condicional",
+    "banda_hz": [
+      1.0,
+      30.0
+    ],
+    "notch_hz": 50.0
+  },
+  "canales": [
+    "AF3",
+    "F7",
+    "F3",
+    "FC5",
+    "T7",
+    "P7",
+    "O1",
+    "O2",
+    "P8",
+    "T8",
+    "FC6",
+    "F4",
+    "F8",
+    "AF4"
+  ],
+  "columnas": [
+    "pot_rel_AF3_delta",
+    "pot_rel_AF3_theta",
+    "pot_rel_AF3_alfa",
+    "pot_rel_AF3_beta",
+    "pot_rel_F7_delta",
+    "pot_rel_F7_theta",
+    "pot_rel_F7_alfa",
+    "pot_rel_F7_beta",
+    "pot_rel_F3_delta",
+    "pot_rel_F3_theta",
+    "pot_rel_F3_alfa",
+    "pot_rel_F3_beta",
+    "pot_rel_FC5_delta",
+    "pot_rel_FC5_theta",
+    "pot_rel_FC5_alfa",
+    "pot_rel_FC5_beta",
+    "pot_rel_T7_delta",
+    "pot_rel_T7_theta",
+    "pot_rel_T7_alfa",
+    "pot_rel_T7_beta",
+    "pot_rel_P7_delta",
+    "pot_rel_P7_theta",
+    "pot_rel_P7_alfa",
+    "pot_rel_P7_beta",
+    "pot_rel_O1_delta",
+    "pot_rel_O1_theta",
+    "pot_rel_O1_alfa",
+    "pot_rel_O1_beta",
+    "pot_rel_O2_delta",
+    "pot_rel_O2_theta",
+    "pot_rel_O2_alfa",
+    "pot_rel_O2_beta",
+    "pot_rel_P8_delta",
+    "pot_rel_P8_theta",
+    "pot_rel_P8_alfa",
+    "pot_rel_P8_beta",
+    "pot_rel_T8_delta",
+    "pot_rel_T8_theta",
+    "pot_rel_T8_alfa",
+    "pot_rel_T8_beta",
+    "pot_rel_FC6_delta",
+    "pot_rel_FC6_theta",
+    "pot_rel_FC6_alfa",
+    "pot_rel_FC6_beta",
+    "pot_rel_F4_delta",
+    "pot_rel_F4_theta",
+    "pot_rel_F4_alfa",
+    "pot_rel_F4_beta",
+    "pot_rel_F8_delta",
+    "pot_rel_F8_theta",
+    "pot_rel_F8_alfa",
+    "pot_rel_F8_beta",
+    "pot_rel_AF4_delta",
+    "pot_rel_AF4_theta",
+    "pot_rel_AF4_alfa",
+    "pot_rel_AF4_beta"
+  ],
+  "resultado_test": {
+    "metrica": "acierto_pareado_tercios",
+    "valor": 0.8349514563106796,
+    "ic95": [
+      0.7572747482079666,
+      0.9090909090909091
+    ],
+    "azar": 0.5,
+    "n_grabaciones": 103,
+    "n_personas": 28,
+    "fuente": "analisis/fatiga_aguda/06_test/resultados_test.json (fatiga_aguda_test_20261027-190547)"
+  },
+  "resultado_test_rho": {
+    "valor": 0.1803083621588604,
+    "ic95": [
+      0.14107597997117322,
+      0.21967378212543787
+    ],
+    "azar": 0.0,
+    "n_grabaciones": 103
+  },
+  "entrenamiento": {
+    "fecha": "2026-10-27",
+    "datos": "train + val; evaluado una sola vez en test",
+    "variante": "potencia relativa por canal y banda (log10, centrada por grabación) + regresión logística C = 0,01, un modelo por tarea (analisis/fatiga_aguda/06_test/PREREGISTRO.md)",
+    "objetivo": "distinguir el primer tercio de la grabación (0) del último (1)",
+    "sha256_datos": {
+      "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",
+      "matriz_rf.parquet": "9ca1d154bf080f757c59ea6a75be93a1f6315c99378d6937f165484ecb44ae68",
+      "procesamiento_log.csv": "88d0b9df329143c60e36ad3c368af2cf65243cb6df83fa2da4fa134d6c9e93e7"
+    },
+    "commit_eeg_library": "063a41f3cc88644f36d1866c111a65e38302fb69",
+    "python": "3.10.11",
+    "scikit_learn": "1.7.2"
+  },
+  "avisos": [
+    "Mide el cambio del EEG con el tiempo en tarea, no el nivel de fatiga de la persona.",
+    "Una ventana suelta de 4 s apenas dice nada (AUC por ventana ≈ 0,58); lo fiable es la tendencia de la grabación entera.",
+    "Parte del cambio puede deberse al asentamiento del casco: en reposo con ojos abiertos también aparece (acierto pareado 0,670 en test).",
+    "El orden de las tareas en el protocolo es fijo.",
+    "Solo es válido con los parámetros de procesado de su entrenamiento."
+  ]
+}

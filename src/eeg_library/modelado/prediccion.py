@@ -138,6 +138,22 @@ def _fila(ficha, caracteristicas):
     return pd.DataFrame([fila], columns=list(ficha["columnas"]))
 
 
+def comparar_parametros(ficha, parametros):
+    """
+    Compara los parámetros de procesado de una grabación con los de la ficha.
+
+    Solo cuentan las claves elegibles (`OPCIONES`); las demás se ignoran, así
+    que `parametros_aplicados` sirve tal cual. Devuelve `(distintos,
+    requeridos, aplicados)`: la lista de claves que no coinciden y los dos
+    juegos de parámetros normalizados.
+    """
+    aplicados = normalizar_parametros({k: v for k, v in (parametros or {}).items()
+                                       if k in OPCIONES})
+    requeridos = normalizar_parametros(ficha["parametros_validos"])
+    distintos = [k for k in requeridos if requeridos[k] != aplicados[k]]
+    return distintos, requeridos, aplicados
+
+
 def predecir(modelo, caracteristicas, parametros):
     """
     Predice la clase de una grabación, si sus parámetros lo permiten.
@@ -167,10 +183,7 @@ def predecir(modelo, caracteristicas, parametros):
         modelo = cargar_modelo(modelo)
     ficha = modelo.ficha
 
-    aplicados = normalizar_parametros({k: v for k, v in (parametros or {}).items()
-                                       if k in OPCIONES})
-    requeridos = normalizar_parametros(ficha["parametros_validos"])
-    distintos = [k for k in requeridos if requeridos[k] != aplicados[k]]
+    distintos, requeridos, aplicados = comparar_parametros(ficha, parametros)
     if distintos:
         return {
             "disponible": False,

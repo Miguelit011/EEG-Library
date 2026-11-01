@@ -16,8 +16,10 @@ for id_modelo in listar_modelos():
 fa = puntuar_fatiga_aguda(resultado, "PVTB")                 # solo PASAT y PVTB
 ```
 
-Hay un ejemplo real (anonimizado) en `docs/ejemplos/analisis_grabacion.json`,
-generado con `analisis/generar_ejemplo.py`.
+Hay dos ejemplos reales (anonimizados) en `docs/ejemplos/`, generados con
+`analisis/generar_ejemplo.py`: `analisis_grabacion.json` (ojos abiertos) y
+`analisis_grabacion_pasat.json` (PASAT, para la pestaña Fatiga aguda; elegido
+para que el cambio se vea, no representativo).
 
 ## Parámetros de procesado
 

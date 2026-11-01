@@ -1378,3 +1378,25 @@ persona no se puede separar una fatiga que se acumula de una deriva del
 registro. Es pequeña (R² = +0.013) y exploratoria.
 
 FC no tiene relación con el EEG.
+
+## Fatiga aguda en la plataforma (contrato 0.15.0, 2026-11-01)
+
+Los modelos finales de la línea `analisis/fatiga_aguda/` (paso 6, logística
+`rel` + C = 0,01, versión de grabación completa, entrenados con `train` +
+`val`) se empaquetan en `src/eeg_library/modelos/fatiga_aguda/` con
+`analisis/empaquetar_modelos_fatiga_aguda.py`, que copia los `.joblib` de la
+evaluación en test sin modificarlos y escribe las fichas con las cifras de
+`06_test/resultados_test.json`. `eeg_library.modelado.fatiga_aguda.puntuar`
+los aplica al bloque `por_ventana` de `analizar_grabacion` con exactamente el
+cálculo del análisis (`medidas.ventanas` para la puntuación por ventana y la ρ;
+`comun.tercios` + `comun.matriz` para el veredicto de tercios).
+
+- **Paridad** (`tests/datos/test_fatiga_aguda_datos.py`, solo `train` y `val`):
+  en 20 grabaciones PASAT y PVTB, la potencia por ventana coincide exactamente
+  con `features_all.parquet`, la puntuación difiere como mucho 1,4·10⁻¹⁴, la ρ
+  es idéntica y los 20 veredictos coinciden.
+- **No cambia ningún resultado:** ni se reentrena ni se mira `test`. La
+  plataforma muestra la cifra del test de la línea (acierto pareado de tercios
+  0,735 en PASAT y 0,835 en PVTB) junto al resultado de cada grabación.
+- Contrato y formato: `docs/CONTRATO.md`, sección «Fatiga aguda».
+

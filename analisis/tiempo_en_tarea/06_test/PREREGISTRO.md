@@ -224,4 +224,7 @@ test.)*
   huella: `evaluacion_test.py`, `configuracion_elegida.json` y
   `medida_elegida.json` conservan su contenido y su SHA-256, y la carpeta de
   datos en bruto mantiene su nombre (`fatiga_aguda_test_20261027-190547`).
-  Este documento conserva el título y el texto con los que se fijó.
+  Por eso los comentarios y las instrucciones de uso de `evaluacion_test.py`
+  siguen diciendo «fatiga aguda» y `analisis/fatiga_aguda/`: no es un descuido
+  y no se corrige, porque cambiaría su SHA-256. Este documento conserva el
+  título y el texto con los que se fijó.

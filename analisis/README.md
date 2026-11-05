@@ -44,6 +44,20 @@ export EEG_DATA=/ruta/al/dataset
 
 ---
 
+## Líneas de análisis en carpeta
+
+Los análisis posteriores a la Fase 21 viven cada uno en su carpeta. Cada carpeta
+tiene un `README.md` con sus reglas y una subcarpeta por paso, con su script,
+sus tablas, sus figuras y un `INFORME.md`.
+
+| Carpeta | Pregunta | Estado |
+|---|---|---|
+| [`normalizacion_vas/`](normalizacion_vas/README.md) | ¿Da una etiqueta más útil el VAS expresado respecto a cada persona? (propuesta del tutor) | Cerrada el 2026-10-21: no mejora. Solo `train` + `val` |
+| [`fatiga_fg_fc/`](fatiga_fg_fc/README.md) | ¿Guardan relación con el EEG la fatiga general y la cognitiva del PedsQL? (petición de los tutores) | Cerrada el 2026-10-22: nada robusto; la relación de la fatiga general dentro de persona desaparece al controlar la visita. Solo `train` + `val` |
+| [`tiempo_en_tarea/`](tiempo_en_tarea/README.md) | ¿Cambia el EEG de forma sistemática a lo largo de una misma tarea, en personas no vistas? Incluye `deep_learning/` (EEGNet y ShallowConvNet) | Cerrada: evaluada en test con pre-registro el 2026-10-27 (logística) y el 2026-10-31 (EEGNet). Hasta el 2026-11-05 se llamó `fatiga_aguda/` (ver su README) |
+
+---
+
 ## Guiones
 
 Se ejecutan **desde la raíz del repositorio**. Los logs van a `resultados/logs/` y las figuras a `resultados/figuras/`.
@@ -275,6 +289,7 @@ contrato está en `docs/CONTRATO.md`.
 
 ```bash
 python analisis/empaquetar_modelos.py   # modelos c1-c3 + fichas -> src/eeg_library/modelos/
+python analisis/empaquetar_modelos_tiempo_en_tarea.py   # logística PASAT y PVTB -> modelos/tiempo_en_tarea/
 python analisis/generar_ejemplo.py      # JSON de ejemplo -> docs/ejemplos/
 ```
 
@@ -283,6 +298,12 @@ python analisis/generar_ejemplo.py      # JSON de ejemplo -> docs/ejemplos/
   (`<EEG_DATA>/processed/test_20261007-133358/modelos/`) y escribe su ficha
   con las cifras de `resultados.json`. Exige que el SHA-256 de
   `matriz_rf.parquet` sea el registrado en ese análisis. Es idempotente.
+- `empaquetar_modelos_tiempo_en_tarea.py` copia sin modificar los `.joblib` de
+  la logística de tiempo en tarea
+  (`<EEG_DATA>/processed/fatiga_aguda_test_20261027-190547/modelos/`; la carpeta
+  conserva el nombre antiguo) y escribe sus fichas `tt_*.json` con las cifras de
+  `tiempo_en_tarea/06_test/resultados_test.json`. Los modelos de EEGNet (`.onnx`
+  y `tt_eegnet.json`) los escribe `tiempo_en_tarea/deep_learning/05_onnx/exportar.py`.
 - `generar_ejemplo.py` analiza una grabación de train y anonimiza su nombre.
 - **Verificado en:** `tests/modelado/test_prediccion.py`,
   `tests/procesado/test_grabacion.py` y `tests/datos/test_fase0_datos.py`

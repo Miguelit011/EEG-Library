@@ -146,3 +146,26 @@ de la Facultad de Ciencias del Deporte.
   60, 67 o 71 canales según la versión de EmotivPro: solo 14 son EEG, el
   resto son calidad de contacto (CQ), calidad de señal (EQ), telemetría,
   marcadores y movimiento
+
+## Líneas de análisis en carpeta y nombres
+
+Después de la Fase 21, cada análisis vive en su propia carpeta dentro de
+`analisis/` (índice en `analisis/README.md`): `normalizacion_vas/`,
+`fatiga_fg_fc/` y `tiempo_en_tarea/` (con su sublínea `deep_learning/`).
+
+- **La línea `tiempo_en_tarea` se llamó «fatiga aguda» hasta el 2026-11-05**
+  (carpeta `analisis/fatiga_aguda/`, API `*_fatiga_aguda`, modelos `fa_*`). Se
+  renombró tras la revisión de los tutores: lo confirmado en test es un cambio
+  del EEG con el tiempo en la tarea, no que se deba a la fatiga. En el código, la
+  documentación y la memoria se dice «tiempo en tarea»; «fatiga aguda» solo se
+  usa para describir la hipótesis («compatible con fatiga aguda»).
+- **Conservan el nombre antiguo a propósito y no se renombran:**
+  - los guiones y configuraciones con SHA-256 registrado en test:
+    `06_test/evaluacion_test.py`, los cinco guiones y `configuracion_dl.json`
+    de `deep_learning/04_test_eegnet/`, y `03_clasificador/configuracion_elegida.json`
+    y `medida_elegida.json`. Editarlos, aunque sea un comentario, rompe la
+    verificación de que el código del repositorio es el que se evaluó;
+  - los logs y los `resultados_*.json`, que son el registro de lo ejecutado;
+  - el texto de los pre-registros (los cambios van en su sección 11);
+  - las carpetas de EEG-Data `fatiga_aguda_test_20261027-190547` y
+    `fatiga_aguda_dl_test_20261031-224217`, que son de solo lectura.

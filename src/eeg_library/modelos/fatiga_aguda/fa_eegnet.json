@@ -70,7 +70,7 @@
     "azar": 0.5,
     "n_grabaciones": 205,
     "n_personas": 28,
-    "fuente": "analisis/fatiga_aguda/deep_learning/04_test_eegnet/resultados_test.json"
+    "fuente": "analisis/tiempo_en_tarea/deep_learning/04_test_eegnet/resultados_test.json"
   },
   "resultado_test_rho": {
     "valor": 0.1604198941996332,

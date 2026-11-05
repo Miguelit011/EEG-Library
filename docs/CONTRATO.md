@@ -117,7 +117,7 @@ según la condición conocida o estimada es cosa de la plataforma (Fase 7).
 
 ## Fatiga aguda: `puntuar_fatiga_aguda(resultado, condicion)`
 
-Modelos de la línea `analisis/fatiga_aguda/` (evaluación única en test del
+Modelos de la línea `analisis/tiempo_en_tarea/` (evaluación única en test del
 2026-10-27): una regresión logística por tarea, entrenada con `train` + `val`
 para distinguir el primer tercio de la grabación del último. Miden el cambio
 del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
@@ -192,4 +192,4 @@ declara en la ficha.
   train/val): en 20 grabaciones PASAT y PVTB, la entrada de EEGNet que prepara
   la librería y la puntuación que guarda `analizar_grabacion` son idénticas a
   las del análisis (diferencia 0). ONNX = PyTorch se comprobó al exportar
-  (`analisis/fatiga_aguda/deep_learning/05_onnx/`).
+  (`analisis/tiempo_en_tarea/deep_learning/05_onnx/`).

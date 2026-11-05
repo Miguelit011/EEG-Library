@@ -2,7 +2,7 @@
 Fatiga aguda: cómo cambia el EEG a lo largo de una tarea PASAT o PVTB.
 
 Aplica a una grabación suelta los modelos de la línea
-`analisis/fatiga_aguda/` (paso 6, evaluados una vez en test el 2026-10-27):
+`analisis/tiempo_en_tarea/` (paso 6, evaluados una vez en test el 2026-10-27):
 una regresión logística por tarea, entrenada con `train` + `val` para
 distinguir el primer tercio de la grabación del último. Mide el **cambio con
 el tiempo en tarea**, no el nivel de fatiga de la persona.

@@ -11,7 +11,7 @@ Como en `empaquetar_modelos.py`, nada de la ficha se teclea a mano:
 
 - las cifras del test (acierto pareado de tercios y ρ, con IC95 y número de
   grabaciones; personas del inventario) salen de
-  `analisis/fatiga_aguda/06_test/resultados_test.json`;
+  `analisis/tiempo_en_tarea/06_test/resultados_test.json`;
 - la configuración (`rel` + `lr_0.01`, una por condición) se comprueba con
   `03_clasificador/configuracion_elegida.json`;
 - el orden de las 56 entradas es el de `REL` del análisis (canal × banda);
@@ -41,7 +41,7 @@ from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO
 RAIZ_REPO = Path(__file__).resolve().parents[1]
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 DIR_TEST = RUTA_DATOS / "processed" / "fatiga_aguda_test_20261027-190547"
-LINEA = RAIZ_REPO / "analisis" / "fatiga_aguda"
+LINEA = RAIZ_REPO / "analisis" / "tiempo_en_tarea"
 RESULTADOS = LINEA / "06_test" / "resultados_test.json"
 CONFIG = LINEA / "03_clasificador" / "configuracion_elegida.json"
 DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos" / "fatiga_aguda"
@@ -79,7 +79,7 @@ def main():
         "datos": "train + val; evaluado una sola vez en test",
         "variante": "potencia relativa por canal y banda (log10, centrada por grabación) + "
                     "regresión logística C = 0,01, un modelo por tarea "
-                    "(analisis/fatiga_aguda/06_test/PREREGISTRO.md)",
+                    "(analisis/tiempo_en_tarea/06_test/PREREGISTRO.md)",
         "objetivo": "distinguir el primer tercio de la grabación (0) del último (1)",
         "sha256_datos": {k: resultados["sha256"][k] for k in
                          ("features_all.parquet", "matriz_rf.parquet", "procesamiento_log.csv")},
@@ -122,7 +122,7 @@ def main():
                 "azar": 0.5,
                 "n_grabaciones": tercios["grabaciones"],
                 "n_personas": personas[condicion],
-                "fuente": f"analisis/fatiga_aguda/06_test/resultados_test.json ({DIR_TEST.name})",
+                "fuente": f"analisis/tiempo_en_tarea/06_test/resultados_test.json ({DIR_TEST.name})",
             },
             "resultado_test_rho": {
                 "valor": rho["valor"], "ic95": rho["ic95"], "azar": 0.0,

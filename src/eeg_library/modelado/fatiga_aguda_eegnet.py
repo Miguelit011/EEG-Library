@@ -1,7 +1,7 @@
 """
 Fatiga aguda con EEGNet: la red neuronal de la línea, ejecutada con onnxruntime.
 
-Son los tres modelos finales del paso 4 de `analisis/fatiga_aguda/deep_learning/` (EEGNet-8,2,
+Son los tres modelos finales del paso 4 de `analisis/tiempo_en_tarea/deep_learning/` (EEGNet-8,2,
 semillas 0, 1 y 2, entrenadas con `train` + `val` y evaluadas una vez en test), exportados a
 ONNX en el paso 5 (`05_onnx/exportar.py`, ONNX = PyTorch con diferencia < 1e-5). La librería no
 necesita PyTorch.

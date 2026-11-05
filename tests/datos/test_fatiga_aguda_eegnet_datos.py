@@ -15,7 +15,7 @@ antes de abrir nada). La cadena que se comprueba:
    coincide con la de puntuar ese tensor del análisis con los mismos `.onnx` (< 1e-5).
 
 Que ONNX da lo mismo que PyTorch se comprobó al exportar
-(`analisis/fatiga_aguda/deep_learning/05_onnx/resultados.json`).
+(`analisis/tiempo_en_tarea/deep_learning/05_onnx/resultados.json`).
 """
 
 import contextlib
@@ -35,7 +35,7 @@ from eeg_library.procesado.grabacion import analizar_grabacion
 
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
-DL = Path(__file__).resolve().parents[2] / "analisis" / "fatiga_aguda" / "deep_learning"
+DL = Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea" / "deep_learning"
 
 pytestmark = [
     pytest.mark.datos,

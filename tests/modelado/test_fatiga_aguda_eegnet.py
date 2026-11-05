@@ -3,7 +3,7 @@ Tests de EEGNet en la librería (modelado/fatiga_aguda_eegnet.py), sin el datase
 
 Usan los `.onnx` empaquetados y datos sintéticos. La paridad con el análisis sobre EDF reales
 está en `tests/datos/test_fatiga_aguda_eegnet_datos.py`; la de ONNX con PyTorch, en
-`analisis/fatiga_aguda/deep_learning/05_onnx/resultados.json`.
+`analisis/tiempo_en_tarea/deep_learning/05_onnx/resultados.json`.
 """
 
 import hashlib
@@ -26,7 +26,7 @@ from eeg_library.modelado.fatiga_aguda_eegnet import (
 from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO
 
-DL = Path(__file__).resolve().parents[2] / "analisis" / "fatiga_aguda" / "deep_learning"
+DL = Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea" / "deep_learning"
 
 
 def _ventanas(n=30, semilla=0):

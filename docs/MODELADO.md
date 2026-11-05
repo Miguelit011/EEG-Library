@@ -57,7 +57,7 @@
   >   se reporte salga lo que salga.
   >
   > Primer caso: la línea de fatiga aguda por tiempo en tarea
-  > (`analisis/fatiga_aguda/PLAN.md`, sección 5).
+  > (`analisis/tiempo_en_tarea/PLAN.md`, sección 5).
 - **Ruta CNN.** No se hizo y **queda fuera del paquete de test por escrito**
   (`PREREGISTRO_TEST.md`, sección 1): es trabajo futuro. Como el test ya está
   gastado para el VAS, una CNN futura sobre el VAS no podrá evaluarse sobre él
@@ -1381,7 +1381,7 @@ FC no tiene relación con el EEG.
 
 ## Fatiga aguda en la plataforma (contrato 0.15.0, 2026-11-01)
 
-Los modelos finales de la línea `analisis/fatiga_aguda/` (paso 6, logística
+Los modelos finales de la línea `analisis/tiempo_en_tarea/` (paso 6, logística
 `rel` + C = 0,01, versión de grabación completa, entrenados con `train` +
 `val`) se empaquetan en `src/eeg_library/modelos/fatiga_aguda/` con
 `analisis/empaquetar_modelos_fatiga_aguda.py`, que copia los `.joblib` de la

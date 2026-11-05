@@ -40,7 +40,7 @@ from eeg_library.procesado.grabacion import analizar_grabacion
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 DIR_MODELOS = RUTA_DATOS / "processed" / "fatiga_aguda_test_20261027-190547" / "modelos"
-CLASIFICADOR = Path(__file__).resolve().parents[2] / "analisis" / "fatiga_aguda" / "03_clasificador"
+CLASIFICADOR = Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea" / "03_clasificador"
 
 pytestmark = [
     pytest.mark.datos,

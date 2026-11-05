@@ -109,7 +109,7 @@
     "azar": 0.5,
     "n_grabaciones": 102,
     "n_personas": 28,
-    "fuente": "analisis/fatiga_aguda/06_test/resultados_test.json (fatiga_aguda_test_20261027-190547)"
+    "fuente": "analisis/tiempo_en_tarea/06_test/resultados_test.json (fatiga_aguda_test_20261027-190547)"
   },
   "resultado_test_rho": {
     "valor": 0.1618583295000764,
@@ -123,7 +123,7 @@
   "entrenamiento": {
     "fecha": "2026-10-27",
     "datos": "train + val; evaluado una sola vez en test",
-    "variante": "potencia relativa por canal y banda (log10, centrada por grabación) + regresión logística C = 0,01, un modelo por tarea (analisis/fatiga_aguda/06_test/PREREGISTRO.md)",
+    "variante": "potencia relativa por canal y banda (log10, centrada por grabación) + regresión logística C = 0,01, un modelo por tarea (analisis/tiempo_en_tarea/06_test/PREREGISTRO.md)",
     "objetivo": "distinguir el primer tercio de la grabación (0) del último (1)",
     "sha256_datos": {
       "features_all.parquet": "88deb23e881f476bdfa7e2fca5ff447e4f68bbc652a8774da2012caf5f80c5c2",

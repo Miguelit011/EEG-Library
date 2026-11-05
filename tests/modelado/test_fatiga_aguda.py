@@ -25,7 +25,7 @@ from eeg_library.modelado.fatiga_aguda import (
 from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO, normalizar_parametros
 
-RESULTADOS_TEST = (Path(__file__).resolve().parents[2] / "analisis" / "fatiga_aguda"
+RESULTADOS_TEST = (Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea"
                    / "06_test" / "resultados_test.json")
 
 

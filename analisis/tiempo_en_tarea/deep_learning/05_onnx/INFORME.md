@@ -8,7 +8,7 @@
 
 ## Para qué sirve
 
-La plataforma enseña, en la pestaña Fatiga aguda, una segunda cinta con la
+La plataforma enseña, en la pestaña Tiempo en tarea, una segunda cinta con la
 puntuación de EEGNet junto a la de la logística. La web y la librería no
 tienen PyTorch (`PLAN.md` de la línea, 7.7), pero sí `onnxruntime` (ICLabel
 lo usa). Así que los tres modelos finales del paso 4 se exportan a ONNX.
@@ -29,7 +29,7 @@ lo usa). Así que los tres modelos finales del paso 4 se exportan a ONNX.
 | Script | Entorno | Qué hace |
 |---|---|---|
 | `referencia.py` | `.venv` | Construye con `02_piloto_cnn/preparar.py` (`tensor`) el tensor de 20 grabaciones PASAT y PVTB de **`train`** (semilla 0) y lo guarda, con su tabla de ventanas, en `TFG/EEG-DL-cache/onnx/` (fuera de los repos, sin git; se borra al cerrar el paso) |
-| `exportar.py` | `C:\venvs\eeg-dl` | Comprueba los SHA-256 de los `.pt`, exporta cada semilla a ONNX (lote dinámico), puntúa el tensor de referencia con PyTorch y con `onnxruntime` y compara. Si pasa, escribe los `.onnx` y la ficha `fa_eegnet.json` en `src/eeg_library/modelos/fatiga_aguda/` |
+| `exportar.py` | `C:\venvs\eeg-dl` | Comprueba los SHA-256 de los `.pt`, exporta cada semilla a ONNX (lote dinámico), puntúa el tensor de referencia con PyTorch y con `onnxruntime` y compara. Si pasa, escribe los `.onnx` y la ficha `tt_eegnet.json` en `src/eeg_library/modelos/tiempo_en_tarea/` |
 
 En `eeg-dl` se instalaron `onnx`, `onnxscript` y `onnxruntime` (visto bueno
 del autor, 2026-11-01). `onnxruntime` es la 1.23.2 en los tres entornos.
@@ -71,23 +71,25 @@ Ejecutado el 2026-11-01: `referencia.py` (`.venv`) y `exportar.py` (`eeg-dl`).
 - **ONNX = PyTorch** en las 1 757 ventanas de 20 grabaciones de `train` (17 % de canales
   excluidos): diferencia máxima de 1,9·10⁻⁶ (s0), 7,2·10⁻⁷ (s1) y 2,2·10⁻⁶ (s2). **Cumple**
   (< 10⁻⁵).
-- Escritos `fa_eegnet_s0.onnx`, `fa_eegnet_s1.onnx`, `fa_eegnet_s2.onnx` y `fa_eegnet.json` en
-  `src/eeg_library/modelos/fatiga_aguda/`.
+- Escritos `tt_eegnet_s0.onnx`, `tt_eegnet_s1.onnx`, `tt_eegnet_s2.onnx` y `tt_eegnet.json` en
+  `src/eeg_library/modelos/tiempo_en_tarea/`. *(Se escribieron como `fa_*` en
+  `modelos/fatiga_aguda/`; el 2026-11-05, contrato 0.17.0, se renombraron sin cambiar su
+  contenido: los `.onnx` conservan su SHA-256.)*
 
 ### Librería (contrato 0.16.0)
 
-- `modelado/fatiga_aguda_eegnet.py`: `preparar_entrada` (la preparación del piloto),
+- `modelado/tiempo_en_tarea_eegnet.py`: `preparar_entrada` (la preparación del piloto),
   `puntuar_ventanas` (onnxruntime, un hilo, media de las tres semillas) y `puntuar_eegnet`
   (ρ y veredicto de tercios como `tercios_cnn`).
 - `analizar_grabacion` pide las ventanas a `ejecutar_fases` y guarda `por_ventana["eegnet"]`
   (o `null` con otros parámetros). Coste medido: 0,13 s en una grabación típica (90 ventanas) y
   0,33 s en la más larga (188).
-- **Paridad con el análisis** (`tests/datos/test_fatiga_aguda_eegnet_datos.py`, 20 grabaciones
+- **Paridad con el análisis** (`tests/datos/test_tiempo_en_tarea_eegnet_datos.py`, 20 grabaciones
   PASAT y PVTB de `train` y `val`): la entrada que prepara la librería es **idéntica** a la de
   `tensor` (diferencia 0) y la puntuación que guarda `analizar_grabacion` es **idéntica** a la de
   puntuar el tensor del análisis (diferencia 0).
 - Los tests de las fases anteriores siguen pasando: matriz idéntica, 70 características con
-  paridad exacta y paridad de la logística de fatiga aguda.
+  paridad exacta y paridad de la logística de tiempo en tarea.
 
 ### Caché
 

@@ -1,5 +1,5 @@
 """
-Fatiga aguda: cómo cambia el EEG a lo largo de una tarea PASAT o PVTB.
+Tiempo en tarea: cómo cambia el EEG a lo largo de una tarea PASAT o PVTB.
 
 Aplica a una grabación suelta los modelos de la línea
 `analisis/tiempo_en_tarea/` (paso 6, evaluados una vez en test el 2026-10-27):
@@ -7,8 +7,8 @@ una regresión logística por tarea, entrenada con `train` + `val` para
 distinguir el primer tercio de la grabación del último. Mide el **cambio con
 el tiempo en tarea**, no el nivel de fatiga de la persona.
 
-Los modelos viven en `eeg_library/modelos/fatiga_aguda/` (los empaqueta
-`analisis/empaquetar_modelos_fatiga_aguda.py`) y trabajan con el bloque
+Los modelos viven en `eeg_library/modelos/tiempo_en_tarea/` (los empaqueta
+`analisis/empaquetar_modelos_tiempo_en_tarea.py`) y trabajan con el bloque
 `por_ventana` de `analizar_grabacion`.
 
 Decisiones de diseño:
@@ -42,22 +42,22 @@ BANDAS = ("delta", "theta", "alfa", "beta")
 MIN_VENTANAS = 10          # el mínimo de la línea (`d1.MIN_VENTANAS`)
 SUELO_POT_REL = 1e-6       # recorte antes del log10, como en el análisis
 
-IDS = {"PASAT": "fa_pasat_logistica", "PVTB": "fa_pvtb_logistica"}
+IDS = {"PASAT": "tt_pasat_logistica", "PVTB": "tt_pvtb_logistica"}
 
 _cache = {}
 
 
 def dir_modelos():
-    """Carpeta de los modelos de fatiga aguda empaquetados."""
-    return Path(str(resources.files("eeg_library") / "modelos" / "fatiga_aguda"))
+    """Carpeta de los modelos de tiempo en tarea empaquetados."""
+    return Path(str(resources.files("eeg_library") / "modelos" / "tiempo_en_tarea"))
 
 
-def leer_ficha_fatiga_aguda(condicion):
+def leer_ficha_tiempo_en_tarea(condicion):
     """Ficha del modelo de una condición (PASAT o PVTB), sin cargar el `.joblib`."""
     return leer_ficha(dir_modelos() / f"{IDS[condicion.upper()]}.json")[0]
 
 
-def cargar_modelo_fatiga_aguda(condicion):
+def cargar_modelo_tiempo_en_tarea(condicion):
     """
     Carga el modelo de una condición y comprueba que es el que describe su ficha.
 
@@ -113,7 +113,7 @@ def _no_disponible(condicion, motivo, ficha=None):
 
 def puntuar(resultado, condicion):
     """
-    Puntúa una grabación con el modelo de fatiga aguda de su condición.
+    Puntúa una grabación con el modelo de tiempo en tarea de su condición.
 
     Parámetros
     ----------
@@ -136,8 +136,8 @@ def puntuar(resultado, condicion):
     """
     condicion = (condicion or "").strip().upper()
     if condicion not in CONDICIONES:
-        return _no_disponible(condicion, "Solo hay modelo de fatiga aguda para PASAT y PVTB.")
-    modelo = cargar_modelo_fatiga_aguda(condicion)
+        return _no_disponible(condicion, "Solo hay modelo de tiempo en tarea para PASAT y PVTB.")
+    modelo = cargar_modelo_tiempo_en_tarea(condicion)
     ficha = modelo.ficha
 
     distintos, _, _ = comparar_parametros(ficha, (resultado or {}).get("parametros_aplicados"))

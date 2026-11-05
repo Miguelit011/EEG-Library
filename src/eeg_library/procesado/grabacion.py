@@ -24,8 +24,8 @@ Decisiones de diseño:
   valor; se deja vacía en vez de inventarla.
 - **Potencia por ventana, sin redondear.** `por_ventana` guarda el instante
   y la potencia relativa de cada ventana de 4 s tal como sale de
-  `ejecutar_fases`, que es lo que necesitan los modelos de fatiga aguda
-  (`modelado/fatiga_aguda.py`). Redondearla rompería la paridad exacta con
+  `ejecutar_fases`, que es lo que necesitan los modelos de tiempo en tarea
+  (`modelado/tiempo_en_tarea.py`). Redondearla rompería la paridad exacta con
   `features_all.parquet`.
 """
 
@@ -103,7 +103,7 @@ def _puntuacion_eegnet(ventanas, detalle, validez):
     parámetros de su entrenamiento; con otros, None. Un fallo de EEGNet no impide procesar la
     grabación: también devuelve None, y la pestaña lo trata como «no disponible».
     """
-    from eeg_library.modelado.fatiga_aguda_eegnet import leer_ficha_eegnet, puntuar_ventanas
+    from eeg_library.modelado.tiempo_en_tarea_eegnet import leer_ficha_eegnet, puntuar_ventanas
     from eeg_library.procesado.parametros import normalizar_parametros
     try:
         ficha = leer_ficha_eegnet()

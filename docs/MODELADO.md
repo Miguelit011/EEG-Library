@@ -56,7 +56,7 @@
   > - que el test se ejecute una sola vez en toda la línea, y que su resultado
   >   se reporte salga lo que salga.
   >
-  > Primer caso: la línea de fatiga aguda por tiempo en tarea
+  > Primer caso: la línea de tiempo en tarea
   > (`analisis/tiempo_en_tarea/PLAN.md`, sección 5).
 - **Ruta CNN.** No se hizo y **queda fuera del paquete de test por escrito**
   (`PREREGISTRO_TEST.md`, sección 1): es trabajo futuro. Como el test ya está
@@ -1379,24 +1379,30 @@ registro. Es pequeña (R² = +0.013) y exploratoria.
 
 FC no tiene relación con el EEG.
 
-## Fatiga aguda en la plataforma (contrato 0.15.0, 2026-11-01)
+## Tiempo en tarea en la plataforma (contrato 0.15.0, 2026-11-01)
 
 Los modelos finales de la línea `analisis/tiempo_en_tarea/` (paso 6, logística
 `rel` + C = 0,01, versión de grabación completa, entrenados con `train` +
-`val`) se empaquetan en `src/eeg_library/modelos/fatiga_aguda/` con
-`analisis/empaquetar_modelos_fatiga_aguda.py`, que copia los `.joblib` de la
+`val`) se empaquetan en `src/eeg_library/modelos/tiempo_en_tarea/` con
+`analisis/empaquetar_modelos_tiempo_en_tarea.py`, que copia los `.joblib` de la
 evaluación en test sin modificarlos y escribe las fichas con las cifras de
-`06_test/resultados_test.json`. `eeg_library.modelado.fatiga_aguda.puntuar`
+`06_test/resultados_test.json`. `eeg_library.modelado.tiempo_en_tarea.puntuar`
 los aplica al bloque `por_ventana` de `analizar_grabacion` con exactamente el
 cálculo del análisis (`medidas.ventanas` para la puntuación por ventana y la ρ;
 `comun.tercios` + `comun.matriz` para el veredicto de tercios).
 
-- **Paridad** (`tests/datos/test_fatiga_aguda_datos.py`, solo `train` y `val`):
+- **Paridad** (`tests/datos/test_tiempo_en_tarea_datos.py`, solo `train` y `val`):
   en 20 grabaciones PASAT y PVTB, la potencia por ventana coincide exactamente
   con `features_all.parquet`, la puntuación difiere como mucho 1,4·10⁻¹⁴, la ρ
   es idéntica y los 20 veredictos coinciden.
 - **No cambia ningún resultado:** ni se reentrena ni se mira `test`. La
   plataforma muestra la cifra del test de la línea (acierto pareado de tercios
   0,735 en PASAT y 0,835 en PVTB) junto al resultado de cada grabación.
-- Contrato y formato: `docs/CONTRATO.md`, sección «Fatiga aguda».
+- Contrato y formato: `docs/CONTRATO.md`, sección «Tiempo en tarea».
+- **Renombrado (2026-11-05, contrato 0.17.0).** La línea se llamaba «fatiga aguda». Tras la
+  revisión de los tutores pasa a «tiempo en tarea», porque lo confirmado es un cambio del EEG con
+  el tiempo en la tarea, no que se deba a la fatiga: `analisis/tiempo_en_tarea/`,
+  `modelado/tiempo_en_tarea*.py`, `modelos/tiempo_en_tarea/tt_*`. Los pesos (`.joblib`, `.onnx`)
+  conservan su SHA-256 y las fichas regeneradas solo cambian en el título, el identificador y las
+  rutas. No cambia ninguna cifra.
 

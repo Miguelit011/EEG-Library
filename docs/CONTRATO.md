@@ -2,23 +2,26 @@
 
 La plataforma web no calcula nada: llama a funciones de la librería, guarda lo
 que devuelven y lo muestra. Este documento fija qué devuelven. Versión de la
-librería: **0.16.0** (0.15.0 añadió `por_ventana` y los modelos de fatiga aguda; 0.16.0, EEGNet).
+librería: **0.17.0** (0.15.0 añadió `por_ventana` y los modelos de tiempo en tarea; 0.16.0, EEGNet;
+0.17.0 renombró «fatiga aguda» a «tiempo en tarea»: módulos `modelado/tiempo_en_tarea*.py`,
+funciones `*_tiempo_en_tarea`, carpeta `modelos/tiempo_en_tarea/` e identificadores `tt_*`, sin
+cambiar ningún cálculo, peso ni cifra).
 
 ```python
 from eeg_library import (analizar_grabacion, listar_modelos, cargar_modelo, predecir,
-                         puntuar_fatiga_aguda)
+                         puntuar_tiempo_en_tarea)
 
 resultado = analizar_grabacion(ruta_edf, parametros)        # dict -> JSON
 for id_modelo in listar_modelos():
     p = predecir(id_modelo, resultado["caracteristicas"],
                  resultado["parametros_aplicados"])
 
-fa = puntuar_fatiga_aguda(resultado, "PVTB")                 # solo PASAT y PVTB
+tt = puntuar_tiempo_en_tarea(resultado, "PVTB")              # solo PASAT y PVTB
 ```
 
 Hay dos ejemplos reales (anonimizados) en `docs/ejemplos/`, generados con
 `analisis/generar_ejemplo.py`: `analisis_grabacion.json` (ojos abiertos) y
-`analisis_grabacion_pasat.json` (PASAT, para la pestaña Fatiga aguda; elegido
+`analisis_grabacion_pasat.json` (PASAT, para la pestaña Tiempo en tarea; elegido
 para que el cambio se vea, no representativo).
 
 ## Parámetros de procesado
@@ -67,7 +70,7 @@ Notas:
   `matriz_rf.parquet` (`ejecutar_fases` → `anotar_validez_de_canales` →
   `resumir_por_grabacion`). Ninguna depende de otras grabaciones.
 - `por_ventana` ocupa unos 100–200 KB en las grabaciones más largas. Es la
-  entrada de los modelos de fatiga aguda; las grabaciones analizadas con 0.14.0
+  entrada de los modelos de tiempo en tarea; las grabaciones analizadas con 0.14.0
   o antes no lo tienen.
 - Alias neutros: `indice_fatiga_media` y `indice_fatiga_sd` de la matriz salen
   como `indice_theta_alfa_media` e `indice_theta_alfa_sd`. `predecir` los
@@ -115,20 +118,20 @@ con el `.joblib` al lado.
 `predecir` no mira la condición de la grabación: elegir qué modelos mostrar
 según la condición conocida o estimada es cosa de la plataforma (Fase 7).
 
-## Fatiga aguda: `puntuar_fatiga_aguda(resultado, condicion)`
+## Tiempo en tarea: `puntuar_tiempo_en_tarea(resultado, condicion)`
 
 Modelos de la línea `analisis/tiempo_en_tarea/` (evaluación única en test del
 2026-10-27): una regresión logística por tarea, entrenada con `train` + `val`
 para distinguir el primer tercio de la grabación del último. Miden el cambio
 del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
-`src/eeg_library/modelos/fatiga_aguda/` (los genera
-`analisis/empaquetar_modelos_fatiga_aguda.py`) y no aparecen en
+`src/eeg_library/modelos/tiempo_en_tarea/` (los genera
+`analisis/empaquetar_modelos_tiempo_en_tarea.py`) y no aparecen en
 `listar_modelos()`: sus entradas son por ventana, no las 70 de la grabación.
 
 | Modelo | Condición | Acierto pareado de tercios en test | ρ media en test | Azar |
 |---|---|---|---|---|
-| `fa_pasat_logistica` | PASAT | 0.735 [0.657–0.816], 102 grabaciones | +0.162 [+0.111, +0.217] | 0.5 / 0 |
-| `fa_pvtb_logistica` | PVTB | 0.835 [0.757–0.909], 103 grabaciones | +0.180 [+0.141, +0.220] | 0.5 / 0 |
+| `tt_pasat_logistica` | PASAT | 0.735 [0.657–0.816], 102 grabaciones | +0.162 [+0.111, +0.217] | 0.5 / 0 |
+| `tt_pvtb_logistica` | PVTB | 0.835 [0.757–0.909], 103 grabaciones | +0.180 [+0.141, +0.220] | 0.5 / 0 |
 
 - **Ficha:** las claves de la de c1–c3 (con `clases` = primer tercio / último
   tercio y `condiciones_aplicables` = su tarea) más `canales` (orden de las 56
@@ -151,11 +154,11 @@ del EEG con el tiempo en tarea, no el nivel de fatiga de la persona. Viven en
   los del entrenamiento, si falta `por_ventana` (hay que reprocesar) o si hay
   menos de 10 ventanas.
 
-## Fatiga aguda con EEGNet: `puntuar_eegnet(resultado, condicion)` (desde 0.16.0)
+## Tiempo en tarea con EEGNet: `puntuar_eegnet(resultado, condicion)` (desde 0.16.0)
 
 La red neuronal de la línea (EEGNet, paso 4 de `deep_learning/`), exportada a
-ONNX (`fa_eegnet_s0/1/2.onnx` y la ficha `fa_eegnet.json` en
-`src/eeg_library/modelos/fatiga_aguda/`). Trabaja con la señal de cada ventana,
+ONNX (`tt_eegnet_s0/1/2.onnx` y la ficha `tt_eegnet.json` en
+`src/eeg_library/modelos/tiempo_en_tarea/`). Trabaja con la señal de cada ventana,
 así que se aplica **al procesar** (`por_ventana["eegnet"]`); `puntuar_eegnet`
 solo resume: `{"disponible": true, "modelo", "condicion", "n_ventanas",
 "instante_s", "puntuacion", "rho", "tercios": {"media_primero", "media_ultimo",
@@ -165,7 +168,7 @@ reprocesar).
 
 | Modelo | Condición | Acierto pareado de tercios en test | ρ media en test | Frente a la logística |
 |---|---|---|---|---|
-| `fa_eegnet` | PASAT y PVTB | 0.737 [0.683–0.787] | +0.160 [+0.130, +0.190] | Δρ −0.011 [−0.047, +0.028]: no se distinguen |
+| `tt_eegnet` | PASAT y PVTB | 0.737 [0.683–0.787] | +0.160 [+0.130, +0.190] | Δρ −0.011 [−0.047, +0.028]: no se distinguen |
 
 En el test cada semilla se evaluó por separado y se promediaron las cifras; aquí
 se combinan las tres en una puntuación por ventana (media de los logits). Se
@@ -183,12 +186,12 @@ declara en la ficha.
     omitida y regiones a NaN);
   - con los nombres de clase de la ficha, la exactitud balanceada en train/val
     es 0.868 (c1), 0.871 (c2) y 0.512 (c3).
-- `pytest -m datos tests/datos/test_fatiga_aguda_datos.py` (~2 min, solo
+- `pytest -m datos tests/datos/test_tiempo_en_tarea_datos.py` (~2 min, solo
   train/val): en 20 grabaciones PASAT y PVTB (19 con algún canal excluido), la
   `pot_rel` por ventana coincide exactamente con `features_all.parquet` y la
   puntuación, la ρ y el veredicto de tercios coinciden con los del análisis
   (`medidas.ventanas`, `comun.tercios`; diferencia máxima 1.4·10⁻¹⁴).
-- `pytest -m datos tests/datos/test_fatiga_aguda_eegnet_datos.py` (~2 min, solo
+- `pytest -m datos tests/datos/test_tiempo_en_tarea_eegnet_datos.py` (~2 min, solo
   train/val): en 20 grabaciones PASAT y PVTB, la entrada de EEGNet que prepara
   la librería y la puntuación que guarda `analizar_grabacion` son idénticas a
   las del análisis (diferencia 0). ONNX = PyTorch se comprobó al exportar

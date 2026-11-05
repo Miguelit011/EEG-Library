@@ -6,8 +6,8 @@ Tiempo en tarea — deep learning, paso 5 (2 de 2): exporta EEGNet a ONNX y comp
 2. Exporta cada semilla a ONNX con el lote dinámico.
 3. Puntúa el tensor de referencia de `referencia.py` (20 grabaciones de train) con PyTorch y
    con onnxruntime. Criterio: diferencia máxima < 1e-5 en las tres semillas.
-4. Solo si se cumple, escribe los `.onnx` y la ficha `fa_eegnet.json` en
-   `src/eeg_library/modelos/fatiga_aguda/`, y `resultados.json` en esta carpeta.
+4. Solo si se cumple, escribe los `.onnx` y la ficha `tt_eegnet.json` en
+   `src/eeg_library/modelos/tiempo_en_tarea/`, y `resultados.json` en esta carpeta.
 
 Ejecutar desde la raíz del repositorio con el entorno de PyTorch:
     C:/venvs/eeg-dl/Scripts/python.exe analisis/tiempo_en_tarea/deep_learning/05_onnx/exportar.py
@@ -35,7 +35,7 @@ DIR_PESOS = EEG_DATA / "processed" / "fatiga_aguda_dl_test_20261031-224217" / "m
 CACHE = EEG_DATA.parent / "EEG-DL-cache" / "onnx"
 CONFIGURACION = DL / "04_test_eegnet" / "configuracion_dl.json"
 RESULTADOS_TEST = DL / "04_test_eegnet" / "resultados_test.json"
-DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos" / "fatiga_aguda"
+DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos" / "tiempo_en_tarea"
 SEMILLAS = [0, 1, 2]
 TOLERANCIA = 1e-5
 OPSET = 17
@@ -105,7 +105,7 @@ def main():
         modelo = piloto.EEGNet()
         modelo.load_state_dict(torch.load(pt))
         modelo.eval()
-        ruta = temporal / f"fa_eegnet_s{s}.onnx"
+        ruta = temporal / f"tt_eegnet_s{s}.onnx"
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             metodo = exportar(modelo, ruta)
@@ -125,7 +125,7 @@ def main():
     DESTINO.mkdir(parents=True, exist_ok=True)
     semillas = []
     for s in SEMILLAS:
-        origen = temporal / f"fa_eegnet_s{s}.onnx"
+        origen = temporal / f"tt_eegnet_s{s}.onnx"
         destino = DESTINO / origen.name
         destino.write_bytes(origen.read_bytes())
         resultado["semillas"][f"s{s}"]["sha256_onnx"] = sha256(destino)
@@ -137,8 +137,8 @@ def main():
     personas = {f["condicion"]: f["personas"] for f in test["inventario"]}
     grabaciones = sum(f["grabaciones"] for f in test["inventario"] if f["condicion"] in ("PASAT", "PVTB"))
     ficha = {
-        "id": "fa_eegnet",
-        "titulo": "Fatiga aguda · Red neuronal (EEGNet)",
+        "id": "tt_eegnet",
+        "titulo": "Tiempo en tarea · Red neuronal (EEGNet)",
         "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación, a partir de la señal "
                        "(no de la potencia por banda): al primer tercio o al último.",
         "condiciones_aplicables": ["PASAT", "PVTB"],
@@ -171,10 +171,10 @@ def main():
             "Solo es válido con los parámetros de procesado de su entrenamiento.",
         ],
     }
-    (DESTINO / "fa_eegnet.json").write_text(json.dumps(ficha, ensure_ascii=False, indent=2) + "\n",
+    (DESTINO / "tt_eegnet.json").write_text(json.dumps(ficha, ensure_ascii=False, indent=2) + "\n",
                                             encoding="utf-8")
     (CARPETA / "resultados.json").write_text(json.dumps(resultado, indent=1), encoding="utf-8")
-    print(f"Cumple (diferencia máxima {peor:.2e} < {TOLERANCIA}). Escritos {len(semillas)} .onnx y fa_eegnet.json.")
+    print(f"Cumple (diferencia máxima {peor:.2e} < {TOLERANCIA}). Escritos {len(semillas)} .onnx y tt_eegnet.json.")
 
 
 if __name__ == "__main__":

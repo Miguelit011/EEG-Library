@@ -1,8 +1,8 @@
 {
-  "id": "fa_pvtb_logistica",
-  "titulo": "Fatiga aguda · PVTB",
-  "archivo": "fa_pvtb_logistica.joblib",
-  "sha256_modelo": "ced9011263ae981bbe8ac6e2a9d153dbc6763b79c17effa3b013c9501fefaac1",
+  "id": "tt_pasat_logistica",
+  "titulo": "Tiempo en tarea · PASAT",
+  "archivo": "tt_pasat_logistica.joblib",
+  "sha256_modelo": "043b43f47ad05726ebde3583767f9f4ebfcd68f35579910bb65d0d35acbc0c14",
   "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación: al primer tercio o al último.",
   "clases": [
     {
@@ -15,7 +15,7 @@
     }
   ],
   "condiciones_aplicables": [
-    "PVTB"
+    "PASAT"
   ],
   "parametros_validos": {
     "referencia": "car_condicional",
@@ -101,24 +101,24 @@
   ],
   "resultado_test": {
     "metrica": "acierto_pareado_tercios",
-    "valor": 0.8349514563106796,
+    "valor": 0.7352941176470589,
     "ic95": [
-      0.7572747482079666,
-      0.9090909090909091
+      0.6571358543417367,
+      0.8163312113836361
     ],
     "azar": 0.5,
-    "n_grabaciones": 103,
+    "n_grabaciones": 102,
     "n_personas": 28,
     "fuente": "analisis/tiempo_en_tarea/06_test/resultados_test.json (fatiga_aguda_test_20261027-190547)"
   },
   "resultado_test_rho": {
-    "valor": 0.1803083621588604,
+    "valor": 0.1618583295000764,
     "ic95": [
-      0.14107597997117322,
-      0.21967378212543787
+      0.11078168877378003,
+      0.21712293779404052
     ],
     "azar": 0.0,
-    "n_grabaciones": 103
+    "n_grabaciones": 102
   },
   "entrenamiento": {
     "fecha": "2026-10-27",

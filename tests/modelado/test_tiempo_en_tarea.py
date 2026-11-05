@@ -1,9 +1,9 @@
 """
-Tests de los modelos de fatiga aguda (modelado/fatiga_aguda.py).
+Tests de los modelos de tiempo en tarea (modelado/tiempo_en_tarea.py).
 
 Usan los modelos reales empaquetados y un bloque `por_ventana` sintético. La
 paridad con el análisis sobre EDF reales está en
-`tests/datos/test_fatiga_aguda_datos.py`; que las fichas copien las cifras
+`tests/datos/test_tiempo_en_tarea_datos.py`; que las fichas copien las cifras
 del test, aquí (el `resultados_test.json` viaja con el repositorio).
 """
 
@@ -14,12 +14,12 @@ import numpy as np
 import pytest
 from scipy import stats
 
-from eeg_library.modelado.fatiga_aguda import (
+from eeg_library.modelado.tiempo_en_tarea import (
     BANDAS,
     CONDICIONES,
     MIN_VENTANAS,
-    cargar_modelo_fatiga_aguda,
-    leer_ficha_fatiga_aguda,
+    cargar_modelo_tiempo_en_tarea,
+    leer_ficha_tiempo_en_tarea,
     puntuar,
 )
 from eeg_library.preprocesado.quality import CANALES_EPOC
@@ -53,7 +53,7 @@ def _resultado(n=60, excluidos=(), semilla=0, tendencia=0.0):
 
 @pytest.mark.parametrize("condicion", CONDICIONES)
 def test_modelos_cargan_con_su_ficha(condicion):
-    modelo = cargar_modelo_fatiga_aguda(condicion)
+    modelo = cargar_modelo_tiempo_en_tarea(condicion)
     ficha = modelo.ficha
     assert ficha["condiciones_aplicables"] == [condicion]
     assert ficha["canales"] == CANALES_EPOC
@@ -67,7 +67,7 @@ def test_modelos_cargan_con_su_ficha(condicion):
 @pytest.mark.parametrize("condicion", CONDICIONES)
 def test_fichas_copian_las_cifras_del_test(condicion):
     resultados = json.loads(RESULTADOS_TEST.read_text(encoding="utf-8"))
-    ficha = leer_ficha_fatiga_aguda(condicion)
+    ficha = leer_ficha_tiempo_en_tarea(condicion)
     tercios = resultados["descriptivos"][f"completa | {condicion} | tercios_pareado"]
     rho = resultados["descriptivos"][f"completa | {condicion} | rho"]
     assert ficha["resultado_test"]["valor"] == tercios["valor"]
@@ -82,7 +82,7 @@ def test_fichas_copian_las_cifras_del_test(condicion):
 
 def test_ficha_no_promete_medir_fatiga():
     for condicion in CONDICIONES:
-        avisos = " ".join(leer_ficha_fatiga_aguda(condicion)["avisos"]).lower()
+        avisos = " ".join(leer_ficha_tiempo_en_tarea(condicion)["avisos"]).lower()
         assert "no el nivel de fatiga" in avisos
 
 
@@ -153,7 +153,7 @@ def test_canal_excluido_no_influye():
 def test_puntuacion_es_la_del_pipeline():
     """La puntuación es `decision_function` sobre log10 centrado; la ρ, su Spearman con el tiempo."""
     resultado = _resultado()
-    modelo = cargar_modelo_fatiga_aguda("PASAT")
+    modelo = cargar_modelo_tiempo_en_tarea("PASAT")
     pv = resultado["por_ventana"]
     X = np.log10(np.column_stack([pv["pot_rel"][c][b] for c in CANALES_EPOC for b in BANDAS]))
     X = X - X.mean(axis=0)

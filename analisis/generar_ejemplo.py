@@ -8,9 +8,9 @@ estos archivos sin necesitar el dataset.
   ojos abiertos, con algún electrodo descartado, para que la pantalla de
   calidad tenga algo que enseñar.
 - `analisis_grabacion_pasat.json` (desde 0.15.0): una grabación PASAT de
-  **train** para la pestaña Fatiga aguda. Se elige, entre las de 71 canales
+  **train** para la pestaña Tiempo en tarea. Se elige, entre las de 71 canales
   con un electrodo descartado, la primera en orden alfabético en la que el
-  modelo de fatiga aguda ve el cambio con claridad (último tercio por encima
+  modelo de tiempo en tarea ve el cambio con claridad (último tercio por encima
   del primero y ρ ≥ 0,3). **Es un ejemplo para enseñar la pantalla, no una
   muestra representativa:** en test el modelo acierta en el 74 % de las
   grabaciones PASAT.
@@ -73,7 +73,7 @@ def escribir(resultado, destino, nombre):
 
 def ejemplo_pasat():
     """La primera grabación PASAT de train (71 canales, 13 buenos) en la que el cambio se ve claro."""
-    from eeg_library.modelado.fatiga_aguda import puntuar
+    from eeg_library.modelado.tiempo_en_tarea import puntuar
     matriz = pd.read_parquet(RUTA_DATOS / "processed" / "matriz_rf.parquet")
     log = pd.read_csv(RUTA_DATOS / "processed" / "procesamiento_log.csv")
     datos = matriz.merge(log[["archivo", "n_canales"]], on="archivo")

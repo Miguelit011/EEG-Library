@@ -4,7 +4,7 @@ Paridad de EEGNet en la librería con el análisis, sobre EDF reales (Fase 11 de
 Necesita `EEG_DATA` (EDF, `ventanas/*.npy`, `features_all.parquet`, `matriz_rf.parquet` y
 `procesamiento_log.csv`), así que va con el marcador `datos`:
 
-    .venv/Scripts/python.exe -m pytest -m datos tests/datos/test_fatiga_aguda_eegnet_datos.py -s
+    .venv/Scripts/python.exe -m pytest -m datos tests/datos/test_tiempo_en_tarea_eegnet_datos.py -s
 
 Usa 20 grabaciones PASAT y PVTB de `train` y `val` (nunca de `test`: se filtra por la `split`
 antes de abrir nada). La cadena que se comprueba:
@@ -30,7 +30,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from eeg_library.modelado.fatiga_aguda_eegnet import preparar_entrada, puntuar_entrada
+from eeg_library.modelado.tiempo_en_tarea_eegnet import preparar_entrada, puntuar_entrada
 from eeg_library.procesado.grabacion import analizar_grabacion
 
 RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))

@@ -1,5 +1,5 @@
 """
-Fatiga aguda con EEGNet: la red neuronal de la línea, ejecutada con onnxruntime.
+Tiempo en tarea con EEGNet: la red neuronal de la línea, ejecutada con onnxruntime.
 
 Son los tres modelos finales del paso 4 de `analisis/tiempo_en_tarea/deep_learning/` (EEGNet-8,2,
 semillas 0, 1 y 2, entrenadas con `train` + `val` y evaluadas una vez en test), exportados a
@@ -42,12 +42,12 @@ _sesiones = []
 
 
 def _dir_modelos():
-    return Path(str(resources.files("eeg_library") / "modelos" / "fatiga_aguda"))
+    return Path(str(resources.files("eeg_library") / "modelos" / "tiempo_en_tarea"))
 
 
 def leer_ficha_eegnet():
     """Ficha de EEGNet (cifras del test, semillas y sus SHA-256, avisos)."""
-    return json.loads((_dir_modelos() / "fa_eegnet.json").read_text(encoding="utf-8"))
+    return json.loads((_dir_modelos() / "tt_eegnet.json").read_text(encoding="utf-8"))
 
 
 def _sesiones_onnx():
@@ -113,7 +113,7 @@ def puntuar_ventanas(ventanas, canal_valido):
 
 
 def _no_disponible(condicion, motivo):
-    return {"disponible": False, "condicion": condicion, "modelo": "fa_eegnet", "motivo": motivo}
+    return {"disponible": False, "condicion": condicion, "modelo": "tt_eegnet", "motivo": motivo}
 
 
 def puntuar_eegnet(resultado, condicion):
@@ -129,7 +129,7 @@ def puntuar_eegnet(resultado, condicion):
 
     condicion = (condicion or "").strip().upper()
     if condicion not in CONDICIONES:
-        return _no_disponible(condicion, "Solo hay modelo de fatiga aguda para PASAT y PVTB.")
+        return _no_disponible(condicion, "Solo hay modelo de tiempo en tarea para PASAT y PVTB.")
     ficha = leer_ficha_eegnet()
     distintos, _, _ = comparar_parametros(ficha, (resultado or {}).get("parametros_aplicados"))
     if distintos:

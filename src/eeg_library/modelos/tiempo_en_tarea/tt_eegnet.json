@@ -1,6 +1,6 @@
 {
-  "id": "fa_eegnet",
-  "titulo": "Fatiga aguda · Red neuronal (EEGNet)",
+  "id": "tt_eegnet",
+  "titulo": "Tiempo en tarea · Red neuronal (EEGNet)",
   "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación, a partir de la señal (no de la potencia por banda): al primer tercio o al último.",
   "condiciones_aplicables": [
     "PASAT",
@@ -42,19 +42,19 @@
   "semillas": [
     {
       "semilla": 0,
-      "archivo": "fa_eegnet_s0.onnx",
+      "archivo": "tt_eegnet_s0.onnx",
       "sha256": "ed13c3f679815e58db0b36c4c2de8b6a712416c4ca5085330e973be1f6860cf4",
       "sha256_pt": "533ddbda6bdde5899d1dfd2240b9031d1c7eea562ea58323aebc4b0e57f73e81"
     },
     {
       "semilla": 1,
-      "archivo": "fa_eegnet_s1.onnx",
+      "archivo": "tt_eegnet_s1.onnx",
       "sha256": "94a920baf8c7146e47c23ab0f9f988e877bc9192cfa15589dae35852e9e62246",
       "sha256_pt": "90b221d84175089ab76b46424da6f005b554840523a6ccc9d413a0d65cc06e52"
     },
     {
       "semilla": 2,
-      "archivo": "fa_eegnet_s2.onnx",
+      "archivo": "tt_eegnet_s2.onnx",
       "sha256": "cfc5e960e2bf418442df5dd857b48f96f58c600dac9590fc93f2a90cfbfc0d67",
       "sha256_pt": "f0bd68d50289399587feff69ab48cebc5294f500c8813715e984eb28f1090313"
     }

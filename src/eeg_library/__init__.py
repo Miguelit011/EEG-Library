@@ -89,11 +89,11 @@ from eeg_library.modelado.prediccion import (
     listar_modelos,
     predecir,
 )
-from eeg_library.modelado.fatiga_aguda import (
-    cargar_modelo_fatiga_aguda,
-    leer_ficha_fatiga_aguda,
-    puntuar as puntuar_fatiga_aguda,
+from eeg_library.modelado.tiempo_en_tarea import (
+    cargar_modelo_tiempo_en_tarea,
+    leer_ficha_tiempo_en_tarea,
+    puntuar as puntuar_tiempo_en_tarea,
 )
-from eeg_library.modelado.fatiga_aguda_eegnet import leer_ficha_eegnet, puntuar_eegnet
+from eeg_library.modelado.tiempo_en_tarea_eegnet import leer_ficha_eegnet, puntuar_eegnet
 
-__version__ = "0.16.0"
+__version__ = "0.17.0"

@@ -1,8 +1,8 @@
 """
-Tests de EEGNet en la librería (modelado/fatiga_aguda_eegnet.py), sin el dataset.
+Tests de EEGNet en la librería (modelado/tiempo_en_tarea_eegnet.py), sin el dataset.
 
 Usan los `.onnx` empaquetados y datos sintéticos. La paridad con el análisis sobre EDF reales
-está en `tests/datos/test_fatiga_aguda_eegnet_datos.py`; la de ONNX con PyTorch, en
+está en `tests/datos/test_tiempo_en_tarea_eegnet_datos.py`; la de ONNX con PyTorch, en
 `analisis/tiempo_en_tarea/deep_learning/05_onnx/resultados.json`.
 """
 
@@ -14,7 +14,7 @@ import numpy as np
 import pytest
 from scipy import stats
 
-from eeg_library.modelado.fatiga_aguda_eegnet import (
+from eeg_library.modelado.tiempo_en_tarea_eegnet import (
     MIN_VENTANAS,
     _dir_modelos,
     leer_ficha_eegnet,

@@ -1,11 +1,11 @@
 """
-Empaqueta los modelos de fatiga aguda (logística de PASAT y PVTB) en la librería.
+Empaqueta los modelos de tiempo en tarea (logística de PASAT y PVTB) en la librería.
 
 Copia sin modificar `completa_PASAT.joblib` y `completa_PVTB.joblib` de la
 evaluación única en test de la línea (2026-10-27,
 `<EEG_DATA>/processed/fatiga_aguda_test_20261027-190547/modelos/`) a
-`src/eeg_library/modelos/fatiga_aguda/` y escribe al lado la ficha `.json`
-de cada uno. Los usa `eeg_library.modelado.fatiga_aguda`.
+`src/eeg_library/modelos/tiempo_en_tarea/` y escribe al lado la ficha `.json`
+de cada uno. Los usa `eeg_library.modelado.tiempo_en_tarea`.
 
 Como en `empaquetar_modelos.py`, nada de la ficha se teclea a mano:
 
@@ -22,7 +22,7 @@ Como en `empaquetar_modelos.py`, nada de la ficha se teclea a mano:
 No escribe nada en `EEG_DATA`. Volver a ejecutarlo da archivos idénticos.
 
 Uso:
-    .venv/Scripts/python.exe analisis/empaquetar_modelos_fatiga_aguda.py
+    .venv/Scripts/python.exe analisis/empaquetar_modelos_tiempo_en_tarea.py
 """
 
 import hashlib
@@ -34,7 +34,7 @@ from pathlib import Path
 
 import joblib
 
-from eeg_library.modelado.fatiga_aguda import BANDAS, IDS
+from eeg_library.modelado.tiempo_en_tarea import BANDAS, IDS
 from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO
 
@@ -44,7 +44,7 @@ DIR_TEST = RUTA_DATOS / "processed" / "fatiga_aguda_test_20261027-190547"
 LINEA = RAIZ_REPO / "analisis" / "tiempo_en_tarea"
 RESULTADOS = LINEA / "06_test" / "resultados_test.json"
 CONFIG = LINEA / "03_clasificador" / "configuracion_elegida.json"
-DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos" / "fatiga_aguda"
+DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos" / "tiempo_en_tarea"
 
 AVISOS = [
     "Mide el cambio del EEG con el tiempo en tarea, no el nivel de fatiga de la persona.",
@@ -104,7 +104,7 @@ def main():
         rho = resultados["descriptivos"][f"completa | {condicion} | rho"]
         ficha = {
             "id": id_modelo,
-            "titulo": f"Fatiga aguda · {condicion}",
+            "titulo": f"Tiempo en tarea · {condicion}",
             "archivo": destino.name,
             "sha256_modelo": sha_modelo,
             "que_predice": "A qué parte de la tarea se parece cada ventana de la grabación: al "

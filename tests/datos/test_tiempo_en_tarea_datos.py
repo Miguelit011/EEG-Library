@@ -1,11 +1,11 @@
 """
-Paridad de los modelos de fatiga aguda con el análisis, sobre EDF reales.
+Paridad de los modelos de tiempo en tarea con el análisis, sobre EDF reales.
 
 Necesita `EEG_DATA` (EDF, `features_all.parquet`, `matriz_rf.parquet`,
 `procesamiento_log.csv` y los modelos de la evaluación en test de la línea),
 así que va con el marcador `datos`:
 
-    .venv/Scripts/python.exe -m pytest -m datos tests/datos/test_fatiga_aguda_datos.py -s
+    .venv/Scripts/python.exe -m pytest -m datos tests/datos/test_tiempo_en_tarea_datos.py -s
 
 Usa 20 grabaciones PASAT y PVTB de `train` y `val`, elegidas con semilla fija.
 **Nunca de `test`**: la lista se filtra por la `split` de `matriz_rf.parquet`
@@ -33,7 +33,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from eeg_library.modelado.fatiga_aguda import BANDAS, CONDICIONES, puntuar
+from eeg_library.modelado.tiempo_en_tarea import BANDAS, CONDICIONES, puntuar
 from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.grabacion import analizar_grabacion
 

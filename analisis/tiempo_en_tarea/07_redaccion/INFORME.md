@@ -13,6 +13,7 @@
 | `resultados.md` | Resultados (cap. 6) | Desarrollo (pasos 1–4), evaluación única en `test` (paso 6) y análisis exploratorio (paso 5), cada bloque etiquetado por su estatus |
 | `discusion.md` | Discusión y conclusiones (cap. 7) | Mapa de escalas temporales, qué se puede afirmar y qué no, comparación con la literatura, limitaciones, trabajo futuro |
 | `referencias.md` | Bibliografía | Las referencias del PLAN 1.2 **comprobadas** (autores, año, título, revista, DOI). Las que no se puedan comprobar se marcan como tales y no se citan |
+| `rendimiento.md` (añadido el 2026-11-06) | Caps. 1 y 3, resultados y discusión | Qué rendimiento hay en la base, qué se buscó con él, texto propuesto (dos correcciones de frases y un párrafo exploratorio) y por qué no se amplía la línea. Cifras de `rendimiento_descriptivo.py` (solo `train` + `val`, sin cruzar con EEG ni VAS) |
 | `figuras.py` → `figuras/` | Figuras | Se generan **solo a partir de agregados** ya calculados (tablas y JSON de los pasos 1, 2, 4 y 6), en PDF vectorial (para LaTeX) y PNG. No se recalcula ningún análisis ni se carga `test` |
 
 ## Figuras previstas
@@ -79,3 +80,18 @@ confirmatoria o exploratoria.
 - **Pendiente para después** (fuera de este paso): la vista de evolución
   temporal en la plataforma, como fase propia con su plan en EEG-Library
   (contrato) y en EEG-Platform.
+
+## Añadido (2026-11-06): rendimiento en las tareas
+
+- **Motivo:** el cap. 3 decía que «no se dispone de medidas de rendimiento
+  dentro de cada grabación». La base sí tiene rendimiento, pero como total por
+  tarea y sesión; la frase se presta a leer que no hay ninguno.
+- **Archivos:** `rendimiento.md` (borrador) y `rendimiento_descriptivo.py`
+  → `.log` y `.json` (solo agregados). El guion carga `train` + `val`, nunca
+  `test`, y no cruza el rendimiento con el EEG ni con el VAS: solo describe
+  cobertura, techo, ICC(1) y efecto de práctica, y calcula la potencia con el
+  tamaño de `test` ya publicado en `06_test/INFORME.md`.
+- **Decisión:** no se amplía la línea ni se hace otro test con el rendimiento
+  (potencia 0.21–0.32 con 28 personas). El hallazgo de los lapsos del PVTB se
+  cuenta como exploratorio.
+- **Sin cambios en `EEG-Memoria`.**

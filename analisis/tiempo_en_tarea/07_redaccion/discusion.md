@@ -125,11 +125,21 @@ misma limitación de medida.
   lapsos minuto a minuto.
 - **Registros más largos** (decenas de minutos), para acercarse a la escala
   de la literatura.
-- **Deep learning** (EEGNet o ShallowConvNet; Lawhern et al., 2018;
-  Schirrmeister et al., 2017), para ver si la señal cruda contiene información
-  más allá de la potencia por banda. Coste medido en CPU: 30–45 h. En el test
-  de esta línea se renunció a él por escrito, así que cualquier evaluación en
-  `test` sería exploratoria.
+- **Deep learning: ya probado, sin ventaja sobre la logística** (sublínea
+  `deep_learning/`, posterior al test de la línea). Se probaron EEGNet y
+  ShallowConvNet (Lawhern et al., 2018; Schirrmeister et al., 2017) sobre la
+  señal cruda, para ver si contiene información más allá de la potencia por
+  banda:
+  - en el piloto de desarrollo ninguna igualó a la logística, y
+    ShallowConvNet, la peor, se descartó;
+  - EEGNet, entrenada con `train` + `val`, se evaluó una vez en `test` con su
+    propio pre-registro, como segunda evaluación de la línea (2026-10-31).
+    Aprende el efecto (ρ PASAT +0.180 y PVTB +0.141, las dos confirman), pero
+    **no se distingue de la logística** (Δρ −0.011 [−0.047, +0.028]); la
+    ventaja que mostró en `val` (+0.033) no se repitió.
+
+  Solo tendría sentido volver a probarlas con más participantes o registros
+  más largos.
 
 ## Frase de resumen
 

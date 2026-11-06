@@ -60,8 +60,9 @@ evaluado una sola vez:
   interpretarlos en registros cortos.
 - **En `test`, OA cambió más que en el desarrollo** (ρ 0.104 frente a 0.063 y
   0.039), y PASAT a igual tiempo quedó a su altura. Con 28 personas, la
-  diferencia entre conjuntos puede ser azar de muestreo. No se ha investigado
-  porque el test está gastado.
+  diferencia entre conjuntos puede ser azar de muestreo. No se ha investigado:
+  cualquier análisis de su causa sería posterior al test y, por tanto,
+  exploratorio.
 - **El orden fijo del protocolo** impide separar por completo el tiempo en la
   tarea del tiempo de sesión. Solo un diseño contrabalanceado lo resolvería.
 

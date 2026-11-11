@@ -25,7 +25,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/fatiga_fg_fc/02_entre_personas/entre_personas.py --rapido   # depuración: pocas réplicas, salida temporal
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import json

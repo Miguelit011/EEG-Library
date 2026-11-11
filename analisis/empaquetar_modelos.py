@@ -45,7 +45,8 @@ from eeg_library.procesado.matrix import ORDEN_PROTOCOLO
 from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO
 
 RAIZ_REPO = Path(__file__).resolve().parents[1]
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 DIR_TEST = RUTA_DATOS / "processed" / "test_20261007-133358"
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 DESTINO = RAIZ_REPO / "src" / "eeg_library" / "modelos"

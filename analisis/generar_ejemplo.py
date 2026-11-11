@@ -36,7 +36,8 @@ import pandas as pd
 from eeg_library.procesado.grabacion import analizar_grabacion
 
 RAIZ_REPO = Path(__file__).resolve().parents[1]
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 DESTINO = RAIZ_REPO / "docs" / "ejemplos" / "analisis_grabacion.json"
 NOMBRE_ANONIMO = "ejemplo_OA.edf"
 DESTINO_PASAT = RAIZ_REPO / "docs" / "ejemplos" / "analisis_grabacion_pasat.json"

@@ -25,7 +25,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/normalizacion_vas/02_etiquetas/etiquetas_normalizadas.py > analisis/normalizacion_vas/02_etiquetas/ejecucion.log
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -57,7 +57,8 @@ SEMILLA = 42
 N_BOOTSTRAP = 5000
 UMBRAL_ACUERDO = 0.90  # fijado en INFORME.md antes de ejecutar
 
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[4] / "EEG-Data"))
 RUTA_VAS = EEG_DATA / "metadata" / "VAS_100mm_preFE_filtrado.csv"
 RUTA_LABELS = EEG_DATA / "metadata" / "labels.csv"
 

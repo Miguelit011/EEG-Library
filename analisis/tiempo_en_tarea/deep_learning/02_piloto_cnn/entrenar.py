@@ -25,7 +25,8 @@ import pandas as pd
 import torch
 from torch import nn
 
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[5] / "EEG-Data"))
 CACHE = EEG_DATA.parent / "EEG-DL-cache" / "piloto"
 LRS = [3e-4, 1e-3, 3e-3]
 SEMILLAS_EXTRA = [1, 2]

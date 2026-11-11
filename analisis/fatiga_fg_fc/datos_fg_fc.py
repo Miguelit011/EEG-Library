@@ -17,7 +17,7 @@ El `CÓDIGO` (iniciales + fecha de nacimiento de menores) solo se usa aquí
 dentro, para comprobar que el enlace es unívoco. Ninguna función lo devuelve.
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import hashlib
@@ -29,7 +29,8 @@ import pandas as pd
 
 from eeg_library.procesado.labels import GENERO_A_SEXO, normalizar_vas
 
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[3] / "EEG-Data"))
 # Base corregida por el equipo del estudio (2026-10-22): restaura los ítems
 # PedsQL de M5 y M6, que en las versiones anteriores se habían codificado como
 # max(respuesta − 1, 0). Ver la hoja AUDIT_CORRECCION_PEDS y el paso 1.

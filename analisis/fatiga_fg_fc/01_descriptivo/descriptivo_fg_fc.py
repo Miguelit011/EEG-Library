@@ -19,7 +19,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/fatiga_fg_fc/01_descriptivo/descriptivo_fg_fc.py > analisis/fatiga_fg_fc/01_descriptivo/ejecucion.log
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import importlib.util

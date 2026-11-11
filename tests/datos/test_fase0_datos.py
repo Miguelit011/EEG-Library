@@ -35,7 +35,8 @@ from eeg_library.modelado.prediccion import cargar_modelo, listar_modelos
 from eeg_library.procesado.grabacion import ALIAS_CARACTERISTICAS, analizar_grabacion
 from eeg_library.procesado.matrix import construir_matriz_rf
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[3] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 
 pytestmark = [

@@ -24,7 +24,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/normalizacion_vas/03_eeg/eeg_etiqueta_normalizada.py > analisis/normalizacion_vas/03_eeg/ejecucion.log
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import importlib.util
@@ -76,7 +76,8 @@ N_BOOTSTRAP = 2000  # el de la Fase 14b
 REFERENCIA_SIN_CONTROL = 0.3947  # Fase 14b
 REFERENCIA_CON_CONTROL = 0.3795  # control de visita (2026-10-06)
 
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[4] / "EEG-Data"))
 RUTA_MATRIZ = EEG_DATA / "processed" / "matriz_rf.parquet"
 CARPETA_FIGURAS = CARPETA / "figuras"
 CARPETA_TABLAS = CARPETA / "tablas"

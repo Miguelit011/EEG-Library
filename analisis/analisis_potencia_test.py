@@ -60,7 +60,8 @@ N_BOOTSTRAP = 1000          # por simulación, solo para el IC
 N_SIMULACIONES_NULAS = 20000  # control de error de tipo I (±0.0015 a 0.05)
 ALFA = 0.05
 AZAR = 1 / 3
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "potencia_test.json"
 

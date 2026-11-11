@@ -24,7 +24,7 @@ Ejecutar (desde la raíz del repositorio):
     python analisis/analisis_control_visita.py > resultados/logs/control_visita.log 2>&1
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import json
@@ -64,7 +64,8 @@ if hasattr(sys.stdout, "reconfigure"):
 SEMILLA = 42
 N_BOOTSTRAP_CLASES = 2000     # el de la Fase 14b
 N_BOOTSTRAP_CONTINUO = 10000  # el de REGRESION_LINEAL.md
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_RESULTADOS = RUTA_DATOS / "processed" / "control_visita.json"
 

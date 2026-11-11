@@ -30,7 +30,7 @@ guiones lo localizan mediante la variable de entorno `EEG_DATA`:
 
 | | |
 |---|---|
-| Valor por defecto | `C:\Users\migue\Desktop\TFG\EEG-Data` |
+| Valor por defecto | la carpeta `EEG-Data` junto al repositorio (`TFG/EEG-Data`) |
 | Estructura esperada | `<EEG_DATA>/processed/matriz_rf.parquet` |
 | Salidas | `<EEG_DATA>/processed/*.json` |
 
@@ -45,6 +45,11 @@ $env:EEG_DATA = "D:\otra\ruta"
 # bash
 export EEG_DATA=/ruta/al/dataset
 ```
+
+`analisis_test.py` y `tiempo_en_tarea/deep_learning/04_test_eegnet/entrenar.py`
+conservan como valor por defecto la ruta del equipo de desarrollo
+(`C:\Users\migue\Desktop\TFG\EEG-Data`): tienen su SHA-256 registrado y no se
+editan. En otro equipo, para ejecutarlos hay que definir `EEG_DATA`.
 
 ---
 

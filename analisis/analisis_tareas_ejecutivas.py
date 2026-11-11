@@ -43,7 +43,7 @@ directorio temporal, para comprobar que el guion corre de principio a fin y
 revisar las figuras. Sus cifras NO son resultados.
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import itertools
@@ -127,7 +127,8 @@ N_REPETICIONES_PERMUTACION = 1 if RAPIDO else 5
 N_PERMUTACIONES_ETIQUETAS = 2 if RAPIDO else 20
 N_ARBOLES = 30 if RAPIDO else 500
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 RUTA_MATRIZ_EPOCAS = RUTA_DATOS / "processed" / "matriz_modelado.parquet"
 RUTA_GRABACIONES = RUTA_DATOS / "metadata" / "labels_grabaciones.csv"

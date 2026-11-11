@@ -30,7 +30,8 @@ import torch
 CARPETA = Path(__file__).resolve().parent
 DL = CARPETA.parent
 RAIZ_REPO = DL.parents[2]
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[5] / "EEG-Data"))
 DIR_PESOS = EEG_DATA / "processed" / "fatiga_aguda_dl_test_20261031-224217" / "modelos"
 CACHE = EEG_DATA.parent / "EEG-DL-cache" / "onnx"
 CONFIGURACION = DL / "04_test_eegnet" / "configuracion_dl.json"

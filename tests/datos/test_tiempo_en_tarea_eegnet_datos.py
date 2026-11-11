@@ -33,7 +33,8 @@ import pytest
 from eeg_library.modelado.tiempo_en_tarea_eegnet import preparar_entrada, puntuar_entrada
 from eeg_library.procesado.grabacion import analizar_grabacion
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[3] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 DL = Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea" / "deep_learning"
 

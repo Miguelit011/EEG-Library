@@ -117,7 +117,15 @@ Los guiones esperan esta estructura bajo `EEG_DATA`:
 └── ventanas/         ventanas crudas para la ruta CNN
 ```
 
-Si no está en la ruta por defecto (`C:\Users\migue\Desktop\TFG\EEG-Data`):
+Por defecto, los guiones y los tests buscan la carpeta `EEG-Data` **junto al repositorio**:
+
+```
+TFG\
+├── EEG-Library\
+└── EEG-Data\
+```
+
+Si está en otro sitio:
 
 ```powershell
 $env:EEG_DATA = "D:\otra\ruta"      # PowerShell
@@ -125,6 +133,8 @@ $env:EEG_DATA = "D:\otra\ruta"      # PowerShell
 ```bash
 export EEG_DATA=/ruta/al/dataset    # bash
 ```
+
+Hay dos excepciones: `analisis/analisis_test.py` y `analisis/tiempo_en_tarea/deep_learning/04_test_eegnet/entrenar.py` conservan como valor por defecto la ruta del equipo de desarrollo, porque tienen su SHA-256 registrado y no se editan. En otro equipo, para ejecutarlos hay que definir `EEG_DATA`.
 
 `metadata/splits.csv` es la única fuente de verdad de las particiones (125 sujetos train, 25 val, 28 test).
 

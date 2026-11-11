@@ -37,7 +37,8 @@ from eeg_library.modelado.tiempo_en_tarea import BANDAS, CONDICIONES, puntuar
 from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.grabacion import analizar_grabacion
 
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[3] / "EEG-Data"))
 RUTA_MATRIZ = RUTA_DATOS / "processed" / "matriz_rf.parquet"
 DIR_MODELOS = RUTA_DATOS / "processed" / "fatiga_aguda_test_20261027-190547" / "modelos"
 CLASIFICADOR = Path(__file__).resolve().parents[2] / "analisis" / "tiempo_en_tarea" / "03_clasificador"

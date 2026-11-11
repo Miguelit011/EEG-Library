@@ -17,7 +17,7 @@ Ejecutar (desde la raíz del repositorio):
     .venv/Scripts/python.exe analisis/tiempo_en_tarea/01_descriptivo/descriptivo_tiempo_en_tarea.py > analisis/tiempo_en_tarea/01_descriptivo/ejecucion.log
 
 La ubicación del dataset se toma de la variable de entorno `EEG_DATA`, con
-`C:\\Users\\migue\\Desktop\\TFG\\EEG-Data` por defecto (ver `analisis/README.md`).
+`EEG-Data` junto al repositorio por defecto (ver `analisis/README.md`).
 """
 
 import hashlib
@@ -45,7 +45,8 @@ from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.features import PREFIJO_VALIDEZ, anotar_validez_de_canales
 from eeg_library.procesado.matrix import REGIONES
 
-EEG_DATA = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+EEG_DATA = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[4] / "EEG-Data"))
 RUTA_FEATURES = EEG_DATA / "processed" / "features_all.parquet"
 RUTA_MATRIZ = EEG_DATA / "processed" / "matriz_rf.parquet"
 RUTA_LOG = EEG_DATA / "processed" / "procesamiento_log.csv"

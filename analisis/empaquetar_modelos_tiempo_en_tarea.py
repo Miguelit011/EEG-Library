@@ -39,7 +39,8 @@ from eeg_library.preprocesado.quality import CANALES_EPOC
 from eeg_library.procesado.parametros import PARAMETROS_ESTUDIO
 
 RAIZ_REPO = Path(__file__).resolve().parents[1]
-RUTA_DATOS = Path(os.environ.get("EEG_DATA", r"C:\Users\migue\Desktop\TFG\EEG-Data"))
+# Por defecto, la carpeta EEG-Data junto al repositorio (TFG/EEG-Data); se cambia con EEG_DATA.
+RUTA_DATOS = Path(os.environ.get("EEG_DATA", Path(__file__).resolve().parents[2] / "EEG-Data"))
 DIR_TEST = RUTA_DATOS / "processed" / "fatiga_aguda_test_20261027-190547"
 LINEA = RAIZ_REPO / "analisis" / "tiempo_en_tarea"
 RESULTADOS = LINEA / "06_test" / "resultados_test.json"

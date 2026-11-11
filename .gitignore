@@ -184,6 +184,12 @@ data/
 *.mef
 *.nwb
 *.csv
+*.parquet
+*.xlsx
+*.xls
+
+# Tablas por persona generadas por las líneas de análisis (analisis/<línea>/<paso>/tablas/)
+**/tablas/
 
 # Archivos de datos binarios (NumPy / HDF5 / Pickle)
 *.npy

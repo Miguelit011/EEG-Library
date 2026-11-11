@@ -1,0 +1,24 @@
+# Entorno aparte para los guiones de PyTorch de
+# analisis/tiempo_en_tarea/deep_learning/ (entrenar EEGNet y exportarla a ONNX).
+#
+# No se instala en .venv: PyTorch podría cambiar versiones del entorno validado
+# (requirements-validacion.txt), y su instalación falla en Windows con rutas
+# largas. Por eso va en una ruta corta, fuera del repo. La librería y
+# EEG-Platform solo usan el .onnx resultante, con onnxruntime; no necesitan PyTorch.
+#
+# Versiones del entorno usado (Python 3.10.11). Instalar con Python 3.10:
+#   py -3.10 -m venv C:\venvs\eeg-dl
+#   C:\venvs\eeg-dl\Scripts\python.exe -m pip install -r requirements-dl.txt
+#
+# Qué guion corre en cada entorno: ver el INFORME.md de cada paso de deep_learning/.
+
+# Índice de PyTorch para la versión solo CPU (+cpu).
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch==2.14.1+cpu
+onnx==1.23.2
+onnxscript==0.7.2
+onnxruntime==1.23.2
+numpy==2.2.6
+pandas==2.3.3
+pyarrow==25.0.1

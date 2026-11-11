@@ -1,0 +1,31 @@
+# Versiones exactas con las que se generaron y validaron los resultados de
+# EEG-Library (entorno .venv, Python 3.10.11). Son las mismas que fija
+# EEG-Platform/requirements.txt.
+#
+# Instalar, desde la carpeta EEG-Library y con Python 3.10:
+#   py -3.10 -m venv .venv
+#   .venv\Scripts\python.exe -m pip install -r requirements-validacion.txt
+#
+# Los guiones de deep learning usan otro entorno: ver requirements-dl.txt.
+
+# La librería, en modo editable, con los extras de tests y de análisis.
+-e .[dev,analisis]
+
+# Dependencias de la librería
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.15.3
+mne==1.12.1
+mne-icalabel==0.10.0
+onnxruntime==1.23.2
+pyarrow==25.0.1
+joblib==1.6.0
+scikit-learn==1.7.2
+
+# Extra [analisis]
+matplotlib==3.10.9
+openpyxl==3.1.5
+
+# Extra [dev]
+edfio==0.4.18
+pytest==9.1.1

@@ -10,13 +10,14 @@ Librería en Python para el procesamiento automatizado y el análisis de señale
 
 | Componente | Dónde | Qué es |
 |---|---|---|
-| **Librería** | `src/eeg_library/` | Pipeline de 13 fases: del EDF crudo a la matriz de features, más las reglas de evaluación del modelado. |
-| **Tests** | `tests/` | 504 pruebas con `pytest`, organizadas como la librería. |
+| **Librería** | `src/eeg_library/` | Pipeline de 13 fases: del EDF crudo a la matriz de features, más las reglas de evaluación del modelado, los modelos empaquetados (c1, c2, c3 y tiempo en tarea) y `prediccion.py`, que los aplica a una grabación nueva. |
+| **Tests** | `tests/` | 589 pruebas con `pytest` (más 7 que necesitan el dataset), organizadas como la librería. |
 | **Análisis** | `analisis/` | Guiones reproducibles que generan las cifras citadas en la documentación y en la memoria. |
 | **Documentación** | `docs/` | Estado del pipeline, cuaderno de modelado, concordancia de fases e informe de cada análisis. |
 | **Pre-registro** | `PREREGISTRO_TEST.md` | Protocolo del análisis confirmatorio sobre el test, fijado antes de abrirlo. No se modifica. |
 | **Resultados** | `resultados/` | Figuras y registros de ejecución vigentes. |
 | **Archivo** | `archivo/` | Material de fases retiradas, conservado como registro. |
+| **Entornos** | `requirements-validacion.txt`, `requirements-dl.txt` | Versiones exactas del entorno con que se generaron los resultados y del entorno aparte de deep learning. |
 
 El dataset **no está en el repositorio** (172,8 h de señal, 16,2 GB de ventanas, datos pseudonimizados). Se localiza con la variable de entorno `EEG_DATA`.
 
@@ -29,23 +30,34 @@ EEG-Library/
 ├── src/eeg_library/
 │   ├── preprocesado/     Fases 1-6: lectura, recorte, filtros, calidad, CAR, ICA
 │   ├── procesado/        Fases 7-13: épocas, PSD, bandas, lotes, etiquetas VAS, matriz del RF
-│   └── modelado/         Fase 14 en adelante: evaluación y análisis de condición
+│   ├── modelado/         Fase 14 en adelante: evaluación, análisis de condición, tiempo en tarea
+│   │                     y prediccion.py (aplicar los modelos a una grabación nueva)
+│   └── modelos/          modelos empaquetados c1-c3 y, en tiempo_en_tarea/, logística y EEGNet (ONNX)
 ├── tests/
-│   ├── preprocesado/  procesado/  modelado/
+│   ├── preprocesado/  procesado/  modelado/  datos/
 │   └── test_pipeline_integracion.py
-├── analisis/             guiones de análisis (+ README con el detalle de cada uno)
+├── analisis/
+│   ├── *.py              guiones de las Fases 14-21 y de empaquetado (+ README con el detalle)
+│   ├── normalizacion_vas/    línea de análisis en carpeta
+│   ├── fatiga_fg_fc/         línea de análisis en carpeta
+│   └── tiempo_en_tarea/      línea de análisis en carpeta (con deep_learning/)
 ├── docs/
+│   ├── README.md         índice de la documentación
 │   ├── ESTADO.md         pipeline Fases 1-13 (congelado)
 │   ├── MODELADO.md       cuaderno de modelado y resultados (Fase 14 en adelante)
 │   ├── FASES.md          concordancia de fases, código y documentos
+│   ├── CONTRATO.md       qué entrega la librería a EEG-Platform
+│   ├── ejemplos/         salida de ejemplo de analizar_grabacion (JSON)
 │   ├── RUTAS_ORIGINALES.md
-│   └── analisis/         un informe por análisis
+│   └── analisis/         un informe por análisis de las Fases 14-21
 ├── resultados/
 │   ├── figuras/
 │   └── logs/
 ├── archivo/              Fase 15 (retirada)
 ├── PREREGISTRO_TEST.md
 ├── pyproject.toml
+├── requirements-validacion.txt
+├── requirements-dl.txt
 └── LICENSE
 ```
 
@@ -53,7 +65,7 @@ EEG-Library/
 
 ## Instalación
 
-Requiere **Python 3.10 o superior** y Git. Los resultados documentados se generaron con Python 3.10.11 (versiones completas en `analisis/README.md`).
+Requiere **Python 3.10** (no 3.11 ni posteriores: los modelos empaquetados se guardaron con 3.10 y scikit-learn 1.7.2) y Git. Los resultados documentados se generaron con Python 3.10.11.
 
 **Windows (PowerShell)**
 
@@ -80,8 +92,16 @@ pip install -e ".[dev]"
 La instalación se hace una sola vez; después solo hay que activar el entorno en cada terminal nueva. Para comprobarla:
 
 ```bash
-pytest        # 504 pruebas
+pytest        # 589 pruebas; las 7 que necesitan el dataset se lanzan con: pytest -m datos
 ```
+
+**Para ejecutar los análisis**, con las versiones exactas con que se generaron los resultados (incluye `matplotlib` y `openpyxl`, del extra `[analisis]`):
+
+```bash
+pip install -r requirements-validacion.txt
+```
+
+**Deep learning** (`analisis/tiempo_en_tarea/deep_learning/`): PyTorch va en un entorno aparte, para no alterar las versiones validadas. Cómo crearlo: [`requirements-dl.txt`](requirements-dl.txt).
 
 ---
 
@@ -129,6 +149,13 @@ El orden de las fases importa: la calidad de canal se evalúa sobre la señal ya
 
 ## Ejecutar los análisis
 
+Los análisis están organizados de dos formas, según cuándo se hicieron:
+
+- **Fases 14-21:** guiones sueltos en `analisis/*.py`. Sus figuras y registros van a `resultados/figuras/` y `resultados/logs/`, y su interpretación, a `docs/MODELADO.md` y `docs/analisis/`.
+- **Líneas posteriores:** una carpeta por línea (`analisis/<línea>/<paso>/`), que reúne en cada paso el guion, sus tablas, sus figuras, `resultados.json` e `INFORME.md`. Cada línea tiene su `README.md`.
+
+No se reorganizan en una sola forma: varios ficheros tienen su SHA-256 registrado antes de evaluar el test, y sus rutas están citadas en la memoria.
+
 Desde la raíz del repositorio y con el entorno activado:
 
 ```bash
@@ -147,6 +174,12 @@ python analisis/analisis_oa_oc.py > resultados/logs/oa_oc.log 2>&1
 | `analisis_oa_oc.py` | Ojos abiertos frente a cerrados (control positivo) | ~7,5 min | `docs/analisis/ANALISIS_OA_OC.md` |
 | `analisis_reposo_tarea.py` | Reposo frente a tarea ejecutiva | ~15 min | `docs/analisis/ANALISIS_REPOSO_TAREA.md` |
 | `analisis_tareas_ejecutivas.py` | Las cinco tareas ejecutivas entre sí | ~26 min | `docs/analisis/ANALISIS_TAREAS_EJECUTIVAS.md` |
+| `analisis_test.py` | Análisis confirmatorio sobre el test | **Ejecutado una vez; no se reejecuta** | `docs/MODELADO.md` |
+| `empaquetar_modelos.py`, `empaquetar_modelos_tiempo_en_tarea.py` | No es un análisis: empaqueta los modelos que usa EEG-Platform | — | `docs/CONTRATO.md` |
+| `generar_ejemplo.py` | No es un análisis: genera los JSON de `docs/ejemplos/` | — | `docs/CONTRATO.md` |
+| `normalizacion_vas/` | ¿Da una etiqueta más útil el VAS respecto a cada persona? | por pasos | [`README`](analisis/normalizacion_vas/README.md) |
+| `fatiga_fg_fc/` | ¿Guardan relación con el EEG la fatiga general y la cognitiva del PedsQL? | por pasos | [`README`](analisis/fatiga_fg_fc/README.md) |
+| `tiempo_en_tarea/` | ¿Cambia el EEG a lo largo de una misma tarea, en personas no vistas? | por pasos | [`README`](analisis/tiempo_en_tarea/README.md) |
 
 Son independientes y pueden ejecutarse en cualquier orden. Los de reposo y tareas aceptan `--rapido` (parámetros mínimos, salida temporal; sus cifras no son resultados). Todos usan semilla fija (`SEMILLA = 42`). Detalle de cada uno, requisitos y garantías metodológicas: [`analisis/README.md`](analisis/README.md).
 
@@ -164,6 +197,12 @@ Son independientes y pueden ejecutarse en cualquier orden. Los de reposo y tarea
 | Figuras | `resultados/figuras/` |
 | Registros de ejecución | `resultados/logs/` |
 | Fases retiradas (10 y 15) | `docs/FASES.md` y `archivo/` |
+
+---
+
+## Uso desde EEG-Platform
+
+[EEG-Platform](https://github.com/Miguelit011/EEG-Platform) es la aplicación web local que permite a los investigadores procesar sus grabaciones sin programar. No copia código: instala esta librería en modo editable (`pip install -e ../EEG-Library`), llama a sus funciones y muestra lo que devuelven. Qué funciones usa y qué devuelve cada una está fijado en [`docs/CONTRATO.md`](docs/CONTRATO.md).
 
 ---
 

@@ -19,7 +19,7 @@ Librería en Python para el procesamiento automatizado y el análisis de señale
 | **Archivo** | `archivo/` | Material de fases retiradas, conservado como registro. |
 | **Entornos** | `requirements-validacion.txt`, `requirements-dl.txt` | Versiones exactas del entorno con que se generaron los resultados y del entorno aparte de deep learning. |
 
-El dataset **no está en el repositorio** (172,8 h de señal, 16,2 GB de ventanas, datos pseudonimizados). Se localiza con la variable de entorno `EEG_DATA`.
+El dataset **no está en el repositorio** (172,8 h de señal, 16,1 GB de ventanas, datos pseudonimizados). Se localiza con la variable de entorno `EEG_DATA`.
 
 ---
 
@@ -47,6 +47,7 @@ EEG-Library/
 │   ├── MODELADO.md       cuaderno de modelado y resultados (Fase 14 en adelante)
 │   ├── FASES.md          concordancia de fases, código y documentos
 │   ├── CONTRATO.md       qué entrega la librería a EEG-Platform
+│   ├── DATOS.md          qué contiene la carpeta de datos (EEG_DATA)
 │   ├── ejemplos/         salida de ejemplo de analizar_grabacion (JSON)
 │   ├── RUTAS_ORIGINALES.md
 │   └── analisis/         un informe por análisis de las Fases 14-21
@@ -111,11 +112,14 @@ Los guiones esperan esta estructura bajo `EEG_DATA`:
 
 ```
 <EEG_DATA>/
-├── dataset_final/    EDF (178 sujetos)
-├── metadata/         manifest_canonical.csv, splits.csv, labels*.csv, VAS_100mm_preFE_filtrado.csv
-├── processed/        matriz_rf.parquet, matriz_modelado.parquet y los JSON de resultados
-└── ventanas/         ventanas crudas para la ruta CNN
+├── BD_COMPLETA_*.xlsx  base de cuestionarios del estudio (tres versiones)
+├── dataset_final/      EDF (178 sujetos)
+├── metadata/           manifest_canonical.csv, splits.csv, labels*.csv, VAS_100mm_preFE_filtrado.csv
+├── processed/          features del lote, matriz_rf.parquet, JSON de resultados y carpetas de las evaluaciones
+└── ventanas/           ventanas crudas para la ruta CNN
 ```
+
+Qué es cada archivo, qué guion lo genera o lo lee, los recuentos y cómo se comprueba su integridad: [`docs/DATOS.md`](docs/DATOS.md).
 
 Por defecto, los guiones y los tests buscan la carpeta `EEG-Data` **junto al repositorio**:
 

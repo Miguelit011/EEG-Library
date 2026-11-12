@@ -21,7 +21,7 @@ Ubicación: `C:\Users\migue\Desktop\TFG\EEG-Data\` — fuera del repo y **fuera 
 el 2026-10-06, cuando se trasladó aquí; los guiones
 la localizan con la variable de entorno `EEG_DATA`. Que no
 sincronice es un requisito, no una casualidad: las ventanas crudas para la CNN
-que genera la Fase 11 ocupan 16.2 GB.
+que genera la Fase 11 ocupan 16.1 GB.
 
 ```
 dataset_final/                4574 archivos EDF
@@ -122,7 +122,7 @@ que codifica `condicion_orden` en la matriz de la Fase 13.
   mirando train+val, así que reportarlo sobre esos mismos datos sería
   circular. Hay que confirmarlo con selección dentro de la validación cruzada
   o gastando test una sola vez. Detalle en la Fase 13.
-- **Ruta CNN.** Las ventanas crudas (16.2 GB) están generadas desde la Fase 11
+- **Ruta CNN.** Las ventanas crudas (16.1 GB) están generadas desde la Fase 11
   pero no se ha construido el tensor: falta la normalización z por canal
   ajustada solo sobre train y decidir el tratamiento de los canales
   enmascarados (un canal extra de máscara, no ceros).

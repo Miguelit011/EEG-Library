@@ -113,7 +113,7 @@ de la Facultad de Ciencias del Deporte.
   (`labels.csv`, `labels_grabaciones.csv`), y `processed/` + `ventanas/` con
   la salida de la Fase 11.
   Está fuera de OneDrive a propósito: las ventanas crudas para la CNN ocupan
-  16.2 GB y no deben sincronizarse
+  16.1 GB y no deben sincronizarse
 - Sujetos: 178, procedentes de un estudio de la Facultad de Ciencias del
   Deporte (edad y otras características demográficas no confirmadas —
   no asumir)

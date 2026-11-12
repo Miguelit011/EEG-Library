@@ -24,7 +24,7 @@ Instala la librería con los extras `[dev,analisis]` y las versiones exactas con
 que se generaron los resultados. Los guiones de PyTorch de
 `tiempo_en_tarea/deep_learning/` usan un entorno aparte: `requirements-dl.txt`.
 
-El dataset **no está en el repositorio** (son 16,2 GB, principalmente las
+El dataset **no está en el repositorio** (son 36 GB, principalmente los EDF y las
 ventanas crudas para la CNN, y contiene datos personales pseudonimizados). Los
 guiones lo localizan mediante la variable de entorno `EEG_DATA`:
 

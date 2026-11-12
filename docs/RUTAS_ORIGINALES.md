@@ -1,8 +1,8 @@
 # Rutas originales y ficheros congelados
 
-`ESTADO.md` y `PREREGISTRO_TEST.md` son registros históricos y no se editan, así
-que sus menciones a otros ficheros conservan los nombres que tenían antes de la
-reorganización del 2026-10-08. Esta tabla las traduce. El estado anterior
+`ESTADO.md` y `PREREGISTRO_TEST.md` son registros históricos: sus menciones a
+otros ficheros conservan los nombres que tenían antes de la reorganización del
+2026-10-08. Esta tabla las traduce. El estado anterior
 completo está en el tag `pre-reorganizacion`.
 
 | Ruta original | Ruta actual |
@@ -29,9 +29,8 @@ completo está en el tag `pre-reorganizacion`.
 |---|---|
 | `PREREGISTRO_TEST.md` | `bdca1a7bca689b92856fe30769df059f8fabc0f66f7d1023226a844d27325121` |
 | `analisis/analisis_test.py` | `20e25ce8aa3b1a90e26b87c46884c0fb43688842e4b5a5a4552b199115f3f0a4` |
-| `docs/ESTADO.md` | `363e62df7f0d8126ffba861212a0ea4424805a8d27dcaf82c86d502c26dde132` |
 
-Los dos primeros se calcularon sobre la copia de trabajo de Windows, con saltos
+Se calcularon sobre la copia de trabajo de Windows, con saltos
 de línea CRLF; git los guarda con LF. `.gitattributes` fija `eol=crlf` en ellos
 para que el hash sea el mismo en cualquier plataforma. Desde el tag:
 

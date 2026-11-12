@@ -1903,7 +1903,7 @@ from eeg_library import (
 )
 ```
 
-Versión actual: `0.11.0`
+Versión al congelar este documento: `0.11.0`
 
 ### Procesamiento del dataset completo (Fase 11)
 ```python

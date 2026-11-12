@@ -38,10 +38,12 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from eeg_library.preprocesado.artifacts import UMBRAL_OCULAR
 from eeg_library.procesado.bands import BANDAS_DEFECTO
 from eeg_library.procesado.batch import ejecutar_fases
 from eeg_library.procesado.features import PREFIJO_VALIDEZ, anotar_validez_de_canales
-from eeg_library.procesado.matrix import REGIONES, resumir_por_grabacion
+from eeg_library.procesado.matrix import (REGIONES, columnas_de_features_reposo,
+                                          resumir_por_grabacion)
 
 # Nombre en la matriz -> nombre en el JSON. Es general, no de un modelo.
 ALIAS_CARACTERISTICAS = {
@@ -60,7 +62,6 @@ def columnas_de_caracteristicas(resumen):
     (Fase 13) menos `condicion_orden` y los seis contadores de procesamiento.
     Sobre la matriz del estudio son 70.
     """
-    from eeg_library.modelado.reposo import columnas_de_features_reposo
     return columnas_de_features_reposo(resumen)
 
 
@@ -231,7 +232,7 @@ def analizar_grabacion(ruta_edf, parametros=None, random_state=42):
                 "metodo": ica["metodo"],
                 "n_componentes": ica["n_components"],
                 "componentes_eliminadas": ica["componentes_eliminadas"],
-                "criterio": "ICLabel 'eye blink' con probabilidad >= 0.8",
+                "criterio": f"ICLabel 'eye blink' con probabilidad >= {UMBRAL_OCULAR:g}",
                 "varianza_eliminada": ica["varianza_explicada_eliminada"],
                 "random_state": ica["random_state"],
             },

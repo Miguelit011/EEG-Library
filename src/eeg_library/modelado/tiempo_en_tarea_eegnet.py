@@ -25,24 +25,20 @@ Decisiones de diseño:
   grabaciones en paralelo.
 """
 
-import hashlib
 import json
-from importlib import resources
-from pathlib import Path
 
 import numpy as np
 from scipy import stats
 from scipy.signal import resample_poly
 
-CONDICIONES = ("PASAT", "PVTB")
-MIN_VENTANAS = 10
+from eeg_library.modelado.prediccion import _sha256
+# Mismas condiciones, mismo mínimo de ventanas y misma carpeta que la logística.
+from eeg_library.modelado.tiempo_en_tarea import CONDICIONES, MIN_VENTANAS
+from eeg_library.modelado.tiempo_en_tarea import dir_modelos as _dir_modelos
+
 MUESTRAS_ENTRADA = 512
 
 _sesiones = []
-
-
-def _dir_modelos():
-    return Path(str(resources.files("eeg_library") / "modelos" / "tiempo_en_tarea"))
 
 
 def leer_ficha_eegnet():
@@ -59,7 +55,7 @@ def _sesiones_onnx():
         opciones.inter_op_num_threads = 1
         for s in leer_ficha_eegnet()["semillas"]:
             ruta = _dir_modelos() / s["archivo"]
-            if hashlib.sha256(ruta.read_bytes()).hexdigest() != s["sha256"]:
+            if _sha256(ruta) != s["sha256"]:
                 raise ValueError(f"El SHA-256 de '{ruta.name}' no es el de su ficha.")
             _sesiones.append(ort.InferenceSession(str(ruta), opciones,
                                                   providers=["CPUExecutionProvider"]))

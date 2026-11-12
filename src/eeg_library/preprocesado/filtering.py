@@ -15,8 +15,6 @@ cualquier otro canal no-EEG permanecen intactos.
 
 import datetime
 
-import mne
-
 
 def recortar_registro(raw, inicio=5.0, fin=5.0):
     """
@@ -95,7 +93,8 @@ def aplicar_filtros(raw, notch_freq=50.0, banda=(1.0, 30.0)):
     Parámetros
     ----------
     raw : mne.io.BaseRaw
-        Objeto Raw con preload=True (tras re-referenciación, idealmente).
+        Objeto Raw con preload=True, ya recortado (Fase 2). Se filtra antes
+        de evaluar la calidad (Fase 4) y de aplicar la CAR (Fase 5).
     notch_freq : float o None
         Frecuencia central del filtro notch en Hz. Por defecto 50.0
         (red eléctrica europea). None omite el notch.

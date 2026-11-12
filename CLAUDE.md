@@ -22,7 +22,8 @@ de la Facultad de Ciencias del Deporte.
 > z-score robusto) con artefactos de colocación/retirada del casco y con
 > deriva de baja frecuencia sin filtrar.
 
-1. Lectura de archivos EDF (prioridad), EDF+, CSV, BDF+
+1. Lectura de archivos EDF y EDF+ (`mne.io.read_raw_edf`); otros formatos
+   (CSV, BDF+) no están implementados
 2. Recorte de márgenes: eliminar 5 s al inicio y 5 s al final del registro
    (artefactos de colocación y retirada del casco)
 3. Filtro notch a 50 Hz (ruido red eléctrica) + filtro bandpass FIR 1–30 Hz

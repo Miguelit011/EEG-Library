@@ -20,7 +20,8 @@ Decisiones de diseño (justificación completa en ANALISIS_OA_OC.md):
   `persona_uid`, tanto al validar como al calcular intervalos.
 - **X parte de `columnas_de_features()` y le resta siete columnas.**
   `columnas_de_features()` sigue siendo la única definición de X del proyecto y
-  no se toca; este módulo la restringe, de forma explícita y comprobable:
+  no se toca; `columnas_de_features_reposo` la restringe, de forma explícita y
+  comprobable (se define en `procesado/matrix.py` y se reexporta aquí):
   - `condicion_orden` **es la etiqueta**: codifica la posición en el protocolo
     (OC = 1, OA = 2) sin una sola excepción. Dejarla daría un acierto del 100 %
     por construcción. Es una fuga, no una decisión discutible, y ni siquiera
@@ -53,8 +54,16 @@ from sklearn.model_selection import GroupKFold
 
 from eeg_library.modelado.modeling import COLUMNA_GRUPO, predecir_cv_agrupada
 from eeg_library.procesado.bands import BANDAS_DEFECTO
-from eeg_library.procesado.matrix import (COLUMNA_ETIQUETA, COLUMNAS_IDENTIDAD,
-                                          REGIONES, columnas_de_features)
+from eeg_library.procesado.matrix import REGIONES
+
+# La definición de X de este módulo (`columnas_de_features_reposo`,
+# `verificar_sin_fuga` y sus dos constantes) vive en `procesado/matrix.py`, para
+# que `analizar_grabacion` no dependa de un módulo de análisis. Se reexporta
+# aquí con los mismos nombres: los guiones y las pruebas la siguen importando
+# desde `modelado.reposo`.
+from eeg_library.procesado.matrix import (COLUMNA_FUGA, COLUMNAS_PROCESAMIENTO,  # noqa: F401
+                                          columnas_de_features_reposo,
+                                          verificar_sin_fuga)
 
 CONDICIONES_REPOSO = ("OA", "OC")
 CLASE_POSITIVA = "OC"   # 1 = ojos cerrados
@@ -62,17 +71,6 @@ CLASE_NEGATIVA = "OA"   # 0 = ojos abiertos
 COLUMNA_CONDICION = "condicion"
 COLUMNA_SPLIT = "split"
 SPLITS_ANALISIS = ("train", "val")
-
-# La etiqueta disfrazada: posición de la condición en ORDEN_PROTOCOLO. Se
-# separa de las demás porque su exclusión no se discute, es una fuga.
-COLUMNA_FUGA = "condicion_orden"
-
-# Metadatos del procesamiento, no señal cerebral. Algunos discriminan OA/OC por
-# una vía que no es el alfa (presumiblemente la calidad de contacto).
-COLUMNAS_PROCESAMIENTO = (
-    "n_ventanas", "n_canales_buenos", "n_validos_frontal",
-    "n_validos_frontocentral", "n_validos_temporal", "n_validos_posterior",
-)
 
 # Los dos componentes del índice de fatiga entran a la matriz con nombre propio
 # en vez de `<región>_<banda>_...`, pero son potencia de banda en un clúster.
@@ -102,45 +100,6 @@ def _validar_longitudes(**arrays):
 # --------------------------------------------------------------------------
 # Definición de X y preparación de los datos
 # --------------------------------------------------------------------------
-
-def verificar_sin_fuga(columnas):
-    """
-    Comprueba que una lista de columnas no arrastra la etiqueta ni la identidad.
-
-    Falla si aparece `condicion_orden` (la etiqueta codificada), `condicion`, la
-    etiqueta `vas` o cualquier columna de identidad. Se llama sobre **cada**
-    conjunto de features que se pasa a un `fit`, subconjuntos de ablación
-    incluidos, porque una fuga se cuela justo al construir uno a mano.
-
-    Devuelve la misma lista para poder encadenarla.
-    """
-    prohibidas = set(COLUMNAS_IDENTIDAD) | {COLUMNA_ETIQUETA, COLUMNA_FUGA}
-    presentes = sorted(set(columnas) & prohibidas)
-    if presentes:
-        raise ValueError(
-            f"Estas columnas no pueden ser features de OA/OC: {presentes}. "
-            f"`{COLUMNA_FUGA}` codifica la propia condición."
-        )
-    return list(columnas)
-
-
-def columnas_de_features_reposo(matriz, incluir_procesamiento=False):
-    """
-    Definición de X para OA/OC: `columnas_de_features()` menos las fugas.
-
-    Resta `condicion_orden` **siempre**, y los seis contadores de procesamiento
-    salvo que se pidan con `incluir_procesamiento=True` (análisis de
-    sensibilidad). Sobre la matriz de la Fase 13 (77 features) devuelve 70.
-
-    `columnas_de_features()` no se modifica: sigue siendo la definición de X del
-    resto del proyecto.
-    """
-    excluidas = {COLUMNA_FUGA}
-    if not incluir_procesamiento:
-        excluidas |= set(COLUMNAS_PROCESAMIENTO)
-    columnas = [c for c in columnas_de_features(matriz) if c not in excluidas]
-    return verificar_sin_fuga(columnas)
-
 
 def preparar_reposo(matriz, splits=SPLITS_ANALISIS, permitir_test=False):
     """

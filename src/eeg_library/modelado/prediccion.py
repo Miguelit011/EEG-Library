@@ -48,11 +48,18 @@ class Modelo:
     pipeline: object
 
 
-def _dir_modelos():
-    return Path(str(resources.files("eeg_library") / "modelos"))
+def _dir_modelos(*subcarpetas):
+    """
+    Carpeta de los modelos empaquetados, o una subcarpeta suya.
+
+    Es la única definición de dónde viven los modelos: la usan también los de
+    tiempo en tarea (`_dir_modelos("tiempo_en_tarea")`).
+    """
+    return Path(str(resources.files("eeg_library") / "modelos")).joinpath(*subcarpetas)
 
 
 def _sha256(ruta):
+    """SHA-256 de un archivo de modelo, para comprobarlo contra su ficha."""
     return hashlib.sha256(Path(ruta).read_bytes()).hexdigest()
 
 

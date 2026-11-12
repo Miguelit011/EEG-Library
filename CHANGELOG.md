@@ -19,6 +19,14 @@ Cambios de la revisión de los repositorios (2026-11-11 y 2026-11-12). No cambia
   equipo de desarrollo (salvo en los dos guiones con SHA-256 registrado).
 - `.gitignore`: también `*.parquet`, `*.xlsx`, `*.xls` y las carpetas `tablas/`.
 - README actualizado (tests, Python, estructura, líneas de análisis y EEG-Platform).
+- `columnas_de_features_reposo`, `verificar_sin_fuga`, `COLUMNA_FUGA` y `COLUMNAS_PROCESAMIENTO`
+  pasan de `modelado/reposo.py` a `procesado/matrix.py`, para que `analizar_grabacion` no dependa
+  de un módulo de análisis. `modelado/reposo.py` los reexporta con los mismos nombres.
+- La carpeta de los modelos y su SHA-256 se calculan en un solo sitio (`modelado/prediccion.py`);
+  `tiempo_en_tarea_eegnet.py` toma `CONDICIONES`, `MIN_VENTANAS` y la carpeta de
+  `tiempo_en_tarea.py`. Constante `UMBRAL_OCULAR` (0.8) en `preprocesado/artifacts.py`.
+- Docstrings corregidos: orden de filtrado y CAR, criterio z de la calidad (solo por arriba) y
+  referencias a la Fase 10, retirada.
 
 ## 0.17.0 — 2026-11-05
 

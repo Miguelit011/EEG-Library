@@ -27,15 +27,12 @@ Decisiones de diseño:
   grabación procesada antes de que existiera `por_ventana`.
 """
 
-import hashlib
-from importlib import resources
-from pathlib import Path
-
 import joblib
 import numpy as np
 from scipy import stats
 
-from eeg_library.modelado.prediccion import Modelo, comparar_parametros, leer_ficha
+from eeg_library.modelado.prediccion import (Modelo, _dir_modelos, _sha256,
+                                             comparar_parametros, leer_ficha)
 
 CONDICIONES = ("PASAT", "PVTB")
 BANDAS = ("delta", "theta", "alfa", "beta")
@@ -49,7 +46,7 @@ _cache = {}
 
 def dir_modelos():
     """Carpeta de los modelos de tiempo en tarea empaquetados."""
-    return Path(str(resources.files("eeg_library") / "modelos" / "tiempo_en_tarea"))
+    return _dir_modelos("tiempo_en_tarea")
 
 
 def leer_ficha_tiempo_en_tarea(condicion):
@@ -74,7 +71,7 @@ def cargar_modelo_tiempo_en_tarea(condicion):
         return _cache[condicion]
     ficha, ruta_ficha = leer_ficha(dir_modelos() / f"{IDS[condicion]}.json")
     ruta_modelo = ruta_ficha.parent / ficha["archivo"]
-    sha = hashlib.sha256(ruta_modelo.read_bytes()).hexdigest()
+    sha = _sha256(ruta_modelo)
     if sha != ficha["sha256_modelo"]:
         raise ValueError(f"El SHA-256 de '{ruta_modelo.name}' no es el de su ficha.")
     pipeline = joblib.load(ruta_modelo)

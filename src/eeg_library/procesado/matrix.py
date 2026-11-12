@@ -95,6 +95,64 @@ def columnas_de_features(matriz):
     return [c for c in matriz.columns if c not in excluidas]
 
 
+# La etiqueta disfrazada de los modelos de condición: posición de la condición
+# en ORDEN_PROTOCOLO. Se separa de las demás porque su exclusión no se discute,
+# es una fuga.
+COLUMNA_FUGA = "condicion_orden"
+
+# Metadatos del procesamiento, no señal cerebral. Algunos discriminan OA/OC por
+# una vía que no es el alfa (presumiblemente la calidad de contacto).
+COLUMNAS_PROCESAMIENTO = (
+    "n_ventanas", "n_canales_buenos", "n_validos_frontal",
+    "n_validos_frontocentral", "n_validos_temporal", "n_validos_posterior",
+)
+
+
+def verificar_sin_fuga(columnas):
+    """
+    Comprueba que una lista de columnas no arrastra la etiqueta ni la identidad.
+
+    Falla si aparece `condicion_orden` (la etiqueta codificada), `condicion`, la
+    etiqueta `vas` o cualquier columna de identidad. Se llama sobre **cada**
+    conjunto de features que se pasa a un `fit`, subconjuntos de ablación
+    incluidos, porque una fuga se cuela justo al construir uno a mano.
+
+    Devuelve la misma lista para poder encadenarla.
+    """
+    prohibidas = set(COLUMNAS_IDENTIDAD) | {COLUMNA_ETIQUETA, COLUMNA_FUGA}
+    presentes = sorted(set(columnas) & prohibidas)
+    if presentes:
+        raise ValueError(
+            f"Estas columnas no pueden ser features de OA/OC: {presentes}. "
+            f"`{COLUMNA_FUGA}` codifica la propia condición."
+        )
+    return list(columnas)
+
+
+def columnas_de_features_reposo(matriz, incluir_procesamiento=False):
+    """
+    Definición de X para OA/OC: `columnas_de_features()` menos las fugas.
+
+    Resta `condicion_orden` **siempre**, y los seis contadores de procesamiento
+    salvo que se pidan con `incluir_procesamiento=True` (análisis de
+    sensibilidad). Sobre la matriz de la Fase 13 (77 features) devuelve 70.
+
+    Es también la X de reposo/tarea, de las tareas ejecutivas y de los modelos
+    c1-c3 que usa la plataforma (`analizar_grabacion`). Vive aquí, junto a
+    `columnas_de_features()`, para que el procesado de una grabación no
+    dependa de los módulos de análisis; `modelado/reposo.py`, donde se
+    justifica cada exclusión, la reexporta con el mismo nombre.
+
+    `columnas_de_features()` no se modifica: sigue siendo la definición de X del
+    resto del proyecto.
+    """
+    excluidas = {COLUMNA_FUGA}
+    if not incluir_procesamiento:
+        excluidas |= set(COLUMNAS_PROCESAMIENTO)
+    columnas = [c for c in columnas_de_features(matriz) if c not in excluidas]
+    return verificar_sin_fuga(columnas)
+
+
 def agregar_por_region(features, regiones=None, bandas=None):
     """
     Promedia la potencia por región **sobre los canales válidos** de cada una.

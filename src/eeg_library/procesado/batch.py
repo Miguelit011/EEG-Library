@@ -2,7 +2,7 @@
 Módulo de procesamiento por lotes (Fase 11).
 
 Encadena las Fases 1-9 sobre muchos archivos EDF y persiste el resultado en
-disco: una tabla de features por época para el Random Forest (Fases 9-10) y,
+disco: una tabla de features por época para el Random Forest (Fases 9 y 13) y,
 opcionalmente, las ventanas crudas de señal para la CNN. Ambas salidas nacen
 del mismo epocado de la Fase 7, así que la fila `i` del parquet corresponde a
 la ventana `i` del `.npy` del mismo archivo.

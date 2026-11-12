@@ -74,7 +74,8 @@ def evaluar_calidad(raw, umbral_flat=1e-12, umbral_z=3.0):
       y del estado del equipo. Por eso se aplica el enfoque de FASTER
       (Nolan et al., 2010): se calcula la mediana y el MAD de las varianzas
       entre canales y se excluye el canal cuyo z-score robusto supera el
-      umbral estándar de FASTER (|z| > 3).
+      umbral estándar de FASTER (z > 3). El criterio es solo por arriba:
+      una varianza anormalmente baja la recoge el criterio de señal plana.
 
     Los criterios 1 y 2 solo se evalúan si el Raw trae el canal CQ del
     electrodo (`CQ_<nombre>` o `CQ.<nombre>`, según la versión del export de

@@ -3,7 +3,7 @@ Módulo de epocado EEG (Fase 7).
 
 Segmenta el Raw ya limpio (Fases 1-6) en ventanas de longitud fija con
 solapamiento. El resultado es compartido por las dos rutas de análisis
-posteriores —extracción de features para Random Forest (Fases 9-10) y
+posteriores —extracción de features para Random Forest (Fases 9 y 13) y
 ventanas crudas normalizadas para la CNN— por lo que esta función no aplica
 ninguna transformación específica de ninguna de las dos.
 

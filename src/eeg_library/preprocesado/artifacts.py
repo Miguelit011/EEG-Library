@@ -38,6 +38,10 @@ CATEGORIAS_ICLABEL = (
 
 _INDICE_EYE_BLINK = CATEGORIAS_ICLABEL.index("eye blink")
 
+# Probabilidad mínima de ICLabel para eliminar una componente como ocular. Es
+# la del dataset del estudio; `analizar_grabacion` la declara en su resultado.
+UMBRAL_OCULAR = 0.8
+
 
 def entrenar_ica(raw, good_channels, random_state=42, n_components=None):
     """
@@ -145,7 +149,7 @@ def entrenar_ica(raw, good_channels, random_state=42, n_components=None):
     return ica, metadata
 
 
-def identificar_componentes_oculares(raw, ica, umbral_prob=0.8):
+def identificar_componentes_oculares(raw, ica, umbral_prob=UMBRAL_OCULAR):
     """
     Clasifica las componentes de ICA con ICLabel y selecciona las oculares.
 
@@ -170,7 +174,7 @@ def identificar_componentes_oculares(raw, ica, umbral_prob=0.8):
         Objeto ICA ya ajustado por entrenar_ica.
     umbral_prob : float
         Probabilidad mínima para considerar una componente perteneciente
-        a una categoría. Por defecto 0.8.
+        a una categoría. Por defecto `UMBRAL_OCULAR` (0.8).
 
     Devuelve
     --------

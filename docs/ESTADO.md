@@ -1,6 +1,6 @@
 # Estado de implementación — EEG-Library
 
-> Documento de uso interno. No se sube al repositorio.
+> Documento de uso interno.
 > Última actualización: 2026-08-23 | Versión librería: 0.9.0
 
 > **Este documento se congela en la Fase 13** (matriz de features del Random
@@ -18,7 +18,7 @@
 
 Ubicación: `C:\Users\migue\Desktop\TFG\EEG-Data\` — fuera del repo y **fuera de OneDrive**. Estuvo en
 `OneDrive\Escritorio\EEG-Data` hasta el 2026-08-10 y en `C:\EEG-Data\` hasta
-el 2026-10-06, cuando se trasladó aquí tras formatear el equipo; los guiones
+el 2026-10-06, cuando se trasladó aquí; los guiones
 la localizan con la variable de entorno `EEG_DATA`. Que no
 sincronice es un requisito, no una casualidad: las ventanas crudas para la CNN
 que genera la Fase 11 ocupan 16.2 GB.

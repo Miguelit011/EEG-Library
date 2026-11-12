@@ -53,7 +53,8 @@ EEG-Library/
 │   └── analisis/         un informe por análisis de las Fases 14-21
 ├── resultados/
 │   ├── figuras/
-│   └── logs/
+│   ├── logs/
+│   └── test_20261007-133358/  resultado del test confirmatorio (copia de EEG_DATA)
 ├── archivo/              Fase 15 (retirada)
 ├── PREREGISTRO_TEST.md
 ├── pyproject.toml
@@ -206,7 +207,7 @@ Son independientes y pueden ejecutarse en cualquier orden. Los de reposo y tarea
 | Qué | Dónde |
 |---|---|
 | Cifras (JSON) | `<EEG_DATA>/processed/*.json` |
-| Resultado del test | `<EEG_DATA>/processed/test_20261007-133358/resultados.json` y la sección final de `docs/MODELADO.md` |
+| Resultado del test | `resultados/test_20261007-133358/` (`resultados.json` y `ejecucion.log`, copias de `<EEG_DATA>/processed/test_20261007-133358/`) y la sección final de `docs/MODELADO.md` |
 | Interpretación | `docs/MODELADO.md` y `docs/analisis/` |
 | Figuras | `resultados/figuras/` |
 | Registros de ejecución | `resultados/logs/` |

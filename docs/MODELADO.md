@@ -1001,7 +1001,9 @@ consume el alfa del paquete de test pendiente.
 [`PREREGISTRO_TEST.md`](../PREREGISTRO_TEST.md) (fijado el 2026-10-06)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\test_20261007-133358\`
 (`resultados.json`, `ejecucion.log`, `predicciones_test.parquet`,
-`inventario.csv`, `parametros.json`, modelos, bootstraps y permutaciones)
+`inventario.csv`, `parametros.json`, modelos, bootstraps y permutaciones).
+Copia en el repositorio de `resultados.json` y `ejecucion.log`, con el mismo
+SHA-256: [`resultados/test_20261007-133358/`](../resultados/test_20261007-133358/)
 
 **Este es el único uso del test.** Todo lo que sigue estaba declarado en el
 pre-registro y se reporta entero, salga lo que salga. Las cifras de validación

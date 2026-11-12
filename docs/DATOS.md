@@ -48,7 +48,7 @@ Para la PedsQL solo vale la versión corregida. Detalle en [`analisis/fatiga_fg_
 |---|---|---|
 | `sub-<sujeto>_ses-<medición>_task-<condición>_eeg.edf` | fuente | Las 4574 grabaciones válidas tras auditar y organizar los EDF originales: 178 códigos de sujeto, mediciones M2-M6 y las 7 condiciones (OA, OC, STROOP, PASAT, PVTB, MSIT y PVSAT). |
 
-Proceden de las 9092 grabaciones recibidas (M1-M6), de las que 2824 (31 %) eran copias binarias idénticas, detectadas por MD5. Tras quitar también las no válidas y la medición M1 (motivos en [`ESTADO.md`](ESTADO.md)), quedan estas 4574.
+Proceden de las 9092 grabaciones recibidas (M1-M6), de las que 2824 (31 %) eran copias binarias idénticas, detectadas por MD5. De las 5974 válidas y únicas, se conservan las 4574 con código de participante canónico; las 1400 restantes (todas las de M1 y la mayoría de M2) solo tenían iniciales u otros identificadores no fiables. Motivos del descarte de M1 en [`ESTADO.md`](ESTADO.md).
 
 La nomenclatura está inspirada en BIDS (`sub-`, `ses-`, `task-`), pero la carpeta no es un dataset BIDS: no tiene `dataset_description.json`, `participants.tsv` ni archivos laterales. Los metadatos de cada grabación están en el manifest.
 

@@ -69,14 +69,15 @@ casi contiguos en el tiempo. M1 solo aparece en el VAS, no en las grabaciones
 (ver "Regla de enlace", Fase 12).
 
 **Por qué se descartó M1.** Decisión del autor tras la auditoría inicial de los
-datos crudos de M1 (1014 grabaciones EDF, 15 076 archivos, ~30 GB). Los motivos
+datos crudos de M1 (1014 ficheros EDF, 15 076 archivos, ~30 GB; 716 grabaciones
+distintas: el resto eran copias en varios centros). Los motivos
 que recogía esa auditoría:
 
 - **Protocolo distinto:** M1 solo tiene 5 condiciones (OC, OA, STROOP, PASAT,
   PVTB); MSIT y PVSAT no aparecen. M2–M6 tienen las 7.
 - **Identidad sin resolver:** los `.edf` crudos no llevan sujeto/centro/sexo en
-  el nombre (esquema crudo de EmotivPro: iniciales + serie + timestamp). De las
-  1014 grabaciones, ~291 (29 %) no tenían entrada canónica F/C/sexo; en C8 el
+  el nombre (esquema crudo de EmotivPro: iniciales + serie + timestamp). De los
+  1014 ficheros, ~291 (29 %) no tenían entrada canónica F/C/sexo; en C8 el
   82 %. En C3 y C4 ocurría lo inverso: más entradas canónicas que EDF reales.
 - **Colisión de identidad:** F144 aparecía en C2 y C7, y la pulsera 44 de C8 tenía
   dos ocupantes en M1 (la única colisión de clave `(centro, pulsera, medición)`

@@ -1,7 +1,11 @@
 # Estado de implementación — EEG-Library
 
 > Documento de uso interno.
-> Última actualización: 2026-08-23 | Versión librería: 0.9.0
+> Congelado el 2026-08-23, con la versión 0.11.0 de la librería.
+>
+> Es un registro histórico: las rutas, la estructura de carpetas y las versiones
+> que cita son las de agosto. Las actuales están en el [`README`](../README.md), y la
+> correspondencia entre rutas antiguas y nuevas, en [`RUTAS_ORIGINALES.md`](RUTAS_ORIGINALES.md).
 
 > **Este documento se congela en la Fase 13** (matriz de features del Random
 > Forest). Cubre el pipeline de señal y la construcción de la matriz — lo que

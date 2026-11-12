@@ -1,7 +1,6 @@
 # Modelado y resultados — EEG-Library
 
-> Documento de uso interno. No se sube al repositorio.
-> Última actualización: 2026-10-07 | Continúa a [`docs/ESTADO.md`](ESTADO.md) en la Fase 13.
+> Cuaderno de modelado del proyecto. Continúa a [`docs/ESTADO.md`](ESTADO.md) en la Fase 13.
 > **El conjunto de test se ejecutó el 2026-10-07** (sección final de este
 > documento). Todo lo anterior a ella se calculó sobre `train` + `val`.
 

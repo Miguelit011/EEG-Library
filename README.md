@@ -57,6 +57,8 @@ EEG-Library/
 │   └── test_20261007-133358/  resultado del test confirmatorio (copia de EEG_DATA)
 ├── archivo/              Fase 15 (retirada)
 ├── PREREGISTRO_TEST.md
+├── CHANGELOG.md          cambios de cada versión de la librería
+├── CLAUDE.md             instrucciones para el asistente de IA usado en el desarrollo
 ├── pyproject.toml
 ├── requirements-validacion.txt
 ├── requirements-dl.txt
@@ -145,7 +147,26 @@ Hay dos excepciones: `analisis/analisis_test.py` y `analisis/tiempo_en_tarea/dee
 
 ---
 
-## Ejecutar el pipeline
+## Uso rápido
+
+Para procesar una grabación completa basta una llamada, la misma que usa EEG-Platform:
+
+```python
+from eeg_library import analizar_grabacion, listar_modelos, predecir
+
+resultado = analizar_grabacion(r"C:\ruta\a\grabacion.edf")   # dict serializable a JSON
+print(resultado["calidad"])                                   # estado de cada electrodo
+
+for id_modelo in listar_modelos():                            # modelos c1-c3 empaquetados
+    p = predecir(id_modelo, resultado["caracteristicas"], resultado["parametros_aplicados"])
+    print(id_modelo, p.get("clase"))
+```
+
+`resultado` contiene `metadatos`, `parametros_aplicados`, `calidad`, `potencia`, `caracteristicas` y `por_ventana`. Qué es cada campo, qué modelo conviene a cada condición y cómo se puntúa el tiempo en tarea: [`docs/CONTRATO.md`](docs/CONTRATO.md). Hay dos salidas de ejemplo en [`docs/ejemplos/`](docs/ejemplos/).
+
+---
+
+## Ejecutar el pipeline fase a fase
 
 Cada fase es una función independiente, exportada desde `eeg_library`:
 

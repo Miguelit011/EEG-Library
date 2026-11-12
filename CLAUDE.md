@@ -114,10 +114,11 @@ de la Facultad de Ciencias del Deporte.
   la salida de la Fase 11.
   Está fuera de OneDrive a propósito: las ventanas crudas para la CNN ocupan
   16.1 GB y no deben sincronizarse
-- Sujetos: 178, procedentes de un estudio de la Facultad de Ciencias del
-  Deporte (edad y otras características demográficas no confirmadas —
-  no asumir)
-- Registros: 4574 archivos EEG válidos = 178 sujetos × 5 mediciones (M2–M6)
+- Sujetos: 178 códigos de sujeto en los nombres de archivo, que tras las
+  correcciones de la Fase 12 corresponden a 177 personas; proceden de un
+  estudio de la Facultad de Ciencias del Deporte (edad y otras
+  características demográficas no confirmadas — no asumir)
+- Registros: 4574 archivos EEG válidos = 178 códigos × 5 mediciones (M2–M6)
   × 7 condiciones, con ausencias (no todos los sujetos completan las 5×7)
 - Mediciones (información del equipo del estudio, 2026-10-21): tomadas al
   inicio y al final de cada trimestre de un curso escolar. M1 = inicio 1.er

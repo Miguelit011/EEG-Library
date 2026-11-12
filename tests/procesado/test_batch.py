@@ -31,6 +31,15 @@ from eeg_library.procesado.batch import (
 )
 from eeg_library.preprocesado.quality import CANALES_EPOC
 
+# Avisos esperados de ICLabel, que salen también con datos reales: la CAR se
+# aplica restando la media a mano (referencing.py), así que MNE no la registra,
+# y el pipeline filtra a 1-30 Hz y no a 1-100 Hz (caveat conocido, docs/ESTADO.md,
+# Fase 6).
+pytestmark = [
+    pytest.mark.filterwarnings("ignore:The provided Raw instance does not seem to be referenced:RuntimeWarning"),
+    pytest.mark.filterwarnings("ignore:The provided Raw instance is not filtered between 1 and 100 Hz:RuntimeWarning"),
+]
+
 SFREQ = 256
 
 

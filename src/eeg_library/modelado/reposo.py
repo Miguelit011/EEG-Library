@@ -381,6 +381,7 @@ class ProbabilidadComoPrediccion(BaseEstimator):
         self.estimador = estimador
 
     def fit(self, X, y):
+        """Ajusta una copia del clasificador y localiza la columna de la clase 1."""
         self.estimador_ = clone(self.estimador).fit(X, np.asarray(y))
         clases = list(self.estimador_.classes_)
         if 1 not in clases:
@@ -391,6 +392,7 @@ class ProbabilidadComoPrediccion(BaseEstimator):
         return self
 
     def predict(self, X):
+        """Devuelve P(clase 1) para cada fila de `X`, no una etiqueta."""
         return self.estimador_.predict_proba(X)[:, self.columna_positiva_]
 
 
@@ -503,12 +505,14 @@ class UmbralUnaVariable(BaseEstimator):
         return X[self.columna].to_numpy(dtype=float)
 
     def fit(self, X, y):
+        """Aprende el corte y su signo, y guarda la mediana para rellenar los NaN."""
         x = self._valores(X)
         self.umbral_, self.signo_ = umbral_una_variable(x, y)
         self.mediana_ = float(np.nanmedian(x))
         return self
 
     def predict(self, X):
+        """Clasifica cada fila con el corte aprendido: 1 (OC) o 0 (OA)."""
         x = self._valores(X)
         x = np.where(np.isnan(x), self.mediana_, x)
         return clasificar_por_umbral(x, self.umbral_, self.signo_)

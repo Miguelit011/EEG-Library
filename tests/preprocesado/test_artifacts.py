@@ -182,6 +182,8 @@ def test_entrenar_ica_valida_canales_existentes():
         entrenar_ica(raw, ["AF3", "CANAL_INEXISTENTE"])
 
 
+# Aviso esperado: este test entrena la ICA sobre ruido sin filtrar a propósito.
+@pytest.mark.filterwarnings("ignore:The data has not been high-pass filtered:RuntimeWarning")
 def test_n_components_explicito_para_referencia_original():
     # Sin CAR no hay pérdida de rango: se pueden pedir tantas componentes
     # como canales buenos.

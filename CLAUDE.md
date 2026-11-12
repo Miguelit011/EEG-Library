@@ -143,7 +143,7 @@ de la Facultad de Ciencias del Deporte.
   ventanas: todas las de una sesión comparten el mismo valor de VAS. Línea
   base a batir: R² = 0.260 (media por persona, leave-one-out); ICC(1) = 0.457
 - Casco: Emotiv Epoc X (14 electrodos + 2 referencia CMS/DRL). Los EDF traen
-  60, 67 o 71 canales según la versión de EmotivPro: solo 14 son EEG, el
+  59, 63, 67 o 71 canales según la versión de EmotivPro: solo 14 son EEG, el
   resto son calidad de contacto (CQ), calidad de señal (EQ), telemetría,
   marcadores y movimiento
 

@@ -46,7 +46,9 @@ Para la PedsQL solo vale la versión corregida. Detalle en [`analisis/fatiga_fg_
 
 | Archivo | Tipo | Contenido |
 |---|---|---|
-| `sub-<sujeto>_ses-<medición>_task-<condición>_eeg.edf` | fuente | Las 4574 grabaciones válidas tras auditar y organizar los EDF originales: 178 sujetos, mediciones M2-M6 y las 7 condiciones (OA, OC, STROOP, PASAT, PVTB, MSIT y PVSAT). |
+| `sub-<sujeto>_ses-<medición>_task-<condición>_eeg.edf` | fuente | Las 4574 grabaciones válidas tras auditar y organizar los EDF originales: 178 códigos de sujeto, mediciones M2-M6 y las 7 condiciones (OA, OC, STROOP, PASAT, PVTB, MSIT y PVSAT). |
+
+Proceden de las 9092 grabaciones recibidas (M1-M6), de las que 2824 (31 %) eran copias binarias idénticas, detectadas por MD5. Tras quitar también las no válidas y la medición M1 (motivos en [`ESTADO.md`](ESTADO.md)), quedan estas 4574.
 
 La nomenclatura está inspirada en BIDS (`sub-`, `ses-`, `task-`), pero la carpeta no es un dataset BIDS: no tiene `dataset_description.json`, `participants.tsv` ni archivos laterales. Los metadatos de cada grabación están en el manifest.
 
@@ -117,11 +119,11 @@ Verificados sobre los archivos el 2026-11-12. Son los que citan esta documentaci
 
 | Concepto | Valor |
 |---|---|
-| Grabaciones (EDF) | 4574: 178 sujetos, 8 centros, M2-M6, 7 condiciones |
+| Grabaciones (EDF) | 4574: 178 códigos de sujeto (177 personas tras las correcciones de la Fase 12), 8 centros, M2-M6, 7 condiciones |
 | Señal | 172,8 h; de 25 a 379 s por grabación (mediana 127 s) |
 | Grabaciones procesadas | 4543 (31 con error en el lote, registradas en `procesamiento_log.csv`) |
 | Épocas | 280 339 |
-| Partición | 125 / 25 / 28 sujetos (train / val / test) |
+| Partición | 125 / 25 / 28 códigos de sujeto (train / val / test); en personas con VAS, 121 / 25 / 28 |
 | Sesiones con VAS | 656; con ventanas, **653**, de 174 personas |
 | Grabaciones etiquetadas | 4453, con 274 718 ventanas |
 

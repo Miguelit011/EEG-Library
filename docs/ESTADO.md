@@ -98,9 +98,12 @@ hayan respondido.
 
 **Partición (`splits.csv`):** por sujeto y estratificada por centro, sin
 solape — train 125 sujetos / val 25 / test 28. Su columna `n_ventanas`
-(305 272 en total) **no descuenta el recorte de 5+5 s de la Fase 2**: el
-epocado real de la Fase 7 produce **282 402** ventanas, exactamente 5 menos
-por grabación. Usar la cifra calculada, no la de la columna.
+(305 272 en total) **no descuenta el recorte de 5+5 s de la Fase 2**.
+Descontándolo, las 4574 grabaciones darían **282 402** ventanas (exactamente
+5 menos por grabación), pero en el procesado real de la Fase 11 fallaron 31 y
+salieron **280 339**, que es la cifra que hay que usar (y 274 718 las
+etiquetadas). *Corregido el 2026-11-14: aquí se decía que 282 402 era el
+epocado real; es la cuenta teórica sin los 31 fallos.*
 
 **Orden del protocolo dentro de cada sesión (fijo):**
 `OC → OA → STROOP → PASAT → PVTB → MSIT → PVSAT`, ~15.5 min por sesión;
@@ -1255,6 +1258,11 @@ procesos en una máquina de 12 CPUs: **0.93 s/archivo**, 0 errores, 6031
 | Ventanas CNN (`.npy` float32) | **16.2 GB** |
 | Épocas totales | 282 402 |
 
+> **Resultado real (Fase 11).** Esta tabla es la proyección previa. El lote
+> completo procesó **4543 de 4574** grabaciones (31 errores: 30 en ICA y 1 en
+> bandas) y dio **280 339 épocas**, la cifra de `procesamiento_log.csv` y de
+> `features_all.parquet`. Las 282 402 suponían que no fallaba ninguna.
+
 > Los 16.2 GB de ventanas son la razón por la que el dataset se sacó de
 > OneDrive: ahí dentro nada sincroniza, así que features y ventanas pueden
 > convivir con el dataset sin subir 16 GB a la nube.
@@ -1806,6 +1814,14 @@ que es la firma de un bosque partiendo ruido.
 |---|---|---|
 | Predecir la **condición** desde las mismas features (7 clases, sin `condicion_orden`) | **0.608** | 0.143 |
 | Identificar a la **persona** (129 clases) | **0.383** | 0.008 |
+
+> **Nota (2026-11-14).** El 0.383 es por grabación y no quedó guardado en
+> ningún resultado. Al intentar reproducirlo, un reparto que no agrupa por
+> sesión da ≈ 0.38 y uno que agrupa por sesión, ≈ 0.17, así que lo más probable
+> es que grabaciones de una misma sesión cayeran a ambos lados. La cifra de
+> referencia del control de identidad es la de la Fase 14 (`MODELADO.md`):
+> **0.248 por sesión, 132 clases, azar 0.0076 (33× el azar)**, guardada en
+> `fase14_resultados.json`.
 
 > **Corrección (2026-08-26).** La fila de la condición estaba inflada por
 > circularidad: `condicion_orden` es la condición codificada uno a uno y

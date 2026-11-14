@@ -38,9 +38,9 @@ niveles: 0.3947 [0.3484, 0.4376] frente a 0.3333 de azar). Ese resultado admite
 dos lecturas: que la fatiga no esté en la señal, o que el procesamiento destruya
 parte de ella.
 
-La Fase 14 ya aporta controles positivos (las features identifican a la persona
-33× por encima del azar y acertaban la condición con 0.608 sobre 7 clases, azar
-0.143), pero son **poco específicos**: clasificar 7 condiciones puede apoyarse en
+Las Fases 13 y 14 ya aportan controles positivos (las features identifican a la
+persona 33× por encima del azar en la Fase 14 y acertaban la condición con 0.608
+sobre 7 clases, azar 0.143, en la Fase 13), pero son **poco específicos**: clasificar 7 condiciones puede apoyarse en
 cualquier diferencia entre tareas y no dice *qué* está usando el modelo.
 
 OA frente a OC es el contraste con la firma neurofisiológica más establecida:

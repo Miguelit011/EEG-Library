@@ -169,7 +169,7 @@ def test_agrupar_por_persona_impide_predecir_lo_que_es_pura_identidad():
     persona, el mismo modelo con los mismos datos no puede: R² se desploma.
 
     Es exactamente el escenario real —estas features identifican a la persona
-    con acierto 0.383 sobre 129 clases (Fase 13)— y la razón de que toda la
+    con acierto 0.248 sobre 132 clases, 33 veces el azar (Fase 14)— y la razón de que toda la
     Fase 14 se evalúe con GroupKFold.
     """
     ses = _sesiones_sinteticas(n_personas=20, n_sesiones=4, senal="persona")

@@ -14,8 +14,8 @@ Decisiones de diseño (justificación completa en MODELADO.md, Fase 14):
   `agregar_a_sesion` colapsa la matriz **antes** de modelar, para que el n del
   `fit` sea el n real del estudio.
 - **La partición es por persona (`persona_uid`), nunca por sesión ni por
-  ventana.** Estas features identifican a la persona con acierto 0.383 sobre 129
-  clases (Fase 13). Si dos sesiones de la misma persona caen a ambos lados de la
+  ventana.** Estas features identifican a la persona con acierto 0.248 sobre 132
+  clases, 33 veces el azar (control de identidad de la Fase 14). Si dos sesiones de la misma persona caen a ambos lados de la
   partición, el modelo puede reconocerla y devolver su nivel habitual de VAS: el
   resultado mediría reidentificación, no fatiga.
 - **Hay dos tareas distintas, con dos líneas base distintas, y no se pueden

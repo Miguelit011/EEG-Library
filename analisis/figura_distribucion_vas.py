@@ -43,18 +43,29 @@ def main():
     print(f"Media {vas.mean():.1f}, mediana {np.median(vas):.0f}, desviación {vas.std(ddof=1):.1f}")
     print(f"Múltiplos de 10: {multiplos_10:.1%}; de 5: {np.mean(vas % 5 == 0):.1%}")
 
-    plt.rcParams.update({"font.family": "serif", "font.size": 10})
+    # Mismo estilo que los diagramas de la memoria: Segoe UI, barras ámbar, texto
+    # oscuro y rejilla gris suave. Si Segoe UI no está instalada, usa DejaVu Sans.
+    texto, gris, ambar = "#1d2330", "#5b6475", "#b26a00"
+    plt.rcParams.update({
+        "font.family": "sans-serif", "font.sans-serif": ["Segoe UI", "DejaVu Sans"],
+        "font.size": 10, "pdf.fonttype": 42,
+        "text.color": texto, "axes.labelcolor": texto,
+        "xtick.color": gris, "ytick.color": gris,
+    })
     fig, eje = plt.subplots(figsize=(6.0, 2.8))
     bordes = np.arange(-2.5, 105, 5)  # un intervalo por cada múltiplo de 5
-    eje.hist(vas, bins=bordes, color="0.65", edgecolor="black", linewidth=0.5)
-    eje.axvline(vas.mean(), color="black", linestyle="--", linewidth=0.9)
+    eje.hist(vas, bins=bordes, color=ambar, edgecolor="white", linewidth=1.0, zorder=2)
+    eje.axvline(vas.mean(), color=texto, linestyle=(0, (4, 3)), linewidth=1.1, zorder=3)
     eje.text(vas.mean() + 1.5, eje.get_ylim()[1] * 0.92, f"media {vas.mean():.1f}",
-             fontsize=9)
+             fontsize=9, fontweight="bold")
     eje.set_xlabel("Respuesta en la VAS (0–100)")
     eje.set_ylabel("Sesiones")
     eje.set_xlim(-3, 103)
     eje.set_xticks(range(0, 101, 10))
-    eje.spines[["top", "right"]].set_visible(False)
+    eje.grid(axis="y", color="#e3e5ea", linewidth=0.8, zorder=0)
+    eje.tick_params(length=0)
+    eje.spines[["top", "right", "left"]].set_visible(False)
+    eje.spines["bottom"].set_color(gris)
     fig.tight_layout()
 
     CARPETA_FIGURAS.mkdir(parents=True, exist_ok=True)

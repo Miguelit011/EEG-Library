@@ -1363,8 +1363,7 @@ Reparto de canales válidos por época: 14 en 39 930, 13 en 72 695, 12 en
 `labels_grabaciones.csv` (4574 filas, una por grabación)
 **Origen:** estudio de viabilidad del cruce `VAS_100mm_preFE_filtrado.csv`
 (945 filas, VAS 0–100 mm por sujeto × momento) × `manifest_canonical.csv`
-(4574 grabaciones). Informe completo con todas las tablas de evidencia:
-`https://claude.ai/code/artifact/e49540e6-e032-4767-843d-d890504e34ff`.
+(4574 grabaciones).
 
 Esta fase sustituye al auto-etiquetado como fuente de verdad del TFG: la
 variable a predecir pasa a ser la **fatiga mental percibida** medida con una

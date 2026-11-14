@@ -34,7 +34,7 @@ de la Facultad de Ciencias del Deporte.
    buenos → aplicar; 6–7 → aplicar con advertencia; <6 → omitir
 6. Eliminación de artefactos mediante ICA (algoritmo Infomax Extended) —
    alcance limitado a **componentes oculares**, dado que el Emotiv Epoc X no
-   tiene canales EOG/ECG dedicados y el presupuesto del TFG es de 300h.
+   tiene canales EOG/ECG dedicados.
    Clasificación automática de componentes con **ICLabel** (MNE-ICALabel) en
    vez de `find_bads_eog` con un canal frontal como proxy de EOG, para evitar
    la circularidad de usar como referencia "esto es ojo" un canal que también
@@ -43,7 +43,7 @@ de la Facultad de Ciencias del Deporte.
 7. Epoching (segmentación en ventanas): ventanas fijas de 4 s (1024 muestras
    a 256 Hz) con solapamiento del 50 % (paso de 2 s) entre ventanas
    consecutivas; el resto final de cada archivo que no completa una ventana
-   entera se descarta. Este epocado es compartido por las Fases 9-10
+   entera se descarta. Este epocado es compartido por la Fase 9
    (extracción de features para Random Forest) y por la ruta CNN (ventanas
    crudas normalizadas), por lo que no aplica ninguna transformación
    específica de ninguna de las dos rutas. Cada época conserva metadata de
@@ -65,14 +65,8 @@ de la Facultad de Ciencias del Deporte.
 9. Extracción de potencia por bandas: delta, theta, alpha, beta + índice
    theta/alpha. El índice **no es la etiqueta**: se calcula porque es el
    biomarcador de referencia de la literatura y el TFG tiene que reportarlo.
-   Medido, no sigue a la fatiga percibida en esta cohorte (ρ = +0.004,
-   p = 0.93 dentro de persona) — resultado negativo que es en sí un hallazgo
-10. *(retirada)* — el auto-etiquetado de fatiga por umbrales sobre el índice
-    theta/alpha se eliminó del pipeline el 2026-08-23, al disponer de una
-    etiqueta externa real (el VAS, Fase 12). Nunca llegó a implementarse. El
-    hueco en la numeración es deliberado: renumerar invalidaría las
-    referencias del código, los tests y el historial. Ver docs/ESTADO.md,
-    "Fase 10 — retirada"
+10. *(retirada)* — el hueco en la numeración es deliberado, para no invalidar
+    las referencias del código, los tests y el historial.
 11. Procesamiento por lotes (múltiples archivos simultáneamente)
 12. Dataset supervisado: enlace del VAS de fatiga percibida con las
     grabaciones. La etiqueta
@@ -103,22 +97,17 @@ de la Facultad de Ciencias del Deporte.
 
 ## Contexto científico
 
-> Cifras medidas sobre el dataset ya organizado (2026-08-10). Sustituyen a la
-> estimación previa que figuraba aquí (160 sujetos, 960 archivos, 6 momentos,
-> 5 condiciones, 30–37 h), que era anterior a la organización. Desglose
-> completo en docs/ESTADO.md, "El dataset final".
+> Desglose completo de las cifras en docs/ESTADO.md, "El dataset final".
 
-- Ubicación del dataset (fuera del repo y fuera de OneDrive): `C:\Users\migue\Desktop\TFG\EEG-Data\` —
-  `dataset_final/` con los EDF, `metadata/` con `manifest_canonical.csv`,
+- Ubicación del dataset: fuera del repositorio; se localiza con la variable de
+  entorno `EEG_DATA` — `dataset_final/` con los EDF, `metadata/` con `manifest_canonical.csv`,
   `splits.csv`, `VAS_100mm_preFE_filtrado.csv` y la salida de la Fase 12
   (`labels.csv`, `labels_grabaciones.csv`), y `processed/` + `ventanas/` con
   la salida de la Fase 11.
-  Está fuera de OneDrive a propósito: las ventanas crudas para la CNN ocupan
-  16.1 GB y no deben sincronizarse
 - Sujetos: 178 códigos de sujeto en los nombres de archivo, que tras las
   correcciones de la Fase 12 corresponden a 177 personas; proceden de un
   estudio de la Facultad de Ciencias del Deporte (edad y otras
-  características demográficas no confirmadas — no asumir)
+  características demográficas no confirmadas)
 - Registros: 4574 archivos EEG válidos = 178 códigos × 5 mediciones (M2–M6)
   × 7 condiciones, con ausencias (no todos los sujetos completan las 5×7)
 - Mediciones (información del equipo del estudio, 2026-10-21): tomadas al
@@ -136,10 +125,10 @@ de la Facultad de Ciencias del Deporte.
   filtrado/recorte)
 - Partición: por sujeto y estratificada por centro (8 centros, C1–C8) —
   125 sujetos train / 25 val / 28 test, definida en `splits.csv`
-- Variable de interés: **fatiga mental percibida**, medida con VAS de 100 mm
-  respondido por el participante al inicio de cada sesión, inmediatamente
+- Variable de interés: **fatiga mental percibida**, medida con una VAS (escala 0–100)
+  respondida por el participante al inicio de cada sesión, inmediatamente
   antes del EEG. Regresión sobre el continuo 0–100; clasificación en tres
-  clases como análisis secundario. Subconjunto etiquetado real: 4574
+  clases como análisis secundario. Subconjunto etiquetado: 4574
   grabaciones del manifest → **4453 grabaciones / 653 sesiones / 174 personas
   / 274 718 ventanas**. El n efectivo son las **653 sesiones**, no las
   ventanas: todas las de una sesión comparten el mismo valor de VAS. Línea

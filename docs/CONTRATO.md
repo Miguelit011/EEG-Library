@@ -176,8 +176,16 @@ declara en la ficha.
 
 ## Verificación
 
-- `pytest`: tests unitarios del contrato con un EDF sintético
-  (`tests/procesado/test_grabacion.py`, `tests/modelado/test_prediccion.py`).
+- `pytest`: tests unitarios del contrato, sin el dataset:
+  - `analizar_grabacion` y los modelos c1–c3 con un EDF sintético
+    (`tests/procesado/test_grabacion.py`, `tests/modelado/test_prediccion.py`);
+  - los parámetros cerrados: valores del estudio, opciones admitidas y rechazo
+    de las demás (`tests/procesado/test_parametros.py`);
+  - los modelos de tiempo en tarea empaquetados con datos sintéticos: carga,
+    fichas con las cifras de `resultados_test.json`, condiciones y parámetros no
+    admitidos, mínimo de ventanas y canales excluidos
+    (`tests/modelado/test_tiempo_en_tarea.py`, logística;
+    `tests/modelado/test_tiempo_en_tarea_eegnet.py`, EEGNet).
 - `pytest -m datos` (necesita `EEG_DATA`, ~1 min, solo train/val):
   - la matriz reconstruida es idéntica a `matriz_rf.parquet`
     (`check_exact=True`);

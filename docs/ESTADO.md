@@ -1988,6 +1988,12 @@ features, meta_bandas        = extraer_bandas(
 
 ## Tests
 
+> Recuento de agosto, con las rutas de entonces. Falta `test_features.py`
+> (Fase 11.5, 10 tests). Hoy los tests están en `tests/preprocesado/`,
+> `tests/procesado/`, `tests/modelado/` y `tests/datos/`, y algunas cifras han
+> cambiado (por ejemplo, `test_matrix.py` tiene 19). El recuento actual está en
+> el [`README`](../README.md).
+
 | Archivo                     | Tests | Cubre                                      |
 |-----------------------------|-------|--------------------------------------------|
 | `tests/test_reader.py`      | 25    | Armonización de sfreq a `TARGET_SFREQ`: archivo ya a 256 Hz (no se toca), archivo a 128 Hz (se resamplea, duración preservada), rechazo `ValueError` por debajo de `MIN_SFREQ` (127 Hz y 100 Hz), no escritura/modificación del `.edf` fuente, formato de metadata general, `FileNotFoundError`. Tipado de canales y escala CQ, parametrizados sobre los **tres esquemas de export reales** (60 con guion bajo, 67 y 71 con punto): solo los 14 de `CANALES_EPOC` quedan como `'eeg'` y el resto como `'misc'`, `n_canales` frente a `n_canales_eeg`, reversión de la escala CQ solo cuando llegó escalada, y regresión end-to-end de que un CQ bajo excluye el canal en `evaluar_calidad` bajo las dos convenciones de escala |

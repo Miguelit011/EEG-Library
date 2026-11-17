@@ -72,7 +72,7 @@
 
 ## Fase 14 — Entrenamiento y evaluación del Random Forest
 
-**Archivos:** `src/eeg_library/modelado/modeling.py`, `tests/modelado/test_modeling.py` (23 tests),
+**Archivos:** `src/eeg_library/modelado/modeling.py`, `tests/modelado/test_modeling.py` (23 tests en esta fase; 49 hoy),
 `analisis/analisis_fase14.py` (script reproducible)
 **Salida:** `C:\Users\migue\Desktop\TFG\EEG-Data\processed\fase14_resultados.json`
 **Alcance:** solo `train` + `val`. **El conjunto de test no se ha tocado.**
@@ -364,7 +364,7 @@ que sí asoma es un marcador distinto del que predice la literatura.
 ## Fase 14b — ¿Aporta tratar la fatiga como tres niveles?
 
 **Archivos:** `src/eeg_library/modelado/modeling.py` (funciones de clasificación ordinal),
-`tests/modelado/test_modeling.py` (40 tests), `analisis/analisis_fase14b_clases.py`
+`tests/modelado/test_modeling.py` (40 tests en esta fase; 49 hoy), `analisis/analisis_fase14b_clases.py`
 
 **Solo train+val.** El test sigue sin tocarse.
 

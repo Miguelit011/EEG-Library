@@ -143,7 +143,7 @@ export EEG_DATA=/ruta/al/dataset    # bash
 
 Hay dos excepciones: `analisis/analisis_test.py` y `analisis/tiempo_en_tarea/deep_learning/04_test_eegnet/entrenar.py` conservan como valor por defecto la ruta del equipo de desarrollo, porque tienen su SHA-256 registrado y no se editan. En otro equipo, para ejecutarlos hay que definir `EEG_DATA`.
 
-`metadata/splits.csv` es la única fuente de verdad de las particiones (125 sujetos train, 25 val, 28 test).
+`metadata/splits.csv` es la única fuente de verdad de las particiones (125 códigos de sujeto en train, 25 en val y 28 en test; en personas con VAS, 121 / 25 / 28).
 
 ---
 

@@ -124,7 +124,8 @@ de la Facultad de Ciencias del Deporte.
 - Volumen total del dataset: 172.8 horas de señal EEG bruta (antes de
   filtrado/recorte)
 - Partición: por sujeto y estratificada por centro (8 centros, C1–C8) —
-  125 sujetos train / 25 val / 28 test, definida en `splits.csv`
+  125 códigos de sujeto train / 25 val / 28 test (en personas con VAS,
+  121 / 25 / 28), definida en `splits.csv`
 - Variable de interés: **fatiga mental percibida**, medida con una VAS (escala 0–100)
   respondida por el participante al inicio de cada sesión, inmediatamente
   antes del EEG. Regresión sobre el continuo 0–100; clasificación en tres

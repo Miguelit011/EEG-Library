@@ -114,16 +114,16 @@ def test_normalizar_vas_traduce_genero_y_deja_el_cero_como_desconocido():
 
 
 def test_normalizar_vas_elimina_la_fila_duplicada_exacta():
-    fila = _fila_vas(6, 3, "AGM270509", 26, 2, 60)
+    fila = _fila_vas(6, 3, "EEE050505", 26, 2, 60)
     v = normalizar_vas(pd.DataFrame([fila, dict(fila)]))
     assert len(v) == 1
 
 
 def test_normalizar_vas_aplica_el_intercambio_f111_f115():
     base = [
-        _fila_vas(2, m, "MCL111110", 111, 1, 40 + m) for m in range(1, 7)
+        _fila_vas(2, m, "FFF060606", 111, 1, 40 + m) for m in range(1, 7)
     ] + [
-        _fila_vas(2, m, "EPP210110", 115, 2, 10 + m) for m in range(1, 7)
+        _fila_vas(2, m, "GGG070707", 115, 2, 10 + m) for m in range(1, 7)
     ]
     v = normalizar_vas(pd.DataFrame(base))
     # El valor que el CSV daba a la pulsera 111 tiene que acabar en la 115.
@@ -135,16 +135,16 @@ def test_normalizar_vas_aplica_el_intercambio_f111_f115():
 
 def test_normalizar_vas_falla_si_el_intercambio_no_cuadra():
     # Solo 2 filas por lado en vez de las 6 declaradas.
-    base = [_fila_vas(2, m, "MCL111110", 111, 1, 40) for m in range(1, 3)]
-    base += [_fila_vas(2, m, "EPP210110", 115, 2, 10) for m in range(1, 3)]
+    base = [_fila_vas(2, m, "FFF060606", 111, 1, 40) for m in range(1, 3)]
+    base += [_fila_vas(2, m, "GGG070707", 115, 2, 10) for m in range(1, 3)]
     with pytest.raises(ValueError, match="swap_f111_f115"):
         normalizar_vas(pd.DataFrame(base))
 
 
 def test_normalizar_vas_avisa_de_ocupantes_que_chocan_pero_no_falla(capsys):
     v = normalizar_vas(pd.DataFrame([
-        _fila_vas(8, 1, "AAB201009", 44, 2, 40),
-        _fila_vas(8, 1, "GRG251010", 2044, 2, 30),
+        _fila_vas(8, 1, "HHH080808", 44, 2, 40),
+        _fila_vas(8, 1, "JJJ090909", 2044, 2, 30),
     ]))
     assert len(v) == 2
     assert "dos ocupantes" in capsys.readouterr().out
@@ -268,8 +268,8 @@ def test_construir_etiquetas_detecta_fuga_entre_splits():
         _grabaciones_manifest("C5", "F129", "M3", "2025-01-15")
         + _grabaciones_manifest("C6", "F129", "M5", "2025-04-28"))
     vas = pd.DataFrame([
-        _fila_vas(5, 3, "ARP020210", 129, 2, 30, "2025-01-15 08:00:00"),
-        _fila_vas(6, 5, "ARP020210", 129, 2, 40, "2025-04-28 08:00:00"),
+        _fila_vas(5, 3, "KKK101010", 129, 2, 30, "2025-01-15 08:00:00"),
+        _fila_vas(6, 5, "KKK101010", 129, 2, 40, "2025-04-28 08:00:00"),
     ])
     splits = pd.DataFrame([{"sujeto_id": "C5_F129", "split": "val"},
                            {"sujeto_id": "C6_F129", "split": "train"}])
@@ -300,8 +300,8 @@ def test_construir_etiquetas_no_devuelve_el_codigo_del_participante():
 def test_construir_etiquetas_falla_si_dos_personas_comparten_clave_con_eeg():
     manifest = pd.DataFrame(_grabaciones_manifest("C8", "F044", "M2", "2025-01-09"))
     vas = pd.DataFrame([
-        _fila_vas(8, 2, "AAB201009", 44, 2, 40, "2025-01-09 09:00:00"),
-        _fila_vas(8, 2, "GRG251010", 2044, 2, 30, "2025-01-09 09:00:00"),
+        _fila_vas(8, 2, "HHH080808", 44, 2, 40, "2025-01-09 09:00:00"),
+        _fila_vas(8, 2, "JJJ090909", 2044, 2, 30, "2025-01-09 09:00:00"),
     ])
     with pytest.raises(ValueError, match="ambiguo"):
         construir_etiquetas(vas, manifest, _splits_minimo(manifest))
@@ -365,7 +365,7 @@ def test_unir_etiquetas_llega_a_las_grabaciones_mal_archivadas():
     manifest = _manifest_con_correccion()
     corregido = corregir_manifest(manifest)
     vas = pd.DataFrame([
-        _fila_vas(4, 5, "MFB060610", 125, 2, 40, "2025-04-28 08:00:00"),
+        _fila_vas(4, 5, "LLL111111", 125, 2, 40, "2025-04-28 08:00:00"),
     ])
     splits = pd.DataFrame([{"sujeto_id": "C4_F125", "split": "val"}])
     etiquetas, _ = construir_etiquetas(vas, corregido, splits)

@@ -37,7 +37,7 @@ EEG-Library/
 │   ├── preprocesado/  procesado/  modelado/  datos/
 │   └── test_pipeline_integracion.py
 ├── analisis/
-│   ├── *.py              guiones de las Fases 14-21 y de empaquetado (+ README con el detalle)
+│   ├── *.py              guiones de las Fases 14-21, de empaquetado y de la figura de la VAS (+ README con el detalle)
 │   ├── normalizacion_vas/    línea de análisis en carpeta
 │   ├── fatiga_fg_fc/         línea de análisis en carpeta
 │   └── tiempo_en_tarea/      línea de análisis en carpeta (con deep_learning/)
@@ -213,6 +213,7 @@ python analisis/analisis_oa_oc.py > resultados/logs/oa_oc.log 2>&1
 | `analisis_test.py` | Análisis confirmatorio sobre el test | **Ejecutado una vez; no se reejecuta** | `docs/MODELADO.md` |
 | `empaquetar_modelos.py`, `empaquetar_modelos_tiempo_en_tarea.py` | No es un análisis: empaqueta los modelos que usa EEG-Platform | — | `docs/CONTRATO.md` |
 | `generar_ejemplo.py` | No es un análisis: genera los JSON de `docs/ejemplos/` | — | `docs/CONTRATO.md` |
+| `figura_distribucion_vas.py` | No es un análisis: figura de la distribución de la VAS para la memoria (653 sesiones, sin entrenar ningún modelo) | — | [`analisis/README.md`](analisis/README.md) |
 | `normalizacion_vas/` | ¿Da una etiqueta más útil el VAS respecto a cada persona? | por pasos | [`README`](analisis/normalizacion_vas/README.md) |
 | `fatiga_fg_fc/` | ¿Guardan relación con el EEG la fatiga general y la cognitiva del PedsQL? | por pasos | [`README`](analisis/fatiga_fg_fc/README.md) |
 | `tiempo_en_tarea/` | ¿Cambia el EEG a lo largo de una misma tarea, en personas no vistas? | por pasos | [`README`](analisis/tiempo_en_tarea/README.md) |

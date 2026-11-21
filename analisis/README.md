@@ -318,6 +318,23 @@ python analisis/generar_ejemplo.py      # JSON de ejemplo -> docs/ejemplos/
   `tests/procesado/test_grabacion.py` y `tests/datos/test_fase0_datos.py`
   (este último con `pytest -m datos`: matriz idéntica, paridad y clases).
 
+### `figura_distribucion_vas.py` — Figura de la VAS para la memoria
+
+No es un análisis: describe la etiqueta del conjunto de datos y no entrena
+ningún modelo.
+
+```bash
+python analisis/figura_distribucion_vas.py   # -> resultados/figuras/distribucion_vas.pdf y .png
+```
+
+- Dibuja la distribución de las respuestas a la VAS de las **653 sesiones**
+  con respuesta y ventanas procesadas, de las tres particiones (el mismo
+  conjunto sobre el que `docs/ESTADO.md`, Fase 12, da la media, la desviación
+  y el ICC). Si no son 653, se detiene.
+- Solo lee las columnas `vas` y `n_ventanas` de `<EEG_DATA>/metadata/labels.csv`:
+  la figura no contiene ningún identificador de participante.
+- Usa el estilo de las figuras de la memoria (capítulo 5).
+
 ---
 
 ## Garantías metodológicas

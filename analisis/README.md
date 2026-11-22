@@ -335,6 +335,24 @@ python analisis/figura_distribucion_vas.py   # -> resultados/figuras/distribucio
   la figura no contiene ningún identificador de participante.
 - Usa el estilo de las figuras de la memoria (capítulo 5).
 
+### `figura_pipeline_ejemplo.py` — Figura del procesado para la memoria
+
+No es un análisis: muestra qué hace el pipeline en una grabación real y no
+entrena ningún modelo.
+
+```bash
+python analisis/figura_pipeline_ejemplo.py   # -> resultados/figuras/pipeline_ejemplo.pdf y .png
+```
+
+- Elige una grabación de ojos abiertos de **entrenamiento** con los 14
+  electrodos buenos y al menos un componente ocular (según
+  `<EEG_DATA>/processed/procesamiento_log.csv`) y la procesa con las funciones
+  públicas de `preprocesado`.
+- (a) Ocho segundos de seis electrodos antes y después de la ICA; (b) espectro
+  medio de O1 y O2 en la señal leída y en la procesada.
+- La figura no contiene ningún identificador de participante. Es la figura 5.3
+  de la memoria.
+
 ---
 
 ## Garantías metodológicas
